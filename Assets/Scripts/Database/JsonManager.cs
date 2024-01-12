@@ -35,7 +35,7 @@ namespace Script.Global
 
         public void SetPath(string name, string path)
         {
-            path = Path.Combine(path, name);
+            this.path = Path.Combine(path, name);
         }
 
         /// <summary>
