@@ -27,6 +27,22 @@ namespace Script.Global
             path = Path.Combine(Application.persistentDataPath, "database");
         }
 
+        /// <summary>
+        /// 경로 설정. path 설정 안할시 Appdata에 저장됨
+        /// </summary>
+        /// <param name="name"></param>
+        public void SetPath(string name) => SetPath(name, Application.persistentDataPath);
+
+        public void SetPath(string name, string path)
+        {
+            path = Path.Combine(path, name);
+        }
+
+        /// <summary>
+        /// 딕셔너리를 JSON으로 변환하는 함수
+        /// </summary>
+        /// <param name="dict">변환할 딕셔너리</param>
+        /// <returns>JSON 문자열</returns>
         public string Dict2JSON<U,V>(Dictionary<U,V> dict)
         {
             string json;
@@ -43,8 +59,18 @@ namespace Script.Global
             return json;
         }
 
+        /// <summary>
+        /// JSON을 저장된 path로 저장함.
+        /// </summary>
+        /// <remarks>SetPath로 경로 지정 필수!</remarks>
+        /// <param name="dict">저장할 딕셔너리</param>
         public void SaveJSON<U, V>(Dictionary<U, V> dict) => SaveJSON(Dict2JSON(dict));
-
+        
+        /// <summary>
+        /// JSON을 저장된 path로 저장함.
+        /// </summary>
+        /// <remarks>SetPath로 경로 지정 필수!</remarks>
+        /// <param name="dict">저장할 딕셔너리</param>
         public void SaveJSON(string json)
         {
             File.WriteAllText(path,json);
