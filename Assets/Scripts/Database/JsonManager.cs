@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using Scripts.Player;
 using UnityEngine;
 
 namespace Script.Global
@@ -16,6 +17,17 @@ namespace Script.Global
     public class DictionaryPairList<U,V>
     {
         public List<DictionaryPair<U,V>> data;
+    }
+
+    [Serializable]
+    public class PlayerData
+    {
+        
+        public Stat _stat;
+
+        public int lv;
+        //public List<Item> itemList;
+
     }
     
     public class JsonManager : MonoBehaviour
