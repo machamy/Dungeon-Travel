@@ -23,6 +23,16 @@ namespace Scripts.Player
             clone.def = def;
             return clone;
         }
+
+        public static Stat operator+(Stat origin, Stat other)
+        {
+            Stat result = (Stat)origin.Clone();
+            result.hp += other.hp;
+            result.mp += other.mp;
+            result.atk += other.atk;
+            result.def += other.def;
+            return result;
+        }
     }
 
     /// <summary>
