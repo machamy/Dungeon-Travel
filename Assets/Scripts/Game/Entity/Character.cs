@@ -9,11 +9,7 @@ namespace Scripts.Player
         /// 직업
         /// </summary>
         public Class _class;
-        /// <summary>
-        /// 아이템/버프가 반영되기 전의 스탯
-        /// </summary>
-        public Stat rawStat;
-
+        
         public int LV => lv;
 
         private void Start()
