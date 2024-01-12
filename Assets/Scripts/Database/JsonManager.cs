@@ -88,6 +88,18 @@ namespace Script.Global
             File.WriteAllText(path,json);
         }
 
+        public T LoadJson<T>()
+        {
+            if (!File.Exists(path))
+            {
+                Debug.Log($"No File :{path}");
+                return default(T);
+            }
+            string rawJson = File.ReadAllText(path);
+            var result = JsonUtility.FromJson<T>(rawJson);
+            return result;
+        }
+
         public Dictionary<U,V> LoadJson<U,V>()
         {
             DictionaryPairList<U,V> saveData = new DictionaryPairList<U,V>();

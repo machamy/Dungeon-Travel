@@ -28,6 +28,8 @@ public class DB
     private Dictionary<string, string[]> data = new();
     public Dictionary<string, string[]> Data => data;
     
+    
+    
 
     public void SetData(string key, string[] value)
     {
@@ -41,18 +43,13 @@ public class DB
             SetData(pair.Key,pair.Value);
         }
     }
-    
-    public static bool IsReady()
-    {
-        return Contains("PlayerSpeed");
-    }
     public static bool Contains(string key)
     {
         return Instance.data.ContainsKey(key);
     }
 
     /// <summary>
-    /// key를 이용해 DB데이터(strting)를 가져옴. 없을경우 null반환
+    /// key를 이용해 DB데이터(string[])를 가져옴. 없을경우 null반환
     /// </summary>
     /// <param name="key">가져올 데이터</param>
     /// <returns>데이터, 없으면 null</returns>
