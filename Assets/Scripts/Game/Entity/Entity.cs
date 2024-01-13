@@ -29,23 +29,27 @@ namespace Scripts.Player
         /// 최대 HP를 갱신하는 함수.
         /// 변동량에 따라 현재 hp도 변경한다
         /// </summary>
-        public void UpdateMaxHP()
+        /// <returns>갱신된 maxHP값</returns>
+        public float UpdateMaxHP()
         {
             float newHP = rawBaseStat.hp + rawAdvancedStat.vit;  // + 장비 + 버프
             float delta = newHP - _maxHP;
             currentHP += delta;
             _maxHP = newHP;
+            return _maxHP;
         }
         /// <summary>
         /// 최대 MP를 갱신하는 함수.
-        /// 변동량에 따라 현재 hp도 변경한다
+        /// 변동량에 따라 현재 mp도 변경한다
         /// </summary>
-        public void UpdateMaxMP()
+        /// <returns>갱신된 maxMP값</returns>
+        public float UpdateMaxMP()
         {
             float newMP = rawBaseStat.mp + rawAdvancedStat.mag;  // + 장비 + 버프
             float delta = newMP - _maxMP;
             currentMP += delta;
             _maxMP = newMP;
+            return _maxMP;
         }
         /// <summary>
         /// MaxHP : hp + vit + 장비 + 버프
