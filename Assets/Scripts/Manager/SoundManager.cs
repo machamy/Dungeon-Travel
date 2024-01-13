@@ -132,7 +132,7 @@ public class SoundManager
         return source;
     }
     
-    AudioClip GetOrAddAudioClip(string path, SoundType type = SoundType.Effect)
+    public AudioClip GetOrAddAudioClip(string path, SoundType type = SoundType.Effect)
     {
         if (path.Contains("Sound/") == false)
             path = $"Sound/{path}"; // 📂Sound 폴더 안에 저장될 수 있도록
