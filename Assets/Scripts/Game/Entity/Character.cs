@@ -17,7 +17,7 @@ namespace Scripts.Player
             if (LV == 0)
             {
                 lv = 1;
-                rawStat = (Stat)_class.defaultStat.Clone();
+                rawBaseStat = (Stat)_class.defaultStat.Clone();
             }
         }
 
@@ -29,7 +29,7 @@ namespace Scripts.Player
         protected void OnLevelUpEvent(int lvDelta)
         {
             // 기존 스탯에 각 클래스의 성장 능력치를 더한다.
-            rawStat += _class.growStat;
+            rawBaseStat += _class.growStat;
         }
     }
 }
