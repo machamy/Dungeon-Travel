@@ -9,7 +9,10 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
-public class GameManager
+/// <summary>
+/// 게임매니저, 싱글턴
+/// </summary>
+public class GameManager: MonoBehaviour
 {
     public const string NAME = "@Game";
     private static GameManager instance;
@@ -17,9 +20,15 @@ public class GameManager
     {
         get
         {
+            // 없을경우 생성
             if (instance == null)
             {
-                instance = new GameManager();
+                GameObject root = GameObject.Find(NAME);
+                if (root == null)
+                {
+                    root = new GameObject { name = NAME };
+                }
+                root.AddComponent<GameManager>();
                 instance.init();
             }
 
@@ -28,20 +37,22 @@ public class GameManager
     }
     public void init()
     {
-        GameObject root = GameObject.Find(NAME);
-        if (root == null)
-        {
-            root = new GameObject { name = NAME };
-            Object.DontDestroyOnLoad(root);
-
-            PartyManager = new PartyManager();
-        }
+        PartyManager = new PartyManager();
+        DontDestroyOnLoad(gameObject);
     }
 
     public PartyManager PartyManager;
-    
-    
-    
+
+    private void Awake()
+    {
+        if(instance != null)
+            Destroy(this);
+        else
+        {
+            init();
+        }
+    }
+
     public void LoadScene(string name)
     {
         SceneManager.LoadScene(name);
