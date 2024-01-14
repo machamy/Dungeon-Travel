@@ -1,19 +1,63 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Manager;
+using Scripts.Player;
 using UnityEngine;
 
-public class TestDummyScript : MonoBehaviour
+namespace Scripts
 {
-    // Start is called before the first frame update
-    void Start()
-    { 
-        var gm = GameManager.Instance;
-        var sm = SoundManager.Instance;
-    }
-
-    // Update is called once per frame
-    void Update()
+    public class TestDummyScript : MonoBehaviour
     {
-        
+        // Start is called before the first frame update
+        void Start()
+        {
+            var gm = Manager.GameManager.Instance;
+            var sm = Manager.SoundManager.Instance;
+
+
+            StartCoroutine(SaveLoadTestCo());
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+
+        }
+
+
+        IEnumerator SaveLoadTestCo()
+        {
+            yield return new WaitForSeconds(1.5f);
+            Debug.Log("[Dummy::SaveLoadTestCo] Start");
+            SaveTest();
+            yield return new WaitForSeconds(1.5f);
+            LoadTest();
+            Debug.Log("[Dummy::SaveLoadTestCo] Finished");
+        }
+
+        private string testSaveName = "TestSave01";
+
+        void SaveTest()
+        {
+            SaveData data = SaveData.Make();
+            
+            List<Character> party = new List<Character>();
+            Character tc = GetComponent<Character>();
+            party.Add(tc);
+            data.party = party;
+            
+            data.startTime = DateTime.Today.Subtract(new TimeSpan(1, 0, 0, 0)).ToBinary();
+            data.saveName = testSaveName;
+            SaveLoadManager.Instance.Save(data);
+            Debug.Log($"Saved! : {data}");
+        }
+
+        void LoadTest()
+        {
+            Debug.Log("Saves : " + SaveLoadManager.Instance.LoadAll().Count);
+            SaveData data = SaveLoadManager.Instance.Load(testSaveName);
+            Debug.Log($"Loaded! : {data}");
+        }
     }
 }
