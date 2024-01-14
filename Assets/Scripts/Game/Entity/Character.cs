@@ -4,6 +4,10 @@ using Unity.VisualScripting;
 
 namespace Scripts.Player
 {
+    /// <summary>
+    /// 플레이어의 캐릭터  
+    /// </summary>
+    /// Enemy와 분리할 필요가 있나 싶음
     [Serializable]
     public class Character : Entity
     {

@@ -7,6 +7,7 @@ namespace Scripts.Manager
 {
     /// <summary>
     /// 싱글턴 사운드 매니저.
+    /// 입체음향 지원 X
     /// 동시에 같은 소리 재생시 볼륨이 커진다. 조절필요
     /// </summary>
     public class SoundManager
@@ -140,10 +141,17 @@ namespace Scripts.Manager
             return source;
         }
 
+        /// <summary>
+        /// 오디오 클립을 받아오는 함수
+        /// effect의 경우 필요할때마다 받아올 시 오버헤드가 있으므로 Dictionary에 저장한다.
+        /// </summary>
+        /// <param name="path">BGM경로</param>
+        /// <param name="type">BGM종류, 지정없을시 Effect</param>
+        /// <returns>해당 AudioClup (없을시 null)</returns>
         public AudioClip GetOrAddAudioClip(string path, SoundType type = SoundType.Effect)
         {
             if (path.Contains("Sound/") == false)
-                path = $"Sound/{path}"; // 📂Sound 폴더 안에 저장될 수 있도록
+                path = $"Sound/{path}"; // Sound 폴더 안에 저장될 수 있도록
 
             AudioClip audioClip;
 
@@ -166,44 +174,58 @@ namespace Scripts.Manager
             return audioClip;
         }
 
+        /// <summary>
+        /// BGM의 볼륨 조절
+        /// </summary>
+        /// <param name="val">0.0001 ~ 1의 값</param>
         public void ChangeVolumeBGM(float val)
         {
             mixer.SetFloat("BGM", Mathf.Log10(val) * 20);
         }
 
+        /// <summary>
+        /// Effect의 볼륨 조절
+        /// </summary>
+        /// <param name="val">0.0001 ~ 1의 값</param>
         public void ChangeVolumeEffect(float val)
         {
             mixer.SetFloat("Effect", Mathf.Log10(val) * 20);
         }
 
+        /// <summary>
+        /// bgm 소스에 직접 접근함.
+        /// </summary>
+        /// <remarks>사용 할 일 없음!</remarks>
+        /// <param name="val">0 ~ 1 의 값</param>
         public void ChangeSrcVolumeBGM(float val)
         {
             _bgmSource.volume = val;
         }
-
-        public bool optVibration;
-
-        public void DoVibration()
-        {
-
-            if (optVibration)
-            {
-#if UNITY_ANDROID
-            Vibration.Vibrate(150);
-
-#endif
-#if UNITY_EDITOR
-                Debug.Log("Vibration!");
-#endif
-            }
-
-        }
+//
+//         public bool optVibration;
+//
+//         public void DoVibration()
+//         {
+//
+//             if (optVibration)
+//             {
+// #if UNITY_ANDROID
+//             Vibration.Vibrate(150);
+//
+// #endif
+// #if UNITY_EDITOR
+//                 Debug.Log("Vibration!");
+// #endif
+//             }
+//
+//         }
 
         /// <summary>
         /// effect 리스트를 돌며 볼륨 변경
         /// 만약 재생중이 아닌 소스가 있을경우 삭제
         /// </summary>
-        /// <param name="val"></param>
+        /// <remarks>사용할 일 없음!</remarks>
+        /// <param name="val">0~1의 값</param>
         public void ChangeSrcVolumeEffect(float val)
         {
             var nodeSrc = _effectSources.First;

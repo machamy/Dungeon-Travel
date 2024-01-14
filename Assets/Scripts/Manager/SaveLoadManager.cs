@@ -50,6 +50,10 @@ namespace Scripts.Manager
         }
 
 
+        /// <summary>
+        /// SaveDate를 기본 경로에 "이름.savedata" 로 저장함.
+        /// </summary>
+        /// <param name="data">저장할 데이터</param>
         public void Save(SaveData data)
         {
             string path = Path.Combine(this.basePath, data.saveName+extension);
@@ -118,6 +122,7 @@ namespace Scripts.Manager
     public class SaveData
     {
         public string saveName;
+        //TODO: 배열로 안바꿔도 저장이 되어야하는데 안됨. 일단 임시로 배열로 변환토록 함.
         public Character[] partyArr;
         public List<Character> Party
         {
@@ -128,6 +133,10 @@ namespace Scripts.Manager
         public long startTime;
         public long saveTime;
 
+        /// <summary>
+        /// SaveData 생성후 저장시간을 저장한다.
+        /// </summary>
+        /// <returns>시간이 저장된 SaveData</returns>
         public static SaveData Make()
         {
             SaveData data = new SaveData();

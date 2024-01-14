@@ -8,6 +8,7 @@ using UnityEngine.Events;
 
 /// <summary>
 /// 게임 DB가 담기는 싱글턴 클래스
+/// TODO: 기획자에게 파일 받은 후 작업예정.
 /// </summary>
 public class DB
 {

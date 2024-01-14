@@ -26,7 +26,7 @@ namespace Script.Global
     {
         
         public Stat _stat;
-
+        
         public int lv;
         //public List<Item> itemList;
 
