@@ -45,7 +45,7 @@ namespace Scripts
             List<Character> party = new List<Character>();
             Character tc = GetComponent<Character>();
             party.Add(tc);
-            data.party = party;
+            data.Party = party;
             
             data.startTime = DateTime.Today.Subtract(new TimeSpan(1, 0, 0, 0)).ToBinary();
             data.saveName = testSaveName;

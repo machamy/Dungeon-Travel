@@ -86,6 +86,11 @@ namespace Scripts.Manager
             return null;
         }
         
+        /// <summary>
+        /// 모든 세이브 데이터를 가져와 매니저에 등록한다.
+        /// 로드전에 한번은실행되어야 한다.
+        /// </summary>
+        /// <returns>가져온 세이브 데이터들</returns>
         public List<SaveData> LoadAll()
         {
             List<SaveData> res = new List<SaveData>();
@@ -114,10 +119,10 @@ namespace Scripts.Manager
     {
         public string saveName;
         public Character[] partyArr;
-        public List<Character> party
+        public List<Character> Party
         {
-            get { return partyArr.ToList();}
-            set { partyArr = value.ToArray(); }
+            get => partyArr.ToList();
+            set => partyArr = value.ToArray();
         }
         
         public long startTime;
@@ -136,9 +141,9 @@ namespace Scripts.Manager
             sb.Append($"[SaveData] {saveName}\n").
                 Append("start time: ").Append(DateTime.FromBinary(startTime)).Append("\n")
                 .Append("save time: ").Append(DateTime.FromBinary(saveTime)).Append("\n")
-                .Append($"party({party.Count}) : \n");
+                .Append($"party({Party.Count}) : \n");
 
-            foreach (var chr in party)
+            foreach (var chr in Party)
             {
                 sb.Append(chr.ToString()).Append("\n");
             }
