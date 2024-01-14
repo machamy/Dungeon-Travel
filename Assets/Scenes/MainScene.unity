@@ -133,6 +133,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1404966051}
   - component: {fileID: 1404966052}
+  - component: {fileID: 1404966053}
   m_Layer: 0
   m_Name: Dummy
   m_TagString: Untagged
@@ -167,6 +168,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb0353158460ca42b2011ad88fbec8b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1404966053
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1404966050}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a221447c21ca4680ae1eddeca5941f46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  lv: 0
+  name: TestDummy
+  rawBaseStat:
+    hp: 0
+    mp: 0
+    atk: 0
+    def: 0
+  rawAdvancedStat:
+    str: 0
+    vit: 0
+    mag: 0
+    agi: 0
+    luk: 0
+  currentHP: 0
+  currentMP: 0
+  _class: {fileID: 11400000, guid: 1ff1213847f2e024eb8af3412c56c4c7, type: 2}
 --- !u!1 &1867543530
 GameObject:
   m_ObjectHideFlags: 0

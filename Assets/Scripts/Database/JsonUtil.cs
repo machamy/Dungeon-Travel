@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using Scripts.Player;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Script.Global
@@ -18,6 +19,7 @@ namespace Script.Global
     {
         public List<DictionaryPair<U,V>> data;
     }
+    
 
     [Serializable]
     public class PlayerData
@@ -30,24 +32,37 @@ namespace Script.Global
 
     }
     
-    public class JsonManager : MonoBehaviour
+    public class JsonUtil
     {
-        private string path;
+        private static JsonUtil instance;
+
+        public static JsonUtil Instance
+        {
+            get
+            {
+                if (instance != null)
+                    return instance;
+                instance = new JsonUtil();
+                return instance;
+            }
+        }
+        
+        private string defaultPath;
 
         private void Awake()
         {
-            path = Path.Combine(Application.persistentDataPath, "database");
+            defaultPath = Path.Combine(Application.persistentDataPath, "database");
         }
 
         /// <summary>
-        /// 경로 설정. path 설정 안할시 Appdata에 저장됨
+        /// 기본경로 설정. path 설정 안할시 Appdata에 저장됨
         /// </summary>
         /// <param name="name"></param>
-        public void SetPath(string name) => SetPath(name, Application.persistentDataPath);
+        public void SetDefaultPath(string name) => SetDefaultPath(name, Application.persistentDataPath);
 
-        public void SetPath(string name, string path)
+        public void SetDefaultPath(string name, string path)
         {
-            this.path = Path.Combine(path, name);
+            this.defaultPath = Path.Combine(path, name);
         }
 
         /// <summary>
@@ -72,24 +87,54 @@ namespace Script.Global
         }
 
         /// <summary>
+        /// 데이터를 JSON으로 변환하는 함수
+        /// </summary>
+        /// <param name="data"></param>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public string Data2JSON(object data)
+        {
+            string json;
+            json = JsonUtility.ToJson(data, true);
+            return json;
+        }
+
+        /// <summary>
         /// JSON을 저장된 path로 저장함.
         /// </summary>
         /// <remarks>SetPath로 경로 지정 필수!</remarks>
         /// <param name="dict">저장할 딕셔너리</param>
-        public void SaveJSON<U, V>(Dictionary<U, V> dict) => SaveJSON(Dict2JSON(dict));
+        public void SaveJSON<U, V>(Dictionary<U, V> dict, string path = null) => SaveJSON(Dict2JSON(dict), path);
         
         /// <summary>
         /// JSON을 저장된 path로 저장함.
         /// </summary>
         /// <remarks>SetPath로 경로 지정 필수!</remarks>
         /// <param name="dict">저장할 딕셔너리</param>
-        public void SaveJSON(string json)
+        public void SaveJSON(string json, string path = null)
         {
+            if (path == null)
+                path = defaultPath;
+            path = path.Replace("\\", "/");
+            //폴더가 없으면 생성
+            var paths = path.Split("/");
+            string currentPath = paths[0];
+            for (int i = 1; i < paths.Length-1; i++)
+            {
+                currentPath = Path.Combine(currentPath, paths[i]);
+                // Debug.Log(Directory.Exists(currentPath));
+                // Debug.Log(currentPath);
+                if (!Directory.Exists(currentPath))
+                    Directory.CreateDirectory(currentPath);
+            }
+            
             File.WriteAllText(path,json);
         }
 
-        public T LoadJson<T>()
+        public T LoadJson<T>(string path = null)
         {
+            if (path == null)
+                path = defaultPath;
             if (!File.Exists(path))
             {
                 Debug.Log($"No File :{path}");
@@ -100,8 +145,10 @@ namespace Script.Global
             return result;
         }
 
-        public Dictionary<U,V> LoadJson<U,V>()
+        public Dictionary<U,V> LoadJson<U,V>(string path = null)
         {
+            if (path == null)
+                path = defaultPath;
             DictionaryPairList<U,V> saveData = new DictionaryPairList<U,V>();
             Dictionary<U, V> result = new Dictionary<U, V>();
             if (!File.Exists(path))

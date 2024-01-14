@@ -15,11 +15,11 @@ namespace Scripts.Player
         /// <summary>
         /// 아이템/버프/2차스탯이 반영되기 전 기본 스탯
         /// </summary>
-        public Stat rawBaseStat;
+        public Stat rawBaseStat = new Stat();
         /// <summary>
         /// 아이템/버프 반영전 기본 2차 스탯.
         /// </summary>
-        public AdvancedStat rawAdvancedStat;
+        public AdvancedStat rawAdvancedStat = new AdvancedStat();
         
         
         

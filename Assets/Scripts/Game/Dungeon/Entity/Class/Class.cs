@@ -10,6 +10,7 @@ namespace Scripts.Player
         //, Rouge
     }
 
+    [CreateAssetMenu(order = int.MaxValue)]
     public class Class : ScriptableObject
     {
         public static List<Class> ClassList;

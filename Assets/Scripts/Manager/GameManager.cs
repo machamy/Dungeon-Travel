@@ -9,53 +9,59 @@ using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
 
-/// <summary>
-/// 게임매니저, 싱글턴
-/// </summary>
-public class GameManager: MonoBehaviour
+namespace Scripts.Manager
 {
-    public const string NAME = "@Game";
-    private static GameManager instance;
-    public static GameManager Instance
+    /// <summary>
+    /// 게임매니저, 싱글턴, MonoBehavior
+    /// </summary>
+    public class GameManager : MonoBehaviour
     {
-        get
+        public const string NAME = "@Game";
+        private static GameManager instance;
+
+        public static GameManager Instance
         {
-            // 없을경우 생성
-            if (instance == null)
+            get
             {
-                GameObject root = GameObject.Find(NAME);
-                if (root == null)
+                // 없을경우 생성
+                if (instance == null)
                 {
-                    root = new GameObject { name = NAME };
+                    GameObject root = GameObject.Find(NAME);
+                    if (root == null)
+                    {
+                        root = new GameObject { name = NAME };
+                    }
+
+                    instance = root.AddComponent<GameManager>();
+                    instance.init();
                 }
-                root.AddComponent<GameManager>();
-                instance.init();
+
+                return instance;
             }
-
-            return instance;
         }
-    }
-    public void init()
-    {
-        PartyManager = new PartyManager();
-        DontDestroyOnLoad(gameObject);
-    }
 
-    public PartyManager PartyManager;
-
-    private void Awake()
-    {
-        if(instance != null)
-            Destroy(this);
-        else
+        public void init()
         {
-            init();
+            PartyManager = new PartyManager();
+            DontDestroyOnLoad(gameObject);
         }
-    }
 
-    public void LoadScene(string name)
-    {
-        SceneManager.LoadScene(name);
+        public PartyManager PartyManager;
+
+        private void Awake()
+        {
+            if (instance != null)
+                Destroy(this);
+            else
+            {
+                init();
+            }
+        }
+
+        public void LoadScene(string name)
+        {
+            SceneManager.LoadScene(name);
+        }
+
     }
-    
 }
