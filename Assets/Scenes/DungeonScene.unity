@@ -3533,7 +3533,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  interactionRange: 50
+  interactionRange: 2
 --- !u!1001 &1094594699
 PrefabInstance:
   m_ObjectHideFlags: 0
