@@ -16,7 +16,7 @@ public class PlayerUnit : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         playerMove();
 
@@ -33,10 +33,10 @@ public class PlayerUnit : MonoBehaviour
         transform.LookAt(transform.position + moveVec);
     }
 
-    // Input System¿¡¼­ »ç¿ë. ÆĞµå,Å°º¸µå µîÀÇ ÀÔ·ÂÀ» vector2·Î ¹Ş¾Æ¿Â´Ù.
+    // Input Systemì—ì„œ ì‚¬ìš©. íŒ¨ë“œ,í‚¤ë³´ë“œ ë“±ì˜ ì…ë ¥ì„ vector2ë¡œ ë°›ì•„ì˜¨ë‹¤.
     void OnMove(InputValue value)
     {
-        Vector2 inputVec = value.Get<Vector2>(); //ÀÌ¹Ì normalizedµÈ ³à¼®.
+        Vector2 inputVec = value.Get<Vector2>(); //ì´ë¯¸ normalizedëœ ë…€ì„.
         moveVec = new Vector3(inputVec.x, 0, inputVec.y);
     }
 }
