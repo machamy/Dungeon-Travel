@@ -13,16 +13,23 @@ namespace Scripts.Game.Dungeon.InterationUnit
         public MeshRenderer Renderer;
         public GameObject DoorObject;
 
+        private Collider collider;
         void Start()
         {
             isHidden = true;
+            collider = DoorObject.GetComponent<Collider>();
+            Renderer = DoorObject.GetComponent<MeshRenderer>();
+            Color c = Renderer.material.color;
+            c.a = 0.5f;
+            Renderer.material.color = c;
+            
         }
 
         public void Open()
         {
             if (isOpened)
                 return;
-            Renderer = GetComponentInChildren<MeshRenderer>();
+            
             StartCoroutine(OpenTimer(1.25f, 3.5f, 2.5f));
         }
 
@@ -31,6 +38,8 @@ namespace Scripts.Game.Dungeon.InterationUnit
             if (!isOpened)
                 return;
             isOpened = false;
+            collider.enabled = true;
+            
             Color c = Renderer.material.color;
             c.a = 1f;
             Renderer.material.color = c;
@@ -38,19 +47,22 @@ namespace Scripts.Game.Dungeon.InterationUnit
 
         IEnumerator OpenTimer(float openingTime, float time, float closingTime, Action calllback = null)
         {
+            Debug.Log("[TestDoor::OpenTimer] opening");
             //문이 열리는 과정
-            yield return FadeCo(1, 0, 3.5f, 16);
+            yield return StartCoroutine(FadeCo(1, 0, openingTime, 16));
             isOpened = true;
+            collider.enabled = false;
 
+            Debug.Log("[TestDoor::OpenTimer] opened");
             //열리는 시간
             yield return new WaitForSeconds(time);
 
+            Debug.Log("[TestDoor::OpenTimer] closing");
             //문이 닫히는 과정
-            yield return FadeCo(0, 1, 3.5f, 16);
+            yield return StartCoroutine(FadeCo(0, 1, closingTime, 16));
             Close();
-
-
-            calllback.Invoke();
+            Debug.Log("[TestDoor::OpenTimer] closed");
+            calllback?.Invoke();
         }
 
 
