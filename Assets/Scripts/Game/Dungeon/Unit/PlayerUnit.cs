@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Game.Dungeon.InterationUnit;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -54,7 +55,15 @@ public class PlayerUnit : MonoBehaviour
         moveVec = new Vector3(inputVec.x, 0, inputVec.y);
     }
 
-    void OnUseEvent()
+    void OnUse()
+    {
+        Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
+        if (focusUnit is null)
+            return;
+        focusUnit.OnUsed(this);
+    }
+
+    void OnAttack()
     {
         
     }
