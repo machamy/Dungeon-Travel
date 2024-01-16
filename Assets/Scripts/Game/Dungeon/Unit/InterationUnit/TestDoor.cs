@@ -30,7 +30,7 @@ namespace Scripts.Game.Dungeon.InterationUnit
             if (isOpened)
                 return;
             
-            StartCoroutine(OpenTimer(1.25f, 3.5f, 2.5f));
+            StartCoroutine(OpenTimer(1.25f, openTime, 2.5f));
         }
 
         public void Close()
