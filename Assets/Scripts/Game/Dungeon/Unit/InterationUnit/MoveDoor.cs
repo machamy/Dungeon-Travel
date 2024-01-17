@@ -11,7 +11,6 @@ namespace Scripts.Game.Dungeon.Unit
         public Vector3 Direction;
         public float moveScale;
         public float time;
-        public int frame;
 
         public bool isOpened;
         public bool isMoving;
@@ -20,7 +19,7 @@ namespace Scripts.Game.Dungeon.Unit
         {
             Vector3 destination = Direction.normalized * (moveScale);
             destination.Scale(transform.localScale);
-            StartCoroutine(Move(transform.position+destination,time,frame));
+            StartCoroutine(Move(transform.position+destination,time));
             isOpened = true;
         }
 
@@ -28,19 +27,19 @@ namespace Scripts.Game.Dungeon.Unit
         {
             Vector3 destination = Direction.normalized * (moveScale);
             destination.Scale(transform.localScale);
-            StartCoroutine(Move(transform.position-destination,time,frame));
+            StartCoroutine(Move(transform.position-destination,time));
             isOpened = false;
         }
 
-        private IEnumerator Move(Vector3 destination, float time, int count = 16)
+        private IEnumerator Move(Vector3 destination, float time)
         {
-            var delay = new WaitForSeconds(time/count);
+            float frameAmount = time/Time.fixedDeltaTime;
             Vector3 deltaPos = destination - transform.position;
             isMoving = true;
-            for (int i = 0; i < 16; i++)
+            for (int i = 0; i < frameAmount; i++)
             {
-                transform.Translate(deltaPos/count);
-                yield return delay;
+                transform.Translate(deltaPos/frameAmount);
+                yield return new WaitForFixedUpdate();
             }
 
             isMoving = false;
