@@ -14,6 +14,7 @@ namespace Scripts.Game.Dungeon.Unit
         public int frame;
 
         public bool isOpened;
+        public bool isMoving;
 
         public void Open()
         {
@@ -35,13 +36,14 @@ namespace Scripts.Game.Dungeon.Unit
         {
             var delay = new WaitForSeconds(time/count);
             Vector3 deltaPos = destination - transform.position;
-            
+            isMoving = true;
             for (int i = 0; i < 16; i++)
             {
                 transform.Translate(deltaPos/count);
                 yield return delay;
             }
 
+            isMoving = false;
             transform.position = destination;
         }
 
@@ -53,6 +55,8 @@ namespace Scripts.Game.Dungeon.Unit
 
         public void Toggle()
         {
+            if (isMoving)
+                return;
             if (isOpened)
                 Close();
             else
