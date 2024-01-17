@@ -58,15 +58,22 @@ namespace Scripts.Game.Dungeon.Unit
 
         void OnUse()
         {
-            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
             if (focusUnit is null)
+                return;
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
+            if (!focusUnit.type.HasFlag(InteractionType.Use))
                 return;
             focusUnit.OnUsed(this);
         }
 
         void OnAttack()
         {
-
+            if (focusUnit is null)
+                return;
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
+            if (!focusUnit.type.HasFlag(InteractionType.Attack))
+                return;
+            focusUnit.OnAttacked(this, damage: 1.0f);
         }
 
         /// <summary>

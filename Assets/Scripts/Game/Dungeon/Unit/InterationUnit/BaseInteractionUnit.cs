@@ -52,7 +52,7 @@ namespace Scripts.Game.Dungeon.Unit
 
         public virtual void OnAttacked(PlayerUnit unit, float damage)
         {
-
+            Debug.Log($"[BaseInteractionUnit::OnAttacked] {gameObject.name}");
         }
 
         private Renderer renderer;
