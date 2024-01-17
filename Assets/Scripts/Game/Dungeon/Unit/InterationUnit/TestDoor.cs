@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Scripts.Game.Dungeon.InterationUnit
+namespace Scripts.Game.Dungeon.Unit
 {
     public class TestDoor : BaseInteractionUnit, IDoor
     {

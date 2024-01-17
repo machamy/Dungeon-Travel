@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace Scripts.Game.Dungeon.InterationUnit
+namespace Scripts.Game.Dungeon.Unit
 {
     public interface IDoor
     {

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.Game.Dungeon.InterationUnit
+namespace Scripts.Game.Dungeon.Unit
 {
     [Flags]
     public enum InteractionType
@@ -19,7 +19,7 @@ namespace Scripts.Game.Dungeon.InterationUnit
         public InteractionType type;
         public float hp;
 
-        protected bool isHidden = false;
+        public bool isHidden = false;
         protected bool isFocused = false;
         protected Material outline;
 

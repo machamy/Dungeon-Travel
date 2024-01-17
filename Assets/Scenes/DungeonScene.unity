@@ -368,12 +368,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   hp: 0
+  isHidden: 0
   OnButtonUseEvent:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 366687796}
-        m_TargetAssemblyTypeName: Scripts.Game.Dungeon.InterationUnit.TestDoor, Assembly-CSharp
-        m_MethodName: Open
+      - m_Target: {fileID: 1488223591}
+        m_TargetAssemblyTypeName: Scripts.Game.Dungeon.Unit.MoveDoor, Assembly-CSharp
+        m_MethodName: Toggle
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1524,13 +1525,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 366687794}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fa650d962df2bf94dae4daea9c193aa3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   type: 0
   hp: 0
+  isHidden: 0
   openTime: 3.5
   isOpened: 0
   Renderer: {fileID: 1488223589}
@@ -5158,6 +5160,7 @@ GameObject:
   - component: {fileID: 1488223590}
   - component: {fileID: 1488223589}
   - component: {fileID: 1488223588}
+  - component: {fileID: 1488223591}
   m_Layer: 0
   m_Name: Door
   m_TagString: Untagged
@@ -5251,6 +5254,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488223586}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1488223591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488223586}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd3d993cd4e043789f482dc7dd7e5148, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 1
+  hp: 0
+  isHidden: 1
+  Direction: {x: 0, y: 0, z: -1}
+  moveScale: 1
+  time: 0.75
+  frame: 16
+  isOpened: 0
 --- !u!1 &1488245693
 GameObject:
   m_ObjectHideFlags: 0
@@ -6116,6 +6139,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 1
   hp: 5
+  isHidden: 0
 --- !u!1001 &1681530822
 PrefabInstance:
   m_ObjectHideFlags: 0

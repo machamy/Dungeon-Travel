@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-namespace Scripts.Game.Dungeon.InterationUnit
+namespace Scripts.Game.Dungeon.Unit
 {
     public class SimpleButton : BaseInteractionUnit
     {
