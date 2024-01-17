@@ -7,20 +7,20 @@ namespace Scripts.Game.Dungeon.Unit
 {
     public class SimpleButton : BaseInteractionUnit
     {
-        public UnityEvent OnButtonUseEvent;
+        public UnityEvent ButtonUseEvent;
 
         public override void Start()
         {
             base.Start();
             type |= InteractionType.Use;
-            OnButtonUseEvent.AddListener(() => Debug.Log("[SimpleButton::OnUseEvent] Invoked."));
+            ButtonUseEvent.AddListener(() => Debug.Log("[SimpleButton::OnUseEvent] Invoked."));
         }
 
 
         public override void OnUsed(PlayerUnit unit)
         {
             base.OnUsed(unit);
-            OnButtonUseEvent.Invoke();
+            ButtonUseEvent.Invoke();
         }
     }
 }
