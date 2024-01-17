@@ -5,21 +5,38 @@ using UnityEngine;
 
 namespace Scripts.Game.Dungeon.Unit
 {
+    /// <summary>
+    /// 상호작용 종류 Flag
+    /// </summary>
     [Flags]
     public enum InteractionType
     {
         None = 0,
         Use = 1 << 0,
         Attack = 1 << 1,
+        
         All = 1 << 8 - 1
     }
 
+    /// <summary>
+    /// 기본적인 상호작용 유닛.
+    /// </summary>
+    /// <remarks>
+    /// 현재 "공격F"과 "사용E"에 대해서만 적용되어있다.
+    /// </remarks>
     public class BaseInteractionUnit : MonoBehaviour
     {
+        /// <summary>
+        /// 가능한 상호작용의 종류 Flag
+        /// </summary>
         public InteractionType type;
         public float hp;
 
+        /// <summary>
+        /// 히든일 경우 포커스 될 시 표시하지 않는다
+        /// </summary>
         public bool isHidden = false;
+        
         protected bool isFocused = false;
         protected Material outline;
 
@@ -45,11 +62,21 @@ namespace Scripts.Game.Dungeon.Unit
 
         }
 
+        /// <summary>
+        /// 사용E되었을때 실행된다
+        /// </summary>
+        /// <param name="unit">사용한 PlayerUnit 주체</param>
         public virtual void OnUsed(PlayerUnit unit)
         {
             Debug.Log($"[BaseInteractionUnit::OnUsed] {gameObject.name}");
         }
 
+        /// <summary>
+        /// 공격F당했을때 실행된다
+        /// </summary>
+        /// TODO: 공격의 종류도 받아올 가능성?
+        /// <param name="unit">사용한 PlayerUnit 주체</param>
+        /// <param name="damage">공격 피해량</param>
         public virtual void OnAttacked(PlayerUnit unit, float damage)
         {
             Debug.Log($"[BaseInteractionUnit::OnAttacked] {gameObject.name}");
