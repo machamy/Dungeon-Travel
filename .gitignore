@@ -72,4 +72,4 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 ## 구매 에셋들
-/[Aa]ssets/Resources/PurchasedAssets/*
+/[Aa]ssets/Resources/DownloadedAssets/*
