@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2804,6 +2804,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7189589121673299301, guid: 1809efdce88dbc94e9cb096e6b379911, type: 3}
+      propertyPath: m_Actions
+      value: 
+      objectReference: {fileID: -944628639613478452, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
+    - target: {fileID: 7189589121673299301, guid: 1809efdce88dbc94e9cb096e6b379911, type: 3}
+      propertyPath: m_DefaultActionMap
+      value: 3a8b2edd-e760-4282-a749-00934381c7c4
+      objectReference: {fileID: 0}
     - target: {fileID: 8620557045934057335, guid: 1809efdce88dbc94e9cb096e6b379911, type: 3}
       propertyPath: m_Constraints
       value: 112
@@ -5304,7 +5312,6 @@ MonoBehaviour:
   Direction: {x: 0, y: 0, z: -1}
   moveScale: 1
   time: 0.75
-  frame: 16
   isOpened: 0
   isMoving: 0
 --- !u!1 &1488245693
@@ -7191,7 +7198,6 @@ MonoBehaviour:
   Direction: {x: 0, y: 0, z: 1}
   moveScale: 1
   time: 0.75
-  frame: 16
   isOpened: 0
   isMoving: 0
 --- !u!65 &1894017386
