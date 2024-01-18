@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Scripts.Player
+namespace Scripts.Entity
 {
     
     /// <summary>

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-namespace Scripts.Player
+namespace Scripts.Entity
 {
 
 

@@ -2,7 +2,7 @@
 using System.Text;
 using Unity.VisualScripting;
 
-namespace Scripts.Player
+namespace Scripts.Entity
 {
     /// <summary>
     /// 플레이어의 캐릭터  

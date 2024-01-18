@@ -1,4 +1,4 @@
-﻿namespace Scripts.Player
+﻿namespace Scripts.Entity
 {
     public class Enemy
     {

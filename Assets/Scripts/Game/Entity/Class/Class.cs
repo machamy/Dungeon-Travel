@@ -2,7 +2,7 @@
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Scripts.Player
+namespace Scripts.Entity
 {
     public enum ClassType : int
     {
