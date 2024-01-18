@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Script.Global;
-using Scripts.Player;
+using Scripts.Entity;
 using UnityEngine;
 using Object = UnityEngine.Object;
 

@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Entity;
 using Scripts.Manager;
-using Scripts.Player;
 using UnityEngine;
 
 namespace Scripts

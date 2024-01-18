@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Scripts.Player;
+using Scripts.Entity;
 using Unity.VisualScripting;
 
 namespace Scripts.Manager
