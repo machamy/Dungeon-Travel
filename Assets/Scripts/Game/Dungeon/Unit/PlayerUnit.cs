@@ -42,11 +42,13 @@ namespace Scripts.Game.Dungeon.Unit
         void playerMove()
         {
             transform.position += moveVec * (speed * Time.deltaTime);
+            rigid.velocity = Vector3.zero;
         }
 
         void playerTurn()
         {
             transform.LookAt(transform.position + moveVec);
+            rigid.angularVelocity = Vector3.zero;
         }
 
         // Input System에서 사용. 패드,키보드 등의 입력을 vector2로 받아온다.
