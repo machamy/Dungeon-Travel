@@ -155,7 +155,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Actions: {fileID: -944628639613478452, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
   m_NotificationBehavior: 0
-  m_UIInputModule: {fileID: 0}
+  m_UIInputModule: {fileID: 886309941}
   m_DeviceLostEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -168,7 +168,7 @@ MonoBehaviour:
   m_ActionEvents: []
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
-  m_DefaultActionMap: StartScene
+  m_DefaultActionMap: MainUI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
 --- !u!4 &190047528
@@ -234,15 +234,15 @@ MonoBehaviour:
   m_XRTrackingOrigin: {fileID: 0}
   m_ActionsAsset: {fileID: -944628639613478452, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
   m_PointAction: {fileID: -485196982645177506, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
-  m_MoveAction: {fileID: 198281907305614672, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
+  m_MoveAction: {fileID: 7793998996741580927, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
   m_SubmitAction: {fileID: 7881991576583567814, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
   m_CancelAction: {fileID: -8998207433653970421, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
   m_LeftClickAction: {fileID: 1927904808074157464, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
-  m_MiddleClickAction: {fileID: 0}
-  m_RightClickAction: {fileID: 0}
-  m_ScrollWheelAction: {fileID: 0}
-  m_TrackedDevicePositionAction: {fileID: 0}
-  m_TrackedDeviceOrientationAction: {fileID: 0}
+  m_MiddleClickAction: {fileID: -2185481485913320682, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
+  m_RightClickAction: {fileID: -4090225696740746782, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
+  m_ScrollWheelAction: {fileID: 6240969308177333660, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
+  m_TrackedDevicePositionAction: {fileID: 6564999863303420839, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
+  m_TrackedDeviceOrientationAction: {fileID: 7970375526676320489, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
   m_DeselectOnBackgroundClick: 0
   m_PointerBehavior: 0
   m_CursorLockBehavior: 0

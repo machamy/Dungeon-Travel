@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UIInput : MonoBehaviour
+public class StartUI : MonoBehaviour
 {
     public void Continue()
     {

@@ -1,25 +1,26 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy_Base : MonoBehaviour
 {
-    public int EnemyLevel; // Àû ·¹º§
-    public int EnemyDamage; // Àû °ø°İ·Â
-    public int EnemyMaxHealth; // Àû ÃÖ´ëÃ¼·Â
-    public int EnemyCurrentHealth; // Àû ÇöÀçÃ¼·Â
-    public int EnemyAgility; // Àû ¹ÎÃ¸            
-    public int EnemyMana; // Àû ¸¶³ª                    // ÀÌ ¿©¼¸°¡Áö ¼öÄ¡ À¯´ÏÆ¼ ÀÎ½ºÆåÅÍÃ¢¿¡¼­ Á¶Á¤
+    public int EnemyLevel; // ì  ë ˆë²¨
+    public int EnemyDamage; // ì  ê³µê²©ë ¥
+    public int EnemyMaxHealth; // ì  ìµœëŒ€ì²´ë ¥
+    public int EnemyCurrentHealth; // ì  í˜„ì¬ì²´ë ¥
+    public int EnemyAgility; // ì  ë¯¼ì²©            
+    public int EnemyMana; // ì  ë§ˆë‚˜                    // ì´ ì—¬ì„¯ê°€ì§€ ìˆ˜ì¹˜ ìœ ë‹ˆí‹° ì¸ìŠ¤í™í„°ì°½ì—ì„œ ì¡°ì •
 
     public enum AttackType
     {
-        Damage, // Å¸°İ
-        Penetrate, // °üÅë
-        Slash, // Âü°İ
+        Damage, // íƒ€ê²©
+        Penetrate, // ê´€í†µ
+        Slash, // ì°¸ê²©
     }
-    public virtual void EnemyAttack(AttackType type) // ¿À¹ö¶óÀÌµù
+    public virtual void EnemyAttack(AttackType type) // ì˜¤ë²„ë¼ì´ë”©
     {
-        switch (type) // °ø°İÅ¸ÀÔ¿¡ µû¸¥ ºĞ¸® //¿À¹ö¶óÀÌµùÀ¸·Î ¾ø¾Ù °¡´É¼º ³ôÀ½
+        switch (type) // ê³µê²©íƒ€ì…ì— ë”°ë¥¸ ë¶„ë¦¬ //ì˜¤ë²„ë¼ì´ë”©ìœ¼ë¡œ ì—†ì•¨ ê°€ëŠ¥ì„± ë†’ìŒ
         {
             case AttackType.Damage:
                 Damaged();
@@ -31,7 +32,7 @@ public class Enemy_Base : MonoBehaviour
                 Slash();
                 break;
         }
-        //´Ù¸¥ ºÎ°úÈ¿°ú »ğÀÔ
+        //ë‹¤ë¥¸ ë¶€ê³¼íš¨ê³¼ ì‚½ì…
     }
     public void Damaged()
     {
