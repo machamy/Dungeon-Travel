@@ -1,7 +1,7 @@
-using System.Collections;
+ï»¿using System.Collections;
 using UnityEngine;
 
-public enum BattleState { START, PLAYERTURN, ENEMYTURN, WIN, LOSE}  //ÀüÅõ»óÅÂ ¿­°ÅÇü
+public enum BattleState { START, PLAYERTURN, ENEMYTURN, WIN, LOSE}  //ì „íˆ¬ìƒíƒœ ì—´ê±°í˜•
 
 public class BattleSystem : MonoBehaviour
 {   
@@ -24,19 +24,19 @@ public class BattleSystem : MonoBehaviour
 
     void SetupBattle()
     {
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation); //ÇÃ·¹ÀÌ¾î ÇÁ¸®Æé »ı¼º
+        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation); //í”Œë ˆì´ì–´ í”„ë¦¬í© ìƒì„±
         playerUnit = playerGO.GetComponent<Unit>();
         playerHP = playerHUD.GetComponentInChildren<HPSlider>();
         playerHP.maxHP = playerUnit.maxHP;
         playerHP.UpdateHPbar(playerHP.maxHP, playerHP.maxHP);
   
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation); //Àû ÇÁ¸®Æé »ı¼º
+        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation); //ì  í”„ë¦¬í© ìƒì„±
         enemyUnit = enemyGO.GetComponent<Unit>();
         enemyHP = enemyHUD.GetComponentInChildren<HPSlider>();
         enemyHP.maxHP = enemyUnit.maxHP;
         enemyHP.UpdateHPbar(enemyHP.maxHP, enemyHP.maxHP);
 
-        State = BattleState.PLAYERTURN; //ÇÃ·¹ÀÌ¾î ¼±°ø
+        State = BattleState.PLAYERTURN; //í”Œë ˆì´ì–´ ì„ ê³µ
         StartCoroutine(playerturn());
     }
 
@@ -67,7 +67,7 @@ public class BattleSystem : MonoBehaviour
 
     void PlayerAttack()
     {
-        Debug.Log("°ø°İ");
+        Debug.Log("ê³µê²©");
 
         enemyHP.currentHP -= 10;
         enemyHP.UpdateHPbar(enemyHP.currentHP ,playerHP.maxHP);
@@ -77,7 +77,7 @@ public class BattleSystem : MonoBehaviour
     }
     void EnemyAttack()
     {
-        Debug.Log("Àû °ø°İ");
+        Debug.Log("ì  ê³µê²©");
 
         playerHP.currentHP -= 10;
         playerHP.UpdateHPbar(playerHP.currentHP, playerHP.maxHP);
