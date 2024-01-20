@@ -29,8 +29,8 @@ public class ForgeUI : MonoBehaviour
         typeContainer.SetActive(false);
         listContainer.SetActive(false);
         infoContainer.SetActive(false);
-        EventSystem.current.SetSelectedGameObject(behaviourFirstSelect);
-        ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = mainNavigation;
+        SelectButton(behaviourFirstSelect);
+        SelectNavigate(mainNavigation);
     }
 
     public void SelectWeapon()
@@ -41,8 +41,8 @@ public class ForgeUI : MonoBehaviour
         typeContainer.SetActive(true);
         listContainer.SetActive(true);
         infoContainer.SetActive(true);
-        EventSystem.current.SetSelectedGameObject(weaponFirstSelect);
-        ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = yNavigation;
+        SelectButton(weaponFirstSelect);
+        SelectNavigate(yNavigation);
     }
 
     public void OnSwitchType(InputValue value)
@@ -50,7 +50,7 @@ public class ForgeUI : MonoBehaviour
         if (currentState != "SelectWeapon") return;
         int intvalue = (int)value.Get<float>();
         if (currentType + intvalue < 0 || currentType + intvalue > 4) return;
-        EventSystem.current.SetSelectedGameObject(weaponFirstSelect);
+        SelectButton(weaponFirstSelect);
         typeButton[currentType].GetComponent<Image>().color = new Color(0, 1, 1, 0.5f);
         typeButton[currentType += intvalue].GetComponent<Image>().color = new Color(1, 1, 0, 0.5f);
         
@@ -60,7 +60,7 @@ public class ForgeUI : MonoBehaviour
     {
         typeButton[currentType].GetComponent<Image>().color = new Color(0, 1, 1, 0.5f);
         typeButton[currentType = value].GetComponent<Image>().color = new Color(1, 1, 0, 0.5f);
-        EventSystem.current.SetSelectedGameObject(weaponFirstSelect);
+        SelectButton(weaponFirstSelect);
     }
 
     public void AskBuyItem(string itemName)
@@ -68,8 +68,8 @@ public class ForgeUI : MonoBehaviour
         currentState = "AskBuyItem";
         askBuyPanel.SetActive(true);
         itemNameText.GetComponent<TextMeshProUGUI>().text = "You wanna buy " + itemName + "?";
-        EventSystem.current.SetSelectedGameObject(askBuyFirstSelect);
-        ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = mainNavigation;
+        StartCoroutine(WaitForSelectButton(0.000001f));
+        SelectNavigate(mainNavigation);
     }
 
     public void OnCancel()
@@ -83,6 +83,18 @@ public class ForgeUI : MonoBehaviour
                 SelectBehaviour();
                 break;
         }
+    }
+
+    public void SelectButton(GameObject button) =>
+        EventSystem.current.SetSelectedGameObject(button);
+
+    public void SelectNavigate(InputActionReference navigation) =>
+        ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = navigation;
+
+    private IEnumerator WaitForSelectButton(float time)
+    {
+        yield return new WaitForSeconds(time);
+        SelectButton(askBuyFirstSelect);
     }
 
 }
