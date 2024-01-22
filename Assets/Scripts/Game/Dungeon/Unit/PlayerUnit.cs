@@ -10,6 +10,7 @@ namespace Scripts.Game.Dungeon.Unit
     {
         [SerializeField] protected float speed;
         [SerializeField] protected float interactionRange;
+        [SerializeField] protected QuraterviewCamera Camera;
 
         Rigidbody rigid;
         Vector3 moveVec;
@@ -55,7 +56,7 @@ namespace Scripts.Game.Dungeon.Unit
         void OnMove(InputValue value)
         {
             Vector2 inputVec = value.Get<Vector2>(); //이미 normalized된 녀석.
-            moveVec = new Vector3(inputVec.x, 0, inputVec.y);
+            moveVec = Camera.GetWorldDiretion(new Vector3(inputVec.x, 0, inputVec.y));//new Vector3(inputVec.x, 0, inputVec.y);
         }
 
         void OnUse()

@@ -3797,6 +3797,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   interactionRange: 2
+  Camera: {fileID: 415641719}
 --- !u!1001 &1115185894
 PrefabInstance:
   m_ObjectHideFlags: 0
