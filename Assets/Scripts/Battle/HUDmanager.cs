@@ -4,46 +4,43 @@ using TMPro;
 
 public class HUDmanager : MonoBehaviour
 {
+    public GameObject HUD;
+
     public Slider HPslider, MPslider;
     public TMP_Text HPtext,MPtext;
 
+    public TMP_Text playerName;
+    public TMP_Text playerClass;
+
     private Unit unit;
 
-    private float maxHP, maxMP;
-    private float currentHP, currentMP;
+    private float HP,MP;
+    private float _maxHP, _maxMP;
+
+    public void SetupHUD(float maxHP, float maxMP)
+    {
+        _maxHP = maxHP;
+        _maxMP = maxMP;
+
+        HP = maxHP;     
+        MP = maxMP;
+
+        UpdateHUD(HP, MP);
+        
+        HUD.SetActive(true);
+    }
 
     /// <summary>
-    /// SetupBattle ���� ����
+    /// HP바와 MP바, HP텍스트, MP텍스트 업데이트
     /// </summary>
-    /// <param name="getunit"></param>
-    public void Setup(Unit getunit)  //��Ʋ�ý��� SetupBattle ���� ����
+    /// <param name="currentHP"></param>
+    /// <param name="currentMP"></param>
+    public void UpdateHUD(float currentHP, float currentMP)
     {
-        unit = getunit;
+        HPslider.value = currentHP / _maxHP;
+        MPslider.value = currentHP / _maxHP;
 
-        maxHP = unit.stat.hp;    
-        maxMP = unit.stat.mp;
-        currentHP = maxHP;     
-        currentMP = maxMP;
-
-        UpdateHUD();
-    }
-
-    public void UpdateHUD()
-    {
-        HPslider.value = currentHP / maxHP;
-        MPslider.value = currentHP / maxHP;
-
-        HPtext.text = currentHP + "/" + maxHP;
-        MPtext.text = currentMP + "/" + maxMP;
-    }
-
-    public void TakeDamage(float damage)
-    {
-        currentHP -= damage;    
-    }
-
-    public void TakeMana(float mana)
-    {
-        currentMP -= mana;
+        HPtext.text = currentHP + "/" + _maxHP;
+        MPtext.text = currentMP + "/" + _maxMP;
     }
 }

@@ -51,15 +51,20 @@ MonoBehaviour:
     mp: 0
     atk: 40
     def: 30
+  advancedStat:
+    str: 0
+    vit: 0
+    mag: 0
+    agi: 0
+    luk: 0
   position: 0
   unitName: Player
+  className: 
   unitLevel: 1
   maxHP: 100
   maxMP: 0
   currentHP: 100
   currentMP: 0
-  ATK: 0
-  DEF: 0
 --- !u!1 &1777465141582993294
 GameObject:
   m_ObjectHideFlags: 0

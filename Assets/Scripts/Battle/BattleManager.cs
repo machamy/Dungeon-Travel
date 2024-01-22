@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -35,15 +36,45 @@ public class BattleManager : MonoBehaviour
 
     public BattleState bState { get; set; }
     public TurnState tState { get; set; }
+
+    public BattleState State;
+
+    public GameObject[] playerStation;
+
+    private GameObject[] playerGO = new GameObject[5];
+    public GameObject[] playerPrefab;
+
+    private HUDmanager[] playerHUD = new HUDmanager[6];
+
+    private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private void Awake()
     {
         bState = BattleState.INBATTLE; // 
         tState = TurnState.START;
         isProcessing = false;
-    }
-    private void Start()
-    {
 
+        SetupBattle();
+    }
+
+
+    private void SetupBattle()
+    {
+        for (int i = 0; i < playerPrefab.Length; i++) //플레이어 프리펩 불러오기
+        {
+            GameObject tempplayerGO = Instantiate(playerPrefab[i], playerStation[i].transform);  //플레이어 프리펩 생성
+            Unit tempplayerunit = tempplayerGO.GetComponent<Unit>();
+            int position = tempplayerunit.position;
+            Destroy(tempplayerGO);
+            Debug.Log("위치: " + position);
+
+
+            playerGO[i] = Instantiate(playerPrefab[i], playerStation[position].transform);
+            playerunit[i] = playerGO[i].GetComponent<Unit>();
+            playerunit[i].ConnectHUD(playerStation[position].GetComponent<HUDmanager>());  //유닛스크립트에 HUD 매니저 연결
+            Debug.Log("Player" + i + "세팅 완료");
+        }
+        // 플레이어, 적 프리펩 불러오기 등등(미구현)
+        StartCoroutine(BattleSequenceCor());
     }
 
     private void Update()
@@ -59,7 +90,7 @@ public class BattleManager : MonoBehaviour
                 if(!isProcessing)
                 {
                     isProcessing = true;
-                    SetupBattle();
+                    
                 }
             }
             else if (tState == TurnState.END) // 전투 마침 처리
@@ -76,16 +107,13 @@ public class BattleManager : MonoBehaviour
 
         }
     }
-    void SetupBattle()
-    {
-                            // 플레이어, 적 프리펩 불러오기 등등(미구현)
-        StartCoroutine(BattleSequenceCor());
-    }
+
     void TurnPriority() // 선공권 처리 함수
     {
         if(true) // 플레이어의 민첩이 높을때 // 임시코드
         {
             bState = BattleState.PLAYERTURN;
+
         }
         else // 적의 민첩이 높을때
         {
