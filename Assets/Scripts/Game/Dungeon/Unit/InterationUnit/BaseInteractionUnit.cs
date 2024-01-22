@@ -14,6 +14,7 @@ namespace Scripts.Game.Dungeon.Unit
         None = 0,
         Use = 1 << 0,
         Attack = 1 << 1,
+        Intersect = 1 << 2,
         
         All = 1 << 8 - 1
     }
@@ -24,7 +25,7 @@ namespace Scripts.Game.Dungeon.Unit
     /// <remarks>
     /// 현재 "공격F"과 "사용E"에 대해서만 적용되어있다.
     /// </remarks>
-    public class BaseInteractionUnit : MonoBehaviour
+    public abstract class BaseInteractionUnit : MonoBehaviour
     {
         /// <summary>
         /// 가능한 상호작용의 종류 Flag
@@ -36,7 +37,7 @@ namespace Scripts.Game.Dungeon.Unit
         /// 히든일 경우 포커스 될 시 표시하지 않는다
         /// </summary>
         public bool isHidden = false;
-        
+
         protected bool isFocused = false;
         protected Material outline;
 
@@ -80,6 +81,16 @@ namespace Scripts.Game.Dungeon.Unit
         public virtual void OnAttacked(PlayerUnit unit, float damage)
         {
             Debug.Log($"[BaseInteractionUnit::OnAttacked] {gameObject.name}");
+        }
+
+        /// <summary>
+        /// 겹쳤을때 실행된다
+        /// </summary>
+        /// <param name="unit">PlayerUnit 객체</param>
+        /// <returns>상호작용 여부</returns>
+        public virtual bool OnIntersect(PlayerUnit unit)
+        {
+            return false;
         }
 
         private Renderer renderer;

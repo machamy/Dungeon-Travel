@@ -63,9 +63,9 @@ namespace Scripts.Game.Dungeon.Unit
         {
             if (focusUnit is null)
                 return;
-            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
             if (!focusUnit.type.HasFlag(InteractionType.Use))
                 return;
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
             focusUnit.OnUsed(this);
         }
 
@@ -73,10 +73,18 @@ namespace Scripts.Game.Dungeon.Unit
         {
             if (focusUnit is null)
                 return;
-            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
             if (!focusUnit.type.HasFlag(InteractionType.Attack))
                 return;
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
             focusUnit.OnAttacked(this, damage: 1.0f);
+        }
+
+        void OnIntersect(BaseInteractionUnit iu)
+        {
+            if (!focusUnit.type.HasFlag(InteractionType.Intersect))
+                return;
+            Debug.Log($"[PlayerUnit::OnIntersect(BaseInteractionUnit)] Execute to {iu.name}");
+            
         }
 
         /// <summary>
@@ -108,6 +116,17 @@ namespace Scripts.Game.Dungeon.Unit
             //디버그용 그리기
             Debug.DrawRay(r.origin, r.direction * (interactionRange * 1), Color.green);
         }
+
+
+        private void OnTriggerStay(Collider other)
+        {
+            BaseInteractionUnit iu;
+            if (other.transform.CompareTag("Interaction") && other.transform.TryGetComponent(out iu))
+            {
+                iu.OnIntersect(this);
+            }
+        }
+
 
         private BaseInteractionUnit focusUnit;
 
