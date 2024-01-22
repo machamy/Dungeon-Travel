@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Scripts.Entity;
+using System.Collections;
 using UnityEngine;
 
 public enum BattleState { START, PLAYERTURN, ENEMYTURN, WIN, LOSE}  //전투상태 열거형
@@ -6,35 +7,39 @@ public enum BattleState { START, PLAYERTURN, ENEMYTURN, WIN, LOSE}  //전투상�
 public class BattleSystem : MonoBehaviour
 {   
     public BattleState State;
-    
-    public GameObject playerPrefab, enemyPrefab;
-    public GameObject playerHUD, enemyHUD;
-   
-    public Transform playerBattleStation, enemyBattleStation;
 
-    private HPSlider playerHP, enemyHP;
+    public GameObject[] playerStation;
 
-    public Unit playerUnit, enemyUnit;
+    public GameObject[] playerPrefab;
+
+    private HUDmanager[] playerHUD = new HUDmanager[6];
+ 
+    private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
 
     void Start()
     {
+
+        for (int i = 0; i < playerStation.Length; i++)
+        {
+            Debug.Log("시작");
+            playerHUD[i] = playerStation[i].GetComponent<HUDmanager>();
+            Debug.Log("HUD" + i + " 완료");
+        }
+
         State = BattleState.START;
         SetupBattle();
     }
 
     void SetupBattle()
     {
-        GameObject playerGO = Instantiate(playerPrefab, playerBattleStation); //플레이어 프리펩 생성
-        playerUnit = playerGO.GetComponent<Unit>();
-        playerHP = playerHUD.GetComponentInChildren<HPSlider>();
-        playerHP.maxHP = playerUnit.maxHP;
-        playerHP.UpdateHPbar(playerHP.maxHP, playerHP.maxHP);
-  
-        GameObject enemyGO = Instantiate(enemyPrefab, enemyBattleStation); //적 프리펩 생성
-        enemyUnit = enemyGO.GetComponent<Unit>();
-        enemyHP = enemyHUD.GetComponentInChildren<HPSlider>();
-        enemyHP.maxHP = enemyUnit.maxHP;
-        enemyHP.UpdateHPbar(enemyHP.maxHP, enemyHP.maxHP);
+        for(int i = 0; i< playerPrefab.Length; i++)
+        {
+            GameObject playerGO = Instantiate(playerPrefab[i], playerStation[i].transform); //플레이어 프리펩 생성
+            Unit playerunit = playerGO.GetComponent<Unit>();
+            playerHUD[i].Setup(playerunit);
+            Debug.Log("Player" + i + "세팅 완료" );
+        }
+        
 
         State = BattleState.PLAYERTURN; //플레이어 선공
         StartCoroutine(playerturn());
@@ -68,20 +73,12 @@ public class BattleSystem : MonoBehaviour
     void PlayerAttack()
     {
         Debug.Log("공격");
-
-        enemyHP.currentHP -= 10;
-        enemyHP.UpdateHPbar(enemyHP.currentHP ,playerHP.maxHP);
-
         State = BattleState.ENEMYTURN;
         EnemyAttack();
     }
     void EnemyAttack()
     {
         Debug.Log("적 공격");
-
-        playerHP.currentHP -= 10;
-        playerHP.UpdateHPbar(playerHP.currentHP, playerHP.maxHP);
-
         State = BattleState.PLAYERTURN;
         StartCoroutine(playerturn());
     }
