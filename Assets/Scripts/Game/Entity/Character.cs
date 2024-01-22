@@ -7,7 +7,9 @@ namespace Scripts.Entity
     /// <summary>
     /// 플레이어의 캐릭터  
     /// </summary>
+    /// <remarks>
     /// Enemy와 분리할 필요가 있나 싶음
+    /// </remarks>
     [Serializable]
     public class Character : Entity
     {
