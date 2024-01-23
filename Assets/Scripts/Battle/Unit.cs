@@ -8,7 +8,6 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public Stat stat;
-    public AdvancedStat advancedStat;
 
     public int position = -1;
 
@@ -59,7 +58,7 @@ public class Unit : MonoBehaviour
     
     public void MPShort()
     {
-        Debug.Log("¸¶³ª ºÎÁ·");
+        Debug.Log("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
     }
 
     public void Update()

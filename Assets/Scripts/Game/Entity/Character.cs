@@ -38,9 +38,9 @@ namespace Scripts.Entity
         /// </summary>
         public void init()
         {
-            rawBaseStat = (Stat)_class.defaultStat.Clone();
-            currentHP = UpdateMaxHP();
-            currentMP = UpdateMaxMP();
+            // rawBaseStat = (Stat)_class.defaultStat.Clone();
+            // currentHP = UpdateMaxHP();
+            // currentMP = UpdateMaxMP();
         }
 
 
@@ -51,7 +51,7 @@ namespace Scripts.Entity
         protected void OnLevelUpEvent(int lvDelta)
         {
             // 기존 스탯에 각 클래스의 성장 능력치를 더한다.
-            rawBaseStat += _class.growStat;
+            // rawBaseStat += _class.growStat;
         }
 
 

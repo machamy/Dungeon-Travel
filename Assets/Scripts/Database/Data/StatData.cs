@@ -1,13 +1,15 @@
 ﻿using System;
+using Script.Data;
+using Script.Global;
 
-namespace Scripts.Entity
+namespace Scripts.Data
 {
     
     /// <summary>
     /// 스탯
     /// </summary>
     [Serializable]
-    public class Stat : ICloneable
+    public class StatData :IDBdata, ICloneable
     {
         //1차 스탯
         /// <summary>
@@ -52,6 +54,11 @@ namespace Scripts.Entity
         /// 마법 보정치
         /// </summary>
         public float magWeight;
+        /// <summary>
+        /// 생명 보정치
+        /// </summary>
+        public float vitWeight;
+        
         //2차스탯
         /// <summary>
         /// 기본 근력
@@ -73,16 +80,12 @@ namespace Scripts.Entity
         /// 기본 운
         /// </summary>
         public float luk;
-        /// <summary>
-        /// 생명 보정치
-        /// </summary>
-        public float vitWeight;
-
+        
         
         
         public object Clone()
         {
-            Stat clone = new Stat();
+            StatData clone = new StatData();
             clone.hp = hp;
             clone.mp = mp;
             clone.atk = atk;
@@ -101,9 +104,9 @@ namespace Scripts.Entity
             return clone;
         }
 
-        public static Stat operator+(Stat origin, Stat other)
+        public static StatData operator+(StatData origin, StatData other)
         {
-            Stat result = (Stat)origin.Clone();
+            StatData result = (StatData)origin.Clone();
             result.hp += other.hp;
             result.mp += other.mp;
             result.atk += other.atk;

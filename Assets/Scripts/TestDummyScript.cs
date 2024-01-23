@@ -15,7 +15,9 @@ namespace Scripts
             var gm = Manager.GameManager.Instance;
             var sm = Manager.SoundManager.Instance;
 
-
+            var ex = new ExcelReader();
+            ex.Read();
+            
             StartCoroutine(SaveLoadTestCo());
         }
 

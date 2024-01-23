@@ -1,8 +1,11 @@
 
+using System;
 using System.Collections.Generic;
-
+using System.Data;
+using System.Linq;
 using JetBrains.Annotations;
-
+using Scripts.Data;
+using Scripts.Entity;
 using UnityEngine.Events;
 
 
@@ -24,50 +27,179 @@ public class DB
             return instance;
         }
     }
+
     public UnityEvent OnDBUpdateEvent = new UnityEvent();
-    
-    private Dictionary<string, string[]> data = new();
-    public Dictionary<string, string[]> Data => data;
-    
-    
-    
 
-    public void SetData(string key, string[] value)
-    {
-        data[key]= (value);
-    }
+    private Dictionary<ClassType, StatData[]> classStatData = new();
+    private Dictionary<ClassType, SkillData[]> classSkillData = new();
+    private Dictionary<string, EquipmentData> Equipments = new();
 
-    public void SetData(Dictionary<string, string[]> datadict)
-    {
-        foreach (var pair in datadict)
-        {
-            SetData(pair.Key,pair.Value);
-        }
-    }
-    public static bool Contains(string key)
-    {
-        return Instance.data.ContainsKey(key);
-    }
+    private string fileName = "Dungeon_Travel_stats.xlsx";
 
-    /// <summary>
-    /// key를 이용해 DB데이터(string[])를 가져옴. 없을경우 null반환
-    /// </summary>
-    /// <param name="key">가져올 데이터</param>
-    /// <returns>데이터, 없으면 null</returns>
-    [CanBeNull]
-    public static string[] GetRaw(string key)
+    private string DB_NAME_STAT = "STAT";
+    private string DB_NAME_SKILL = "SKL";
+    private string DB_NAME_EQUIPMENT = "EQUIPMENT";
+
+
+    public static StatData GetStatData(ClassType _class, int lv)
     {
-        if(Contains(key)) return Instance.data[key];
+        return Instance.classStatData[_class][lv];
+    }
+    public static SkillData[] GetSkillDataArr(ClassType _class)
+    {
+        return Instance.classSkillData[_class];
+    }
+    public static EquipmentData GetEquipmentData(string name)
+    {
+        EquipmentData data;
+        if (Instance.Equipments.TryGetValue(name, out data))
+            return data;
         return null;
     }
-
-    public static int GetSize(string key)
+    
+    
+    
+    /// <summary>
+    /// xlsx 에서 불어와 DB에 등록
+    /// </summary>
+    public void UpdateDB()
     {
-        return Instance.data[key].Length;
+        ExcelReader er = new ExcelReader(fileName);
+        foreach (var table in er.Read())
+        {
+            string[] header = Array.ConvertAll(table.Rows[0].ItemArray,
+                p => (p ?? String.Empty).ToString());
+            int colNum;
+            for (colNum = 0; colNum < header.Length; colNum++)
+                if (header[colNum] == "EOF")
+                    break;
+            string[] sheetName = table.TableName.Split("_");
+            
+            if(sheetName.Any((e)=> e.Equals(DB_NAME_STAT)))
+            {
+                classStatData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassStat(table, header, colNum));
+            }
+            else if(sheetName.Any((e)=> e.Equals(DB_NAME_SKILL)))
+            {
+                classSkillData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassSkill(table, header, colNum));
+            }
+            else if(sheetName.Any((e)=> e.Equals(DB_NAME_EQUIPMENT)))
+            {
+                var dict = ParseEquipment(table, header, colNum).ToDictionary((e=>e.name),e=>e);
+                Equipments = dict;
+            }
+        }
     }
     
-    public static string GetOne(string key, int idx = 0)
+    private enum StatDataType : int
     {
-        return Instance.data[key][idx];
+        lv = 0,
+        HP = 1,
+        MP = 2,
+        ATK = 3,
+        DEF = 4,
+        MDEF = 5,
+        적중률 = 6,
+        회피율 = 7,
+        크리율 = 8,
+        근력보정 = 9,
+        마법보정 = 10,
+        lv2 = 11,
+        STR = 12,
+        VIT = 13,
+        MAG = 14,
+        AGI = 15,
+        LUK = 16,
+        VIT보정 = 17
+    }
+
+
+    /// <summary>
+    /// 데이터 시트의 내용을 StatData배열로 받아온다.
+    /// </summary>
+    /// <param name="sheet"></param>
+    /// <param name="header"></param>
+    /// <param name="colNum"></param>
+    /// <returns>StatData배열</returns>
+    private StatData[] ParseClassStat(DataTable sheet, string[] header, int colNum)
+    {
+        StatData[] stats = new StatData[sheet.Rows.Count+1];
+        stats[0] = new StatData();
+        for (int i = 1 ; i <= sheet.Rows.Count; i++)
+        {
+            StatData stat = new StatData();
+            var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
+                p => float.Parse((p ?? "0").ToString()));
+            int lv = (int) row[0];
+            stats[lv] = stat;
+            
+            stat.hp = row[(int)StatDataType.HP];
+            stat.mp = row[(int)StatDataType.MP];
+            stat.atk = row[(int)StatDataType.ATK];
+            stat.def = row[(int)StatDataType.DEF];
+            stat.mdef = row[(int)StatDataType.MDEF];
+            
+            stat.accuracy = row[(int)StatDataType.적중률];
+            stat.dodge = row[(int)StatDataType.회피율];
+            stat.critical = row[(int)StatDataType.크리율];
+            stat.strWeight = row[(int)StatDataType.근력보정];
+            stat.magWeight = row[(int)StatDataType.마법보정];
+            
+            stat.str = row[(int)StatDataType.STR];
+            stat.vit = row[(int)StatDataType.VIT];
+            stat.mag = row[(int)StatDataType.MAG];
+            stat.agi = row[(int)StatDataType.AGI];
+            stat.luk = row[(int)StatDataType.LUK];
+            stat.vitWeight = row[(int)StatDataType.VIT보정];
+        }
+        return stats;
+    }
+    private enum SkillDataType : int
+    {
+        무기유형 = 0,
+        랭크 = 1,
+        유형 = 2,
+        이름 = 3,
+        데미지 = 4,
+        MP소모 = 5,
+    }
+    
+    /// <summary>
+    /// 데이터 시트의 내용을 스킬데이터[]로 받아온다.
+    /// </summary>
+    /// <param name="sheet"></param>
+    /// <param name="header"></param>
+    /// <param name="colNum"></param>
+    /// <returns></returns>
+    private SkillData[] ParseClassSkill(DataTable sheet, string[] header, int colNum)
+    {
+        SkillData[] skills = new SkillData[sheet.Rows.Count+1];
+        for (int i = 1; i <= sheet.Rows.Count; i++)
+        {
+            SkillData skill = new SkillData();
+            var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
+                p => (p ?? String.Empty).ToString());
+            skill.skillType = row[(int)SkillDataType.무기유형];
+            skill.rank = Convert.ToInt32(row[(int)SkillDataType.랭크]);
+            skill.atttackType = row[(int)SkillDataType.유형];
+            skill.name = row[(int)SkillDataType.이름];
+            skill.damage = Convert.ToSingle(row[(int)SkillDataType.데미지]);
+            skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모]);
+        }
+
+        return skills;
+    }
+    
+    /// <summary>
+    /// 데이터시트의 내용을 장비[]
+    /// </summary>
+    /// <param name="sheet"></param>
+    /// <param name="header"></param>
+    /// <param name="colNum"></param>
+    /// <returns></returns>
+    private EquipmentData[] ParseEquipment(DataTable sheet, string[] header, int colNum)
+    {
+        EquipmentData[] skills = new EquipmentData[sheet.Rows.Count+1];
+        return skills;
     }
 }
