@@ -11,7 +11,7 @@ namespace Scripts.DebugConsole
     {
         private CommandTreeNode headerNode = new CommandTreeNode(null,null,null);
 
-        public void Add(string path, DebugCommand command)
+        public void Add(string path, Command command)
         {
             CommandTreeNode parent;
             if (path == null)
@@ -60,7 +60,7 @@ namespace Scripts.DebugConsole
 
         
 
-        public DebugCommand getCommand(string fullPath, out string remainPath)
+        public Command getCommand(string fullPath, out string remainPath)
         {
             string[] pathArr = fullPath.Split(" ");
             CommandTreeNode current = headerNode;
@@ -116,10 +116,10 @@ namespace Scripts.DebugConsole
     {
         public CommandTreeNode parent;
         public Dictionary<string, CommandTreeNode> child = new Dictionary<string, CommandTreeNode>();
-        public DebugCommand command;
+        public Command command;
         public string name;
 
-        internal CommandTreeNode(CommandTreeNode parent, string name, DebugCommand command)
+        internal CommandTreeNode(CommandTreeNode parent, string name, Command command)
         {
             this.parent = parent;
             this.command = command;

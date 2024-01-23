@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Scripts.DebugConsole
 {
-    public class DebugCommand
+    public class Command
     {
         public string Name { get; private set; }
         public int ParamNum { get; private set; }
@@ -15,7 +15,7 @@ namespace Scripts.DebugConsole
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        public DebugCommand(string name, Action action, string descripton = "설명이 없습니다.")
+        public Command(string name, Action action, string descripton = "설명이 없습니다.")
         {
             Name = name;
             ParamNum = 0;
@@ -29,7 +29,7 @@ namespace Scripts.DebugConsole
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        public DebugCommand(string name, Action<string> action, string descripton = "설명이 없습니다.")
+        public Command(string name, Action<string> action, string descripton = "설명이 없습니다.")
         {
             Name = name;
             ParamNum = 1;
@@ -42,7 +42,7 @@ namespace Scripts.DebugConsole
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        public DebugCommand(string name, Action<string, string> action, string descripton = "설명이 없습니다.")
+        public Command(string name, Action<string, string> action, string descripton = "설명이 없습니다.")
         {
             Name = name;
             ParamNum = 2;
@@ -54,7 +54,7 @@ namespace Scripts.DebugConsole
         /// </summary>
         /// <param name="name"></param>
         /// <param name="action"></param>
-        public DebugCommand(string name, Action<string, string, string> action, string descripton = "설명이 없습니다.")
+        public Command(string name, Action<string, string, string> action, string descripton = "설명이 없습니다.")
         {
             Name = name;
             ParamNum = 3;
@@ -91,6 +91,6 @@ namespace Scripts.DebugConsole
             }
         }
 
-        public static DebugCommand errormsg = new DebugCommand("ERROR", ()=> Debug.Log("Not Valid Command"));
+        public static Command errormsg = new Command("ERROR", ()=> Debug.Log("Not Valid Command"));
     }
 }

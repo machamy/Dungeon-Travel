@@ -55,13 +55,13 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
-            CreateCommand("say",new DebugCommand("log",Debug.Log,"뒤의 모든 내용을 그대로 로깅한다."));
-            CreateCommand(null, new DebugCommand("commands",() => Debug.Log("All commands :\n"+tree.GetAllCommandName())));
-            CreateCommand(null, new DebugCommand("help",
+            CreateCommand("say",new Command("log",Debug.Log,"뒤의 모든 내용을 그대로 로깅한다."));
+            CreateCommand(null, new Command("commands",() => Debug.Log("All commands :\n"+tree.GetAllCommandName())));
+            CreateCommand(null, new Command("help",
                 delegate(string fullPath)
                 {
                     string tmp;
-                    DebugCommand command = tree.getCommand(fullPath, out tmp);
+                    Command command = tree.getCommand(fullPath, out tmp);
                     if(command == null)
                         Debug.Log($"No command {fullPath}");
                     else
@@ -84,7 +84,7 @@ namespace Scripts.DebugConsole
         /// </remarks>
         /// <param name="path">명령어의 경로</param>
         /// <param name="command">명령어</param>
-        public void CreateCommand(string path, DebugCommand command)
+        public void CreateCommand(string path, Command command)
         {
             tree.Add(path, command);
         }
