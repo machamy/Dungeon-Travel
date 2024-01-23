@@ -34,7 +34,7 @@ namespace Scripts.Manager
                         root = new GameObject { name = NAME };
                     }
 
-                    instance = root.AddComponent<GameManager>();
+                   instance = root.AddComponent<GameManager>();
                     instance.init();
                 }
 
