@@ -14,4 +14,8 @@ public class Define_Battle
         Bg_6F,
         Bg_7F
     }
+    public enum Enemy_Type
+    {
+        Rabbit,
+    }
 }
