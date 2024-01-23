@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.DebugConsole;
 using Scripts.Manager;
 
 using Unity.VisualScripting;
@@ -18,6 +19,7 @@ namespace Scripts.Manager
     {
         public const string NAME = "@Game";
         private static GameManager instance;
+
 
         public static GameManager Instance
         {
@@ -43,6 +45,7 @@ namespace Scripts.Manager
         public void init()
         {
             PartyManager = new PartyManager();
+            CommandManager cm = CommandManager.Instance; // commandManager 생성
             DontDestroyOnLoad(gameObject);
         }
 
@@ -57,6 +60,8 @@ namespace Scripts.Manager
                 init();
             }
         }
+
+
 
         public void LoadScene(string name)
         {

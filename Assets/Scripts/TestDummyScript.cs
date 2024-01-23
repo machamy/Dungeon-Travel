@@ -18,7 +18,7 @@ namespace Scripts
             var ex = new ExcelReader();
             ex.Read();
             
-            StartCoroutine(SaveLoadTestCo());
+            // StartCoroutine(SaveLoadTestCo());
         }
 
         // Update is called once per frame
