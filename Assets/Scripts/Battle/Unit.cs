@@ -30,7 +30,7 @@ public class Unit : MonoBehaviour
         HUD.SetupHUD(maxHP, maxMP);
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage)  //유닛 체력 계산
     {
         if(isdead) return;
 
@@ -46,7 +46,7 @@ public class Unit : MonoBehaviour
         HUD.UpdateHUD(currentHP, currentMP);
     }
 
-    public void ConsumeMP(float consume_amount)
+    public void ConsumeMP(float consume_amount)  //유닛 마나 계산
     {
         currentMP -= consume_amount;
         if (currentMP <= 0)
@@ -58,7 +58,7 @@ public class Unit : MonoBehaviour
     
     public void MPShort()
     {
-        Debug.Log("���� ����");
+        Debug.Log("마나 부족");
     }
 
     public void Update()

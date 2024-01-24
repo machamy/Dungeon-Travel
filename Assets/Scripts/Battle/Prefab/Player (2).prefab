@@ -135,12 +135,18 @@ MonoBehaviour:
     mp: 0
     atk: 10
     def: 50
-  advancedStat:
+    mdef: 0
+    accuracy: 0
+    dodge: 0
+    critical: 0
+    strWeight: 0
+    magWeight: 0
     str: 0
     vit: 0
     mag: 0
-    agi: 0
+    agi: 30
     luk: 0
+    vitWeight: 0
   position: 2
   unitName: Player
   className: 
@@ -149,3 +155,4 @@ MonoBehaviour:
   maxMP: 0
   currentHP: 100
   currentMP: 0
+  isdead: 0

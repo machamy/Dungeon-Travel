@@ -51,12 +51,18 @@ MonoBehaviour:
     mp: 0
     atk: 40
     def: 30
-  advancedStat:
+    mdef: 0
+    accuracy: 0
+    dodge: 0
+    critical: 0
+    strWeight: 0
+    magWeight: 0
     str: 0
     vit: 0
     mag: 0
-    agi: 0
+    agi: 50
     luk: 0
+    vitWeight: 0
   position: 0
   unitName: Player
   className: 
@@ -65,6 +71,7 @@ MonoBehaviour:
   maxMP: 0
   currentHP: 100
   currentMP: 0
+  isdead: 0
 --- !u!1 &1777465141582993294
 GameObject:
   m_ObjectHideFlags: 0
