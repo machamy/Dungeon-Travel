@@ -18,21 +18,21 @@ public class ActMenu : MonoBehaviour
 
     public void Attack()
     {
-        Debug.Log("°ø°İ");
+        Debug.Log("ê³µê²©");
     }
     
     public void Skill()
     {
-        Debug.Log("½ºÅ³");
+        Debug.Log("ìŠ¤í‚¬");
     }
 
     public void Item()
     {
-        Debug.Log("¾ÆÀÌÅÛ");
+        Debug.Log("ì•„ì´í…œ");
     }
 
     public void Pass()
     {
-        Debug.Log("ÆĞ½º");
+        Debug.Log("íŒ¨ìŠ¤");
     }
 }
