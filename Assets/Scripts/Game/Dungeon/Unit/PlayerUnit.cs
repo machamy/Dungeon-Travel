@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Scripts.Manager;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,17 +15,22 @@ namespace Scripts.Game.Dungeon.Unit
 
         Rigidbody rigid;
         Vector3 moveVec;
-
-
+        private GameManager gm;
+        PlayerInput pInput;
+        
         void Awake()
         {
             rigid = GetComponentInChildren<Rigidbody>();
-
+            gm = GameManager.Instance;
+            // pInput.GetComponent<PlayerInput>();
+            
         }
 
         private void Start()
         {
             focusUnit = null;
+            var pi = GetComponent<PlayerInput>();
+            gm.PlayerActionMap = pi.currentActionMap;
         }
 
         // Update is called once per frame

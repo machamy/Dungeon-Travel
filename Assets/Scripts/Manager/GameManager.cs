@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.DebugConsole;
+using Scripts.Game.Dungeon.Unit;
 using Scripts.Manager;
 
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Object = UnityEngine.Object;
@@ -20,7 +22,9 @@ namespace Scripts.Manager
         public const string NAME = "@Game";
         private static GameManager instance;
 
-
+        public InputActionMap PlayerActionMap;
+        public InputActionMap UIActionMap;
+        
         public static GameManager Instance
         {
             get
@@ -47,6 +51,8 @@ namespace Scripts.Manager
             PartyManager = new PartyManager();
             CommandManager cm = CommandManager.Instance; // commandManager 생성
             DontDestroyOnLoad(gameObject);
+            InputActionClass input = new InputActionClass();
+            PlayerActionMap = input.DungeonPlayer;
         }
 
         public PartyManager PartyManager;

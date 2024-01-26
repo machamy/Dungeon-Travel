@@ -1,7 +1,11 @@
 ﻿using System;
+using System.Collections;
+using Scripts.Manager;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 
 namespace Scripts.DebugConsole
@@ -16,7 +20,11 @@ namespace Scripts.DebugConsole
         private CommandTree tree;
         private GameObject commandFieldPrefab;
         public GameObject commandField;
+
+        private ScrollRect scrollrect;
         private TMP_InputField input;
+        private TextMeshProUGUI output;
+        
         
         public bool state = false;
         public bool debugConsoleOpt = true;
@@ -47,7 +55,7 @@ namespace Scripts.DebugConsole
         private void init()
         {
             tree = new CommandTree();
-            commandFieldPrefab = Resources.Load<GameObject>("Prefebs/ConsoleInput");
+            commandFieldPrefab = Resources.Load<GameObject>("Prefebs/Console");
             currentCanvas = FindObjectOfType<Canvas>();
             DontDestroyOnLoad(gameObject);
             initCommands();
@@ -55,18 +63,19 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
+            CreateCommand(null, new Command("log", (s) => Print(s),"뒤의 모든 내용을 그대로 출력한다"));
             CreateCommand("say",new Command("log",Debug.Log,"뒤의 모든 내용을 그대로 로깅한다."));
-            CreateCommand(null, new Command("commands",() => Debug.Log("All commands :\n"+tree.GetAllCommandName())));
+            CreateCommand(null, new Command("commands",() => Print("All commands :\n"+tree.GetAllCommandName())));
             CreateCommand(null, new Command("help",
                 delegate(string fullPath)
                 {
                     string tmp;
                     Command command = tree.getCommand(fullPath, out tmp);
                     if(command == null)
-                        Debug.Log($"No command {fullPath}");
+                        Print($"No command {fullPath}");
                     else
-                        Debug.Log($"{command.Name}({command.ParamNum})\n" +
-                                  $"{command.descripton}");
+                        Print($"{command.Name}({command.ParamNum})\n" +
+                              $"{command.descripton}");
                 }));
         }
         
@@ -122,34 +131,75 @@ namespace Scripts.DebugConsole
             if(!commandField)
             {
                 commandField = Instantiate(commandFieldPrefab, currentCanvas.gameObject.transform);
-                input = commandField.GetComponent<TMP_InputField>();
+                UpdateInputOutput();
                 input.onValueChanged.AddListener(OnValueChange);
-                input.onEndEdit.AddListener(OnEndEdit);
+                input.onSubmit.AddListener(OnSubmit);
+                input.onSelect.AddListener(OnSelct);
+                input.onDeselect.AddListener(OnDeselect);
             }
             else
             {
-                input = commandField.GetComponent<TMP_InputField>();
-                commandField.SetActive(true);
+                UpdateInputOutput();
             }
+            commandField.SetActive(true);
             input.Select();
+            OnSelct("");
         }
 
         public void Disable()
         {
+            GameManager.Instance.PlayerActionMap.Enable();
             state = false;
             commandField.SetActive(false);
             input.text = "";
         }
 
+        private void UpdateInputOutput()
+        {
+            input = commandField.GetComponentInChildren<TMP_InputField>();
+            scrollrect = commandField.transform.GetComponentInChildren<ScrollRect>();
+            output = scrollrect.transform.GetChild(0).GetChild(0)
+                .GetComponentInChildren<TextMeshProUGUI>();
+        }
 
         private void OnValueChange(string value)
         {
             
         }
-        private void OnEndEdit(string value)
+        
+        private void OnSubmit(string value)
         {
-            Execute(value);
+            if (value == "")
+                return;
+            bool result = Execute(value);
+            input.text = "";
+            if(!result)Print("<color=red>Not Valid Command! </color>");
+            input.Select();
             //Disable();
+        }
+
+        private void OnSelct(string value)
+        {
+            GameManager.Instance.PlayerActionMap.Disable();
+        }
+
+        private void OnDeselect(string value)
+        {
+            GameManager.Instance.PlayerActionMap.Enable();
+            new InputActionClass().Enable();
+        }
+
+
+        public void Print(params string[] str)
+        {
+            output.text += "\n" + string.Join("\n",str);
+            StartCoroutine(DoNextFrame(() => scrollrect.verticalNormalizedPosition = 0));
+        }
+
+        public IEnumerator DoNextFrame(Action a)
+        {
+            yield return null;
+            a.Invoke();
         }
     }
 }

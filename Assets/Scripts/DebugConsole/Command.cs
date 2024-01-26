@@ -9,6 +9,10 @@ namespace Scripts.DebugConsole
         public int ParamNum { get; private set; }
 
         public string descripton;
+        /// <summary>
+        /// 자동완성에 사용됨
+        /// </summary>
+        public string[][] arguments = new string[5][];
         
         /// <summary>
         /// 인자가 없는 명령어
@@ -89,6 +93,24 @@ namespace Scripts.DebugConsole
                     _action3.Invoke(para[0],para[1],para[2]);
                     break;
             }
+        }
+
+        public Command SetDescription(params string[] description)
+        {
+            this.descripton = string.Join("\n",descripton);
+            return this;
+        }
+
+        /// <summary>
+        /// 자동완성에 사용될 인자들을 지정한다.
+        /// </summary>
+        /// <param name="idx">인자의 순서</param>
+        /// <param name="arguments">인자의 이름</param>
+        /// <returns></returns>
+        public Command SetAugments(int idx = 0, params string[] arguments)
+        {
+            this.arguments[idx] = arguments;
+            return this;
         }
 
         public static Command errormsg = new Command("ERROR", ()=> Debug.Log("Not Valid Command"));
