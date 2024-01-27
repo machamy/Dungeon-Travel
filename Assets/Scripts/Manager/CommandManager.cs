@@ -190,7 +190,7 @@ namespace Scripts.DebugConsole
             input.text = "";
             if(!result)Print("<color=red>Not Valid Command! </color>");
             input.Select();
-            UpdateACtext("");
+            ClearACtext();
             //Disable();
         }
 
@@ -221,12 +221,17 @@ namespace Scripts.DebugConsole
             var Commands = GetCommandsStartWith(value);
             if (Commands.Count == 0)
             {
-                completeObj.SetActive(false);
-                completeText.text = "";
+                ClearACtext();
                 return;
             }
             completeObj.SetActive(true);
             completeText.text = string.Join("\n", Commands);
+        }
+
+        private void ClearACtext()
+        {
+            completeObj.SetActive(false);
+            completeText.text = "";
         }
 
         public List<string> GetCommandsStartWith(string start)
