@@ -49,6 +49,7 @@ public class BattleManager : MonoBehaviour
     private HUDmanager[] playerHUD = new HUDmanager[6];
 
     private Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
+    private GameObject[] enemyPrefab = new GameObject[4];
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private void Awake()
@@ -94,12 +95,11 @@ public class BattleManager : MonoBehaviour
     }
     private void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
-        GameObject enemy;
         try
         {
-            enemy = Instantiate(Resources.Load<GameObject>($"BattlePrefabs/EnemyPrefabs/{enemy_Type}"));
-            enemy.transform.position = EnemySpawnerPoints[SpawnCount].position;
-            enemy.transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
+            enemyPrefab[SpawnCount] = Instantiate(Resources.Load<GameObject>($"BattlePrefabs/EnemyPrefabs/{enemy_Type}"));
+            enemyPrefab[SpawnCount].transform.position = EnemySpawnerPoints[SpawnCount].position;
+            enemyPrefab[SpawnCount].transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
         }
         catch
         {

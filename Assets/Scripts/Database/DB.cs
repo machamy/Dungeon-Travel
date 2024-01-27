@@ -33,12 +33,14 @@ public class DB
     private Dictionary<ClassType, StatData[]> classStatData = new();
     private Dictionary<ClassType, SkillData[]> classSkillData = new();
     private Dictionary<string, EquipmentData> Equipments = new();
+    private Dictionary<string, EnemyStatData> enemyData = new();
 
     private string fileName = "Dungeon_Travel_stats.xlsx";
 
     private string DB_NAME_STAT = "STAT";
     private string DB_NAME_SKILL = "SKL";
     private string DB_NAME_EQUIPMENT = "EQUIPMENT";
+    private string DB_NAME_ENEMY = "ENMY";
 
 
     public static StatData GetStatData(ClassType _class, int lv)
@@ -56,7 +58,13 @@ public class DB
             return data;
         return null;
     }
-    
+    public static EnemyStatData GetEnemyData(string name)
+    {
+        EnemyStatData data;
+        if (Instance.enemyData.TryGetValue(name, out data))
+            return data;
+        return null;
+    }
     
     
     /// <summary>
@@ -74,19 +82,23 @@ public class DB
                 if (header[colNum] == "EOF")
                     break;
             string[] sheetName = table.TableName.Split("_");
-            
-            if(sheetName.Any((e)=> e.Equals(DB_NAME_STAT)))
+
+            if (sheetName.Any((e) => e.Equals(DB_NAME_STAT)))
             {
                 classStatData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassStat(table, header, colNum));
             }
-            else if(sheetName.Any((e)=> e.Equals(DB_NAME_SKILL)))
+            else if (sheetName.Any((e) => e.Equals(DB_NAME_SKILL)))
             {
                 classSkillData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassSkill(table, header, colNum));
             }
-            else if(sheetName.Any((e)=> e.Equals(DB_NAME_EQUIPMENT)))
+            else if (sheetName.Any((e) => e.Equals(DB_NAME_EQUIPMENT)))
             {
-                var dict = ParseEquipment(table, header, colNum).ToDictionary((e=>e.name),e=>e);
+                var dict = ParseEquipment(table, header, colNum).ToDictionary((e => e.name), e => e);
                 Equipments = dict;
+            }
+            else if (sheetName.Any((e) => e.Equals(DB_NAME_ENEMY)))
+            {
+                ParseEnemyData(table, header, colNum);
             }
         }
     }
@@ -201,5 +213,61 @@ public class DB
     {
         EquipmentData[] skills = new EquipmentData[sheet.Rows.Count+1];
         return skills;
+    }
+
+    private enum EnemyStatType
+    {
+        NAME,
+        HP,
+        ATK,
+        DEF,
+        MDEF,
+        적중률,
+        회피율,
+        크리율,
+        STRCRET,
+        MAGCRET,
+        STR,
+        VIT,
+        MAG,
+        AGI,
+        LUK,
+    }
+    private enum EnemyWeakType
+    {
+        SLASH = 15,
+        PENETRATE,
+        SMASH,
+        FLAME,
+        ICE,
+        WIND,
+        LIGHTNING,
+        SHINING,
+        DARK,
+    }
+    private void ParseEnemyData(DataTable sheet, string[] header, int colNum)
+    {
+        for(int i=1; i<sheet.Rows.Count; i++)
+        {
+            EnemyStatData enemyStat = new EnemyStatData();
+            var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
+                p => float.Parse((p ?? "0").ToString()));
+            enemyStat.name = Convert.ToString(row[(int)EnemyStatType.NAME]);
+            enemyStat.hp = row[(int)EnemyStatType.HP];
+            enemyStat.atk = row[(int)EnemyStatType.ATK];
+            enemyStat.def = row[(int)EnemyStatType.DEF];
+            enemyStat.mdef = row[(int)EnemyStatType.MDEF];
+            enemyStat.accuracy = row[(int)EnemyStatType.적중률];
+            enemyStat.dodge = row[(int)EnemyStatType.회피율];
+            enemyStat.critical = row[(int)EnemyStatType.크리율];
+            enemyStat.strcret = row[(int)EnemyStatType.STRCRET];
+            enemyStat.magcret = row[(int)EnemyStatType.MAGCRET];
+            enemyStat.str = row[(int)EnemyStatType.STR];
+            enemyStat.vit = row[(int)EnemyStatType.VIT];
+            enemyStat.mag = row[(int)EnemyStatType.MAG];
+            enemyStat.agi = row[(int)EnemyStatType.AGI];
+            enemyStat.luk = row[(int)EnemyStatType.LUK];
+            enemyData.Add(enemyStat.name, enemyStat);
+        }
     }
 }

@@ -4,18 +4,19 @@ using UnityEngine;
 
 public class Rabbit : Enemy_Base
 {
-    public override void EnemyAttack(AttackType type)
+    EnemyStatData enemyStatData = DB.GetEnemyData("토끼");
+    public override void EnemyAttack(AttackProperty property, AttackType type)
     {
         switch (type)
         {
             case AttackType.Damage:
-                Damaged();
+                Slash(enemyStatData.atk);
                 break;
             case AttackType.Penetrate:
                 Penetrate();
                 break;
             case AttackType.Slash:
-                Slash();
+                Smash();
                 break;
         }
     }
