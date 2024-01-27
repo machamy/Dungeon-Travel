@@ -38,7 +38,7 @@ namespace Scripts.Manager
                         root = new GameObject { name = NAME };
                     }
 
-                   instance = root.AddComponent<GameManager>();
+                    instance = root.AddComponent<GameManager>();
                     instance.init();
                 }
 
@@ -53,6 +53,8 @@ namespace Scripts.Manager
             DontDestroyOnLoad(gameObject);
             InputActionClass input = new InputActionClass();
             PlayerActionMap = input.DungeonPlayer;
+            
+           // DB.Instance.UpdateDB();
         }
 
         public PartyManager PartyManager;

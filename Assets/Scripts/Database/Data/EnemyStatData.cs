@@ -7,65 +7,65 @@ using UnityEngine;
 public class EnemyStatData
 {
     /// <summary>
-    /// Àû ÀÌ¸§
+    /// ì  ì´ë¦„
     /// </summary>
     public string name;
     /// <summary>
-    /// ±âº» Ã¼·Â
+    /// ê¸°ë³¸ ì²´ë ¥
     /// </summary>
     public float hp;
     /// <summary>
-    /// ±âº» °ø°İ·Â
+    /// ê¸°ë³¸ ê³µê²©ë ¥
     /// </summary>
     public float atk;
     /// <summary>
-    /// ±âº» ¹æ¾î·Â
+    /// ê¸°ë³¸ ë°©ì–´ë ¥
     /// </summary>
     public float def;
     /// <summary>
-    /// ±âº» ¼Ó¼º¹æ¾îÀ²
+    /// ê¸°ë³¸ ì†ì„±ë°©ì–´ìœ¨
     /// </summary>
     public float mdef;
 
     /// <summary>
-    /// ÀûÁß·ü
+    /// ì ì¤‘ë¥ 
     /// </summary>
     public float accuracy;
     /// <summary>
-    /// È¸ÇÇ·ü
+    /// íšŒí”¼ë¥ 
     /// </summary>
     public float dodge;
     /// <summary>
-    /// Å©¸®È®·ü
+    /// í¬ë¦¬í™•ë¥ 
     /// </summary>
     public float critical;
     /// <summary>
-    /// °ø°İÀúÇ×·Â
+    /// ê³µê²©ì €í•­ë ¥
     /// </summary>
     public float strcret;
     ///<summary>
-    ///¸¶¹ıÀúÇ×·Â
+    ///ë§ˆë²•ì €í•­ë ¥
     ///</summary>
     public float magcret;
 
     /// <summary>
-    /// ±âº» ±Ù·Â
+    /// ê¸°ë³¸ ê·¼ë ¥
     /// </summary>
     public float str;
     /// <summary>
-    /// ±âº» »ı¸í·Â
+    /// ê¸°ë³¸ ìƒëª…ë ¥
     /// </summary>
     public float vit;
     /// <summary>
-    /// ±âº» ¸¶¹ı·Â
+    /// ê¸°ë³¸ ë§ˆë²•ë ¥
     /// </summary>
     public float mag;
     /// <summary>
-    /// ±âº» ¹ÎÃ¸
+    /// ê¸°ë³¸ ë¯¼ì²©
     /// </summary>
     public float agi;
     /// <summary>
-    /// ±âº» ¿î
+    /// ê¸°ë³¸ ìš´
     /// </summary>
     public float luk;
 }
