@@ -11,6 +11,13 @@ namespace Scripts.DebugConsole
     {
         private CommandTreeNode headerNode = new CommandTreeNode(null,null,null);
 
+        public bool dirty = false;
+        
+        public CommandTree()
+        {
+            headerNode.path = "";
+        }
+        
         public void Add(string path, Command command)
         {
             CommandTreeNode parent;
@@ -18,7 +25,10 @@ namespace Scripts.DebugConsole
                 parent = headerNode;
             else
                 parent = FindNode(path, true);
+           
             CommandTreeNode commandNode = new CommandTreeNode(parent, command.Name,command);
+            commandNode.path = path;
+            
             Debug.Log($"Add command {command.Name} ({command.ParamNum})");
             parent.child.Add(command.Name, commandNode);
         }
@@ -84,10 +94,12 @@ namespace Scripts.DebugConsole
             return current.command;
         }
         
+        // TODO List<string> 반환으로
         public string GetAllCommandName()
         {
             StringBuilder sb = new StringBuilder();
             Stack<Tuple<int, CommandTreeNode>> q = new Stack<Tuple<int, CommandTreeNode>>();
+            
             
             foreach (var nxtNode in headerNode.getChilds())
             {
@@ -109,6 +121,29 @@ namespace Scripts.DebugConsole
                 }
             }
             return sb.ToString();
+        }
+
+        public List<string> GetAllPath()
+        {
+            Stack<CommandTreeNode> q = new Stack<CommandTreeNode>();
+            List<string> res = new List<string>();
+            
+            foreach (var node in headerNode.getChilds())
+            {
+                //res.Add(node.fullPath);
+                q.Push(node);
+            }
+            
+            while (q.Any())
+            {
+                var node = q.Pop();
+                res.Add(node.fullPath);
+                foreach (var nxtNode in node.getChilds())
+                {
+                    q.Push(nxtNode);
+                }
+            }
+            return res;
         }
     }
 

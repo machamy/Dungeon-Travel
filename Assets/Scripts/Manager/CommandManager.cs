@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Scripts.Manager;
 using TMPro;
 using UnityEngine;
@@ -24,6 +26,8 @@ namespace Scripts.DebugConsole
         private ScrollRect scrollrect;
         private TMP_InputField input;
         private TextMeshProUGUI output;
+        private GameObject completeObj;
+        private TextMeshProUGUI completeText;
         
         
         public bool state = false;
@@ -63,9 +67,9 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
-            CreateCommand(null, new Command("log", (s) => Print(s),"뒤의 모든 내용을 그대로 출력한다"));
+            CreateCommand(null, new Command("say", (s) => Print(s),"뒤의 모든 내용을 그대로 출력한다"));
             CreateCommand("say",new Command("log",Debug.Log,"뒤의 모든 내용을 그대로 로깅한다."));
-            CreateCommand(null, new Command("commands",() => Print("All commands :\n"+tree.GetAllCommandName())));
+            CreateCommand(null, new Command("cmds",() => Print("All commands :\n"+tree.GetAllCommandName())));
             CreateCommand(null, new Command("help",
                 delegate(string fullPath)
                 {
@@ -77,12 +81,13 @@ namespace Scripts.DebugConsole
                         Print($"{command.Name}({command.ParamNum})\n" +
                               $"{command.descripton}");
                 }));
+            CreateCommand("search",new Command("cmds",str => Print(string.Join("\n", GetCommandsStartWith(str))), "해당 문자로 시작하는 모든 명령어 출력"));
         }
         
         
 
         /// <summary>
-        /// 명령어을 만들어 등록한다.
+        /// 명령어를 만들어 등록한다.
         /// </summary>
         /// <remarks>
         /// <code>
@@ -96,6 +101,7 @@ namespace Scripts.DebugConsole
         public void CreateCommand(string path, Command command)
         {
             tree.Add(path, command);
+            tree.dirty = true; // 아직 처리 안함.
         }
 
         private void Update()
@@ -160,21 +166,31 @@ namespace Scripts.DebugConsole
             scrollrect = commandField.transform.GetComponentInChildren<ScrollRect>();
             output = scrollrect.transform.GetChild(0).GetChild(0)
                 .GetComponentInChildren<TextMeshProUGUI>();
+            completeObj = commandField.transform.GetChild(2).gameObject;
+            completeText = completeObj.transform.GetComponentInChildren<TextMeshProUGUI>();
         }
 
         private void OnValueChange(string value)
         {
-            
+            if (value == "")
+                return;
+            UpdateACtext(value);
         }
         
+
+        private List<string> commandLog = new List<string>();
         private void OnSubmit(string value)
         {
             if (value == "")
                 return;
+            Print($"<color=grey>{value}</color>");
+            commandLog.Add(value);
+            
             bool result = Execute(value);
             input.text = "";
             if(!result)Print("<color=red>Not Valid Command! </color>");
             input.Select();
+            UpdateACtext("");
             //Disable();
         }
 
@@ -190,16 +206,37 @@ namespace Scripts.DebugConsole
         }
 
 
+        /// <summary>
+        /// 콘솔 창에 그대로 출력한다. 인자가 여러개일 경우 개행된다.
+        /// </summary>
+        /// <param name="str"></param>
         public void Print(params string[] str)
         {
             output.text += "\n" + string.Join("\n",str);
-            StartCoroutine(DoNextFrame(() => scrollrect.verticalNormalizedPosition = 0));
+            StartCoroutine(GameManager.DoNextFrame(() => scrollrect.verticalNormalizedPosition = 0));
         }
 
-        public IEnumerator DoNextFrame(Action a)
+        private void UpdateACtext(string value)
         {
-            yield return null;
-            a.Invoke();
+            var Commands = GetCommandsStartWith(value);
+            if (Commands.Count == 0)
+            {
+                completeObj.SetActive(false);
+                completeText.text = "";
+                return;
+            }
+            completeObj.SetActive(true);
+            completeText.text = string.Join("\n", Commands);
+        }
+
+        public List<string> GetCommandsStartWith(string start)
+        {
+            Debug.Log(string.Join("\n",tree.GetAllPath()));
+            var query = from e in tree.GetAllPath()
+                where e.StartsWith(start)
+                orderby e.Count(c=> c == ' '), e
+                select e;
+            return query.ToList();
         }
     }
 }

@@ -73,6 +73,11 @@ namespace Scripts.Manager
         {
             SceneManager.LoadScene(name);
         }
-
+        
+        public static IEnumerator DoNextFrame(Action a)
+        {
+            yield return null;
+            a.Invoke();
+        }
     }
 }

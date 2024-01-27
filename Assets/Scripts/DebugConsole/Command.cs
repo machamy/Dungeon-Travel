@@ -10,7 +10,7 @@ namespace Scripts.DebugConsole
 
         public string descripton;
         /// <summary>
-        /// 자동완성에 사용됨
+        /// 미사용
         /// </summary>
         public string[][] arguments = new string[5][];
         
@@ -102,6 +102,7 @@ namespace Scripts.DebugConsole
         }
 
         /// <summary>
+        /// 미사용!!!
         /// 자동완성에 사용될 인자들을 지정한다.
         /// </summary>
         /// <param name="idx">인자의 순서</param>

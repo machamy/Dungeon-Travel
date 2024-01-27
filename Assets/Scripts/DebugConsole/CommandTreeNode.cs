@@ -9,7 +9,9 @@ namespace Scripts.DebugConsole
         public Dictionary<string, CommandTreeNode> child = new Dictionary<string, CommandTreeNode>();
         public Command command;
         public string name;
-
+        public string path;
+        public string fullPath => path is null ?  name : path + " " + name;
+        
         internal CommandTreeNode(CommandTreeNode parent, string name, Command command)
         {
             this.parent = parent;
