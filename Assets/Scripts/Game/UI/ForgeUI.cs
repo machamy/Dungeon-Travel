@@ -7,102 +7,77 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using Scripts.Manager;
 
 public class ForgeUI : MonoBehaviour
 {
-    public GameObject behaviourContainer, typeContainer, listContainer, infoContainer;
-    public GameObject askBuyPanel, askExitPanel, talkPanel, bottomPanel;
+    public GameObject behaviourContainer, tableContainer;
+    public GameObject askBuyContainer, askExitContainer, talkContainer;
+    public GameObject bottomPanel;
+    public GameObject behaviourFirstSelect, weaponFirstSelect, askBuyFirstSelect, askExitFirstSelect;
+
     public GameObject itemNameText;
     public GameObject buttonDescriptionText;
     public GameObject talkText;
-    public GameObject behaviourFirstSelect, weaponFirstSelect, askBuyFirstSelect, askExitFirstSelect;
-    public PlayerInput playerInput;
-    public GameObject[] typeButton = new GameObject[5];
-    private State currentState = State.selectBehaviour;
+    
+    public GameObject[] typeButton = new GameObject[3];
+
     int currentType = 0;
-    string selectButtonName;
 
     public InputActionReference mainNavigation, yNavigation;
+    private Color blue = new(0, 1, 1, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
-    public enum State
+
+    public void SelectBehaviour(GameObject disableUI)
     {
-        selectBehaviour,
-        selectWeapon,
-        askBuyItem,
-        Talk,
-        askExit
-    }
+        UIManager.Instance.SetUI(UIManager.State.SelectBehaviour,
+            behaviourContainer, disableUI, behaviourFirstSelect, mainNavigation);
 
-    public void SelectBehaviour()
-    {
-        currentState = State.selectBehaviour;
-
-        behaviourContainer.SetActive(true);
         bottomPanel.SetActive(true);
-        askExitPanel.SetActive(false);
-        typeContainer.SetActive(false);
-        listContainer.SetActive(false);
-        infoContainer.SetActive(false);
-        talkPanel.SetActive(false);
-
-        SelectButton(behaviourFirstSelect);
-        SelectNavigate(mainNavigation);
     }
 
-    public void SelectWeapon()
+    public void BuyWeapon(GameObject disableUI)
     {
-        currentState = State.selectWeapon;
-
-        typeContainer.SetActive(true);
-        listContainer.SetActive(true);
-        infoContainer.SetActive(true);
-        behaviourContainer.SetActive(false);
-        askBuyPanel.SetActive(false);
-
-        SelectButton(weaponFirstSelect);
-        SelectNavigate(yNavigation);
+        UIManager.Instance.SetUI(UIManager.State.BuyWeapon,
+            tableContainer, disableUI, weaponFirstSelect, yNavigation);
     }
 
     public void OnSwitchType(InputValue value)
     {
-        if (currentState != State.selectWeapon) return;
+        if (UIManager.Instance.currentState != UIManager.State.BuyWeapon) return;
 
         int intvalue = (int)value.Get<float>();
-        if (currentType + intvalue < 0 || currentType + intvalue > 4) return;
+        if (intvalue == 0) return;
+        if (currentType + intvalue < 0 || currentType + intvalue > 2) return;
 
-        SelectButton(weaponFirstSelect);
-        typeButton[currentType].GetComponent<Image>().color = new Color(0, 1, 1, 0.5f);
-        typeButton[currentType += intvalue].GetComponent<Image>().color = new Color(1, 1, 0, 0.5f);
-        
+        typeButton[currentType].GetComponent<Image>().color = blue;
+        typeButton[currentType += intvalue].GetComponent<Image>().color = yellow;
+
+        UIManager.Instance.SelectButton(weaponFirstSelect);
     }
 
     public void SwitchTypeByClick(int value)
     {
-        typeButton[currentType].GetComponent<Image>().color = new Color(0, 1, 1, 0.5f);
-        typeButton[currentType = value].GetComponent<Image>().color = new Color(1, 1, 0, 0.5f);
-        SelectButton(weaponFirstSelect);
+        typeButton[currentType].GetComponent<Image>().color = blue;
+        typeButton[currentType = value].GetComponent<Image>().color = yellow;
+
+        UIManager.Instance.SelectButton(weaponFirstSelect);
     }
 
     public void AskBuyItem(string itemName)
     {
-        currentState = State.askBuyItem;
-
-        askBuyPanel.SetActive(true);
+        UIManager.Instance.SetUI(UIManager.State.AskBuyItem,
+            askBuyContainer, null, askBuyFirstSelect, mainNavigation);
 
         itemNameText.GetComponent<TextMeshProUGUI>().text = "You wanna buy " + itemName + "?";
-        SelectButton(askBuyFirstSelect);
-        SelectNavigate(mainNavigation);
     }
 
     public void Talk()
     {
-        currentState = State.Talk;
+        UIManager.Instance.SetUI(UIManager.State.Talk,
+            talkContainer, behaviourContainer, null, null);
 
-        talkPanel.SetActive(true);
         bottomPanel.SetActive(false);
-        behaviourContainer.SetActive(false);
-
-        EventSystem.current.SetSelectedGameObject(null);
 
         int textNum = Random.Range(0, UIDB.talkList.Count);
         talkText.GetComponent<TextMeshProUGUI>().text = UIDB.talkList[textNum];
@@ -110,70 +85,53 @@ public class ForgeUI : MonoBehaviour
 
     public void AskExit()
     {
-        currentState = State.askExit;
-
-        askExitPanel.SetActive(true);
-
-        SelectButton(askExitFirstSelect);
-        SelectNavigate(mainNavigation);
+        UIManager.Instance.SetUI(UIManager.State.AskExit,
+            askExitContainer, null, askExitFirstSelect, mainNavigation);
     }
 
     public void OnCancel()
     {
-        switch (currentState)
+        switch (UIManager.Instance.currentState)
         {
-            case State.askBuyItem:
-                SelectWeapon(); break;
-            case State.selectWeapon:
-                SelectBehaviour(); break;
-            case State.selectBehaviour:
+            case UIManager.State.AskBuyItem:
+                BuyWeapon(askBuyContainer); break;
+
+            case UIManager.State.BuyWeapon:
+                SelectBehaviour(tableContainer); break;
+
+            case UIManager.State.Talk:
+                SelectBehaviour(talkContainer); break;
+
+            case UIManager.State.AskExit:
+                SelectBehaviour(askExitContainer); break;
+
+            case UIManager.State.SelectBehaviour:
                 AskExit(); break;
-            case State.Talk:
-                SelectBehaviour(); break;
-            case State.askExit:
-                SelectBehaviour(); break;
         }
     }
 
     public void OnSubmit()
     {
-        switch (currentState)
+        switch (UIManager.Instance.currentState)
         {
-            case State.Talk:
-                SelectBehaviour(); break;
+            case UIManager.State.Talk:
+                SelectBehaviour(talkContainer); break;
         }
     }
 
     public void OnClick()
     {
-        switch (currentState)
+        switch (UIManager.Instance.currentState)
         {
-            case State.Talk:
-                SelectBehaviour(); break;
+            case UIManager.State.Talk:
+                SelectBehaviour(talkContainer); break;
         }
     }
 
     private void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject != null)
-            selectButtonName = EventSystem.current.currentSelectedGameObject.name;
-
-        if (UIDB.buttonDescription.ContainsKey(selectButtonName))
-            buttonDescriptionText.GetComponent<TextMeshProUGUI>().text =
-                UIDB.buttonDescription[selectButtonName];
+        buttonDescriptionText.GetComponent<TextMeshProUGUI>().text =
+            UIManager.Instance.GetSelectedButtonDescription();
     }
-
-    public void SelectButton(GameObject button) =>
-        StartCoroutine(WaitForSelectButton(button));
-
-    private IEnumerator WaitForSelectButton(GameObject button)
-    {
-        yield return new WaitForSeconds(0.001f);
-        EventSystem.current.SetSelectedGameObject(button);
-    }
-
-    public void SelectNavigate(InputActionReference navigation) =>
-        ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = navigation;
-
 
 }

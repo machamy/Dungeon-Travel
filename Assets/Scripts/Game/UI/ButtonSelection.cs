@@ -16,7 +16,8 @@ public class ButtonSelection : MonoBehaviour, IPointerEnterHandler, IPointerExit
 
     public void OnPointerExit(PointerEventData eventData)
     {
-        EventSystem.current.SetSelectedGameObject(selectedButton);
+        if (gameObject == EventSystem.current.currentSelectedGameObject)
+            EventSystem.current.SetSelectedGameObject(selectedButton);
     }
 
 }

@@ -7,32 +7,28 @@ using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
+using Scripts.Manager;
 
 public class MainUI : MonoBehaviour
 {
     public GameObject placeFirstSelect;
-    public PlayerInput playerInput;
-    private State currentState = State.selectPlace;
-    string beforeSelectButtonName = "DungeonCircle", selectButtonName = "DungeonCircle";
+
+    string selectedButtonName = "DungeonCircle";
 
     public GameObject dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
-    public enum State
-    {
-        selectPlace
-    }
+    public InputActionReference mainNavigation, yNavigation;
 
     public void SelectPlace()
     {
-        currentState = State.selectPlace;
-
-        SelectButton(placeFirstSelect);
+        UIManager.Instance.SetUI(UIManager.State.SelectPlace,
+            null, null, placeFirstSelect, mainNavigation);
     }
 
     public void OnCancel()
     {
-        switch (currentState)
+        switch (UIManager.Instance.currentState)
         {
             
         }
@@ -40,7 +36,7 @@ public class MainUI : MonoBehaviour
 
     public void OnSubmit()
     {
-        switch (currentState)
+        switch (UIManager.Instance.currentState)
         {
             
         }
@@ -48,7 +44,7 @@ public class MainUI : MonoBehaviour
 
     public void OnClick()
     {
-        switch (currentState)
+        switch (UIManager.Instance.currentState)
         {
             
         }
@@ -56,47 +52,22 @@ public class MainUI : MonoBehaviour
 
     private void Update()
     {
-        if (EventSystem.current.currentSelectedGameObject != null)
-            selectButtonName = EventSystem.current.currentSelectedGameObject.name;
-
-        if (beforeSelectButtonName != selectButtonName)
+        selectedButtonName = UIManager.Instance.GetSelectedButtonName();
+        switch (selectedButtonName)
         {
-            if (selectButtonName == "Dungeon")
-            {
+            case "Dungeon":
                 dungeonCircle.GetComponent<Image>().color = yellow;
                 guildCircle.GetComponent<Image>().color = red;
-                shopCircle.GetComponent<Image>().color = red;
-            }
-            else if (selectButtonName == "Guild")
-            {
+                shopCircle.GetComponent<Image>().color = red; break;
+            case "Guild":
                 dungeonCircle.GetComponent<Image>().color = red;
                 guildCircle.GetComponent<Image>().color = yellow;
-                shopCircle.GetComponent<Image>().color = red;
-            }
-            else if (selectButtonName == "Shop")
-            {
+                shopCircle.GetComponent<Image>().color = red; break;
+            case "Shop":
                 dungeonCircle.GetComponent<Image>().color = red;
                 guildCircle.GetComponent<Image>().color = red;
-                shopCircle.GetComponent<Image>().color = yellow;
-            }
-
-            beforeSelectButtonName = selectButtonName;
+                shopCircle.GetComponent<Image>().color = yellow; break;
         }
-           
-        
     }
-
-    public void SelectButton(GameObject button) =>
-        StartCoroutine(WaitForSelectButton(button));
-
-    private IEnumerator WaitForSelectButton(GameObject button)
-    {
-        yield return new WaitForSeconds(0.001f);
-        EventSystem.current.SetSelectedGameObject(button);
-    }
-
-    public void SelectNavigate(InputActionReference navigation) =>
-        ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = navigation;
-
 
 }
