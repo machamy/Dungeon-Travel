@@ -5,20 +5,41 @@ using UnityEngine;
 using UnityEngine.AI;
 
 namespace Scripts.Game.Dungeon.Unit
-{   
+{
     /// <summary>
-    /// ¸ó½ºÅÍ °´Ã¼ ±¸Çö ½ºÅ©¸³Æ®.
-    /// ¾ÆÁ÷ »ó¼Ó »ç¿ë °èÈ¹ ¾øÀ½. Àû °´Ã¼ AI¸¦ Áö±İÀº ¸ó½ºÅÍ¿¡¸¸ »ç¿ëÇÒ °Í °°¾Æ¼­.
+    /// ì•„ë˜ enumì€ ê¸°íšì„œì— ë”°ë¼ ì„ì˜ë¡œ ì‘ëª…í•¨. DBì— ì–´ë–»ê²Œ ì €ì¥ë˜ëƒì— ë”°ë¼ ì´ë¦„ ë°”ê¾¸ë©´ ë ë“¯.
     /// </summary>
-    public class MonsterUnit : MonoBehaviour
+    public enum MonsterAttackType
+    {
+        firstStrike = 0,
+        noFirstStrike,
+        mustCombat
+    }
+
+    public enum MonsterMoveType
+    {
+        doPatrol = 0,
+        notPatrol
+    }
+
+
+
+    /// <summary>
+    /// ëª¬ìŠ¤í„° ê°ì²´ êµ¬í˜„ ìŠ¤í¬ë¦½íŠ¸.
+    /// ì•„ì§ ìƒì† ì‚¬ìš© ê³„íš ì—†ìŒ. ì  ê°ì²´ AIë¥¼ ì§€ê¸ˆì€ ëª¬ìŠ¤í„°ì—ë§Œ ì‚¬ìš©í•  ê²ƒ ê°™ì•„ì„œ.
+    /// </summary>
+    public class MonsterUnit : AIBaseEntity
     {
         [SerializeField] Transform target;
-        [SerializeField] float defaultSpeed; // ÆĞÆ®·Ñ ±â´ÉÀ» Ãß°¡ ½Ã »ç¿ëÇÒ °ª. ÇöÀç ±â´É ¾øÀ½.
+        [SerializeField] float defaultSpeed; // íŒ¨íŠ¸ë¡¤ ê¸°ëŠ¥ì„ ì¶”ê°€ ì‹œ ì‚¬ìš©í•  ê°’. í˜„ì¬ ê¸°ëŠ¥ ì—†ìŒ.
         [SerializeField] float chaseSpeed;
         [SerializeField] float detectRadius;
         [SerializeField] float moveRadius;
+        [SerializeField] MonsterAttackType attackType;
+        [SerializeField] MonsterMoveType moveType;
 
-        Vector3 initialPosition; // ¸ó½ºÅÍÀÇ ÃÊ±â À§Ä¡. moveRadiusÀÇ °áÁ¤ ±âÁØ.
+
+        Vector3 initialPosition; // ëª¬ìŠ¤í„°ì˜ ì´ˆê¸° ìœ„ì¹˜. moveRadiusì˜ ê²°ì • ê¸°ì¤€.
         bool canChase = false;
         bool isChasing = true;
         NavMeshAgent nav;
@@ -26,14 +47,39 @@ namespace Scripts.Game.Dungeon.Unit
 
         bool isAttacking = false;
 
+
+
+        public override void Setup(string name)
+        {
+            base.Setup(name);
+
+            gameObject.name = $"{ID}_{name}";
+
+            defaultSpeed = 0;
+            chaseSpeed = 0;
+            detectRadius = 0;
+            moveRadius = 0;
+
+            attackType = 0;
+            moveType = 0;
+
+            initialPosition = transform.localPosition;
+        }
+
+        public override void Updated()
+        {
+            Debug.Log("ëŒ€ê¸°ì¤‘~");
+        }
+
         private void Awake()
         {
             nav = GetComponent<NavMeshAgent>();
             rigid = GetComponent<Rigidbody>();
         }
+
         private void Start()
         {
-            initialPosition = transform.localPosition;
+            
         }
 
         // Update is called once per frame
@@ -51,11 +97,11 @@ namespace Scripts.Game.Dungeon.Unit
         }
 
         /// <summary>
-        /// ¸ó½ºÅÍ ±âÁØ Àû °¨ÁöÇÏ´Â ÇÔ¼ö.
+        /// ëª¬ìŠ¤í„° ê¸°ì¤€ ì  ê°ì§€í•˜ëŠ” í•¨ìˆ˜.
         /// </summary>
         void Detect()
         {
-            if(Vector3.Distance(transform.position, target.position) <= detectRadius)
+            if (Vector3.Distance(transform.position, target.position) <= detectRadius)
             {
                 canChase = true;
             }
@@ -63,59 +109,59 @@ namespace Scripts.Game.Dungeon.Unit
         }
 
         /// <summary>
-        /// ¸ó½ºÅÍ ±âÁØ Àû ÂÑ´Â ÇÔ¼ö
-        /// navMesh »ç¿ë. ¹Ù´ÚÀ» staticÀ¸·Î ¼³Á¤ÇØ¾ß ÇÔ.
+        /// ëª¬ìŠ¤í„° ê¸°ì¤€ ì  ì«“ëŠ” í•¨ìˆ˜
+        /// navMesh ì‚¬ìš©. ë°”ë‹¥ì„ staticìœ¼ë¡œ ì„¤ì •í•´ì•¼ í•¨.
         /// </summary>
         void Chase()
         {
             if (!canChase) return;
             else
             {
-                if (Vector3.Distance(transform.position, initialPosition) >= moveRadius )
+                if (Vector3.Distance(transform.position, initialPosition) >= moveRadius)
                 {
                     canChase = false;
 
                     ReturnToInit();
                     return;
                 }
-                else if(Vector3.Distance(target.position, initialPosition) < moveRadius)
+                else if (Vector3.Distance(target.position, initialPosition) < moveRadius)
                 {
                     isChasing = true;
                     nav.SetDestination(target.position);
                     nav.speed = chaseSpeed;
-                    Debug.Log("Ãß°İ Áß!");
-                }               
+                    Debug.Log("ì¶”ê²© ì¤‘!");
+                }
             }
         }
 
         void ReturnToInit()
         {
-            if(isChasing && !canChase)
+            if (isChasing && !canChase)
             {
                 nav.SetDestination(initialPosition);
                 nav.speed = defaultSpeed;
-                Debug.Log("³õÃÆ´Ù. µ¹¾Æ°¡¾ßÁö~");
+                Debug.Log("ë†“ì³¤ë‹¤. ëŒì•„ê°€ì•¼ì§€~");
             }
         }
 
         void Combat(bool isAttacking)
         {
-            if(isAttacking)
+            if (isAttacking)
             {
-                //¸ó½ºÅÍ°¡ ¼±Á¦°ø°İÇÑ »óÈ²À¸·Î ÀüÅõ ¾À Àü°³ ÇÊ¿ä
-                Debug.Log("¸ó½ºÅÍ ¼±Á¦°ø°İ!");
+                //ëª¬ìŠ¤í„°ê°€ ì„ ì œê³µê²©í•œ ìƒí™©ìœ¼ë¡œ ì „íˆ¬ ì”¬ ì „ê°œ í•„ìš”
+                Debug.Log("ëª¬ìŠ¤í„° ì„ ì œê³µê²©!");
             }
             else
             {
-                //ÇÃ·¹ÀÌ¾î°¡ ¼±Á¦°ø°İÇÑ »óÈ²À¸·Î ÀüÅõ ¾À Àü°³ ÇÊ¿ä
-                Debug.Log("ÇÃ·¹ÀÌ¾î ¼±Á¦°ø°İ!");
+                //í”Œë ˆì´ì–´ê°€ ì„ ì œê³µê²©í•œ ìƒí™©ìœ¼ë¡œ ì „íˆ¬ ì”¬ ì „ê°œ í•„ìš”
+                Debug.Log("í”Œë ˆì´ì–´ ì„ ì œê³µê²©!");
             }
 
-            //ÀüÅõ ¾ÀÀ¸·Î ³Ñ±â±â
+            //ì „íˆ¬ ì”¬ìœ¼ë¡œ ë„˜ê¸°ê¸°
         }
 
         /// <summary>
-        /// ÀüÅõ ÀÌÈÄ ¸ó½ºÅÍ Á×À» ¶§. ´ëÃ¼ °¡´ÉÇÒ °ÍÀ¸·Î º¸ÀÓ.
+        /// ì „íˆ¬ ì´í›„ ëª¬ìŠ¤í„° ì£½ì„ ë•Œ. ëŒ€ì²´ ê°€ëŠ¥í•  ê²ƒìœ¼ë¡œ ë³´ì„.
         /// </summary>
         void MonsterDie()
         {
@@ -124,7 +170,7 @@ namespace Scripts.Game.Dungeon.Unit
 
 
         /// <summary>
-        /// ¼±Á¦°ø°İ ¿©ºÎ ÆÇÁ¤. ÇÃ·¹ÀÌ¾î °ü·Ã Äİ¶óÀÌ´õ¸¸ °ËÃâÇØ¼­ ÀüÅõ ¾ÀÀ¸·Î ³Ñ±âµµ·Ï ÇÑ´Ù.
+        /// ì„ ì œê³µê²© ì—¬ë¶€ íŒì •. í”Œë ˆì´ì–´ ê´€ë ¨ ì½œë¼ì´ë”ë§Œ ê²€ì¶œí•´ì„œ ì „íˆ¬ ì”¬ìœ¼ë¡œ ë„˜ê¸°ë„ë¡ í•œë‹¤.
         /// </summary>
         private void OnCollisionEnter(Collision collision)
         {
@@ -139,16 +185,16 @@ namespace Scripts.Game.Dungeon.Unit
             else return;
 
             Combat(isAttacking);
-            
+
         }
 
         private void OnDrawGizmos()
         {
-            // ±âÁî¸ğ 1 - °ËÃâ ¹İ°æ (³ì»ö)
+            // ê¸°ì¦ˆëª¨ 1 - ê²€ì¶œ ë°˜ê²½ (ë…¹ìƒ‰)
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, detectRadius);
 
-            // ±âÁî¸ğ 2 - ÀÌµ¿ ¹İ°æ (»¡°£»ö)
+            // ê¸°ì¦ˆëª¨ 2 - ì´ë™ ë°˜ê²½ (ë¹¨ê°„ìƒ‰)
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(initialPosition, moveRadius);
         }
