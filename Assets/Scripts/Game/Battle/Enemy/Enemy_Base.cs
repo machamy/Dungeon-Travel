@@ -13,19 +13,35 @@ public class Enemy_Base : MonoBehaviour
         Physics, // 물리
         Magic, // 마법
     }
+    [Flags]
     public enum AttackType
     {
-        Damage, // 타격
-        Penetrate, // 관통
-        Slash, // 참격
-        Wide, // 광역
-        Flame, // 화염
-        Freezing, // 빙결
-        Wind, // 바람
-        Lightning, // 전격
-        Light, // 빛
-        Dark, // 어둠
+        None = 0,
+        Damage = 1 << 0, // 타격
+        Penetrate= 1 << 1, // 관통
+        Slash= 1 << 2, // 참격
+        Wide= 1 << 3, // 광역
+        Flame= 1 << 4, // 화염
+        Freezing= 1 << 5, // 빙결
+        Wind= 1 << 6, // 바람
+        Lightning = 1 << 7, // 전격
+        Light= 1 << 8, // 빛
+        Dark= 1 << 9, // 어둠
+        
+        All = int.MaxValue
     }
+    
+    [Flags]
+    public enum EnemyProperty
+    {
+        None = 0,
+        Hostile = 1 << 0, // 선공 여부
+        Move= 1 << 1, // 이동 or 고정
+        Rush= 1 << 2, // 난입
+        
+        All = int.MaxValue
+    }
+    
     public virtual void EnemyAttack(AttackProperty property, AttackType type) // 오버라이딩
     {
         switch (type) // 공격타입에 따른 분리 //오버라이딩으로 없앨 가능성 높음

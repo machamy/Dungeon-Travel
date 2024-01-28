@@ -68,4 +68,18 @@ public class EnemyStatData
     /// 기본 운
     /// </summary>
     public float luk;
+
+    /// <summary>
+    /// 적 행동 속성
+    /// </summary>
+    public Enemy_Base.EnemyProperty Property;
+    /// <summary>
+    /// 취약 방어 타입
+    /// </summary>
+    public Enemy_Base.AttackType WeakType;
+    /// <summary>
+    /// 방어 타입
+    /// </summary>
+    public Enemy_Base.AttackType ResistType;
+    
 }

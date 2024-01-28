@@ -142,7 +142,7 @@ public class DB
             StatData stat = new StatData();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => float.Parse((p ?? "0").ToString()));
-            int lv = (int) row[0];
+            int lv = (int) row[(int)StatDataType.lv];
             stats[lv] = stat;
             
             stat.hp = row[(int)StatDataType.HP];
