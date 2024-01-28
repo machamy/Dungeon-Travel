@@ -30,7 +30,7 @@ namespace Scripts.Manager
         {
             get
             {
-                // ¾øÀ»°æ¿ì »ı¼º
+                // ì—†ì„ê²½ìš° ìƒì„±
                 if (instance == null)
                 {
                     GameObject root = GameObject.Find(NAME);

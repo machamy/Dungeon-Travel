@@ -3,6 +3,7 @@
   <component name="Encoding" addBOMForNewFiles="with BOM under Windows, with no BOM otherwise">
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Battle/ActMenu.cs" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Assets/Scripts/Database/Data/EnemyStatData.cs" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Assets/Scripts/Game/Dungeon/Unit/MonsterUnit.cs" charset="x-windows-949" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Game/Dungeon/Unit/MonsterUnit.cs" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/Assets/Scripts/Manager/UIManager.cs" charset="UTF-8" />
   </component>
 </project>
