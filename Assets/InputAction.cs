@@ -786,7 +786,7 @@ namespace UnityEngine.InputSystem
             ""id"": ""b82f4357-f560-4a13-b8c3-6d784f4a545f"",
             ""actions"": [
                 {
-                    ""name"": ""Navigate"",
+                    ""name"": ""MainNavigate"",
                     ""type"": ""PassThrough"",
                     ""id"": ""c7c318c7-0238-4b71-bddd-22d4ac9a8456"",
                     ""expectedControlType"": ""Vector2"",
@@ -795,7 +795,7 @@ namespace UnityEngine.InputSystem
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""NavigateVertical"",
+                    ""name"": ""YNavigate"",
                     ""type"": ""PassThrough"",
                     ""id"": ""60356bb8-a2c9-4262-8f0c-9a00e0f36bef"",
                     ""expectedControlType"": ""Vector2"",
@@ -804,7 +804,7 @@ namespace UnityEngine.InputSystem
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""SwitchType"",
+                    ""name"": ""XNavigate"",
                     ""type"": ""PassThrough"",
                     ""id"": ""6d105d3e-a20e-4965-8208-a0b059601606"",
                     ""expectedControlType"": ""Axis"",
@@ -901,7 +901,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -912,7 +912,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -923,7 +923,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -934,7 +934,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -945,7 +945,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -956,7 +956,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -967,7 +967,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -978,7 +978,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -989,7 +989,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1000,7 +1000,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1011,7 +1011,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1022,7 +1022,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1033,7 +1033,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1044,7 +1044,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1055,7 +1055,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1066,7 +1066,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1077,7 +1077,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1088,7 +1088,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Navigate"",
+                    ""action"": ""MainNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1099,7 +1099,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1110,7 +1110,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1121,7 +1121,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1132,7 +1132,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1143,7 +1143,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1154,7 +1154,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1165,7 +1165,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1176,7 +1176,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""SwitchType"",
+                    ""action"": ""XNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1187,7 +1187,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1198,7 +1198,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1209,7 +1209,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1220,7 +1220,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1231,7 +1231,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1242,7 +1242,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1253,7 +1253,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1264,7 +1264,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1275,7 +1275,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1286,7 +1286,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": true,
                     ""isPartOfComposite"": false
                 },
@@ -1297,7 +1297,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1308,7 +1308,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1319,7 +1319,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 },
@@ -1330,7 +1330,7 @@ namespace UnityEngine.InputSystem
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""NavigateVertical"",
+                    ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
                 }
@@ -1388,9 +1388,9 @@ namespace UnityEngine.InputSystem
             m_UIDefault_TrackedDeviceOrientation = m_UIDefault.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
             // MainUI
             m_MainUI = asset.FindActionMap("MainUI", throwIfNotFound: true);
-            m_MainUI_Navigate = m_MainUI.FindAction("Navigate", throwIfNotFound: true);
-            m_MainUI_NavigateVertical = m_MainUI.FindAction("NavigateVertical", throwIfNotFound: true);
-            m_MainUI_SwitchType = m_MainUI.FindAction("SwitchType", throwIfNotFound: true);
+            m_MainUI_MainNavigate = m_MainUI.FindAction("MainNavigate", throwIfNotFound: true);
+            m_MainUI_YNavigate = m_MainUI.FindAction("YNavigate", throwIfNotFound: true);
+            m_MainUI_XNavigate = m_MainUI.FindAction("XNavigate", throwIfNotFound: true);
             m_MainUI_Submit = m_MainUI.FindAction("Submit", throwIfNotFound: true);
             m_MainUI_Cancel = m_MainUI.FindAction("Cancel", throwIfNotFound: true);
             m_MainUI_Point = m_MainUI.FindAction("Point", throwIfNotFound: true);
@@ -1652,9 +1652,9 @@ namespace UnityEngine.InputSystem
         // MainUI
         private readonly InputActionMap m_MainUI;
         private List<IMainUIActions> m_MainUIActionsCallbackInterfaces = new List<IMainUIActions>();
-        private readonly InputAction m_MainUI_Navigate;
-        private readonly InputAction m_MainUI_NavigateVertical;
-        private readonly InputAction m_MainUI_SwitchType;
+        private readonly InputAction m_MainUI_MainNavigate;
+        private readonly InputAction m_MainUI_YNavigate;
+        private readonly InputAction m_MainUI_XNavigate;
         private readonly InputAction m_MainUI_Submit;
         private readonly InputAction m_MainUI_Cancel;
         private readonly InputAction m_MainUI_Point;
@@ -1663,9 +1663,9 @@ namespace UnityEngine.InputSystem
         {
             private @InputActionClass m_Wrapper;
             public MainUIActions(@InputActionClass wrapper) { m_Wrapper = wrapper; }
-            public InputAction @Navigate => m_Wrapper.m_MainUI_Navigate;
-            public InputAction @NavigateVertical => m_Wrapper.m_MainUI_NavigateVertical;
-            public InputAction @SwitchType => m_Wrapper.m_MainUI_SwitchType;
+            public InputAction @MainNavigate => m_Wrapper.m_MainUI_MainNavigate;
+            public InputAction @YNavigate => m_Wrapper.m_MainUI_YNavigate;
+            public InputAction @XNavigate => m_Wrapper.m_MainUI_XNavigate;
             public InputAction @Submit => m_Wrapper.m_MainUI_Submit;
             public InputAction @Cancel => m_Wrapper.m_MainUI_Cancel;
             public InputAction @Point => m_Wrapper.m_MainUI_Point;
@@ -1679,15 +1679,15 @@ namespace UnityEngine.InputSystem
             {
                 if (instance == null || m_Wrapper.m_MainUIActionsCallbackInterfaces.Contains(instance)) return;
                 m_Wrapper.m_MainUIActionsCallbackInterfaces.Add(instance);
-                @Navigate.started += instance.OnNavigate;
-                @Navigate.performed += instance.OnNavigate;
-                @Navigate.canceled += instance.OnNavigate;
-                @NavigateVertical.started += instance.OnNavigateVertical;
-                @NavigateVertical.performed += instance.OnNavigateVertical;
-                @NavigateVertical.canceled += instance.OnNavigateVertical;
-                @SwitchType.started += instance.OnSwitchType;
-                @SwitchType.performed += instance.OnSwitchType;
-                @SwitchType.canceled += instance.OnSwitchType;
+                @MainNavigate.started += instance.OnMainNavigate;
+                @MainNavigate.performed += instance.OnMainNavigate;
+                @MainNavigate.canceled += instance.OnMainNavigate;
+                @YNavigate.started += instance.OnYNavigate;
+                @YNavigate.performed += instance.OnYNavigate;
+                @YNavigate.canceled += instance.OnYNavigate;
+                @XNavigate.started += instance.OnXNavigate;
+                @XNavigate.performed += instance.OnXNavigate;
+                @XNavigate.canceled += instance.OnXNavigate;
                 @Submit.started += instance.OnSubmit;
                 @Submit.performed += instance.OnSubmit;
                 @Submit.canceled += instance.OnSubmit;
@@ -1704,15 +1704,15 @@ namespace UnityEngine.InputSystem
 
             private void UnregisterCallbacks(IMainUIActions instance)
             {
-                @Navigate.started -= instance.OnNavigate;
-                @Navigate.performed -= instance.OnNavigate;
-                @Navigate.canceled -= instance.OnNavigate;
-                @NavigateVertical.started -= instance.OnNavigateVertical;
-                @NavigateVertical.performed -= instance.OnNavigateVertical;
-                @NavigateVertical.canceled -= instance.OnNavigateVertical;
-                @SwitchType.started -= instance.OnSwitchType;
-                @SwitchType.performed -= instance.OnSwitchType;
-                @SwitchType.canceled -= instance.OnSwitchType;
+                @MainNavigate.started -= instance.OnMainNavigate;
+                @MainNavigate.performed -= instance.OnMainNavigate;
+                @MainNavigate.canceled -= instance.OnMainNavigate;
+                @YNavigate.started -= instance.OnYNavigate;
+                @YNavigate.performed -= instance.OnYNavigate;
+                @YNavigate.canceled -= instance.OnYNavigate;
+                @XNavigate.started -= instance.OnXNavigate;
+                @XNavigate.performed -= instance.OnXNavigate;
+                @XNavigate.canceled -= instance.OnXNavigate;
                 @Submit.started -= instance.OnSubmit;
                 @Submit.performed -= instance.OnSubmit;
                 @Submit.canceled -= instance.OnSubmit;
@@ -1783,9 +1783,9 @@ namespace UnityEngine.InputSystem
         }
         public interface IMainUIActions
         {
-            void OnNavigate(InputAction.CallbackContext context);
-            void OnNavigateVertical(InputAction.CallbackContext context);
-            void OnSwitchType(InputAction.CallbackContext context);
+            void OnMainNavigate(InputAction.CallbackContext context);
+            void OnYNavigate(InputAction.CallbackContext context);
+            void OnXNavigate(InputAction.CallbackContext context);
             void OnSubmit(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);

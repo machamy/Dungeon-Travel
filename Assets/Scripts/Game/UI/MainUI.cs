@@ -18,12 +18,10 @@ public class MainUI : MonoBehaviour
     public GameObject dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
-    public InputActionReference mainNavigation, yNavigation;
-
     public void SelectPlace()
     {
         UIManager.Instance.SetUI(UIManager.State.SelectPlace,
-            null, null, placeFirstSelect, mainNavigation);
+            null, null, placeFirstSelect);
     }
 
     public void OnCancel()

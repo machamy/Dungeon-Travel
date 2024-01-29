@@ -6,7 +6,9 @@ using UnityEngine.InputSystem.UI;
 using UnityEngine.InputSystem;
 using Scripts.Manager;
 using Scripts.DebugConsole;
-
+using JetBrains.Annotations;
+using UnityEngine.UI;
+using UnityEditor;
 
 namespace Scripts.Manager
 {
@@ -24,6 +26,8 @@ namespace Scripts.Manager
             AskExit,
             SelectPlace
         }
+
+        public InputAction mainNavigation, yNavigation;
 
         private static UIManager instance;
         public static UIManager Instance
@@ -50,16 +54,20 @@ namespace Scripts.Manager
         public void init()
         {
             DontDestroyOnLoad(gameObject);
+            InputActionClass input = new InputActionClass();
+            mainNavigation = input.MainUI.MainNavigate;
+            yNavigation = input.MainUI.YNavigate;
         }
 
 
-        public void SetUI(State state, GameObject enableUI, GameObject disableUI, GameObject firstSelectButton, InputActionReference navigation)
+        public void SetUI(State state, GameObject enableUI, GameObject disableUI,
+            GameObject firstSelectButton, bool isYNavigaion = false)
         {
             currentState = state;
             enableUI?.SetActive(true);
             disableUI?.SetActive(false);
             SelectButton(firstSelectButton);
-            SelectNavigate(navigation);
+            SelectNavigate(isYNavigaion);
         }
 
         public void SelectButton(GameObject button) =>
@@ -71,8 +79,9 @@ namespace Scripts.Manager
             EventSystem.current.SetSelectedGameObject(button);
         }
 
-        public void SelectNavigate(InputActionReference navigation) =>
-            ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move = navigation;
+        public void SelectNavigate(bool isYNavigation) =>
+            ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move =
+            InputActionReference.Create(isYNavigation ? yNavigation : mainNavigation);
 
         public string GetSelectedButtonName()
         {

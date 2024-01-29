@@ -24,14 +24,14 @@ public class ForgeUI : MonoBehaviour
 
     int currentType = 0;
 
-    public InputActionReference mainNavigation, yNavigation;
+    
     private Color blue = new(0, 1, 1, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
 
     public void SelectBehaviour(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIManager.State.SelectBehaviour,
-            behaviourContainer, disableUI, behaviourFirstSelect, mainNavigation);
+            behaviourContainer, disableUI, behaviourFirstSelect);
 
         bottomPanel.SetActive(true);
     }
@@ -39,10 +39,10 @@ public class ForgeUI : MonoBehaviour
     public void BuyWeapon(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIManager.State.BuyWeapon,
-            tableContainer, disableUI, weaponFirstSelect, yNavigation);
+            tableContainer, disableUI, weaponFirstSelect, true);
     }
 
-    public void OnSwitchType(InputValue value)
+    public void OnXNavigate(InputValue value)
     {
         if (UIManager.Instance.currentState != UIManager.State.BuyWeapon) return;
 
@@ -50,13 +50,10 @@ public class ForgeUI : MonoBehaviour
         if (intvalue == 0) return;
         if (currentType + intvalue < 0 || currentType + intvalue > 2) return;
 
-        typeButton[currentType].GetComponent<Image>().color = blue;
-        typeButton[currentType += intvalue].GetComponent<Image>().color = yellow;
-
-        UIManager.Instance.SelectButton(weaponFirstSelect);
+        SwitchType(currentType + intvalue);
     }
 
-    public void SwitchTypeByClick(int value)
+    public void SwitchType(int value)
     {
         typeButton[currentType].GetComponent<Image>().color = blue;
         typeButton[currentType = value].GetComponent<Image>().color = yellow;
@@ -67,7 +64,7 @@ public class ForgeUI : MonoBehaviour
     public void AskBuyItem(string itemName)
     {
         UIManager.Instance.SetUI(UIManager.State.AskBuyItem,
-            askBuyContainer, null, askBuyFirstSelect, mainNavigation);
+            askBuyContainer, null, askBuyFirstSelect);
 
         itemNameText.GetComponent<TextMeshProUGUI>().text = "You wanna buy " + itemName + "?";
     }
@@ -75,7 +72,7 @@ public class ForgeUI : MonoBehaviour
     public void Talk()
     {
         UIManager.Instance.SetUI(UIManager.State.Talk,
-            talkContainer, behaviourContainer, null, null);
+            talkContainer, behaviourContainer, null, true);
 
         bottomPanel.SetActive(false);
 
@@ -86,7 +83,7 @@ public class ForgeUI : MonoBehaviour
     public void AskExit()
     {
         UIManager.Instance.SetUI(UIManager.State.AskExit,
-            askExitContainer, null, askExitFirstSelect, mainNavigation);
+            askExitContainer, null, askExitFirstSelect);
     }
 
     public void OnCancel()

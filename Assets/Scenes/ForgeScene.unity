@@ -1325,7 +1325,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433298701}
         m_TargetAssemblyTypeName: ForgeUI, Assembly-CSharp
-        m_MethodName: SwitchTypeByClick
+        m_MethodName: SwitchType
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1546,7 +1546,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433298701}
         m_TargetAssemblyTypeName: ForgeUI, Assembly-CSharp
-        m_MethodName: SwitchTypeByClick
+        m_MethodName: SwitchType
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2593,11 +2593,11 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1129285222}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -30, y: 0}
+  m_AnchorMin: {x: 1, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: -20, y: 0}
   m_SizeDelta: {x: 500, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &681452957
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3900,7 +3900,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1433298701}
         m_TargetAssemblyTypeName: ForgeUI, Assembly-CSharp
-        m_MethodName: SwitchTypeByClick
+        m_MethodName: SwitchType
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6471,8 +6471,6 @@ MonoBehaviour:
   - {fileID: 369777779}
   - {fileID: 953788310}
   - {fileID: 308617398}
-  mainNavigation: {fileID: 7793998996741580927, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
-  yNavigation: {fileID: -143819568326392140, guid: c568b05e1d0983c45b3bd454bfc88ad4, type: 3}
 --- !u!114 &1433298702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6486,6 +6484,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentState: 0
+  mainNavigation:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 28fce68f-a288-4ce6-b9f4-e9aee5e87e50
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
+  yNavigation:
+    m_Name: 
+    m_Type: 0
+    m_ExpectedControlType: 
+    m_Id: 33a15490-c9cd-4df1-91c1-b2e57c5c2c09
+    m_Processors: 
+    m_Interactions: 
+    m_SingletonActionBindings: []
+    m_Flags: 0
 --- !u!1 &1464069228
 GameObject:
   m_ObjectHideFlags: 0

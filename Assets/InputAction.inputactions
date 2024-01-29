@@ -762,7 +762,7 @@
             "id": "b82f4357-f560-4a13-b8c3-6d784f4a545f",
             "actions": [
                 {
-                    "name": "Navigate",
+                    "name": "MainNavigate",
                     "type": "PassThrough",
                     "id": "c7c318c7-0238-4b71-bddd-22d4ac9a8456",
                     "expectedControlType": "Vector2",
@@ -771,7 +771,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "NavigateVertical",
+                    "name": "YNavigate",
                     "type": "PassThrough",
                     "id": "60356bb8-a2c9-4262-8f0c-9a00e0f36bef",
                     "expectedControlType": "Vector2",
@@ -780,7 +780,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "SwitchType",
+                    "name": "XNavigate",
                     "type": "PassThrough",
                     "id": "6d105d3e-a20e-4965-8208-a0b059601606",
                     "expectedControlType": "Axis",
@@ -877,7 +877,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -888,7 +888,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -899,7 +899,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -910,7 +910,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -921,7 +921,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -932,7 +932,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -943,7 +943,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -954,7 +954,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -965,7 +965,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -976,7 +976,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -987,7 +987,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -998,7 +998,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1009,7 +1009,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1020,7 +1020,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1031,7 +1031,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1042,7 +1042,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1053,7 +1053,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1064,7 +1064,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Navigate",
+                    "action": "MainNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1075,7 +1075,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1086,7 +1086,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1097,7 +1097,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1108,7 +1108,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1119,7 +1119,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1130,7 +1130,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1141,7 +1141,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1152,7 +1152,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "SwitchType",
+                    "action": "XNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1163,7 +1163,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1174,7 +1174,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1185,7 +1185,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1196,7 +1196,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1207,7 +1207,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1218,7 +1218,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1229,7 +1229,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1240,7 +1240,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1251,7 +1251,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1262,7 +1262,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": true,
                     "isPartOfComposite": false
                 },
@@ -1273,7 +1273,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1284,7 +1284,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1295,7 +1295,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 },
@@ -1306,7 +1306,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "NavigateVertical",
+                    "action": "YNavigate",
                     "isComposite": false,
                     "isPartOfComposite": true
                 }
