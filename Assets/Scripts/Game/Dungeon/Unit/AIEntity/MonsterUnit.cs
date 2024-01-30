@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem.HID;
+using UnityEngine.UIElements;
 
 namespace Scripts.Game.Dungeon.Unit
 {
@@ -54,6 +56,7 @@ namespace Scripts.Game.Dungeon.Unit
         bool isAttacking = false;
         bool isFleeing = false;
         bool isDead = false;
+        bool isPatroling = false;
         NavMeshAgent nav;
         Rigidbody rigid;
 
@@ -61,7 +64,7 @@ namespace Scripts.Game.Dungeon.Unit
         private StateMachine<MonsterUnit> stateMachine;
 
         #region PROPERTIES
-        public Transform Target{ get => target; }
+        public Transform Target{ set => target = value; get => target; }
         public NavMeshAgent Nav { get { return nav; } }
         public bool CanChaseOrFlee { set => canChase = value; get => canChase; } 
         public float DetectRadius { set => detectRadius = value; get => detectRadius; }
@@ -92,12 +95,17 @@ namespace Scripts.Game.Dungeon.Unit
 
             gameObject.name = $"{ID}_{name}";
 
-            defaultSpeed = 0;
-            chaseSpeed = 0;
-            detectRadius = 0;
-            moveRadius = 0;
+            defaultSpeed = 6;
+            chaseSpeed = 4;
+            detectRadius = 5;
+            moveRadius = 10;
+            attackRange = 1;
+
+            attackType = MonsterAttackType.firstStrike;
+            moveType = MonsterMoveType.doPatrol;
 
             initialPosition = transform.localPosition;
+            target = GameObject.FindWithTag("Player").transform;
          
             states = new State<MonsterUnit>[6];
             states[(int)MonsterStates.Idle] = new MonsterOwnedStates.Idle();
@@ -116,7 +124,7 @@ namespace Scripts.Game.Dungeon.Unit
 
         public override void Updated()
         {
-            Debug.Log("대기중~");
+            //Debug.Log("대기중~");
             stateMachine.Execute();
         }
 
@@ -128,12 +136,12 @@ namespace Scripts.Game.Dungeon.Unit
         
 
         // Update is called once per frame
-        void Update()
+        /*void Update()
         {
             Detect();
 
             Chase();
-        }
+        }*/
 
         private void FixedUpdate()
         {
@@ -141,97 +149,34 @@ namespace Scripts.Game.Dungeon.Unit
             rigid.angularVelocity = Vector3.zero;
         }
 
+        
         /// <summary>
-        /// 몬스터 기준 적 감지하는 함수.
+        /// Idle 상태일 때 몬스터의 정찰 행동. 원형범위 내 랜덤히 움직임.
         /// </summary>
-        void Detect()
+        public void Patrol()
         {
-            if (Vector3.Distance(transform.position, target.position) <= detectRadius)
+            if (!isPatroling)
             {
-                canChase = true;
-            }
-
-        }
-
-        /// <summary>
-        /// 몬스터 기준 적 쫓는 함수
-        /// navMesh 사용. 바닥을 static으로 설정해야 함.
-        /// </summary>
-        void Chase()
-        {
-            if (!canChase) return;
-            else
-            {
-                if (Vector3.Distance(transform.position, initialPosition) >= moveRadius)
+                float patrolRadius = moveRadius - detectRadius;
+                float patrolAngle = Random.Range(0, 360f);
+                Vector3 nextPatrolPoint = initialPosition + new Vector3(patrolRadius * Mathf.Cos(Mathf.Deg2Rad * patrolAngle), 0,
+                                                                        patrolRadius * Mathf.Sin(Mathf.Deg2Rad * patrolAngle));
+                // 이동 가능한지 검사
+                if(NavMesh.SamplePosition(nextPatrolPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
                 {
-                    canChase = false;
-
-                    ReturnToInit();
-                    return;
-                }
-                else if (Vector3.Distance(target.position, initialPosition) < moveRadius)
-                {
-                    isChasing = true;
-                    nav.SetDestination(target.position);
-                    nav.speed = chaseSpeed;
-                    Debug.Log("추격 중!");
-                }
-            }
-        }
-
-        void ReturnToInit()
-        {
-            if (isChasing && !canChase)
-            {
-                nav.SetDestination(initialPosition);
-                nav.speed = defaultSpeed;
-                Debug.Log("놓쳤다. 돌아가야지~");
-            }
-        }
-
-        void Combat(bool isAttacking)
-        {
-            if (isAttacking)
-            {
-                //몬스터가 선제공격한 상황으로 전투 씬 전개 필요
-                Debug.Log("몬스터 선제공격!");
+                    nav.SetDestination(nextPatrolPoint);
+                    isPatroling = true;
+                }                            
             }
             else
             {
-                //플레이어가 선제공격한 상황으로 전투 씬 전개 필요
-                Debug.Log("플레이어 선제공격!");
+                if(!nav.pathPending && nav.remainingDistance < 0.01f)
+                {
+                    isPatroling = false;
+                }    
             }
-
-            //전투 씬으로 넘기기
         }
 
-        /// <summary>
-        /// 전투 이후 몬스터 죽을 때. 대체 가능할 것으로 보임.
-        /// </summary>
-        void MonsterDie()
-        {
-            Destroy(gameObject);
-        }
-
-
-        /// <summary>
-        /// 선제공격 여부 판정. 플레이어 관련 콜라이더만 검출해서 전투 씬으로 넘기도록 한다.
-        /// </summary>
-        private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.tag == "Weapon")
-            {
-                isAttacking = false;
-            }
-            else if (collision.gameObject.tag == "Player")
-            {
-                isAttacking = true;
-            }
-            else return;
-
-            Combat(isAttacking);
-
-        }
 
         private void OnDrawGizmos()
         {
@@ -246,3 +191,96 @@ namespace Scripts.Game.Dungeon.Unit
     }
 
 }
+
+
+/// <summary>
+/// 몬스터 기준 적 감지하는 함수.
+/// </summary>
+/*void Detect()
+{
+    if (Vector3.Distance(transform.position, target.position) <= detectRadius)
+    {
+        canChase = true;
+    }
+
+}*/
+
+/// <summary>
+/// 몬스터 기준 적 쫓는 함수
+/// navMesh 사용. 바닥을 static으로 설정해야 함.
+/// </summary>
+/*void Chase()
+{
+    if (!canChase) return;
+    else
+    {
+        if (Vector3.Distance(transform.position, initialPosition) >= moveRadius)
+        {
+            canChase = false;
+
+            ReturnToInit();
+            return;
+        }
+        else if (Vector3.Distance(target.position, initialPosition) < moveRadius)
+        {
+            isChasing = true;
+            nav.SetDestination(target.position);
+            nav.speed = chaseSpeed;
+            Debug.Log("추격 중!");
+        }
+    }
+}
+
+void ReturnToInit()
+{
+    if (isChasing && !canChase)
+    {
+        nav.SetDestination(initialPosition);
+        nav.speed = defaultSpeed;
+        Debug.Log("놓쳤다. 돌아가야지~");
+    }
+}
+
+void Combat(bool isAttacking)
+{
+    if (isAttacking)
+    {
+        //몬스터가 선제공격한 상황으로 전투 씬 전개 필요
+        Debug.Log("몬스터 선제공격!");
+    }
+    else
+    {
+        //플레이어가 선제공격한 상황으로 전투 씬 전개 필요
+        Debug.Log("플레이어 선제공격!");
+    }
+
+    //전투 씬으로 넘기기
+}
+
+/// <summary>
+/// 전투 이후 몬스터 죽을 때. 대체 가능할 것으로 보임.
+/// </summary>
+void MonsterDie()
+{
+    Destroy(gameObject);
+}
+
+
+/// <summary>
+/// 선제공격 여부 판정. 플레이어 관련 콜라이더만 검출해서 전투 씬으로 넘기도록 한다.
+/// </summary>
+private void OnCollisionEnter(Collision collision)
+{
+    if (collision.gameObject.tag == "Weapon")
+    {
+        isAttacking = false;
+    }
+    else if (collision.gameObject.tag == "Player")
+    {
+        isAttacking = true;
+    }
+    else return;
+
+    Combat(isAttacking);
+
+}*/

@@ -10,7 +10,7 @@ public class StateMachine<T> where T : class
     public void Setup(T owner, State<T> entryState)
     {
         ownerEntity = owner;
-        currentState = null;       
+        currentState = entryState;       
     }
 
     /// <summary>
@@ -35,7 +35,7 @@ public class StateMachine<T> where T : class
             return;
         }
 
-        if(currentState !=null)
+        if (currentState != null)
         {
             currentState.Exit(ownerEntity);
         }
