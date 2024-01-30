@@ -42,7 +42,7 @@ namespace Scripts.Game.Dungeon.Unit
     {
         [SerializeField] Transform target;
         [SerializeField] float defaultSpeed; // 패트롤 기능을 추가 시 사용할 값. 현재 기능 없음.
-        [SerializeField] float chaseSpeed;
+        [SerializeField] float chaseOrFleeSpeed;
         [SerializeField] float detectRadius;
         [SerializeField] float moveRadius;
         [SerializeField] float attackRange;
@@ -71,7 +71,7 @@ namespace Scripts.Game.Dungeon.Unit
         public float MoveRadius { set => moveRadius = value; get => moveRadius; }
         public float AttackRange { set => attackRange = value; get => attackRange; }
         public float DefaultSpeed { set => defaultSpeed = value; get => defaultSpeed; }
-        public float ChaseSpeed { set => chaseSpeed = value; get => chaseSpeed; }
+        public float ChaseOrFleeSpeed { set => chaseOrFleeSpeed = value; get => chaseOrFleeSpeed; }
         public bool IsChasing { set => isChasing = value; get => isChasing; }
         public bool IsFleeing { set => isFleeing = value; get => isFleeing; }
 
@@ -95,11 +95,11 @@ namespace Scripts.Game.Dungeon.Unit
 
             gameObject.name = $"{ID}_{name}";
 
-            defaultSpeed = 6;
-            chaseSpeed = 4;
-            detectRadius = 5;
-            moveRadius = 10;
-            attackRange = 1;
+            defaultSpeed = 6f;
+            chaseOrFleeSpeed = 4f;
+            detectRadius = 5f;
+            moveRadius = 10f;
+            attackRange = 2f;
 
             attackType = MonsterAttackType.firstStrike;
             moveType = MonsterMoveType.doPatrol;
@@ -132,16 +132,7 @@ namespace Scripts.Game.Dungeon.Unit
         {
             stateMachine.ChangeState(states[(int)newState]);
         }
-
-        
-
-        // Update is called once per frame
-        /*void Update()
-        {
-            Detect();
-
-            Chase();
-        }*/
+       
 
         private void FixedUpdate()
         {
@@ -159,8 +150,8 @@ namespace Scripts.Game.Dungeon.Unit
             {
                 float patrolRadius = moveRadius - detectRadius;
                 float patrolAngle = Random.Range(0, 360f);
-                Vector3 nextPatrolPoint = initialPosition + new Vector3(patrolRadius * Mathf.Cos(Mathf.Deg2Rad * patrolAngle), 0,
-                                                                        patrolRadius * Mathf.Sin(Mathf.Deg2Rad * patrolAngle));
+                Vector3 nextPatrolPoint = initialPosition + new Vector3(patrolRadius * Random.Range(0f, 1f) * Mathf.Cos(Mathf.Deg2Rad * patrolAngle), 0,
+                                                                        patrolRadius * Random.Range(0f, 1f) * Mathf.Sin(Mathf.Deg2Rad * patrolAngle));
                 // 이동 가능한지 검사
                 if(NavMesh.SamplePosition(nextPatrolPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
                 {
@@ -187,6 +178,9 @@ namespace Scripts.Game.Dungeon.Unit
             // 기즈모 2 - 이동 반경 (빨간색)
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(initialPosition, moveRadius);
+
+            Gizmos.color = Color.blue;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
         }
     }
 

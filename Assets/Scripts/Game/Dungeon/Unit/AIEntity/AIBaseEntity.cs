@@ -29,6 +29,11 @@ namespace Scripts.Game.Dungeon.Unit
             EntityName = name;
         }
 
+        public void IDReset()
+        {
+            
+        }
+
         public abstract void Updated();
 
 
