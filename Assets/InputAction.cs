@@ -813,6 +813,15 @@ namespace UnityEngine.InputSystem
                     ""initialStateCheck"": false
                 },
                 {
+                    ""name"": ""Menu"",
+                    ""type"": ""Button"",
+                    ""id"": ""b3398763-698a-40b5-91e8-8ea7cdca548a"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""Submit"",
                     ""type"": ""Button"",
                     ""id"": ""262279d0-4265-46b7-806b-bf826bcf0847"",
@@ -1333,6 +1342,17 @@ namespace UnityEngine.InputSystem
                     ""action"": ""YNavigate"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f15d62b6-c064-40ee-98ff-76e4bcada06c"",
+                    ""path"": ""<Keyboard>/y"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse;Gamepad"",
+                    ""action"": ""Menu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1391,6 +1411,7 @@ namespace UnityEngine.InputSystem
             m_MainUI_MainNavigate = m_MainUI.FindAction("MainNavigate", throwIfNotFound: true);
             m_MainUI_YNavigate = m_MainUI.FindAction("YNavigate", throwIfNotFound: true);
             m_MainUI_XNavigate = m_MainUI.FindAction("XNavigate", throwIfNotFound: true);
+            m_MainUI_Menu = m_MainUI.FindAction("Menu", throwIfNotFound: true);
             m_MainUI_Submit = m_MainUI.FindAction("Submit", throwIfNotFound: true);
             m_MainUI_Cancel = m_MainUI.FindAction("Cancel", throwIfNotFound: true);
             m_MainUI_Point = m_MainUI.FindAction("Point", throwIfNotFound: true);
@@ -1655,6 +1676,7 @@ namespace UnityEngine.InputSystem
         private readonly InputAction m_MainUI_MainNavigate;
         private readonly InputAction m_MainUI_YNavigate;
         private readonly InputAction m_MainUI_XNavigate;
+        private readonly InputAction m_MainUI_Menu;
         private readonly InputAction m_MainUI_Submit;
         private readonly InputAction m_MainUI_Cancel;
         private readonly InputAction m_MainUI_Point;
@@ -1666,6 +1688,7 @@ namespace UnityEngine.InputSystem
             public InputAction @MainNavigate => m_Wrapper.m_MainUI_MainNavigate;
             public InputAction @YNavigate => m_Wrapper.m_MainUI_YNavigate;
             public InputAction @XNavigate => m_Wrapper.m_MainUI_XNavigate;
+            public InputAction @Menu => m_Wrapper.m_MainUI_Menu;
             public InputAction @Submit => m_Wrapper.m_MainUI_Submit;
             public InputAction @Cancel => m_Wrapper.m_MainUI_Cancel;
             public InputAction @Point => m_Wrapper.m_MainUI_Point;
@@ -1688,6 +1711,9 @@ namespace UnityEngine.InputSystem
                 @XNavigate.started += instance.OnXNavigate;
                 @XNavigate.performed += instance.OnXNavigate;
                 @XNavigate.canceled += instance.OnXNavigate;
+                @Menu.started += instance.OnMenu;
+                @Menu.performed += instance.OnMenu;
+                @Menu.canceled += instance.OnMenu;
                 @Submit.started += instance.OnSubmit;
                 @Submit.performed += instance.OnSubmit;
                 @Submit.canceled += instance.OnSubmit;
@@ -1713,6 +1739,9 @@ namespace UnityEngine.InputSystem
                 @XNavigate.started -= instance.OnXNavigate;
                 @XNavigate.performed -= instance.OnXNavigate;
                 @XNavigate.canceled -= instance.OnXNavigate;
+                @Menu.started -= instance.OnMenu;
+                @Menu.performed -= instance.OnMenu;
+                @Menu.canceled -= instance.OnMenu;
                 @Submit.started -= instance.OnSubmit;
                 @Submit.performed -= instance.OnSubmit;
                 @Submit.canceled -= instance.OnSubmit;
@@ -1786,6 +1815,7 @@ namespace UnityEngine.InputSystem
             void OnMainNavigate(InputAction.CallbackContext context);
             void OnYNavigate(InputAction.CallbackContext context);
             void OnXNavigate(InputAction.CallbackContext context);
+            void OnMenu(InputAction.CallbackContext context);
             void OnSubmit(InputAction.CallbackContext context);
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);

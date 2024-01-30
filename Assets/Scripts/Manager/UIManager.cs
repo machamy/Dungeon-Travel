@@ -9,6 +9,7 @@ using Scripts.DebugConsole;
 using JetBrains.Annotations;
 using UnityEngine.UI;
 using UnityEditor;
+using TMPro;
 
 namespace Scripts.Manager
 {
@@ -19,15 +20,23 @@ namespace Scripts.Manager
         [HideInInspector] public State currentState;
         public enum State
         {
-            SelectBehaviour,
-            BuyWeapon,
-            AskBuyItem,
-            Talk,
-            AskExit,
-            SelectPlace
+            ForgeMenu,
+            ForgeWeapon,
+            ForgeAskBuy,
+            ForgeTalk,
+            ForgeAskExit,
+            
+            MainPlace,
+            MainMenu,
+            MainItem,
+            MainSkill,
+            MainEquip,
+            MainStatus,
+            MainParty,
+            MainConfig
+
         }
 
-        public InputAction mainNavigation, yNavigation;
 
         private static UIManager instance;
         public static UIManager Instance
@@ -51,6 +60,8 @@ namespace Scripts.Manager
             }
         }
 
+
+        public InputAction mainNavigation, yNavigation;
         public void init()
         {
             DontDestroyOnLoad(gameObject);
@@ -101,6 +112,53 @@ namespace Scripts.Manager
             }
             return null;
         }
-    }
 
+
+        private string currentItemName;
+        public string GetSelectedItemDescription()
+        {
+            string itemName;
+            if (EventSystem.current.currentSelectedGameObject != null)
+            {
+                itemName = EventSystem.current.currentSelectedGameObject.
+                    GetComponentInChildren<TextMeshProUGUI>().text;
+                if (UIDB.allItemList.ContainsKey(itemName))
+                {
+                    currentItemName = itemName;
+                    return UIDB.allItemList[itemName].description;
+                }
+            }
+            if (currentItemName == null) return null;
+            return UIDB.allItemList[currentItemName].description;
+        }
+
+        public void ClearChildren(GameObject parent)
+        {
+            foreach(RectTransform child in parent.transform)
+                Destroy(child.gameObject);
+        }
+
+        public void GetInventoryItem(GameObject prefab, GameObject parent)
+        {
+            ClearChildren(parent);
+            bool isFirstItem = true;
+            foreach (string itemName in UIDB.inventoryItemList)
+            {
+                GameObject itemButton = Instantiate(prefab);
+                itemButton.transform.SetParent(parent.transform);
+
+                itemButton.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
+                itemButton.GetComponentInChildren<Button>().onClick.AddListener
+                    (() => SelectButton(itemButton.transform.GetChild(1).gameObject));
+
+                if (isFirstItem)
+                {
+                    SelectButton(itemButton.transform.GetChild(1).gameObject);
+                    isFirstItem = false;
+                }
+            }
+        }
+
+
+    }
 }

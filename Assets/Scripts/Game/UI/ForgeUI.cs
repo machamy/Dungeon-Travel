@@ -11,40 +11,42 @@ using Scripts.Manager;
 
 public class ForgeUI : MonoBehaviour
 {
-    public GameObject behaviourContainer, tableContainer;
+    public GameObject menuContainer, tableContainer;
     public GameObject askBuyContainer, askExitContainer, talkContainer;
     public GameObject bottomPanel;
-    public GameObject behaviourFirstSelect, weaponFirstSelect, askBuyFirstSelect, askExitFirstSelect;
+    public GameObject menuFirstSelect, weaponFirstSelect, askBuyFirstSelect, askExitFirstSelect;
 
-    public GameObject itemNameText;
-    public GameObject buttonDescriptionText;
-    public GameObject talkText;
+    public TextMeshProUGUI itemNameText, buttonDescriptionText, talkText;
     
     public GameObject[] typeButton = new GameObject[3];
 
     int currentType = 0;
 
-    
     private Color blue = new(0, 1, 1, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
 
-    public void SelectBehaviour(GameObject disableUI)
+    private void Awake()
     {
-        UIManager.Instance.SetUI(UIManager.State.SelectBehaviour,
-            behaviourContainer, disableUI, behaviourFirstSelect);
+        UIManager.Instance.currentState = UIManager.State.ForgeMenu;
+    }
+
+    public void Menu(GameObject disableUI)
+    {
+        UIManager.Instance.SetUI(UIManager.State.ForgeMenu,
+            menuContainer, disableUI, menuFirstSelect);
 
         bottomPanel.SetActive(true);
     }
 
-    public void BuyWeapon(GameObject disableUI)
+    public void Weapon(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIManager.State.BuyWeapon,
+        UIManager.Instance.SetUI(UIManager.State.ForgeWeapon,
             tableContainer, disableUI, weaponFirstSelect, true);
     }
 
     public void OnXNavigate(InputValue value)
     {
-        if (UIManager.Instance.currentState != UIManager.State.BuyWeapon) return;
+        if (UIManager.Instance.currentState != UIManager.State.ForgeWeapon) return;
 
         int intvalue = (int)value.Get<float>();
         if (intvalue == 0) return;
@@ -61,28 +63,28 @@ public class ForgeUI : MonoBehaviour
         UIManager.Instance.SelectButton(weaponFirstSelect);
     }
 
-    public void AskBuyItem(string itemName)
+    public void AskBuy(string itemName)
     {
-        UIManager.Instance.SetUI(UIManager.State.AskBuyItem,
+        UIManager.Instance.SetUI(UIManager.State.ForgeAskBuy,
             askBuyContainer, null, askBuyFirstSelect);
 
-        itemNameText.GetComponent<TextMeshProUGUI>().text = "You wanna buy " + itemName + "?";
+        itemNameText.text = "You wanna buy " + itemName + "?";
     }
 
     public void Talk()
     {
-        UIManager.Instance.SetUI(UIManager.State.Talk,
-            talkContainer, behaviourContainer, null, true);
+        UIManager.Instance.SetUI(UIManager.State.ForgeTalk,
+            talkContainer, menuContainer, null, true);
 
         bottomPanel.SetActive(false);
 
         int textNum = Random.Range(0, UIDB.talkList.Count);
-        talkText.GetComponent<TextMeshProUGUI>().text = UIDB.talkList[textNum];
+        talkText.text = UIDB.talkList[textNum];
     }
 
     public void AskExit()
     {
-        UIManager.Instance.SetUI(UIManager.State.AskExit,
+        UIManager.Instance.SetUI(UIManager.State.ForgeAskExit,
             askExitContainer, null, askExitFirstSelect);
     }
 
@@ -90,19 +92,19 @@ public class ForgeUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.AskBuyItem:
-                BuyWeapon(askBuyContainer); break;
+            case UIManager.State.ForgeAskBuy:
+                Weapon(askBuyContainer); break;
 
-            case UIManager.State.BuyWeapon:
-                SelectBehaviour(tableContainer); break;
+            case UIManager.State.ForgeWeapon:
+                Menu(tableContainer); break;
 
-            case UIManager.State.Talk:
-                SelectBehaviour(talkContainer); break;
+            case UIManager.State.ForgeTalk:
+                Menu(talkContainer); break;
 
-            case UIManager.State.AskExit:
-                SelectBehaviour(askExitContainer); break;
+            case UIManager.State.ForgeAskExit:
+                Menu(askExitContainer); break;
 
-            case UIManager.State.SelectBehaviour:
+            case UIManager.State.ForgeMenu:
                 AskExit(); break;
         }
     }
@@ -111,8 +113,8 @@ public class ForgeUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.Talk:
-                SelectBehaviour(talkContainer); break;
+            case UIManager.State.ForgeTalk:
+                Menu(talkContainer); break;
         }
     }
 
@@ -120,15 +122,14 @@ public class ForgeUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.Talk:
-                SelectBehaviour(talkContainer); break;
+            case UIManager.State.ForgeTalk:
+                Menu(talkContainer); break;
         }
     }
 
     private void Update()
     {
-        buttonDescriptionText.GetComponent<TextMeshProUGUI>().text =
-            UIManager.Instance.GetSelectedButtonDescription();
+        buttonDescriptionText.text = UIManager.Instance.GetSelectedButtonDescription();
     }
 
 }
