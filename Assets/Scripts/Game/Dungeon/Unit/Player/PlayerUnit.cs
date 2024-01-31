@@ -186,18 +186,17 @@ namespace Scripts.Game.Dungeon.Unit
                 if (focusUnit == value)
                     return;
                 
-                // 기존 포커스 제거 
-                if(focusUnit is not null)
-                {
+                if (focusUnit is not null)
                     focusUnit.IsFocused = false;
-                }
-                
-                // 다음 포커스 ON
-                if (value is not null)
-                {
-                    focusUnit = value;
-                    value.IsFocused = true;
-                }
+
+                focusUnit = value;
+
+                // 포커스 해제시(변경 X)
+                if (value is null)
+                    return;
+
+                // 포커스 변경시
+                value.IsFocused = true;
             }
         }
     }
