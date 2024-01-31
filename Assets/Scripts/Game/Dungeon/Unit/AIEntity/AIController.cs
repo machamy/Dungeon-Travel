@@ -9,7 +9,30 @@ using UnityEngine;
 /// [TODO 2] : 각 층의 몬스터들에 대해서 DB와 연결되어야 한다. 게임 다시 로드했을 때 몬스터 심볼 얼마나 남았냐도 관리해야 하기 때문.
 /// </summary>
 public class AIController : MonoBehaviour
-{           
+{
+    #region 싱글톤
+    private static AIController instance = null;
+    public static AIController Instance
+    {
+        get
+        {
+            if (instance == null)
+            {
+                GameObject ac = GameObject.Find("AIController");
+                if (ac == null)
+                {
+                    ac = new GameObject("AIController");
+                }
+
+                instance = ac.AddComponent<AIController>();
+            }
+            return instance;
+        }
+    }
+    #endregion
+    public enum Floors { Map_1F = 0, Map_2F, Map_3F, Map_4F, Map_5F, Map_6F }
+
+
     [SerializeField] private string[] monsterNames;
     [SerializeField] private GameObject monsterPrefab;
 
