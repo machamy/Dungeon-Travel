@@ -1,3 +1,5 @@
+using Scripts.Manager;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +8,12 @@ public class QuraterviewCamera : MonoBehaviour
 {
     public Transform target;
     public Vector3 offset;
+
+
+    private void Start()
+    {
+        GameManager.Instance.qCamera = this;
+    }
 
     // Update is called once per frame
     void Update()

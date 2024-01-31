@@ -22,6 +22,8 @@ namespace Scripts.Manager
         public const string NAME = "@Game";
         private static GameManager instance;
 
+        public QuraterviewCamera qCamera;
+
         public InputActionMap PlayerActionMap;
         public InputActionMap UIActionMap;
         

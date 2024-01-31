@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.Manager;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,8 +12,10 @@ namespace Scripts.Game.Dungeon.Unit
     {
         [SerializeField] protected float speed;
         [SerializeField] protected float interactionRange;
-        [SerializeField] protected QuraterviewCamera Camera;
+        //[SerializeField] protected QuraterviewCamera Camera;
 
+        [SerializeField] internal PlayerInteractionBox PlayerInteractionBox;
+        
         Rigidbody rigid;
         Vector3 moveVec;
         private GameManager gm;
@@ -62,7 +65,8 @@ namespace Scripts.Game.Dungeon.Unit
         void OnMove(InputValue value)
         {
             Vector2 inputVec = value.Get<Vector2>(); //이미 normalized된 녀석.
-            moveVec = Camera.GetWorldDiretion(new Vector3(inputVec.x, 0, inputVec.y));//new Vector3(inputVec.x, 0, inputVec.y);
+            moveVec = GameManager.Instance.qCamera.
+                GetWorldDiretion(new Vector3(inputVec.x, 0, inputVec.y));//new Vector3(inputVec.x, 0, inputVec.y);
         }
 
         void OnUse()
@@ -90,7 +94,6 @@ namespace Scripts.Game.Dungeon.Unit
             if (!focusUnit.type.HasFlag(InteractionType.Intersect))
                 return;
             Debug.Log($"[PlayerUnit::OnIntersect(BaseInteractionUnit)] Execute to {iu.name}");
-            
         }
 
         /// <summary>
@@ -98,33 +101,68 @@ namespace Scripts.Game.Dungeon.Unit
         /// </summary>
         void CheckInteraction()
         {
+            if (!PlayerInteractionBox.unitSet.Any())
+            {
+                FocusUnit = null;
+                return;
+            }
+                
+            var iter= PlayerInteractionBox.unitSet.GetEnumerator();
+            iter.MoveNext();
+            if (PlayerInteractionBox.unitSet.Count == 1)
+            {
+                FocusUnit = iter.Current;
+            }else //if (PlayerInteractionBox.unitSet.Count > 1)
+            {
+               var bu = GetInteractionByRay();
+               if(bu is null)
+                   bu = iter.Current;
+               else
+               {
+                   FocusUnit = bu;
+               }
+            } 
+        }
+        BaseInteractionUnit GetInteractionByRay()
+        {
             Ray r = new Ray(transform.position, transform.forward);
             RaycastHit[] hiArr = Physics.RaycastAll(r, interactionRange);
             bool found = false;
-            if (hiArr.Length != 0)
+            
+            BaseInteractionUnit minFocus = null;
+            float minDistance = 100f;
+            // int idx = 0;
+            // Debug.Log(string.Join(", ",hiArr.Select((e)=>e.collider.gameObject.name)));
+            foreach (var hi in hiArr)
             {
-                foreach (var hi in hiArr)
+                // Debug.Log($"{hi.collider.gameObject.name} : {idx}");
+                //TODO: 벽이나 기타 장애물 확인 코드 필요 (tag 등 이용)
+                if (hi.collider.gameObject.TryGetComponent(out BaseInteractionUnit iu))
                 {
-                    //TODO: 벽이나 기타 장애물 확인 코드 필요 (tag 등 이용)
-                    if (hi.collider.gameObject.TryGetComponent(out BaseInteractionUnit iu))
+                    if (minDistance > hi.distance)
                     {
-                        FocusUnit = iu;
-                        found = true;
-                        break;
+                        minDistance = hi.distance;
+                        minFocus = iu;
+                        
                     }
+                    // Debug.Log($"{iu.name} [{hiArr.Length}] : {hi.distance}");
                 }
             }
-
-            if (!found)
-                FocusUnit = null;
-
-
             //디버그용 그리기
             Debug.DrawRay(r.origin, r.direction * (interactionRange * 1), Color.green);
+            if (minDistance != 100f)
+            {
+                return minFocus;
+            }
+            return null;
         }
 
 
-        private void OnTriggerStay(Collider other)
+        /// <summary>
+        /// 히트박스가 콜라이더에 닿아있을 경우
+        /// </summary>
+        /// <param name="other"></param>
+        internal void OnStay(Collider other)
         {
             BaseInteractionUnit iu;
             if (other.transform.CompareTag("Interaction") && other.transform.TryGetComponent(out iu))
@@ -144,22 +182,22 @@ namespace Scripts.Game.Dungeon.Unit
             get => focusUnit;
             set
             {
-                // 기존과 같으면 무시
+                // 변경 X
                 if (focusUnit == value)
                     return;
-
-                // 기존 포커스 없을 시
-                if (focusUnit is not null)
+                
+                // 기존 포커스 제거 
+                if(focusUnit is not null)
+                {
                     focusUnit.IsFocused = false;
-
-                focusUnit = value;
-
-                // 포커스 해제시(변경 X)
-                if (value is null)
-                    return;
-
-                // 포커스 변경시
-                focusUnit.IsFocused = true;
+                }
+                
+                // 다음 포커스 ON
+                if (value is not null)
+                {
+                    focusUnit = value;
+                    value.IsFocused = true;
+                }
             }
         }
     }
