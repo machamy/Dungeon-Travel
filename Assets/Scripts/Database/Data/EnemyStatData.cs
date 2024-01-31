@@ -1,3 +1,4 @@
+using Scripts.Data;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -72,14 +73,14 @@ public class EnemyStatData
     /// <summary>
     /// 적 행동 속성
     /// </summary>
-    public Enemy_Base.EnemyProperty Property;
+    public EnemyProperty Property;
     /// <summary>
     /// 취약 방어 타입
     /// </summary>
-    public Enemy_Base.AttackType WeakType;
+    public AttackType WeakType;
     /// <summary>
     /// 방어 타입
     /// </summary>
-    public Enemy_Base.AttackType ResistType;
+    public AttackType ResistType;
     
 }
