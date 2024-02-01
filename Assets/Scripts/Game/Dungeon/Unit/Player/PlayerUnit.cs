@@ -51,8 +51,9 @@ namespace Scripts.Game.Dungeon.Unit
 
         void playerMove()
         {
+            
             transform.position += moveVec * (speed * Time.deltaTime);
-            rigid.velocity = Vector3.zero;
+            //rigid.velocity = Vector3.zero; 이거하면 계단에서 안내려옴
         }
 
         void playerTurn()
@@ -89,6 +90,30 @@ namespace Scripts.Game.Dungeon.Unit
             focusUnit.OnAttacked(this, damage: 1.0f);
         }
 
+        private RaycastHit slopeHit;
+        public float minSlopeAngle;
+        private bool IsOnSlope()
+        {
+
+            if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.3f))
+            {
+                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                return angle < minSlopeAngle;
+            }
+
+            return false;
+        }
+
+        private Vector3 GetSlopeDir()
+        {
+            return  Ve
+        }
+        
+        
+        /// <summary>
+        /// 사용안함
+        /// </summary>
+        /// <param name="iu"></param>
         void OnIntersect(BaseInteractionUnit iu)
         {
             if (!focusUnit.type.HasFlag(InteractionType.Intersect))
