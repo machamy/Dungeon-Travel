@@ -59,6 +59,7 @@ namespace Scripts.Game.Dungeon.Unit
         bool isPatroling = false;
         NavMeshAgent nav;
         Rigidbody rigid;
+        MonsterData monsterData;
 
         private State<MonsterUnit>[] states;
         private StateMachine<MonsterUnit> stateMachine;
@@ -106,7 +107,9 @@ namespace Scripts.Game.Dungeon.Unit
 
             initialPosition = transform.localPosition;
             target = GameObject.FindWithTag("Player").transform;
-         
+            #endregion
+
+            #region STATE INITIALIZATION
             states = new State<MonsterUnit>[6];
             states[(int)MonsterStates.Idle] = new MonsterOwnedStates.Idle();
             states[(int)MonsterStates.Chase] = new MonsterOwnedStates.Chase();
@@ -116,15 +119,16 @@ namespace Scripts.Game.Dungeon.Unit
             states[(int)MonsterStates.Dead] = new MonsterOwnedStates.Dead();
 
             stateMachine = new StateMachine<MonsterUnit>();
-            #endregion
 
             stateMachine.Setup(this, states[(int)MonsterStates.Idle]);
+            #endregion
+
+
 
         }
 
         public override void Updated()
         {
-            //Debug.Log("대기중~");
             stateMachine.Execute();
         }
 

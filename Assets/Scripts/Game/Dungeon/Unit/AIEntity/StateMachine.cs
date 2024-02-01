@@ -10,7 +10,9 @@ public class StateMachine<T> where T : class
     public void Setup(T owner, State<T> entryState)
     {
         ownerEntity = owner;
-        currentState = entryState;       
+        currentState = null;
+        
+        ChangeState(entryState);
     }
 
     /// <summary>

@@ -30,7 +30,7 @@ public class AIController : MonoBehaviour
         }
     }
     #endregion
-    public enum Floors { Map_1F = 0, Map_2F, Map_3F, Map_4F, Map_5F, Map_6F }
+    public enum Floors { Map_1F = 0, }
 
 
     [SerializeField] private string[] monsterNames;
