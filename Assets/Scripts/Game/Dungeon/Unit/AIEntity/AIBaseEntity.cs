@@ -20,18 +20,12 @@ namespace Scripts.Game.Dungeon.Unit
             get => id;
         }
 
-        private string EntityName;
         // 그 외의 프리팹, material...
 
-        public virtual void Setup(string name)
+        public virtual void Setup()
         {
             ID = nextEntityID;
-            EntityName = name;
-        }
-
-        public void IDReset()
-        {
-            
+           
         }
 
         public abstract void Updated();

@@ -1,164 +1,163 @@
 using Scripts.Game.Dungeon.Unit;
+using Scripts.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
+using Unity.VisualScripting;
 
-namespace MonsterOwnedStates
+namespace GeneralMonsterStates
 {
-    public class Idle : State<MonsterUnit>
+    public class Idle : State<GeneralUnit>
     {
-        public override void Enter(MonsterUnit entity)
+        public override void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 IDLE 상태 진입.");
         }
 
-        public override void Execute(MonsterUnit entity)
+        public override void Execute(GeneralUnit entity)
         {
-            if (Vector3.Distance(entity.transform.position, entity.Target.position) <= entity.DetectRadius)
+            if (Vector3.Distance(entity.transform.position, entity.target.position) <= entity.AIData.detectRadius)
             {
-                entity.CanChaseOrFlee = true;
-                if (entity.CanChaseOrFlee && entity.AttackType == MonsterAttackType.firstStrike)
+                entity.checker.canChaseOrFlee = true;
+                if (entity.checker.canChaseOrFlee && entity.MonsterProperty.HasFlag(EnemyProperty.Hostile))
                 {
-                    entity.ChangeState(MonsterStates.Chase);
+                    entity.ChangeState(GMStates.Chase);
                 }
-                else if(entity.CanChaseOrFlee && entity.AttackType==MonsterAttackType.fleeing)
+                else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
                 {
-                    entity.ChangeState(MonsterStates.Flee);
-                }
-                else if(entity.AttackType==MonsterAttackType.mustCombat)
-                {
-                    entity.ChangeState(MonsterStates.Combat);
+                    entity.ChangeState(GMStates.Flee);
                 }
             }
 
-            if (entity.MoveType == MonsterMoveType.doPatrol)
+            if (entity.MonsterProperty.HasFlag(EnemyProperty.Move))
             {
                 entity.Patrol();
-            }
+            }           
         }
 
-        public override void Exit(MonsterUnit entity)
+        public override void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 IDLE 상태 탈출.");
         }
 
     }
 
-    public class Chase : State<MonsterUnit>
+    public class Chase : State<GeneralUnit>
     {
-        public override void Enter(MonsterUnit entity)
+        public override void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Chase 상태 진입.");
-            entity.IsChasing = true;
+            entity.checker.isChasingOrFleeing = true;
         }
 
-        public override void Execute(MonsterUnit entity)
+        public override void Execute(GeneralUnit entity)
         {           
-            if (!entity.CanChaseOrFlee) return;
+            if (!entity.checker.canChaseOrFlee) return;
 
             //Debug.Log(Vector3.Distance(entity.transform.localPosition, entity.InitialPosition));
-            if (Vector3.Distance(entity.transform.localPosition, entity.InitialPosition) >= entity.MoveRadius - 0.2f)
+            if (Vector3.Distance(entity.transform.localPosition, entity.InitialPosition) >= entity.AIData.moveRadius - 0.2f)
             {
-                entity.CanChaseOrFlee = false;
-                entity.ChangeState(MonsterStates.Return);
+                entity.checker.canChaseOrFlee= false;
+                entity.ChangeState(GMStates.Return);
             }
-            else if (Vector3.Distance(entity.Target.localPosition, entity.InitialPosition) < entity.MoveRadius)
+            else if (Vector3.Distance(entity.target.localPosition, entity.InitialPosition) < entity.AIData.moveRadius)
             {
-                entity.IsChasing = true;
-                entity.Nav.SetDestination(entity.Target.localPosition);
-                entity.Nav.speed = entity.ChaseOrFleeSpeed;
+                entity.checker.isChasingOrFleeing = true;
+                entity.Nav.SetDestination(entity.target.localPosition);
+                entity.Nav.speed = entity.AIData.chaseOrFleeSpeed;
                 Debug.Log("추격 중!");
 
-                Debug.Log(Vector3.Distance(entity.Target.localPosition, entity.transform.localPosition));
-                if (Vector3.Distance(entity.Target.localPosition, entity.transform.localPosition) <= entity.AttackRange)
+                Debug.Log(Vector3.Distance(entity.target.localPosition, entity.transform.localPosition));
+                if (Vector3.Distance(entity.target.localPosition, entity.transform.localPosition) <= entity.AIData.attackRange)
                 {
                     Debug.Log("전투 돌입!");
-                    entity.ChangeState(MonsterStates.Combat);
+                    entity.ChangeState(GMStates.Combat);
                 }
             }
             
         }
 
-        public override void Exit(MonsterUnit entity)
+        public override void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Chase 상태 탈출.");
         }
 
     }
 
-    public class Flee : State<MonsterUnit>
+    public class Flee : State<GeneralUnit>
     {
         private float fleeTimer;
-        public override void Enter(MonsterUnit entity)
+        public override void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Flee 상태 진입.");
-            entity.IsFleeing = true;
+            entity.checker.isChasingOrFleeing = true;
             fleeTimer = 0f;
         }
-        public override void Execute(MonsterUnit entity)
+
+        public override void Execute(GeneralUnit entity)
         {
-            if (!entity.CanChaseOrFlee) return;
+            if (!entity.checker.canChaseOrFlee) return;
 
             fleeTimer += Time.deltaTime;
 
-            Vector3 fleeDir = (entity.transform.localPosition - entity.Target.localPosition).normalized;
+            Vector3 fleeDir = (entity.transform.localPosition - entity.target.localPosition).normalized;
             Vector3 newPos = entity.transform.localPosition + fleeDir;
             entity.Nav.SetDestination(newPos);
-            entity.Nav.speed = entity.ChaseOrFleeSpeed;
+            entity.Nav.speed = entity.AIData.chaseOrFleeSpeed;
 
-            if (Vector3.Distance(entity.transform.localPosition, entity.Target.localPosition) >= entity.DetectRadius)
+            if (Vector3.Distance(entity.transform.localPosition, entity.target.localPosition) >= entity.AIData.detectRadius)
             {
-                entity.CanChaseOrFlee = false;
-                entity.ChangeState(MonsterStates.Return);
+                entity.checker.canChaseOrFlee = false;
+                entity.ChangeState(GMStates.Return);
             }
 
             if (fleeTimer >= 5f)
             {
-                entity.ChangeState(MonsterStates.Dead);
+                entity.ChangeState(GMStates.Dead);
             }
             // [TODO] : 해당 state 유지 시간 5초 초과 시 Dead로 change state -> 60초 후 리스폰
         }
 
-        public override void Exit(MonsterUnit entity)
+        public override void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Flee 상태 탈출.");
         }
 
     }
 
-    public class Return : State<MonsterUnit>
+    public class Return : State<GeneralUnit>
     {
-        public override void Enter(MonsterUnit entity)
+        public override void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Return 상태 진입.");
         }
 
-        public override void Execute(MonsterUnit entity)
+        public override void Execute(GeneralUnit entity)
         {
-            if (entity.IsChasing && !entity.CanChaseOrFlee)
+            if (entity.checker.isChasingOrFleeing && !entity.checker.canChaseOrFlee)
             {
                 entity.Nav.SetDestination(entity.InitialPosition);
-                entity.Nav.speed = entity.DefaultSpeed;
+                entity.Nav.speed = entity.AIData.patrolOrReturnSpeed;
                 Debug.Log("돌아가야지~");
 
                 Debug.Log(Vector3.Distance(entity.transform.localPosition, entity.InitialPosition));
                 if (Vector3.Distance(entity.transform.localPosition, entity.InitialPosition) <= 1f)
                 {
-                    entity.ChangeState(MonsterStates.Idle);
+                    entity.ChangeState(GMStates.Idle);
                 }
 
                 //Return 중에 플레이어가 다시 감지 범위 내에 들어왔을 경우
-                if (Vector3.Distance(entity.transform.position, entity.Target.position) <= entity.DetectRadius)
+                if (Vector3.Distance(entity.transform.position, entity.target.position) <= entity.AIData.detectRadius)
                 {
-                    entity.CanChaseOrFlee = true;
-                    if (entity.CanChaseOrFlee && entity.AttackType == MonsterAttackType.firstStrike)
+                    entity.checker.canChaseOrFlee = true;
+                    if (entity.checker.canChaseOrFlee && entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
                     {
-                        entity.ChangeState(MonsterStates.Chase);
+                        entity.ChangeState(GMStates.Chase);
                     }
-                    else if (entity.CanChaseOrFlee && entity.AttackType == MonsterAttackType.fleeing)
+                    else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
                     {
-                        entity.ChangeState(MonsterStates.Flee);
+                        entity.ChangeState(GMStates.Flee);
                     }
                 }
             }
@@ -166,51 +165,137 @@ namespace MonsterOwnedStates
             
         }
 
-        public override void Exit(MonsterUnit entity)
+        public override void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Return 상태 탈출.");
         }
 
     }
 
-    public class Combat : State<MonsterUnit>
+    public class Combat : State<GeneralUnit>
     {
-        public override void Enter(MonsterUnit entity)
+        int doRush;
+
+        public override void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Combat 상태 진입.");
             //전투 돌입 코드
-            //난입(랜덤 몬스터)
+
+            //난입
+            doRush = Random.Range(1, 4);
             //인카운터 방식(공격 / 피격)
+
         }
 
-        public override void Execute(MonsterUnit entity)
+        public override void Execute(GeneralUnit entity)
         {
 
         }
 
-        public override void Exit(MonsterUnit entity)
+        public override void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Combat 상태 탈출.");
         }
 
     }
 
-    public class Dead : State<MonsterUnit>
+    public class Dead : State<GeneralUnit>
     {
-        public override void Enter(MonsterUnit entity)
+        float RespawnTimer;
+        public override void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Dead 상태 진입. 60초 후 리스폰합니다.");
+            RespawnTimer = 0f;
+            entity.meshRenderer.enabled = false;
+            entity.mosnterCollider.enabled = false;
         }
 
-        public override void Execute(MonsterUnit entity)
+        public override void Execute(GeneralUnit entity)
         {
-            throw new System.NotImplementedException();
+            RespawnTimer += Time.deltaTime;
+            if (RespawnTimer >= 60f)
+            {
+                entity.ChangeState(GMStates.Idle);
+            }
         }
 
-        public override void Exit(MonsterUnit entity)
+        public override void Exit(GeneralUnit entity)
         {
-            throw new System.NotImplementedException();
+            Debug.Log("몬스터 Dead 상태 탈출. 리스폰합니다.");
+            entity.meshRenderer.enabled = true;
+            entity.mosnterCollider.enabled = true;
+
+        }
+    }
+}
+
+namespace EliteMonsterStates
+{
+    public class Idle : State<EliteUnit>
+    {
+        public override void Enter(EliteUnit entity)
+        {
+            Debug.Log("몬스터 IDLE 상태 진입.");
         }
 
+        public override void Execute(EliteUnit entity)
+        {
+            if(Vector3.Distance(entity.transform.localPosition, entity.target.localPosition) < entity.AIData.attackRange)
+            {
+                entity.ChangeState(EMStates.Combat);
+            }
+        }
+
+        public override void Exit(EliteUnit entity)
+        {
+            Debug.Log("몬스터 IDLE 상태 탈출.");
+        }
+    }
+
+    public class Combat : State<EliteUnit>
+    {
+        public override void Enter(EliteUnit entity)
+        {
+            Debug.Log("몬스터 COMBAT 상태 진입.");
+        }
+
+        public override void Execute(EliteUnit entity)
+        {
+
+        }
+
+        public override void Exit(EliteUnit entity)
+        {
+            Debug.Log("몬스터 COMBAT 상태 탈출.");
+        }
+    }
+
+    public class Dead : State<EliteUnit>
+    {
+        float RespawnTimer;
+        public override void Enter(EliteUnit entity)
+        {
+            Debug.Log("몬스터 Dead 상태 진입. 60초 후 리스폰합니다.");
+            RespawnTimer = 0f;
+            entity.meshRenderer.enabled = false;
+            entity.mosnterCollider.enabled = false;
+        }
+
+        public override void Execute(EliteUnit entity)
+        {
+            RespawnTimer += Time.deltaTime;
+            if(RespawnTimer >= 60f)
+            {
+                entity.ChangeState(EMStates.Idle);
+            }
+        }
+
+        public override void Exit(EliteUnit entity)
+        {
+            Debug.Log("몬스터 Dead 상태 탈출. 리스폰합니다.");
+            entity.meshRenderer.enabled = true;
+            entity.mosnterCollider.enabled = true;
+
+        }
     }
 }

@@ -8,64 +8,77 @@ using UnityEngine;
 /// [TODO 1] : 맵의 각 층마다 있는 몬스터 심볼을 다 관리해야한다. 각 층에 몬스터가 어떻게 구성되어있는지 따라서 층별로 반영할 수 있어야 한다.
 /// [TODO 2] : 각 층의 몬스터들에 대해서 DB와 연결되어야 한다. 게임 다시 로드했을 때 몬스터 심볼 얼마나 남았냐도 관리해야 하기 때문.
 /// </summary>
-public class AIController : MonoBehaviour
+namespace Scripts.Game.Dungeon.Unit
 {
-    #region 싱글톤
-    private static AIController instance = null;
-    public static AIController Instance
+    public enum MonsterFloor
     {
-        get
+        Map_1F = 0,
+        Map_2F,
+        Map_3F,
+        Map_4F,
+        Map_5F,
+        Map_6F,
+    }
+
+    public enum MonsterGroupNum
+    {
+        Group1 = 0,
+        Group2,
+        Group3,
+        Group4,
+    }
+
+    public class AIController : MonoBehaviour
+    {
+        #region 싱글톤
+        private static AIController instance = null;
+        public static AIController Instance
         {
-            if (instance == null)
+            get
             {
-                GameObject ac = GameObject.Find("AIController");
-                if (ac == null)
+                if (instance == null)
                 {
-                    ac = new GameObject("AIController");
+                    GameObject ac = GameObject.Find("AIController");
+                    if (ac == null)
+                    {
+                        ac = new GameObject("AIController");
+                    }
+
+                    instance = ac.AddComponent<AIController>();
                 }
-
-                instance = ac.AddComponent<AIController>();
+                return instance;
             }
-            return instance;
         }
-    }
-    #endregion
-    public enum Floors { Map_1F = 0, }
+        #endregion
 
+        private List<AIBaseEntity> entities;
 
-    [SerializeField] private string[] monsterNames;
-    [SerializeField] private GameObject monsterPrefab;
+        public static bool IsGameStop { set; get; } = false;
 
-    private List<AIBaseEntity> entities;
-
-    //테스트용
-    private Vector3 spawnPosition = new Vector3(158, 1, 150);
-
-    public static bool IsGameStop { set; get; } = false;
-
-    private void Awake()
-    {
-        entities = new List<AIBaseEntity>();
-        
-        for (int i = 0; i < monsterNames.Length; i++)
+        private void Awake()
         {
-            GameObject clone = Instantiate(monsterPrefab, spawnPosition, Quaternion.identity);
-            MonsterUnit entity = clone.GetComponent<MonsterUnit>();
+            entities = new List<AIBaseEntity>();
+            entities.AddRange(FindObjectsOfType<AIBaseEntity>());
 
-            entity.Setup(monsterNames[i]);
-            entities.Add(entity);
+            foreach(AIBaseEntity primeEntity in entities)
+            {
+                MonsterUnit entity = primeEntity.GetComponent<MonsterUnit>();
+
+                entity.Setup();
+            }
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if (IsGameStop == true) return;
-
-        for (int i = 0; i < entities.Count; i++)
+        // Update is called once per frame
+        void Update()
         {
-            entities[i].Updated();
+            if (IsGameStop == true) return;
+
+            for (int i = 0; i < entities.Count; i++)
+            {
+                entities[i].Updated();
+            }
         }
+
     }
 
 }

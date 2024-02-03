@@ -1,3 +1,5 @@
+using Scripts.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -8,6 +10,7 @@ using UnityEngine.UIElements;
 
 namespace Scripts.Game.Dungeon.Unit
 {
+    /*
     /// <summary>
     /// 아래 enum은 기획서에 따라 임의로 작명함. DB에 어떻게 저장되냐에 따라 이름 바꾸면 될듯.
     /// </summary>
@@ -41,6 +44,7 @@ namespace Scripts.Game.Dungeon.Unit
     public class MonsterUnit : AIBaseEntity
     {
         [SerializeField] Transform target;
+        [SerializeField] string monsterName;
         [SerializeField] float defaultSpeed; // 패트롤 기능을 추가 시 사용할 값. 현재 기능 없음.
         [SerializeField] float chaseOrFleeSpeed;
         [SerializeField] float detectRadius;
@@ -59,7 +63,6 @@ namespace Scripts.Game.Dungeon.Unit
         bool isPatroling = false;
         NavMeshAgent nav;
         Rigidbody rigid;
-        MonsterData monsterData;
 
         private State<MonsterUnit>[] states;
         private StateMachine<MonsterUnit> stateMachine;
@@ -83,10 +86,13 @@ namespace Scripts.Game.Dungeon.Unit
 
         #endregion
 
+
+        private EnemyStatData mData;
+
         private void Awake()
         {
             nav = GetComponent<NavMeshAgent>();
-            rigid = GetComponent<Rigidbody>();
+            rigid = GetComponent<Rigidbody>();           
         }
 
         public override void Setup(string name)
@@ -107,6 +113,7 @@ namespace Scripts.Game.Dungeon.Unit
 
             initialPosition = transform.localPosition;
             target = GameObject.FindWithTag("Player").transform;
+            //gameObject.name = 
             #endregion
 
             #region STATE INITIALIZATION
@@ -187,6 +194,53 @@ namespace Scripts.Game.Dungeon.Unit
             Gizmos.DrawWireSphere(transform.position, attackRange);
         }
     }
+    */
+
+    public class MonsterUnit : AIBaseEntity
+    {
+        #region INITIALIZATION
+
+        [SerializeField] string monsterName;
+        
+        EnemyStatData monsterData;
+
+        EnemyProperty monsterProperty;
+        public EnemyProperty MonsterProperty { get { return monsterProperty; } }
+
+        private NavMeshAgent nav;
+        public NavMeshAgent Nav { get { return nav; } }
+
+        private Vector3 initialPosition;
+        public Vector3 InitialPosition { get { return initialPosition; } }
+
+        public Transform target;
+
+        public MeshRenderer meshRenderer;
+
+        public Collider mosnterCollider;
+        #endregion
+
+        public override void Setup()
+        {
+            base.Setup();
+            monsterData = DB.GetEnemyData(monsterName);
+            gameObject.name = $"{ID}_{monsterName}";
+            monsterProperty = monsterData.Property;
+
+            nav = GetComponent<NavMeshAgent>();
+            initialPosition = transform.localPosition;
+            target = GameObject.FindWithTag("Player").transform;
+
+            meshRenderer = GetComponent<MeshRenderer>();
+            mosnterCollider = GetComponent<Collider>();
+        }
+
+
+        public override void Updated()
+        {
+            
+        }
+    }
 
 }
 
@@ -202,7 +256,7 @@ namespace Scripts.Game.Dungeon.Unit
     }
 
 }*/
-
+    
 /// <summary>
 /// 몬스터 기준 적 쫓는 함수
 /// navMesh 사용. 바닥을 static으로 설정해야 함.
