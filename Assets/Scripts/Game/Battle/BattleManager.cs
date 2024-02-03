@@ -1,4 +1,4 @@
-﻿using Scripts.Manager;
+using Scripts.Manager;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
@@ -30,15 +30,10 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
-    public enum BattleState { PLAYERTURN, ENEMYTURN, WIN, LOSE, INBATTLE = PLAYERTURN & ENEMYTURN }  //전투상태 열거형
+    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum TurnState { START, PROCESSING, END } // 턴 상태 열거형
-    public bool IsAttacked { get; set; } // 나중에 던전쪽으로 빼는게 나을듯
-
-    private bool isProcessing = false; // processing 상태를 알려주는 변수
-
     public BattleState bState { get; set; }
-    public TurnState tState { get; set; }
 
     public ActMenu actmenu;
 
@@ -52,11 +47,15 @@ public class BattleManager : MonoBehaviour
     private GameObject[] enemyPrefab = new GameObject[4];
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
+
+    public bool isEncounter;
+    public int TurnCount;
+    public GameObject endcanvas;
     private void Awake()
     {
-        bState = BattleState.INBATTLE;
-        tState = TurnState.START;
-        isProcessing = false;
+        endcanvas.SetActive(false);
+        bState = BattleState.START;      
+
         SpawnCount = 0;
         SetupBattle();
     }
@@ -73,8 +72,13 @@ public class BattleManager : MonoBehaviour
         }
         EnemySpawn(Define_Battle.Enemy_Type.Rabbit); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
 
-        TurnStart();
-        StartCoroutine(BattleSequenceCor());
+
+        if (isEncounter) //첫 턴 플로우차트
+        {
+            float random = UnityEngine.Random.value;
+            if (random < 0.7f) { bState = BattleState.ENEMYTURN; }
+            else { bState = BattleState.SECONDTURN; }
+        }
     }
 
     private void PlayerSpawn() //플레이어 위치에 맞게 소환
@@ -107,7 +111,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void TurnStart() //플레이어끼리만 비교해놓음
+    private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
         Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
 
@@ -125,112 +129,48 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    private void SecondTurnOrder()
+    {
+
+    }
+
     private void Update()
     {
-        if(bState == BattleState.INBATTLE) // 전투상황
-        {
-            if (tState == TurnState.START) //전투 시작 처리
-            {
-                tState = TurnState.PROCESSING;
-            }
-            else if (tState == TurnState.PROCESSING) // 전투 중 처리
-            {
-                if(!isProcessing)
-                {
-                    isProcessing = true;
-                    
-                }
-            }
-            else if (tState == TurnState.END) // 전투 마침 처리
-            {
-
-            }
-        }
-        else if(bState == BattleState.WIN) // 전투 승리 처리
+        if(bState == BattleState.START)
         {
 
         }
-        else if(bState == BattleState.LOSE) // 전투 패배 처리
+
+        if(bState == BattleState.PLAYERTURN)
         {
 
         }
-    }
 
-    void TurnPriority() // 선공권 처리 함수
-    {
-        if(true) // 플레이어의 민첩이 높을때 // 임시코드
+        if(bState == BattleState.ENEMYTURN)
         {
-            bState = BattleState.PLAYERTURN;
 
         }
-        else // 적의 민첩이 높을때
+
+        if(bState == BattleState.SECONDTURN)
         {
-            bState = BattleState.ENEMYTURN;
 
         }
-    }
-    IEnumerator BattleSequenceCor()
-    {
-        if(IsAttacked == false) // 적 심볼과 충돌여부 처리
+
+        if(bState == BattleState.WIN)
         {
-                            //70퍼 확률로 적이 공격(미구현)
-            TurnPriority();
-        }
-        else
-        {
-                            //우리팀 공격권 한번 처리(미구현)
-            TurnPriority();
+
         }
 
-        if (bState == BattleState.PLAYERTURN) // 플레이어 턴
+        if(bState == BattleState.LOSE)
         {
-            yield return selectAction(); // 플레이어 행동 코루틴 실행
-            if(true) //적 체력이 0일때 // 임시코드
-            {
-                bState = BattleState.WIN;
-            }
-            bState = BattleState.ENEMYTURN;
+
         }
-        else if (bState == BattleState.ENEMYTURN)
+
+        if(bState == BattleState.END)
         {
-            yield return enemySelectAction(); // 적 행동 코루틴 실행
-            if(true) // 플레이어 체력이 0일때 // 임시코드
-            {
-                bState = BattleState.LOSE;
-            }
-            bState = BattleState.PLAYERTURN;
+            endcanvas.SetActive(true);
+            return;
         }
-        
-    }
-
-
-    IEnumerator selectAction() // 임시함수
-    {
-        while (bState == BattleState.PLAYERTURN)
-        {
-            if (Input.GetKey(KeyCode.A))
-            {
-
-            }
-            if (Input.GetKey(KeyCode.B))
-            {
-
-            }
-            if (Input.GetKey(KeyCode.X))
-            {
-
-            }
-            if (Input.GetKey(KeyCode.Y))
-            {
-
-            }
-            yield return null;
-        }
-    }
-
-    IEnumerator enemySelectAction() // 임시함수
-    {
-        yield return null;
     }
 
 }
