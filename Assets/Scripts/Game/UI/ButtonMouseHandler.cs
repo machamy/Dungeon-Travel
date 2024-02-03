@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ButtonSelection : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class ButtonMouseHandler : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private GameObject selectedButton;
 

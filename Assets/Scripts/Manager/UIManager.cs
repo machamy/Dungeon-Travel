@@ -61,24 +61,19 @@ namespace Scripts.Manager
         }
 
 
-        public InputAction mainNavigation, yNavigation;
         public void init()
         {
             DontDestroyOnLoad(gameObject);
-            InputActionClass input = new InputActionClass();
-            mainNavigation = input.MainUI.MainNavigate;
-            yNavigation = input.MainUI.YNavigate;
         }
 
 
         public void SetUI(State state, GameObject enableUI, GameObject disableUI,
-            GameObject firstSelectButton, bool isYNavigaion = false)
+            GameObject firstSelectButton)
         {
             currentState = state;
             enableUI?.SetActive(true);
             disableUI?.SetActive(false);
             SelectButton(firstSelectButton);
-            SelectNavigate(isYNavigaion);
         }
 
         public void SelectButton(GameObject button) =>
@@ -90,9 +85,9 @@ namespace Scripts.Manager
             EventSystem.current.SetSelectedGameObject(button);
         }
 
-        public void SelectNavigate(bool isYNavigation) =>
+        public void SelectNavigate(InputActionReference navigation) =>
             ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move =
-            InputActionReference.Create(isYNavigation ? yNavigation : mainNavigation);
+            InputActionReference.Create(navigation);
 
         public string GetSelectedButtonName()
         {
@@ -141,21 +136,32 @@ namespace Scripts.Manager
         public void GetInventoryItem(GameObject prefab, GameObject parent)
         {
             ClearChildren(parent);
-            bool isFirstItem = true;
+            int posN = 0; int length = UIDB.inventoryItemList.Count;
             foreach (string itemName in UIDB.inventoryItemList)
             {
-                GameObject itemButton = Instantiate(prefab);
-                itemButton.transform.SetParent(parent.transform);
+                GameObject buttonPrefab = Instantiate(prefab);
+                buttonPrefab.transform.SetParent(parent.transform);
 
-                itemButton.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
-                itemButton.GetComponentInChildren<Button>().onClick.AddListener
-                    (() => SelectButton(itemButton.transform.GetChild(1).gameObject));
+                Button button = buttonPrefab.GetComponentInChildren<Button>();
+                Navigation navigation = button.navigation;
 
-                if (isFirstItem)
+                buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
+                button.onClick.AddListener (() => 
+                    SelectButton(buttonPrefab.transform.GetChild(1).gameObject));
+
+                if (posN == 0)
                 {
-                    SelectButton(itemButton.transform.GetChild(1).gameObject);
-                    isFirstItem = false;
+                    SelectButton(buttonPrefab.transform.GetChild(1).gameObject);
+                    //navigation.mode = Navigation.Mode.Explicit;
                 }
+                if (posN == length - 1)
+                {
+                    navigation.mode = Navigation.Mode.Explicit;
+                    navigation.selectOnUp = buttonPrefab.transform.parent.
+                        GetChild(length - 2).GetComponentInChildren<Button>();
+                    button.navigation = navigation;
+                }
+                posN++;
             }
         }
 

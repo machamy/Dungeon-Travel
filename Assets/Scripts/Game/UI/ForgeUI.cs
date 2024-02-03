@@ -41,10 +41,10 @@ public class ForgeUI : MonoBehaviour
     public void Weapon(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIManager.State.ForgeWeapon,
-            tableContainer, disableUI, weaponFirstSelect, true);
+            tableContainer, disableUI, weaponFirstSelect);
     }
 
-    public void OnXNavigate(InputValue value)
+    public void OnXMove(InputValue value)
     {
         if (UIManager.Instance.currentState != UIManager.State.ForgeWeapon) return;
 
@@ -74,7 +74,7 @@ public class ForgeUI : MonoBehaviour
     public void Talk()
     {
         UIManager.Instance.SetUI(UIManager.State.ForgeTalk,
-            talkContainer, menuContainer, null, true);
+            talkContainer, menuContainer, null);
 
         bottomPanel.SetActive(false);
 

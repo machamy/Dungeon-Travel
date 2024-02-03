@@ -11,7 +11,7 @@ using Scripts.Manager;
 
 public class MainUI : MonoBehaviour
 {
-    public GameObject mainMenuContainer, menuContainer, itemContainer;
+    public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer;
     public GameObject placeFirstSelect, menuFirstSelect;
 
     public GameObject itemButtonPrefab, itemButtonParent;
@@ -31,7 +31,7 @@ public class MainUI : MonoBehaviour
     public void Place(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIManager.State.MainPlace,
-            null, disableUI, placeFirstSelect);
+            placeContainer, disableUI, placeFirstSelect);
     }
 
     public void Menu(GameObject disableUI)
@@ -44,7 +44,7 @@ public class MainUI : MonoBehaviour
     {
         if (UIManager.Instance.currentState != UIManager.State.MainPlace) return;
         mainMenuContainer.SetActive(true);
-        Menu(null);
+        Menu(placeContainer);
     }
 
     public void Item(GameObject disableUI)
