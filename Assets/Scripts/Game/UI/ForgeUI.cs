@@ -11,8 +11,8 @@ using Scripts.Manager;
 
 public class ForgeUI : MonoBehaviour
 {
-    public GameObject menuContainer, tableContainer;
-    public GameObject askBuyContainer, askExitContainer, talkContainer;
+    public GameObject menuContainer, tableContainer, askBuyContainer,
+        askExitContainer, talkContainer;
     public GameObject bottomPanel;
     public GameObject menuFirstSelect, weaponFirstSelect, askBuyFirstSelect, askExitFirstSelect;
 
@@ -27,12 +27,12 @@ public class ForgeUI : MonoBehaviour
 
     private void Awake()
     {
-        UIManager.Instance.currentState = UIManager.State.ForgeMenu;
+        UIManager.Instance.currentState = UIDB.State.Forge_Menu;
     }
 
     public void Menu(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIManager.State.ForgeMenu,
+        UIManager.Instance.SetUI(UIDB.State.Forge_Menu,
             menuContainer, disableUI, menuFirstSelect);
 
         bottomPanel.SetActive(true);
@@ -40,19 +40,19 @@ public class ForgeUI : MonoBehaviour
 
     public void Weapon(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIManager.State.ForgeWeapon,
+        UIManager.Instance.SetUI(UIDB.State.Forge_Weapon,
             tableContainer, disableUI, weaponFirstSelect);
     }
 
     public void OnXMove(InputValue value)
     {
-        if (UIManager.Instance.currentState != UIManager.State.ForgeWeapon) return;
+        if (UIManager.Instance.currentState != UIDB.State.Forge_Weapon) return;
 
-        int intvalue = (int)value.Get<float>();
-        if (intvalue == 0) return;
-        if (currentType + intvalue < 0 || currentType + intvalue > 2) return;
+        int axis = (int)value.Get<float>();
+        if (axis == 0) return;
+        if (currentType + axis < 0 || currentType + axis > 2) return;
 
-        SwitchType(currentType + intvalue);
+        SwitchType(currentType + axis);
     }
 
     public void SwitchType(int value)
@@ -65,7 +65,7 @@ public class ForgeUI : MonoBehaviour
 
     public void AskBuy(string itemName)
     {
-        UIManager.Instance.SetUI(UIManager.State.ForgeAskBuy,
+        UIManager.Instance.SetUI(UIDB.State.Forge_AskBuy,
             askBuyContainer, null, askBuyFirstSelect);
 
         itemNameText.text = "You wanna buy " + itemName + "?";
@@ -73,7 +73,7 @@ public class ForgeUI : MonoBehaviour
 
     public void Talk()
     {
-        UIManager.Instance.SetUI(UIManager.State.ForgeTalk,
+        UIManager.Instance.SetUI(UIDB.State.Forge_Talk,
             talkContainer, menuContainer, null);
 
         bottomPanel.SetActive(false);
@@ -84,7 +84,7 @@ public class ForgeUI : MonoBehaviour
 
     public void AskExit()
     {
-        UIManager.Instance.SetUI(UIManager.State.ForgeAskExit,
+        UIManager.Instance.SetUI(UIDB.State.Forge_AskExit,
             askExitContainer, null, askExitFirstSelect);
     }
 
@@ -92,19 +92,19 @@ public class ForgeUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.ForgeAskBuy:
+            case UIDB.State.Forge_AskBuy:
                 Weapon(askBuyContainer); break;
 
-            case UIManager.State.ForgeWeapon:
+            case UIDB.State.Forge_Weapon:
                 Menu(tableContainer); break;
 
-            case UIManager.State.ForgeTalk:
+            case UIDB.State.Forge_Talk:
                 Menu(talkContainer); break;
 
-            case UIManager.State.ForgeAskExit:
+            case UIDB.State.Forge_AskExit:
                 Menu(askExitContainer); break;
 
-            case UIManager.State.ForgeMenu:
+            case UIDB.State.Forge_Menu:
                 AskExit(); break;
         }
     }
@@ -113,7 +113,7 @@ public class ForgeUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.ForgeTalk:
+            case UIDB.State.Forge_Talk:
                 Menu(talkContainer); break;
         }
     }
@@ -122,7 +122,7 @@ public class ForgeUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.ForgeTalk:
+            case UIDB.State.Forge_Talk:
                 Menu(talkContainer); break;
         }
     }

@@ -17,33 +17,14 @@ namespace Scripts.Manager
     {
         public const string NAME = "@UI";
 
-        [HideInInspector] public State currentState;
-        public enum State
-        {
-            ForgeMenu,
-            ForgeWeapon,
-            ForgeAskBuy,
-            ForgeTalk,
-            ForgeAskExit,
-            
-            MainPlace,
-            MainMenu,
-            MainItem,
-            MainSkill,
-            MainEquip,
-            MainStatus,
-            MainParty,
-            MainConfig
-
-        }
-
+        [HideInInspector] public UIDB.State currentState;
+        
 
         private static UIManager instance;
         public static UIManager Instance
         {
             get
             {
-                // 없을경우 생성
                 if (instance == null)
                 {
                     GameObject root = GameObject.Find(NAME);
@@ -67,7 +48,7 @@ namespace Scripts.Manager
         }
 
 
-        public void SetUI(State state, GameObject enableUI, GameObject disableUI,
+        public void SetUI(UIDB.State state, GameObject enableUI, GameObject disableUI,
             GameObject firstSelectButton)
         {
             currentState = state;
@@ -77,17 +58,24 @@ namespace Scripts.Manager
         }
 
         public void SelectButton(GameObject button) =>
-            StartCoroutine(WaitForSelectButton(button));
+            EventSystem.current.SetSelectedGameObject(button);
 
-        public IEnumerator WaitForSelectButton(GameObject button)
+        /*public IEnumerator WaitForSelectButton(GameObject button)
         {
             yield return new WaitForSeconds(0.001f);
             EventSystem.current.SetSelectedGameObject(button);
-        }
+        }*/
 
         public void SelectNavigate(InputActionReference navigation) =>
             ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move =
             InputActionReference.Create(navigation);
+
+        public GameObject GetSelectedButton()
+        {
+            if (EventSystem.current.currentSelectedGameObject != null)
+                return EventSystem.current.currentSelectedGameObject;
+            return null;
+        }
 
         public string GetSelectedButtonName()
         {
@@ -98,13 +86,11 @@ namespace Scripts.Manager
 
         public string GetSelectedButtonDescription()
         {
-            string buttonName;
-            if (EventSystem.current.currentSelectedGameObject != null)
-            {
-                buttonName = EventSystem.current.currentSelectedGameObject.name;
-                if (UIDB.buttonDescription.ContainsKey(buttonName))
-                    return UIDB.buttonDescription[buttonName];
-            }
+            GameObject button = GetSelectedButton();
+            if (button == null) return null;
+
+            if (UIDB.buttonDescription.ContainsKey(button.name))
+                return UIDB.buttonDescription[button.name];
             return null;
         }
 
@@ -112,16 +98,16 @@ namespace Scripts.Manager
         private string currentItemName;
         public string GetSelectedItemDescription()
         {
+            GameObject button = GetSelectedButton();
+            if (button == null) return null;
+
             string itemName;
-            if (EventSystem.current.currentSelectedGameObject != null)
+            itemName = button.GetComponentInChildren<TextMeshProUGUI>().text;
+
+            if (UIDB.allItemList.ContainsKey(itemName))
             {
-                itemName = EventSystem.current.currentSelectedGameObject.
-                    GetComponentInChildren<TextMeshProUGUI>().text;
-                if (UIDB.allItemList.ContainsKey(itemName))
-                {
-                    currentItemName = itemName;
-                    return UIDB.allItemList[itemName].description;
-                }
+                currentItemName = itemName;
+                return UIDB.allItemList[itemName].description;
             }
             if (currentItemName == null) return null;
             return UIDB.allItemList[currentItemName].description;
@@ -145,6 +131,7 @@ namespace Scripts.Manager
                 Button button = buttonPrefab.GetComponentInChildren<Button>();
                 Navigation navigation = button.navigation;
 
+                buttonPrefab.name = itemName;
                 buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
                 button.onClick.AddListener (() => 
                     SelectButton(buttonPrefab.transform.GetChild(1).gameObject));
@@ -152,7 +139,6 @@ namespace Scripts.Manager
                 if (posN == 0)
                 {
                     SelectButton(buttonPrefab.transform.GetChild(1).gameObject);
-                    //navigation.mode = Navigation.Mode.Explicit;
                 }
                 if (posN == length - 1)
                 {
@@ -165,6 +151,19 @@ namespace Scripts.Manager
             }
         }
 
+        /*public void ScrollButton(InputValue value)
+        {
+            int axis = (int)value.Get<Vector2>().y;
+            if (axis == 0) return;
+            axis /= Mathf.Abs(axis);
+
+            GameObject button = GetSelectedButton();
+            if (button == null) return;
+            int index = button.transform.GetSiblingIndex() - axis;
+            if (index == -1 || index == button.transform.parent.childCount) return;
+
+            SelectButton(button.transform.parent.GetChild(index).gameObject);
+        }*/
 
     }
 }

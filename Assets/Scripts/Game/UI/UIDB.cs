@@ -6,6 +6,27 @@ using UnityEngine.EventSystems;
 
 public class UIDB : MonoBehaviour
 {
+
+    public enum State
+    {
+        Forge_Menu,
+            Forge_Weapon,
+                Forge_AskBuy,
+            Forge_Talk,
+            Forge_AskExit,
+
+        Main_Place,
+            Main_Menu,
+                Main_Item,
+                Main_Skill,
+                Main_Equip,
+                Main_Status,
+                Main_Party,
+                Main_Config
+
+    }
+
+
     public static Dictionary<string, string> buttonDescription = new()
     {
         {"Weapon", "Buy Weapons" },
@@ -13,7 +34,14 @@ public class UIDB : MonoBehaviour
         {"Upgrade", "Upgrade Weapons" },
         {"Sell", "Sell Items" },
         {"Talk", "Talk with Owner" },
-        {"Exit", "Go back to Shops" },
+        {"Exit", "Go Back to Shops" },
+
+        {"Item", "Use or Delete Items" },
+        {"Skill", "Use Skills" },
+        {"Equip", "Change Equipments" },
+        {"Status", "See Status of Characters" },
+        {"Party", "Change Party Organization" },
+        {"Config", "Change Configuration" },
     };
 
     public static List<string> talkList = new()
@@ -54,12 +82,17 @@ public class UIDB : MonoBehaviour
         "Phoenix's Tail",
         "Elixer",
         "Potion",
+        "HighPotion",
+        "Phoenix's Tail",
+        "Elixer",
         "Potion",
+        "HighPotion",
+        "Phoenix's Tail",
+        "Elixer",
         "Potion",
-        "Potion",
-        "Potion",
-        "Potion",
-        "Potion",
+        "HighPotion",
+        "Phoenix's Tail",
+        "Elixer",
     };
 
 

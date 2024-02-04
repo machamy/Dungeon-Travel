@@ -856,6 +856,15 @@ namespace UnityEngine.InputSystem
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""ScrollWheel"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""5b9f75d2-0c3e-4d52-aa14-779497a1ec89"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1309,6 +1318,17 @@ namespace UnityEngine.InputSystem
                     ""action"": ""XMove"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea110f12-938e-45d0-adfd-be27b9e65ae7"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ScrollWheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1372,6 +1392,7 @@ namespace UnityEngine.InputSystem
             m_MainUI_Cancel = m_MainUI.FindAction("Cancel", throwIfNotFound: true);
             m_MainUI_Point = m_MainUI.FindAction("Point", throwIfNotFound: true);
             m_MainUI_Click = m_MainUI.FindAction("Click", throwIfNotFound: true);
+            m_MainUI_ScrollWheel = m_MainUI.FindAction("ScrollWheel", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -1637,6 +1658,7 @@ namespace UnityEngine.InputSystem
         private readonly InputAction m_MainUI_Cancel;
         private readonly InputAction m_MainUI_Point;
         private readonly InputAction m_MainUI_Click;
+        private readonly InputAction m_MainUI_ScrollWheel;
         public struct MainUIActions
         {
             private @InputActionClass m_Wrapper;
@@ -1649,6 +1671,7 @@ namespace UnityEngine.InputSystem
             public InputAction @Cancel => m_Wrapper.m_MainUI_Cancel;
             public InputAction @Point => m_Wrapper.m_MainUI_Point;
             public InputAction @Click => m_Wrapper.m_MainUI_Click;
+            public InputAction @ScrollWheel => m_Wrapper.m_MainUI_ScrollWheel;
             public InputActionMap Get() { return m_Wrapper.m_MainUI; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -1682,6 +1705,9 @@ namespace UnityEngine.InputSystem
                 @Click.started += instance.OnClick;
                 @Click.performed += instance.OnClick;
                 @Click.canceled += instance.OnClick;
+                @ScrollWheel.started += instance.OnScrollWheel;
+                @ScrollWheel.performed += instance.OnScrollWheel;
+                @ScrollWheel.canceled += instance.OnScrollWheel;
             }
 
             private void UnregisterCallbacks(IMainUIActions instance)
@@ -1710,6 +1736,9 @@ namespace UnityEngine.InputSystem
                 @Click.started -= instance.OnClick;
                 @Click.performed -= instance.OnClick;
                 @Click.canceled -= instance.OnClick;
+                @ScrollWheel.started -= instance.OnScrollWheel;
+                @ScrollWheel.performed -= instance.OnScrollWheel;
+                @ScrollWheel.canceled -= instance.OnScrollWheel;
             }
 
             public void RemoveCallbacks(IMainUIActions instance)
@@ -1776,6 +1805,7 @@ namespace UnityEngine.InputSystem
             void OnCancel(InputAction.CallbackContext context);
             void OnPoint(InputAction.CallbackContext context);
             void OnClick(InputAction.CallbackContext context);
+            void OnScrollWheel(InputAction.CallbackContext context);
         }
     }
 }

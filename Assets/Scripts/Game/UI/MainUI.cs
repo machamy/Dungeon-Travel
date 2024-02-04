@@ -11,13 +11,15 @@ using Scripts.Manager;
 
 public class MainUI : MonoBehaviour
 {
-    public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer;
+    public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer,
+        useDeleteContainer;
+    public GameObject blockPartyPanel;
     public GameObject placeFirstSelect, menuFirstSelect;
 
     public GameObject itemButtonPrefab, itemButtonParent;
 
     private string selectedButtonName, selectedItemName, currentItemName;
-    public TextMeshProUGUI itemDescriptionText;
+    public TextMeshProUGUI buttonDescriptionText, itemDescriptionText;
 
     public Image dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
@@ -25,31 +27,31 @@ public class MainUI : MonoBehaviour
 
     private void Awake()
     {
-        UIManager.Instance.currentState = UIManager.State.MainPlace;
+        UIManager.Instance.currentState = UIDB.State.Main_Place;
     }
 
     public void Place(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIManager.State.MainPlace,
+        UIManager.Instance.SetUI(UIDB.State.Main_Place,
             placeContainer, disableUI, placeFirstSelect);
     }
 
     public void Menu(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIManager.State.MainMenu,
+        UIManager.Instance.SetUI(UIDB.State.Main_Menu,
             menuContainer, disableUI, menuFirstSelect);
     }
 
     public void OnMenu()
     {
-        if (UIManager.Instance.currentState != UIManager.State.MainPlace) return;
+        if (UIManager.Instance.currentState != UIDB.State.Main_Place) return;
         mainMenuContainer.SetActive(true);
         Menu(placeContainer);
     }
 
     public void Item(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIManager.State.MainItem,
+        UIManager.Instance.SetUI(UIDB.State.Main_Item,
             itemContainer, disableUI, null);
 
         UIManager.Instance.GetInventoryItem(itemButtonPrefab, itemButtonParent);
@@ -64,9 +66,9 @@ public class MainUI : MonoBehaviour
     {
         switch (UIManager.Instance.currentState)
         {
-            case UIManager.State.MainMenu:
+            case UIDB.State.Main_Menu:
                 Place(mainMenuContainer); break;
-            case UIManager.State.MainItem:
+            case UIDB.State.Main_Item:
                 Menu(itemContainer); break;
         }
     }
@@ -85,6 +87,12 @@ public class MainUI : MonoBehaviour
         {
             
         }
+    }
+
+    public void OnScrollWheel(InputValue value)
+    {
+        if (UIManager.Instance.currentState != UIDB.State.Main_Item) return;
+        AutoScroll.Instance.ScrollWheel(value);
     }
 
     private void Update()
@@ -106,6 +114,7 @@ public class MainUI : MonoBehaviour
                 shopCircle.color = yellow; break;
         }
 
+        buttonDescriptionText.text = UIManager.Instance.GetSelectedButtonDescription();
         itemDescriptionText.text = UIManager.Instance.GetSelectedItemDescription();
     }
 
