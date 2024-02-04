@@ -5,6 +5,7 @@ using Scripts.Manager;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace Scripts.Game.Dungeon.Unit
 {
@@ -51,8 +52,17 @@ namespace Scripts.Game.Dungeon.Unit
 
         void playerMove()
         {
+            if (IsOnSlope())
+            {
+                var dir = GetSlopeDir(moveVec);
+                transform.position += dir * (speed * Time.deltaTime);
+                Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
+            }
+            else
+            {
+                transform.position += moveVec * (speed * Time.deltaTime);
+            }
             
-            transform.position += moveVec * (speed * Time.deltaTime);
             //rigid.velocity = Vector3.zero; 이거하면 계단에서 안내려옴
         }
 
@@ -92,10 +102,11 @@ namespace Scripts.Game.Dungeon.Unit
 
         private RaycastHit slopeHit;
         public float minSlopeAngle;
+        public float PlayerHeight;
         private bool IsOnSlope()
         {
-
-            if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.3f))
+            Debug.DrawRay(transform.position, Vector3.down * (PlayerHeight / 2 + 0.3f), Color.red);
+            if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, PlayerHeight/2+0.3f))
             {
                 float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
                 return angle < minSlopeAngle;
@@ -104,11 +115,10 @@ namespace Scripts.Game.Dungeon.Unit
             return false;
         }
 
-        /*private Vector3 GetSlopeDir()
-        {
-            return  Ve
-        }*/
-        
+        private Vector3 GetSlopeDir(Vector3 moveVector){
+            return Vector3.ProjectOnPlane(moveVector, slopeHit.normal);
+        }
+
         
         /// <summary>
         /// 사용안함
