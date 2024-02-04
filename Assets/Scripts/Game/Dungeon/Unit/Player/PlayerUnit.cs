@@ -149,9 +149,11 @@ namespace Scripts.Game.Dungeon.Unit
                 FocusUnit = iter.Current;
             }else //if (PlayerInteractionBox.unitSet.Count > 1)
             {
-               var bu = GetInteractionByRay();
+                //상호작용 가능한 오브젝트가 여러개인 경우 가운데에 있는 오브젝트 선택
+                var bu = GetInteractionByRay();
+                
                if(bu is null)
-                   bu = iter.Current;
+                   FocusUnit = iter.Current;
                else
                {
                    FocusUnit = bu;
