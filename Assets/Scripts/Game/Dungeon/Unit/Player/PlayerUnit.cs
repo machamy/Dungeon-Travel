@@ -208,6 +208,15 @@ namespace Scripts.Game.Dungeon.Unit
             }
         }
 
+        internal void OnStayOut(Collider other)
+        {
+            BaseInteractionUnit iu;
+            if (other.transform.CompareTag("Interaction") && other.transform.TryGetComponent(out iu))
+            {
+                iu.OnIntersectOut(this);
+            }
+        }
+
 
         private BaseInteractionUnit focusUnit;
 

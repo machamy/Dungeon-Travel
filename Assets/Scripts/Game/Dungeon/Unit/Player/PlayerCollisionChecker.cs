@@ -16,5 +16,10 @@ namespace Scripts.Game.Dungeon.Unit
             Debug.Log($"{other.name}");
             pu.OnStay(other);
         }
+
+        private void OnTriggerExit(Collider other)
+        {
+            pu.OnStayOut(other);
+        }
     }
 }
