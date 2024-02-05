@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Scripts.Game.Dungeon.Unit
 {
@@ -12,6 +13,7 @@ namespace Scripts.Game.Dungeon.Unit
         /// <param name="other"></param>
         private void OnTriggerStay(Collider other)
         {
+            Debug.Log($"{other.name}");
             pu.OnStay(other);
         }
     }

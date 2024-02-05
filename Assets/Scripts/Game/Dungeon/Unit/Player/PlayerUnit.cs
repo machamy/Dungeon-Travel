@@ -56,7 +56,7 @@ namespace Scripts.Game.Dungeon.Unit
             {
                 var dir = GetSlopeDir(moveVec);
                 transform.position += dir * (speed * Time.deltaTime);
-                Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
+                // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
             else
             {

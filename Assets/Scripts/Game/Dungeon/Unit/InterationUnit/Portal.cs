@@ -4,7 +4,7 @@ namespace Scripts.Game.Dungeon.Unit
 {
     public class Portal : BaseInteractionUnit
     {
-        public Transform Destination;
+        public Portal Destination;
         
         public override void Start()
         {
@@ -15,7 +15,8 @@ namespace Scripts.Game.Dungeon.Unit
         public override bool OnIntersect(PlayerUnit unit)
         {
             base.OnIntersect(unit);
-            unit.gameObject.transform.position = Destination.position;
+            Vector3 delta = transform.position - Destination.transform.position;
+            unit.gameObject.transform.position += delta;
             return true;
         }
     }
