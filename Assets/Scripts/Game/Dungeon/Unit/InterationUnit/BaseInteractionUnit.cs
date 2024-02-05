@@ -92,6 +92,16 @@ namespace Scripts.Game.Dungeon.Unit
         {
             return false;
         }
+        
+        /// <summary>
+        /// 겹치기에서 나갔을경우 실행된다
+        /// </summary>
+        /// <param name="unit">PlayerUnit 객체</param>
+        /// <returns>상호작용 여부</returns>
+        public virtual bool OnIntersectOut(PlayerUnit unit)
+        {
+            return false;
+        }
 
         private Renderer renderer;
         private List<Material> materialList = new List<Material>();
