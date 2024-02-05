@@ -98,7 +98,7 @@ namespace Scripts.Game.Dungeon.Unit
 
         public void OnFocusEvent(bool val)
         {
-            if (isHidden)
+            if (isHidden || this.renderer is null)
                 return;
             renderer = GetComponent<Renderer>();
 
