@@ -43,7 +43,7 @@ public class DB
     private string DB_NAME_ENEMY = "ENMY";
 
 
-    public static StatData GetStatData(ClassType _class, int lv)
+    public static StatData GetStatData(ClassType _class, int lv) 
     {
         return Instance.classStatData[_class][lv];
     }
