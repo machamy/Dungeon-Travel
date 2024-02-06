@@ -56,7 +56,7 @@ namespace Scripts.Game.Dungeon.Unit
             if (IsOnSlope())
             {
                 var dir = GetSlopeDir(moveVec);
-                dir = moveVec;
+                moveVec = dir.normalized;
                 // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
             transform.position += moveVec * (speed * Time.deltaTime);
@@ -67,7 +67,9 @@ namespace Scripts.Game.Dungeon.Unit
 
         void playerTurn()
         {
-            transform.LookAt(transform.position + moveVec);
+            Vector3 direction = moveVec;
+            direction.y = 0;
+            transform.LookAt(transform.position + direction);
             rigid.angularVelocity = Vector3.zero;
         }
 
