@@ -19,6 +19,7 @@ namespace Scripts.Game.Dungeon.Unit
         
         Rigidbody rigid;
         Vector3 moveVec;
+        public Vector3 MoveVector => moveVec;
         private GameManager gm;
         PlayerInput pInput;
         
@@ -55,13 +56,11 @@ namespace Scripts.Game.Dungeon.Unit
             if (IsOnSlope())
             {
                 var dir = GetSlopeDir(moveVec);
-                transform.position += dir * (speed * Time.deltaTime);
+                dir = moveVec;
                 // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
-            else
-            {
-                transform.position += moveVec * (speed * Time.deltaTime);
-            }
+            transform.position += moveVec * (speed * Time.deltaTime);
+
             
             //rigid.velocity = Vector3.zero; 이거하면 계단에서 안내려옴
         }
