@@ -14,6 +14,10 @@ public class Tree_Spirit : Enemy_Base
     {
         currentHp = enemyStatData.hp;
     }
+    public override float GetAgi()
+    {
+        return enemyStatData.agi;
+    }
     public override void EnemyAttack()
     {
         int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
@@ -27,8 +31,7 @@ public class Tree_Spirit : Enemy_Base
         switch (weight)
         {
             case 0: // 기본공격
-                AttackType myAttackType = AttackType.Penetrate;
-                SingleAttack(enemyStatData.atk, myAttackType);
+                SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
                 break;
             case 1: // 가르기
                 Split();
@@ -38,20 +41,22 @@ public class Tree_Spirit : Enemy_Base
                 break;
         }
     }
-    public override void EnemyDamaged()
+    public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-
+        currentHp -= atk;
+        if (currentHp <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public void Split()
     {
-        AttackType myAttackType = AttackType.Slash;
-        WideAttack(enemyStatData.atk, myAttackType);
+        WideAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
     }
     public void Root()
     {
-        AttackType myAttackType = AttackType.Penetrate;
-        DoubleAttack(enemyStatData.atk, myAttackType);
+        DoubleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
         // 낮은 확률로 기절
     }
 }

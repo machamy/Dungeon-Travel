@@ -9,9 +9,14 @@ public class Wild_Flower : Enemy_Base
     [HideInInspector]
     public float currentHp;
 
+
     public override void Init()
     {
         currentHp = enemyStatData.hp;
+    }
+    public override float GetAgi()
+    {
+        return enemyStatData.agi;
     }
     public override void EnemyAttack()
     {
@@ -24,8 +29,7 @@ public class Wild_Flower : Enemy_Base
         switch(weight)
         {
             case 0: // 기본공격
-                AttackType myAttackType = AttackType.Penetrate;
-                SingleAttack(enemyStatData.atk, myAttackType);
+                SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
                 break;
             case 1: // 가루뿌리기
                 Sprinkle_powder();
@@ -33,9 +37,14 @@ public class Wild_Flower : Enemy_Base
         }
         
     }
-    public override void EnemyDamaged()
+    public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-
+        currentHp -= atk;
+        if (currentHp <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     public void Sprinkle_powder()

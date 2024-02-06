@@ -9,9 +9,14 @@ public class Wolf : Enemy_Base
     [HideInInspector]
     public float currentHp;
 
+    
     public override void Init()
     {
         currentHp = enemyStatData.hp;
+    }
+    public override float GetAgi()
+    {
+        return enemyStatData.agi;
     }
     public override void EnemyAttack()
     {
@@ -24,23 +29,26 @@ public class Wolf : Enemy_Base
         switch (weight)
         {
             case 0: // 기본공격
-                AttackType myAttackType = AttackType.Slash;
-                SingleAttack(enemyStatData.atk, myAttackType);
+                SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
                 break;
             case 1: // 물어뜯기
                 Bite();
                 break;
         }
     }
-    public override void EnemyDamaged()
+    public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-
+        currentHp -= atk;
+        if (currentHp <= 0)
+        {
+            Destroy(gameObject);
+            return;
+        }
     }
 
     public void Bite()
     {
-        AttackType myAttackType = AttackType.Penetrate;
-        SingleAttack(enemyStatData.atk, myAttackType);
+        SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
         // 낮은 확률로 출혈
     }
 }
