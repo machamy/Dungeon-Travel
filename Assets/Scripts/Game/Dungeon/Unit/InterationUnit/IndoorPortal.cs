@@ -36,39 +36,38 @@ namespace Scripts.Game.Dungeon.Unit
             base.OnIntersectOut(unit);
             if (!isActive)
                 return false;
+            Debug.Log($"{name} : Activated {unit.name}");
             // InsidePortal.isActive = false;
-
-            float angle = Mathf.Abs(Vector3.Angle(transform.forward, unit.MoveVector));
-            
+            //isActive = false;
+            float angle = Mathf.Abs(Vector3.Angle(transform.right, unit.MoveVector));
+            Debug.Log(angle);
             if (angle < 90f)
             {
                 // 포탈의 방향으로 이동 => 순간이동
                 Vector3 delta = InsidePortal.transform.position - transform.position;
                 unit.gameObject.transform.position += delta;
+                Debug.Log(delta);
                 return true;
             }
-            else
-            {
-                // 이동방향이 포탈 방향 아님 => 순간이동 X
-                return false;
-            }
 
+            // 이동방향이 포탈 방향 아님 => 순간이동 X
+            return false;
         }
         
-        // /// <summary>
-        // /// 쿨타임 후 활성화
-        // /// </summary>
-        // /// <param name="time"></param>
-        // /// <returns></returns>
-        // private IEnumerator CooldownCo(float time)
-        // {
-        //     float currentCooldown = time;
-        //     while (currentCooldown > 0)
-        //     {
-        //         currentCooldown -= Time.deltaTime;
-        //         yield return null;
-        //     }
-        //     isActive = true;
-        // }
+        /// <summary>
+        /// 쿨타임 후 활성화
+        /// </summary>
+        /// <param name="time"></param>
+        /// <returns></returns>
+        private IEnumerator CooldownCo(float time)
+        {
+            float currentCooldown = time;
+            while (currentCooldown > 0)
+            {
+                currentCooldown -= Time.deltaTime;
+                yield return null;
+            }
+            isActive = true;
+        }
     }
 }
