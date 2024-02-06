@@ -15,7 +15,7 @@ using System.Runtime.CompilerServices;
 public class MainUI : MonoBehaviour
 {
     public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer;
-    public GameObject blockPartyPanel;
+    public GameObject blockPartyPanel, partyBlackPanel;
     public GameObject placeFirstSelect, menuFirstSelect, useDeleteFirstSelect,
         itemPartyFirstSelect;
 
@@ -26,7 +26,8 @@ public class MainUI : MonoBehaviour
     public TextMeshProUGUI buttonDescriptionText, itemDescriptionText;
 
     public Image dungeonCircle, guildCircle, shopCircle;
-    private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
+    private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f),
+        lightblue = new(0, 1, 1, 0.5f), blue = new(0, 0.5f, 1, 0.5f);
 
 
     private void Awake()
@@ -56,7 +57,6 @@ public class MainUI : MonoBehaviour
 
     public void Item(GameObject disableUI)
     {
-        Debug.Log("item");
         UIManager.Instance.SetUI(UIDB.State.Main_Item,
             itemContainer, disableUI, null);
 
@@ -66,18 +66,16 @@ public class MainUI : MonoBehaviour
     }
 
 
-    public void ItemUseDelete()
+    public void ItemUseDelete(GameObject disableUI)
     {
-        Debug.Log("itemud");
         UIManager.Instance.SetUI(UIDB.State.Main_ItemUseDelete,
-            null, null, useDeleteFirstSelect);
+            blockPartyPanel, disableUI, useDeleteFirstSelect);
     }
 
     public void ItemParty()
     {
-        Debug.Log("itemp");
         UIManager.Instance.SetUI(UIDB.State.Main_ItemParty,
-            null, null, itemPartyFirstSelect);
+            partyBlackPanel, blockPartyPanel, itemPartyFirstSelect);
     }
 
     public void OnCancel()
@@ -86,12 +84,16 @@ public class MainUI : MonoBehaviour
         {
             case UIDB.State.Main_Menu:
                 Place(mainMenuContainer); break;
+
             case UIDB.State.Main_Item:
                 Menu(itemContainer); break;
+
             case UIDB.State.Main_ItemUseDelete:
-                Item(null); break;
+                Item(null);
+                selectedItem.GetComponent<Image>().color = lightblue; break;
+
             case UIDB.State.Main_ItemParty:
-                ItemUseDelete(); break;
+                ItemUseDelete(partyBlackPanel); break;
         }
     }
 
@@ -120,7 +122,8 @@ public class MainUI : MonoBehaviour
 
             case UIDB.State.Main_Item:
                 selectedItem = UIManager.Instance.GetSelectedButton();
-                ItemUseDelete(); break;
+                selectedItem.GetComponent<Image>().color = blue;
+                ItemUseDelete(null); break;
 
             case UIDB.State.Main_ItemUseDelete:
                 switch (button)
