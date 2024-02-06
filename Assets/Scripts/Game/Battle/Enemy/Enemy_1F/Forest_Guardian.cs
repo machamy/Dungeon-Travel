@@ -15,11 +15,16 @@ public class Forest_Guardian : Enemy_Base
         currentHp = enemyStatData.hp;
         isReady = false;
     }
+    public override float GetAgi()
+    {
+        return enemyStatData.agi;
+    }
     public override void EnemyAttack()
     {
-        if (((currentHp) / (enemyStatData.hp) > 0.5f)&& isReady == false) // 아직 2페이즈 조건 모름
+        if (((currentHp) / (enemyStatData.hp) < 0.5f)&& isReady == false) // 아직 2페이즈 조건 모름
         {
             Berserk(); // 광화
+            isReady = true;
         }
         else // 광화를 제외한 상황
         {
@@ -34,10 +39,9 @@ public class Forest_Guardian : Enemy_Base
             switch (weight)
             {
                 case 0: // 기본공격
-                    AttackType myAttackType = AttackType.Penetrate;
-                    SingleAttack(enemyStatData.atk, myAttackType);
+                    SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
                     break;
-                case 1: // 발구르기
+                case 1: // 전방베기
                     Forward_Slash();
                     break;
                 case 2: // 종베기
@@ -48,20 +52,22 @@ public class Forest_Guardian : Enemy_Base
         }
 
     }
-    public override void EnemyDamaged()
+    public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-
+        currentHp -= atk;
+        if (currentHp <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
     public void Forward_Slash()
     {
-        AttackType myAttackType = AttackType.Slash;
-        ForwardAttack(enemyStatData.atk, myAttackType); // 전열공격
+        ForwardAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics); // 전열공격
         // 낮은 확률로 혼란
     }
     public void Cutter()
     {
-        AttackType myattackType = AttackType.Slash;
-        DoubleAttack(enemyStatData.atk, myattackType);
+        DoubleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
     }
     public void Berserk()
     {

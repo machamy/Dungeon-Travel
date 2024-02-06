@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Entity;
 using Unity.VisualScripting;
+using Scripts.Data;
+using static Enemy_Base;
 
 public class Unit : MonoBehaviour
 {
@@ -30,7 +32,7 @@ public class Unit : MonoBehaviour
         HUD.SetupHUD(maxHP, maxMP);
     }
 
-    public void TakeDamage(float damage)  //유닛 체력 계산
+    public void TakeDamage(float damage, AttackType attackType, AttackProperty attackProperty)  //유닛 체력 계산
     {
         if(isdead) return;
 

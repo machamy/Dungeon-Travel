@@ -17,5 +17,7 @@ public class Define_Battle
     public enum Enemy_Type
     {
         Rabbit,
+        Thief,
+
     }
 }

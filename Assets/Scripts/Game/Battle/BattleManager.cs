@@ -22,9 +22,8 @@ public class BattleManager : MonoBehaviour
                 if (bm == null)
                 {
                     bm = new GameObject("BattleSystem");
-                }
-
-                instance = bm.AddComponent<BattleManager>();
+                    instance = bm.AddComponent<BattleManager>();
+                }  
             }
             return instance;
         }
@@ -44,7 +43,7 @@ public class BattleManager : MonoBehaviour
     private HUDmanager[] playerHUD = new HUDmanager[6];
 
     private Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
-    private GameObject[] enemyPrefab = new GameObject[4];
+    public Enemy_Base[] enemyPrefab = new Enemy_Base[4];
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
 
@@ -97,11 +96,11 @@ public class BattleManager : MonoBehaviour
             Debug.Log("Player" + i + "세팅 완료");
         }
     }
-    private void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
+    public void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
         try
         {
-            enemyPrefab[SpawnCount] = Instantiate(Resources.Load<GameObject>($"BattlePrefabs/EnemyPrefabs/{enemy_Type}"));
+            enemyPrefab[SpawnCount] = Instantiate(Resources.Load<Enemy_Base>($"BattlePrefabs/EnemyPrefabs/{enemy_Type}"));
             enemyPrefab[SpawnCount].transform.position = EnemySpawnerPoints[SpawnCount].position;
             enemyPrefab[SpawnCount].transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
         }
@@ -131,7 +130,7 @@ public class BattleManager : MonoBehaviour
 
     private void SecondTurnOrder()
     {
-
+        float enemyAgi = enemyPrefab[0].GetAgi();
     }
 
     private void Update()
@@ -148,7 +147,7 @@ public class BattleManager : MonoBehaviour
 
         if(bState == BattleState.ENEMYTURN)
         {
-
+            
         }
 
         if(bState == BattleState.SECONDTURN)
@@ -166,7 +165,7 @@ public class BattleManager : MonoBehaviour
 
         }
 
-        if(bState == BattleState.END)
+        if (bState == BattleState.END)
         {
             endcanvas.SetActive(true);
             return;

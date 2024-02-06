@@ -15,6 +15,10 @@ public class Stone_golem : Enemy_Base
         currentHp = enemyStatData.hp;
         isReady = false;
     }
+    public override float GetAgi()
+    {
+        return enemyStatData.agi;
+    }
     public override void EnemyAttack()
     {
         if((currentHp)/(enemyStatData.hp) > 0.5f) // hp가 50퍼 초과일때
@@ -28,8 +32,7 @@ public class Stone_golem : Enemy_Base
             switch (weight)
             {
                 case 0: // 기본공격
-                    AttackType myAttackType = AttackType.Penetrate;
-                    SingleAttack(enemyStatData.atk, myAttackType);
+                    SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
                     break;
                 case 1: // 발구르기
                     Stomp();
@@ -49,14 +52,17 @@ public class Stone_golem : Enemy_Base
         }
         
     }
-    public override void EnemyDamaged()
+    public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-
+        currentHp -= atk;
+        if (currentHp <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
     public void Stomp()
     {
-        AttackType myAttackType = AttackType.Slash;
-        WideAttack(enemyStatData.atk, myAttackType);
+        WideAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
         // 낮은 확률로 혼란
     }
     public void Core_Active()
@@ -66,7 +72,6 @@ public class Stone_golem : Enemy_Base
     }
     public void Core_Laser()
     {
-        AttackType myattackType = AttackType.Flame;
-        DoubleAttack(enemyStatData.atk, myattackType);
+        DoubleAttack(enemyStatData.atk, AttackType.Flame, AttackProperty.Magic);
     }
 }

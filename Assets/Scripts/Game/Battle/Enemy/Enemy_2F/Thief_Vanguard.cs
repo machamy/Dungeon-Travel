@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thief : Enemy_Base
+public class Thief_Vanguard : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적");
+    EnemyStatData enemyStatData = DB.GetEnemyData("도적선봉대");
     [HideInInspector]
     public float currentHp;
 
@@ -27,11 +27,11 @@ public class Thief : Enemy_Base
 
         switch (weight)
         {
-            case 0: // 기본공격 //아직 안정해진듯
-               
+            case 0: // 기본공격
+                SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
                 break;
-            case 1: // 암습
-                Sneak_Attack();
+            case 1: // 베고 찌르기
+                Cut_Stab();
                 break;
         }
     }
@@ -45,9 +45,13 @@ public class Thief : Enemy_Base
         }
     }
 
-    public void Sneak_Attack()
+    public void Cut_Stab()
     {
-        SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
-        // 낮은 확률로 독
+        Unit unit;
+        int AttackRange = UnityEngine.Random.Range(0, BattleManager.Instance.playerPrefab.Length);
+        unit = BattleManager.Instance.playerPrefab[AttackRange].GetComponent<Unit>();
+
+        unit.TakeDamage(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
+        unit.TakeDamage(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
     }
 }

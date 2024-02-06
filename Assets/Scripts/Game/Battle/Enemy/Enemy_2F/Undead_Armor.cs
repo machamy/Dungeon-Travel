@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thief : Enemy_Base
+public class Undead_Armor : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적");
+    EnemyStatData enemyStatData = DB.GetEnemyData("죽지못한갑주");
     [HideInInspector]
     public float currentHp;
 
@@ -20,18 +20,23 @@ public class Thief : Enemy_Base
     public override void EnemyAttack()
     {
         int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
-        if (weight < 50)
+        if (weight < 33)
             weight = 0;
-        else
+        else if (weight < 66)
             weight = 1;
+        else
+            weight = 2;
 
         switch (weight)
         {
-            case 0: // 기본공격 //아직 안정해진듯
-               
+            case 0: // 기본공격
+                SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
                 break;
-            case 1: // 암습
-                Sneak_Attack();
+            case 1: // 전방베기
+                Forward_Slash();
+                break;
+            case 2: // 종베기
+                Cutter();
                 break;
         }
     }
@@ -41,13 +46,15 @@ public class Thief : Enemy_Base
         if (currentHp <= 0)
         {
             Destroy(gameObject);
-            return;
         }
     }
 
-    public void Sneak_Attack()
+    public void Forward_Slash()
     {
-        SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
-        // 낮은 확률로 독
+        ForwardAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
+    }
+    public void Cutter()
+    {
+        DoubleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
     }
 }

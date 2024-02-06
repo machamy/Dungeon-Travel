@@ -3,15 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thief : Enemy_Base
+public class Fallen_Queen : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적");
+    EnemyStatData enemyStatData = DB.GetEnemyData("몰락한여왕");
     [HideInInspector]
     public float currentHp;
-
+    private bool isReady;
     public override void Init()
     {
         currentHp = enemyStatData.hp;
+        isReady = false;
     }
     public override float GetAgi()
     {
@@ -19,6 +20,11 @@ public class Thief : Enemy_Base
     }
     public override void EnemyAttack()
     {
+        if (((currentHp) / (enemyStatData.hp) < 0.3f) && isReady == false) // 아직 2페이즈 조건 모름
+        {
+            Recall(); // 회상(패시브)
+            isReady = true;
+        }
         int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
         if (weight < 50)
             weight = 0;
@@ -27,11 +33,11 @@ public class Thief : Enemy_Base
 
         switch (weight)
         {
-            case 0: // 기본공격 //아직 안정해진듯
-               
+            case 0: // 기본공격
+                WideAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
                 break;
-            case 1: // 암습
-                Sneak_Attack();
+            case 1: // 쌍수베기
+                Scream();
                 break;
         }
     }
@@ -45,9 +51,12 @@ public class Thief : Enemy_Base
         }
     }
 
-    public void Sneak_Attack()
+    public void Recall() // 임시함수
     {
-        SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
-        // 낮은 확률로 독
+        currentHp += enemyStatData.hp * 0.5f;
+    }
+    public void Scream()
+    {
+        WideAttack(enemyStatData.atk, AttackType.Dark, AttackProperty.Magic);
     }
 }

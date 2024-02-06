@@ -18,6 +18,11 @@ public class Enemy_Base : MonoBehaviour
     {
 
     }
+
+    public virtual float GetAgi()
+    {
+        return 0;
+    }
     
     public virtual void EnemyAttack() // 오버라이딩
     {
@@ -26,7 +31,7 @@ public class Enemy_Base : MonoBehaviour
         switch(weight)
         {
             case 0:
-                SingleAttack(0,0);
+                SingleAttack(0,0,0);
                 break;
             case 1:
                 Skill1();
@@ -37,7 +42,7 @@ public class Enemy_Base : MonoBehaviour
         }
         //다른 부과효과 삽입
     }
-    public virtual void EnemyDamaged()
+    public virtual void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         // 적이 공격받았을때 처리하는 함수
         // 오버라이딩으로 각각 스크립트에서 약점,저항 처리
@@ -47,23 +52,23 @@ public class Enemy_Base : MonoBehaviour
     /// </summary>
     /// <param name="atk"></param>
     /// <param name="attackType"></param>
-    public void SingleAttack(float atk, AttackType attackType)
+    public void SingleAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         int AttackRange = UnityEngine.Random.Range(0, BattleManager.Instance.playerPrefab.Length);
         unit = BattleManager.Instance.playerPrefab[AttackRange].GetComponent<Unit>();
-        unit.TakeDamage(atk); // 아직 타입 전달은 미구현
+        unit.TakeDamage(atk,attackType,attackProperty);
     }
     /// <summary>
     /// 광역공격
     /// </summary>
     /// <param name="atk"></param>
     /// <param name="attackType"></param>
-    public void WideAttack(float atk, AttackType attackType)
+    public void WideAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         for(int i = 0; i < BattleManager.Instance.playerPrefab.Length; i++)
         {
-            unit = BattleManager.Instance.playerPrefab[i].GetComponent<Unit>(); 
-            unit.TakeDamage(atk);
+            unit = BattleManager.Instance.playerPrefab[i].GetComponent<Unit>();
+            unit.TakeDamage(atk, attackType, attackProperty);
         }
     }
     /// <summary>
@@ -71,7 +76,7 @@ public class Enemy_Base : MonoBehaviour
     /// </summary>
     /// <param name="atk"></param>
     /// <param name="attackType"></param>
-    public void DoubleAttack(float atk, AttackType attackType)
+    public void DoubleAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
 
 
@@ -81,7 +86,7 @@ public class Enemy_Base : MonoBehaviour
     /// </summary>
     /// <param name="atk"></param>
     /// <param name="attackType"></param>
-    public void ForwardAttack(float atk, AttackType attackType)
+    public void ForwardAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
 
     }
@@ -90,7 +95,7 @@ public class Enemy_Base : MonoBehaviour
     /// </summary>
     /// <param name="atk"></param>
     /// <param name="attackType"></param>
-    public void BackwardAttack(float atk, AttackType attackType)
+    public void BackwardAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
 
     }

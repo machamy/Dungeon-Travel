@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Thief : Enemy_Base
+public class Thief_Hunter : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적");
+    EnemyStatData enemyStatData = DB.GetEnemyData("도적궁수");
     [HideInInspector]
     public float currentHp;
 
@@ -27,11 +27,11 @@ public class Thief : Enemy_Base
 
         switch (weight)
         {
-            case 0: // 기본공격 //아직 안정해진듯
-               
+            case 0: // 기본공격
+                SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
                 break;
-            case 1: // 암습
-                Sneak_Attack();
+            case 1: // 실명 화살
+                Blind_Arrow();
                 break;
         }
     }
@@ -45,9 +45,9 @@ public class Thief : Enemy_Base
         }
     }
 
-    public void Sneak_Attack()
+    public void Blind_Arrow()
     {
-        SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
-        // 낮은 확률로 독
+        SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
+        // 낮은 확률로 2턴간 실명
     }
 }
