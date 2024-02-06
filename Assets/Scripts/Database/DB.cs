@@ -6,6 +6,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Scripts.Data;
 using Scripts.Entity;
+using UnityEngine;
 using UnityEngine.Events;
 
 
@@ -139,7 +140,7 @@ public class DB
         stats[0] = new StatData();
         for (int i = 1 ; i <= sheet.Rows.Count; i++)
         {
-            StatData stat = new StatData();
+            StatData stat = ScriptableObject.CreateInstance<StatData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => float.Parse((p ?? "0").ToString()));
             int lv = (int) row[(int)StatDataType.lv];
@@ -188,7 +189,7 @@ public class DB
         SkillData[] skills = new SkillData[sheet.Rows.Count+1];
         for (int i = 1; i <= sheet.Rows.Count; i++)
         {
-            SkillData skill = new SkillData();
+            SkillData skill = ScriptableObject.CreateInstance<SkillData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => (p ?? String.Empty).ToString());
             skill.skillType = row[(int)SkillDataType.무기유형];
@@ -249,7 +250,7 @@ public class DB
     {
         for(int i=1; i<sheet.Rows.Count; i++)
         {
-            EnemyStatData enemyStat = new EnemyStatData();
+            EnemyStatData enemyStat = ScriptableObject.CreateInstance<EnemyStatData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => float.Parse((p ?? "0").ToString()));
             enemyStat.name = Convert.ToString(row[(int)EnemyStatType.NAME]);

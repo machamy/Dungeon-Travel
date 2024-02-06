@@ -1,11 +1,12 @@
 ﻿using System;
 using Script.Data;
 using Script.Global;
+using UnityEngine;
 
 namespace Scripts.Data
 {
     [Serializable]
-    public class SkillData:IDBdata
+    public class SkillData:ScriptableObject, IDBdata
     {
         public string atttackType;
         public int rank;

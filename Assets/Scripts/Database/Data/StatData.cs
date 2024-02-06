@@ -1,6 +1,7 @@
 ﻿using System;
 using Script.Data;
 using Script.Global;
+using UnityEngine;
 
 namespace Scripts.Data
 {
@@ -9,7 +10,7 @@ namespace Scripts.Data
     /// 스탯
     /// </summary>
     [Serializable]
-    public class StatData :IDBdata, ICloneable
+    public class StatData :ScriptableObject, IDBdata, ICloneable
     {
         //1차 스탯
         /// <summary>

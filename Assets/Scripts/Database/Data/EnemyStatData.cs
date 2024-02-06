@@ -1,3 +1,4 @@
+using Script.Data;
 using Scripts.Data;
 using System;
 using System.Collections;
@@ -5,7 +6,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class EnemyStatData
+public class EnemyStatData : ScriptableObject, IDBdata
 {
     /// <summary>
     /// 적 이름
