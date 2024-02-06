@@ -10,6 +10,9 @@ using JetBrains.Annotations;
 using UnityEngine.UI;
 using UnityEditor;
 using TMPro;
+using System;
+using UnityEngine.Events;
+using System.Runtime.CompilerServices;
 
 namespace Scripts.Manager
 {
@@ -47,7 +50,7 @@ namespace Scripts.Manager
             DontDestroyOnLoad(gameObject);
         }
 
-
+        
         public void SetUI(UIDB.State state, GameObject enableUI, GameObject disableUI,
             GameObject firstSelectButton)
         {
@@ -57,14 +60,15 @@ namespace Scripts.Manager
             SelectButton(firstSelectButton);
         }
 
-        public void SelectButton(GameObject button) =>
-            EventSystem.current.SetSelectedGameObject(button);
-
-        /*public IEnumerator WaitForSelectButton(GameObject button)
+        /*private bool cooltime = true; 
+        public IEnumerator WaitForCooltime()
         {
             yield return new WaitForSeconds(0.001f);
-            EventSystem.current.SetSelectedGameObject(button);
+            cooltime = true;
         }*/
+
+        public void SelectButton(GameObject button) =>
+            EventSystem.current.SetSelectedGameObject(button);
 
         public void SelectNavigate(InputActionReference navigation) =>
             ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move =
@@ -93,7 +97,6 @@ namespace Scripts.Manager
                 return UIDB.buttonDescription[button.name];
             return null;
         }
-
 
         private string currentItemName;
         public string GetSelectedItemDescription()
@@ -133,8 +136,6 @@ namespace Scripts.Manager
 
                 buttonPrefab.name = itemName;
                 buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
-                button.onClick.AddListener (() => 
-                    SelectButton(buttonPrefab.transform.GetChild(1).gameObject));
 
                 if (posN == 0)
                 {
@@ -149,21 +150,9 @@ namespace Scripts.Manager
                 }
                 posN++;
             }
+
+
         }
-
-        /*public void ScrollButton(InputValue value)
-        {
-            int axis = (int)value.Get<Vector2>().y;
-            if (axis == 0) return;
-            axis /= Mathf.Abs(axis);
-
-            GameObject button = GetSelectedButton();
-            if (button == null) return;
-            int index = button.transform.GetSiblingIndex() - axis;
-            if (index == -1 || index == button.transform.parent.childCount) return;
-
-            SelectButton(button.transform.parent.GetChild(index).gameObject);
-        }*/
 
     }
 }

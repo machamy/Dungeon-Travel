@@ -18,6 +18,8 @@ public class UIDB : MonoBehaviour
         Main_Place,
             Main_Menu,
                 Main_Item,
+                    Main_ItemUseDelete,
+                        Main_ItemParty,
                 Main_Skill,
                 Main_Equip,
                 Main_Status,

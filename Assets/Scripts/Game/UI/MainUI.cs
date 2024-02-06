@@ -8,17 +8,21 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.UI;
 using UnityEngine.UI;
 using Scripts.Manager;
+using System;
+using UnityEngine.Events;
+using System.Runtime.CompilerServices;
 
 public class MainUI : MonoBehaviour
 {
-    public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer,
-        useDeleteContainer;
+    public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer;
     public GameObject blockPartyPanel;
-    public GameObject placeFirstSelect, menuFirstSelect;
+    public GameObject placeFirstSelect, menuFirstSelect, useDeleteFirstSelect,
+        itemPartyFirstSelect;
 
     public GameObject itemButtonPrefab, itemButtonParent;
 
-    private string selectedButtonName, selectedItemName, currentItemName;
+    private string selectedButtonName;
+    private GameObject selectedItem; 
     public TextMeshProUGUI buttonDescriptionText, itemDescriptionText;
 
     public Image dungeonCircle, guildCircle, shopCircle;
@@ -49,17 +53,31 @@ public class MainUI : MonoBehaviour
         Menu(placeContainer);
     }
 
+
     public void Item(GameObject disableUI)
     {
+        Debug.Log("item");
         UIManager.Instance.SetUI(UIDB.State.Main_Item,
             itemContainer, disableUI, null);
 
-        UIManager.Instance.GetInventoryItem(itemButtonPrefab, itemButtonParent);
+        if (disableUI != null)
+            UIManager.Instance.GetInventoryItem(itemButtonPrefab, itemButtonParent);
+        else UIManager.Instance.SelectButton(selectedItem);
     }
 
-    public void SelfClickToSelect()
+
+    public void ItemUseDelete()
     {
-        UIManager.Instance.SelectButton(gameObject);
+        Debug.Log("itemud");
+        UIManager.Instance.SetUI(UIDB.State.Main_ItemUseDelete,
+            null, null, useDeleteFirstSelect);
+    }
+
+    public void ItemParty()
+    {
+        Debug.Log("itemp");
+        UIManager.Instance.SetUI(UIDB.State.Main_ItemParty,
+            null, null, itemPartyFirstSelect);
     }
 
     public void OnCancel()
@@ -70,14 +88,45 @@ public class MainUI : MonoBehaviour
                 Place(mainMenuContainer); break;
             case UIDB.State.Main_Item:
                 Menu(itemContainer); break;
+            case UIDB.State.Main_ItemUseDelete:
+                Item(null); break;
+            case UIDB.State.Main_ItemParty:
+                ItemUseDelete(); break;
         }
     }
 
-    public void OnSubmit()
+    private string button;
+    public void OnSubmit(InputValue value)
     {
+        button = UIManager.Instance.GetSelectedButtonName();
         switch (UIManager.Instance.currentState)
         {
-            
+            case UIDB.State.Main_Place:
+                switch (button)
+                {
+                    
+                } break;
+
+            case UIDB.State.Main_Menu:
+                switch (button)
+                {
+                    case "Item": Item(menuContainer); break;
+                    case "Skill": Item(menuContainer); break;
+                    case "Equip": Item(menuContainer); break;
+                    case "Status": Item(menuContainer); break;
+                    case "Party": Item(menuContainer); break;
+                    case "Config":  Item(menuContainer); break;
+                } break;
+
+            case UIDB.State.Main_Item:
+                selectedItem = UIManager.Instance.GetSelectedButton();
+                ItemUseDelete(); break;
+
+            case UIDB.State.Main_ItemUseDelete:
+                switch (button)
+                {
+                    case "Use": ItemParty(); break;
+                } break;
         }
     }
 
