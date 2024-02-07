@@ -73,11 +73,8 @@ crashlytics-build.properties
 
 ## 구매 에셋들
 /[Aa]ssets/Resources/DownloadedAssets/*
-/[Aa]ssets/MBS/Code
-/[Aa]ssets/MBS/Examples
-/[Aa]ssets/MBS/InternalData
-/[Aa]ssets/MBS/TempData
-/[Aa]ssets/MBS/*.pdf
-/[Aa]ssets/MBS/*.meta
+/[Aa]ssets/MBS/*
+!/[Aa]ssets/MBS/ModularPacks/*
+!/[Aa]ssets/MBS/ModularPacks.meta
 /[Aa]ssets/MBS/ModularPacks/Coffee Shop Example Pack/*
 /[Aa]ssets/MBS/ModularPacks/Second example pack/*
