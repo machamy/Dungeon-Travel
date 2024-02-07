@@ -1,31 +1,16 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿
 using UnityEditor;
 using UnityEditorInternal;
 using UnityEngine;
-using UnityEngine.Serialization;
-
-
-public class EncaserList : MonoBehaviour
-{
-   
-    public GameObject[] objects = new GameObject[] {};
-
-    //public getter method
-    public GameObject[] GetList()
-    {
-        return objects;
-    }
-}
 
 public class EncaseEditor : EditorWindow
 {
     private const string _helpText = "Cannot find 'EncaserList' component on any GameObject in the scene!";
-    private string path = "Assets/Resources/Prefebs/Dungeon/PivotMid";
+    private string path = "Assets/Resources/Prefebs/Dungeon/";
+    
     private static Vector2 _windowsMinSize = Vector2.one * 500f;
     private static Rect _helpRect = new Rect(0f, 0f, 400f, 100f);
-    private static Rect _listRect = new Rect(Vector2.zero, _windowsMinSize);
+    private static Rect _listRect = new Rect(new Vector2(0,30), _windowsMinSize);
  
     private bool _isActive;
  
@@ -68,6 +53,11 @@ public class EncaseEditor : EditorWindow
     {
         Repaint();
     }
+
+    private Vector3 axis = Vector3.zero;
+    private Vector3 fixAxis = Vector3.zero;
+    private bool listFold = false;
+    private string directory = "PivotMid";
     private void OnGUI()
     {
         if (_objectSO == null)
@@ -75,19 +65,26 @@ public class EncaseEditor : EditorWindow
             EditorGUI.HelpBox(_helpRect, _helpText, MessageType.Warning);
             return;
         }
-  
-        _objectSO.Update();
-        _listRE.DoList(_listRect);
-        _objectSO.ApplyModifiedProperties();
+
+        listFold = EditorGUILayout.Foldout(listFold, "ss");
+        if (listFold) {
+            _objectSO.Update();
+            _listRE.DoList(_listRect);
+            _objectSO.ApplyModifiedProperties();
+        }
+
+        EditorGUILayout.Space(_listRE.GetHeight() + 30f);
+        EditorGUILayout.LabelField($"Save를 누르면 {path}{directory}/에 저장됩니다.");
+        EditorGUILayout.Space(10f);
+        directory = EditorGUILayout.TextField(directory);
+        EditorGUILayout.Space(10f);
         
- 
-        GUILayout.Space(_listRE.GetHeight() + 30f);
-        GUILayout.Label("Please select Game Objects to simulate");
-        GUILayout.Space(10f);
- 
+        EditorGUILayout.LabelField("축, 크기에 비례한 값 (0 = 중앙)");
+        axis = EditorGUILayout.Vector3Field("", axis);
+        EditorGUILayout.LabelField("축, 고정 크기 (0 = 중앙)");
+        fixAxis = EditorGUILayout.Vector3Field("", fixAxis);
+        
         EditorGUILayout.BeginHorizontal();
-        
- 
         GUILayout.Space(30f);
  
         if (GUILayout.Button("Save"))
@@ -96,7 +93,10 @@ public class EncaseEditor : EditorWindow
         }
  
         GUILayout.Space(30f);
-
+        if (GUILayout.Button("Clear"))
+        {
+            Clear();
+        }
         //GUILayout.Label(_isActive ? "Simulation Activated!" : "Simulation Deactivated!", EditorStyles.boldLabel);
  
         EditorGUILayout.EndHorizontal();
@@ -109,16 +109,22 @@ public class EncaseEditor : EditorWindow
             EncasePivot(pf);
         }
     }
+    private void Clear(){
+        _pfList.Clear();
+    }
 
     private GameObject EncasePivot(GameObject prefab)
     {
-        GameObject parent = new GameObject($"{prefab.name}_MID.prefab");
+        GameObject parent = new GameObject($"{directory}/{prefab.name}_MID.prefab");
         GameObject res = null;
         res = PrefabUtility.InstantiatePrefab(prefab, parent.transform) as GameObject;
-        MeshRenderer MR = res.GetComponent<MeshRenderer>();
+        MeshRenderer MR = res.GetComponentInChildren<MeshRenderer>();
         Vector3 center = MR.bounds.center;
         res.transform.position -= center;
-        
+        Vector3 size = MR.bounds.size;
+        size.Scale(axis);
+        res.transform.position += size/2;
+        res.transform.position += fixAxis;
         SavePrefab(parent);
         DestroyImmediate(parent);
         return res;
