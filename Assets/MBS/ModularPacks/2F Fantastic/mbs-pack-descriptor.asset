@@ -1,0 +1,54 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!49 &4900000
+TextAsset:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: mbs-pack-descriptor
+  m_Script: "{\n    \"guid\": \"a2f338b0ea6e47019db6d872ac699719\",\n    \"_name\":
+    \"2F Fantastic\",\n    \"_wallGroups\": [],\n    \"_floorGroups\": [\n       
+    {\n            \"guid\": \"ed1be4b37d6846cbb5b3e1b587c49253\",\n            \"name\":
+    \"TinyFloor\",\n            \"_modules\": [\n                {\n                   
+    \"guid\": \"3d22fd86c26e4a81bcd3948d6455336d\",\n                    \"name\":
+    \"TestFloor\",\n                    \"prefabs\": [\n                        {\n                           
+    \"fileID\": 8664350380594266003,\n                            \"guid\": \"2aad6afdd13781540939f8e8c90481f3\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"fileID\": 8872248497452666810,\n                            \"guid\": \"ac3a9e7634342e74daba6627531305f0\",\n                           
+    \"type\": 3\n                        }\n                    ]\n               
+    }\n            ]\n        },\n        {\n            \"guid\": \"685b22611020464db3a9f1a75c7087cf\",\n           
+    \"name\": \"MidFloor\",\n            \"_modules\": [\n                {\n                   
+    \"guid\": \"1a18c7e716e648169e6ae7484f067b4c\",\n                    \"name\":
+    \"MidFloorDefault\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 1262937158259123645,\n                           
+    \"guid\": \"2a9b8a25bc63da941a79e7e3bec1e558\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"9fb28163faa04f46ad0be65532b3d789\",\n                   
+    \"name\": \"DirtFloor1\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 3160700588539630653,\n                           
+    \"guid\": \"4c2ee441b6460b04b9d1007c8320f337\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"8c673af73bbf49648df7be985bf67da6\",\n                   
+    \"name\": \"DirtFloor2\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 2453563457807336992,\n                           
+    \"guid\": \"7ec07942feee8104980f9f3a5d937474\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"b44ef4f007d44d648a0efb7d62f46f69\",\n                   
+    \"name\": \"DirtFloor3\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 5149183475063193089,\n                           
+    \"guid\": \"4a435be19e12274469e47243d7604016\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"2fe209cb547340c6afccf059fa3d0499\",\n                   
+    \"name\": \"DirtFloor4\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 5735048445724685821,\n                           
+    \"guid\": \"747c6ec7284b93841872c5015e24672a\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    }\n            ]\n        }\n    ],\n    \"_decoratorGroups\": [],\n    \"_decoratorCategories\":
+    [\n        {\n            \"guid\": \"c87b47a096cb4a5e8f4b33085519af45\",\n           
+    \"_name\": \"All\"\n        }\n    ]\n}"
