@@ -19,6 +19,7 @@ public class AutoScroll : MonoBehaviour
     private void Update()
     {
         if (UIManager.Instance.currentState != UIDB.State.Main_Item) return;
+        if (UIManager.Instance.GetSelectedButton() == null) return;
         posN = UIManager.Instance.GetSelectedButton().transform.parent.GetSiblingIndex();
         posNInScreen = posN - posY / height;
 

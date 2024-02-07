@@ -14,10 +14,11 @@ using System.Runtime.CompilerServices;
 
 public class MainUI : MonoBehaviour
 {
-    public GameObject placeContainer, mainMenuContainer, menuContainer, itemContainer;
+    public GameObject placeContainer, mainMenuContainer, menuContainer, partyContainer,
+        itemContainer, configContainer;
     public GameObject blockPartyPanel, partyBlackPanel;
     public GameObject placeFirstSelect, menuFirstSelect, useDeleteFirstSelect,
-        itemPartyFirstSelect;
+        itemPartyFirstSelect, configFirstSelect, videoFirstSelect;
 
     public GameObject itemButtonPrefab, itemButtonParent;
 
@@ -45,6 +46,7 @@ public class MainUI : MonoBehaviour
     {
         UIManager.Instance.SetUI(UIDB.State.Main_Menu,
             menuContainer, disableUI, menuFirstSelect);
+        partyContainer.SetActive(true);
     }
 
     public void OnMenu()
@@ -78,6 +80,19 @@ public class MainUI : MonoBehaviour
             partyBlackPanel, blockPartyPanel, itemPartyFirstSelect);
     }
 
+    public void Config(GameObject disableUI)
+    {
+        UIManager.Instance.SetUI(UIDB.State.Main_Config,
+            configContainer, disableUI, configFirstSelect);
+        partyContainer.SetActive(false);
+    }
+
+    public void ConfigVideo()
+    {
+        UIManager.Instance.SetUI(UIDB.State.Main_ConfigVideo,
+            null, null, videoFirstSelect);
+    }
+
     public void OnCancel()
     {
         switch (UIManager.Instance.currentState)
@@ -94,42 +109,23 @@ public class MainUI : MonoBehaviour
 
             case UIDB.State.Main_ItemParty:
                 ItemUseDelete(partyBlackPanel); break;
+
+            case UIDB.State.Main_Config:
+                Menu(configContainer); break;
+
+            case UIDB.State.Main_ConfigVideo:
+                Config(null); break;
         }
     }
 
-    private string button;
-    public void OnSubmit(InputValue value)
+    public void OnSubmit()
     {
-        button = UIManager.Instance.GetSelectedButtonName();
         switch (UIManager.Instance.currentState)
         {
-            case UIDB.State.Main_Place:
-                switch (button)
-                {
-                    
-                } break;
-
-            case UIDB.State.Main_Menu:
-                switch (button)
-                {
-                    case "Item": Item(menuContainer); break;
-                    case "Skill": Item(menuContainer); break;
-                    case "Equip": Item(menuContainer); break;
-                    case "Status": Item(menuContainer); break;
-                    case "Party": Item(menuContainer); break;
-                    case "Config":  Item(menuContainer); break;
-                } break;
-
             case UIDB.State.Main_Item:
                 selectedItem = UIManager.Instance.GetSelectedButton();
                 selectedItem.GetComponent<Image>().color = blue;
                 ItemUseDelete(null); break;
-
-            case UIDB.State.Main_ItemUseDelete:
-                switch (button)
-                {
-                    case "Use": ItemParty(); break;
-                } break;
         }
     }
 
