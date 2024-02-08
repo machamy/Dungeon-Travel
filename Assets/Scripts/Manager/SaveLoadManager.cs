@@ -21,7 +21,13 @@ namespace Scripts.Manager
         public string extension = ".savedata";
         
         private static SaveLoadManager instance;
+        private SaveData currentSave;
 
+        public SaveData CurrentSave
+        {
+            get;
+            private set;
+        }
         public static SaveLoadManager Instance
         {
             get
@@ -62,11 +68,21 @@ namespace Scripts.Manager
         }
 
         /// <summary>
+        /// SaveData를 게임으로 로드한다.
+        /// </summary>
+        /// <param name="data"></param>
+        public void Load(SaveData data)
+        {
+            GameManager gm = GameManager.Instance;
+            CurrentSave = data;
+        }
+
+        /// <summary>
         /// idx를 통해 세이브 파일 가져오기
         /// </summary>
         /// <param name="idx"></param>
         /// <returns>세이브데이터, idx가 무효하면 null</returns>
-        public SaveData Load(int idx)
+        public SaveData GetData(int idx)
         {
             if (idx > dataList.Count || idx < 0)
                 return null;
@@ -77,7 +93,7 @@ namespace Scripts.Manager
         /// </summary>
         /// <param name="idx"></param>
         /// <returns>세이브데이터, 해당이름이 없으면 null</returns>
-        public SaveData Load(string name)
+        public SaveData GetData(string name)
         {
             foreach (var data in dataList)
             {
@@ -90,12 +106,13 @@ namespace Scripts.Manager
             return null;
         }
         
+        
         /// <summary>
         /// 모든 세이브 데이터를 가져와 매니저에 등록한다.
         /// 로드전에 한번은실행되어야 한다.
         /// </summary>
         /// <returns>가져온 세이브 데이터들</returns>
-        public List<SaveData> LoadAll()
+        public List<SaveData> UpdateAll()
         {
             List<SaveData> res = new List<SaveData>();
             DirectoryInfo di = new DirectoryInfo(path:basePath);
@@ -103,13 +120,15 @@ namespace Scripts.Manager
             {
                 if (Path.GetExtension(fi.FullName) == extension)
                 {
-                    Debug.Log("[SVManager] Load " + fi.Name);
+                    Debug.Log("[SVManager] Update " + fi.Name);
                     SaveData data;
                     data = JsonUtil.Instance.LoadJson<SaveData>(fi.FullName);
                     res.Add(data);
-                    Debug.Log($"[SVManager] Load Success({res.Count})! {data}");
+                    Debug.Log($"[SVManager] Update Success({res.Count})! {data}");
                 }
             }
+            // 마지막 저장 순으로 정렬
+            res.Sort(((a, b) => a.saveTime.CompareTo(b.saveTime)));
             
             if (res.Any())
                 dataList = res;
@@ -151,11 +170,26 @@ namespace Scripts.Manager
                 Append("start time: ").Append(DateTime.FromBinary(startTime)).Append("\n")
                 .Append("save time: ").Append(DateTime.FromBinary(saveTime)).Append("\n")
                 .Append($"party({Party.Count}) : \n");
+            Debug.Log(sb);
+            // foreach (var chr in Party)
+            // {
+            //     sb.Append(chr.ToString()).Append("\n");
+            // }
+            
+            return sb.ToString();
+        }
 
-            foreach (var chr in Party)
-            {
-                sb.Append(chr.ToString()).Append("\n");
-            }
+        public string ToStringData()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"{saveName}\n").Append("start time: ")
+                .Append(DateTime.FromBinary(startTime)).Append("\n")
+                .Append("save time: ").Append(DateTime.FromBinary(saveTime)).Append("\n");
+            Debug.Log(sb);
+            // foreach (var chr in Party)
+            // {
+            //     sb.Append(chr.ToString()).Append("\n");
+            // }
             
             return sb.ToString();
         }

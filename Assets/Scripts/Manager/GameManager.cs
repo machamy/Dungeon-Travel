@@ -26,6 +26,9 @@ namespace Scripts.Manager
 
         public InputActionMap PlayerActionMap;
         public InputActionMap UIActionMap;
+
+
+        
         
         public static GameManager Instance
         {

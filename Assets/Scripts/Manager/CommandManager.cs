@@ -82,6 +82,41 @@ namespace Scripts.DebugConsole
                               $"{command.descripton}");
                 }));
             CreateCommand("search",new Command("cmds",str => Print(string.Join("\n", GetCommandsStartWith(str))), "해당 문자로 시작하는 모든 명령어 출력"));
+
+            #region 세이브로드
+            //저장
+            CreateCommand(null, new Command("save", delegate(string s)
+            {
+                var slm = SaveLoadManager.Instance;
+                slm.Save(slm.CurrentSave);
+                slm.UpdateAll();
+            }));
+            //불러오기
+            CreateCommand(null, new Command("load", delegate(string s)
+            {
+                var slm = SaveLoadManager.Instance;
+                var datas =slm.UpdateAll();
+                if (s == "")
+                {
+                    for (int i = 0; i < datas.Count; i++)
+                    {
+                        SaveData data = datas[i];
+                        // Print($"{i} [{data.saveName}] 마지막 저장시간 : {data.saveTime} | 시작 시간 : {data.saveTime}");
+                        Print(i+". "+data.ToStringData());
+                    }
+                    return;
+                }
+                int idx = Int32.Parse(s);
+                SaveData toLoad = slm.GetData(idx);
+                slm.Load(toLoad);
+                Print("Load : "+toLoad.ToStringData());
+                // Print($"Load {toLoad.saveName}");
+            }, "load (idx) , 세이브 데이터를 로드한다. \n idx 생략시 전체 세이브의 목록을 출력한다."));
+            
+
+            #endregion
+            
+            
         }
         
         
@@ -236,7 +271,7 @@ namespace Scripts.DebugConsole
 
         public List<string> GetCommandsStartWith(string start)
         {
-            Debug.Log(string.Join("\n",tree.GetAllPath()));
+            // Debug.Log(string.Join("\n",tree.GetAllPath()));
             var query = from e in tree.GetAllPath()
                 where e.StartsWith(start)
                 orderby e.Count(c=> c == ' '), e
