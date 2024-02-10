@@ -30,7 +30,7 @@ namespace GeneralMonsterStates
                 }
             }
 
-            if (entity.MonsterProperty.HasFlag(EnemyProperty.Move))
+            if (entity.MonsterProperty.HasFlag(EnemyProperty.Movement))
             {
                 entity.Patrol();
             }           
