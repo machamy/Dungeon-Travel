@@ -274,14 +274,18 @@ public class DB
             AttackType weakType = AttackType.None;
             for (; idx < header.Length; idx++)
             {
-                AttackType currentType;
-                if(Enum.TryParse<AttackType>(header[idx], out currentType))
+                AttackType currentType = AttackTypeHelper.GetFromKorean(header[idx]);
+                if(currentType == AttackType.None)
                 {
                     if(row[idx].Contains("R"))
                         strongType |= currentType;
                     if(row[idx].Contains("W"))
                         weakType |= currentType;
-                };
+                }
+                else
+                {
+                    Debug.Log($"[DB::ParseEnemyData] {header[idx]} 유효하지 않음");
+                }
             }
             
             enemyData.Add(enemyStat.name, enemyStat);
