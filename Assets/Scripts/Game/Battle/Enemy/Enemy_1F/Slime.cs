@@ -19,6 +19,9 @@ public class Slime : Enemy_Base
     }
     public override void EnemyAttack()
     {
+        BuffManager buffManager = gameObject.GetComponent<BuffManager>();
+        if (buffManager.isStun == true)
+            return;
         //기본공격
         SingleAttack(enemyStatData.atk,AttackType.Smash, AttackProperty.Physics);
     }

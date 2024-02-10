@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4120926291794551505}
   - component: {fileID: 8184553521447912779}
+  - component: {fileID: -4766856674091252270}
   m_Layer: 0
   m_Name: Undead_Armor
   m_TagString: Untagged
@@ -129,4 +130,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5261f942a44a50d4faa729a2868c771d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
   currentHp: 0
+--- !u!114 &-4766856674091252270
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8827268227931404770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281041f33575b4449b71071cb37e2013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSilence: 0
+  isStun: 0

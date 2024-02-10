@@ -20,11 +20,18 @@ public class Thief : Enemy_Base
     public override void EnemyAttack()
     {
         int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
-        if (weight < 50)
+        BuffManager buffManager = gameObject.GetComponent<BuffManager>();
+        if (buffManager.isStun == true)
+            return;
+        if (buffManager.isSilence == true)
             weight = 0;
         else
-            weight = 1;
-
+        {
+            if (weight < 50)
+                weight = 0;
+            else
+                weight = 1;
+        }
         switch (weight)
         {
             case 0: // 기본공격 //아직 안정해진듯

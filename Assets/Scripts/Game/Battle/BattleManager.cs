@@ -147,7 +147,18 @@ public class BattleManager : MonoBehaviour
 
         if(bState == BattleState.ENEMYTURN)
         {
-            
+            Enemy_Base[] enemy_Base = new Enemy_Base[enemyPrefab.Length];
+            int count = 0;
+            for(int i =0; i<enemyPrefab.Length;i++)
+            {
+                if (enemyPrefab[i].isDead == false)
+                    enemy_Base[count++] = enemyPrefab[i];
+            }
+            for (int i =0; i < count; i++)
+            {
+                enemyPrefab[i].EnemyAttack();
+            }
+            bState = BattleState.PLAYERTURN;
         }
 
         if(bState == BattleState.SECONDTURN)

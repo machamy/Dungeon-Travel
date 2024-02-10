@@ -8,6 +8,7 @@ using UnityEngine;
 public class Enemy_Base : MonoBehaviour
 {
     private Unit unit;
+    public bool isDead;
     public enum AttackProperty
     {
         Physics, // 물리
