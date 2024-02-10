@@ -12,7 +12,7 @@ namespace Scripts
         /// <remarks>
         /// 다음 코드에서는 0, 1, 2, 3 이 각 10,20,30,40% 확률로 나온다.
         /// <code>
-        /// int num = WeightedRandom(10,20,30,40);
+        /// int num = Utility.WeightedRandom(10,20,30,40);
         /// </code>
         /// </remarks>
         /// <param name="weights"></param>
@@ -29,13 +29,13 @@ namespace Scripts
             int idx = 0;
 
             // 당첨 될때까지 반복
-            while (!(random < weights[idx]))
+            while (true)
             {
+                if (random < weights[idx])
+                    return idx;
                 idx++;
                 random -= weights[idx];
             }
-            
-            return idx;
         }
     }
 }
