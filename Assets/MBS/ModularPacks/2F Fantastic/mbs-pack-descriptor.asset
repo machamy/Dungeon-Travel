@@ -15,8 +15,7 @@ TextAsset:
     {\n                            \"fileID\": 2401754231122025117,\n                           
     \"guid\": \"f6cb8ee0f533a39449e087a6a0a54c86\",\n                           
     \"type\": 3\n                        },\n                        {\n                           
-    \"fileID\": 7982702003326967927,\n                            \"guid\": \"e0f07402fae3bac45b06b0001c223366\",\n                           
-    \"type\": 3\n                        }\n                    ]\n               
+    \"instanceID\": 0\n                        }\n                    ]\n               
     },\n                {\n                    \"guid\": \"3fd48fedeec3413ca9ef582917f8ecb2\",\n                   
     \"name\": \"New Wall Module (1)\",\n                    \"prefabs\": [\n                       
     {\n                            \"fileID\": 3151294414641730724,\n                           
