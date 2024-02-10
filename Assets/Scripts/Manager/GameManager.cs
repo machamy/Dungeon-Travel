@@ -44,7 +44,6 @@ namespace Scripts.Manager
                     }
 
                     instance = root.AddComponent<GameManager>();
-                    instance.init();
                 }
 
                 return instance;
@@ -59,7 +58,7 @@ namespace Scripts.Manager
             InputActionClass input = new InputActionClass();
             PlayerActionMap = input.DungeonPlayer;
             
-           // DB.Instance.UpdateDB();
+            DB.Instance.UpdateDB();
         }
 
         public PartyManager PartyManager;

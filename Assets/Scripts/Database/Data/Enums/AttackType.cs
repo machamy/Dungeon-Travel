@@ -1,4 +1,5 @@
 ﻿using System;
+using UnityEngine;
 
 namespace Scripts.Data
 {
@@ -21,16 +22,18 @@ namespace Scripts.Data
 
     public static class AttackTypeHelper
     {
-        static string[] koreanNames = { "참격", "관통", "타격", "화염", "빙결", "바람", "전격", "빛", "어둠" };
+        static string[] koreanNames = 
+            { "참격", "관통", "타격", "화염", "빙결", "바람", "전격", "빛", "어둠" };
 
         static string[] englishNames =
-        {
-            "Slash", "Penetrate", "Smash", "Flame", "Freezing", "Wind", "Lightning", "Light", "Dark"
-        };
+        { "Slash", "Penetrate", "Smash", "Flame", "Freezing", "Wind", "Lightning", "Light", "Dark" };
 
         public static AttackType GetFromKorean(string kor)
         {
-            string eng = englishNames[Array.IndexOf(koreanNames, kor)];
+            int idx = Array.IndexOf(koreanNames, kor);
+            if (idx < 0)
+                return AttackType.None;
+            string eng = englishNames[idx];
             AttackType res;
             Enum.TryParse<AttackType>(eng, out res);
             return res;

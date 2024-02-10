@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Slime : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("슬라임");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"슬라임");
     [HideInInspector]
     public float currentHp;
 

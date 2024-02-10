@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Undead_Armor : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("죽지못한갑주");
+    EnemyStatData enemyStatData = DB.GetEnemyData(2,"죽지못한갑주");
     [HideInInspector]
     public float currentHp;
 

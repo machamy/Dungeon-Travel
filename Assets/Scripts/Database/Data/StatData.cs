@@ -2,6 +2,7 @@
 using Script.Data;
 using Script.Global;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scripts.Data
 {
@@ -41,7 +42,7 @@ namespace Scripts.Data
         /// <summary>
         /// 회피률
         /// </summary>
-        public float dodge;
+        [FormerlySerializedAs("dodge")] public float evase;
         /// <summary>
         /// 크리확률
         /// </summary>
@@ -55,11 +56,12 @@ namespace Scripts.Data
         /// 마법 보정치
         /// </summary>
         public float magWeight;
-        /// <summary>
-        /// 생명 보정치
-        /// </summary>
-        public float vitWeight;
-        
+        // /// <summary>
+        // /// 생명 보정치
+        // /// </summary>
+        // public float vitWeight;
+
+
         //2차스탯
         /// <summary>
         /// 기본 근력
@@ -82,7 +84,11 @@ namespace Scripts.Data
         /// </summary>
         public float luk;
         
-        
+        /// <summary>
+        /// StatUp
+        /// </summary>
+        public float statUp;
+
         
         public object Clone()
         {
@@ -95,7 +101,7 @@ namespace Scripts.Data
 
             clone.strWeight = strWeight;
             clone.magWeight = magWeight;
-            clone.vitWeight = vitWeight;
+            clone.statUp = statUp;
             
             clone.str = str;
             clone.vit = vit;
@@ -116,7 +122,7 @@ namespace Scripts.Data
             
             result.strWeight += other.strWeight;
             result.magWeight += other.magWeight;
-            result.vitWeight += other.vitWeight;
+            result.statUp += other.statUp;
             
             result.str += other.str;
             result.vit += other.vit;

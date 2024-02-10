@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Thief_Vanguard : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적선봉대");
+    EnemyStatData enemyStatData = DB.GetEnemyData(2,"도적선봉대");
     [HideInInspector]
     public float currentHp;
 

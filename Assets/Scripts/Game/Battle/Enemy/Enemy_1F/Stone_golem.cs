@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Stone_golem : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("바위골렘");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"바위골렘");
     [HideInInspector]
     public float currentHp;
     private bool isReady; // 코어 활성화

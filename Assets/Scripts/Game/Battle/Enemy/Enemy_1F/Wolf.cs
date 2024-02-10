@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Wolf : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("늑대");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"늑대");
     [HideInInspector]
     public float currentHp;
 

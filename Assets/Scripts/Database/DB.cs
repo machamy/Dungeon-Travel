@@ -34,7 +34,7 @@ public class DB
     private Dictionary<ClassType, StatData[]> classStatData = new();
     private Dictionary<ClassType, SkillData[]> classSkillData = new();
     private Dictionary<string, EquipmentData> Equipments = new();
-    private Dictionary<string, EnemyStatData> enemyData = new();
+    private List<Dictionary<string, EnemyStatData>> enemyDataList = new();
 
     private string fileName = "Dungeon_Travel_stats.xlsx";
 
@@ -59,14 +59,38 @@ public class DB
             return data;
         return null;
     }
-    public static EnemyStatData GetEnemyData(string name)
+    /// <summary>
+    /// 해당 층의 해당 이름의 몬스터를 가져온다.
+    /// </summary>
+    /// <param name="floor"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static EnemyStatData GetEnemyData(int floor, string name)
     {
         EnemyStatData data;
-        if (Instance.enemyData.TryGetValue(name, out data))
+        var floorData = Instance.enemyDataList[floor];
+        if (floorData.TryGetValue(name, out data))
             return data;
         return null;
     }
-    
+
+    /// <summary>
+    /// 해당 층의 모든 몬스터 데이터를 가져온다
+    /// </summary>
+    /// <param name="floor"></param>
+    /// <returns></returns>
+    public static Dictionary<string, EnemyStatData> GetEnemyAllData(int floor)
+    {
+        return Instance.enemyDataList[floor];
+    }
+
+    public void ClearDB()
+    {
+        classStatData = new();
+        classSkillData = new();
+        Equipments = new();
+        enemyDataList = new();
+    }
     
     /// <summary>
     /// xlsx 에서 불어와 DB에 등록
@@ -78,28 +102,41 @@ public class DB
         {
             string[] header = Array.ConvertAll(table.Rows[0].ItemArray,
                 p => (p ?? String.Empty).ToString());
-            int colNum;
-            for (colNum = 0; colNum < header.Length; colNum++)
-                if (header[colNum] == "EOF")
-                    break;
+            int colNum = -1; // 미사용
+            // for (colNum = 0; colNum < header.Length; colNum++)
+            //     if (header[colNum] == "EOF")
+            //         break;
             string[] sheetName = table.TableName.Split("_");
 
-            if (sheetName.Any((e) => e.Equals(DB_NAME_STAT)))
+            switch (sheetName.Length)
             {
-                classStatData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassStat(table, header, colNum));
-            }
-            else if (sheetName.Any((e) => e.Equals(DB_NAME_SKILL)))
-            {
-                classSkillData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassSkill(table, header, colNum));
-            }
-            else if (sheetName.Any((e) => e.Equals(DB_NAME_EQUIPMENT)))
-            {
-                var dict = ParseEquipment(table, header, colNum).ToDictionary((e => e.name), e => e);
-                Equipments = dict;
-            }
-            else if (sheetName.Any((e) => e.Equals(DB_NAME_ENEMY)))
-            {
-                ParseEnemyData(table, header, colNum);
+                case 1:
+                    if (sheetName[0].Equals(DB_NAME_EQUIPMENT))
+                    {
+                        // TODO : 데이터 기다리는중 - machamy
+                        // var dict = ParseEquipment(table, header, colNum).ToDictionary((e => e.name), e => e);
+                        // Equipments = dict;
+                    }
+                    break;
+                case 2:
+                    if (sheetName[1].Equals(DB_NAME_STAT))
+                    {
+                        classStatData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassStat(table, header, colNum));
+                    }
+                    else if (sheetName[1].Equals(DB_NAME_SKILL))
+                    {
+                        classSkillData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassSkill(table, header, colNum));
+                    }
+                    break;
+                case 3:
+                    if (sheetName[1].Equals(DB_NAME_ENEMY))
+                    {
+                        int floor = int.Parse(sheetName[0].Replace("F", ""));
+                        while(enemyDataList.Count <= floor)
+                            enemyDataList.Add(new Dictionary<string, EnemyStatData>());
+                        enemyDataList[floor] = ParseEnemyData(table, header, colNum);
+                    }
+                    break;
             }
         }
     }
@@ -137,32 +174,33 @@ public class DB
     {
         StatData[] stats = new StatData[sheet.Rows.Count+1];
         stats[0] = new StatData();
-        for (int i = 1 ; i <= sheet.Rows.Count; i++)
+        for (int i = 1 ; i < sheet.Rows.Count; i++)
         {
             StatData stat = ScriptableObject.CreateInstance<StatData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
-                p => float.Parse((p ?? "0").ToString()));
-            int lv = (int) row[(int)StatDataType.lv];
+                p => ((p ?? "0").ToString().Replace("%", "").Replace("-", "0")));
+            // Debug.Log(row[(int)StatDataType.lv]);
+            int lv = (int) int.Parse(row[(int)StatDataType.lv]);
             stats[lv] = stat;
             
-            stat.hp = row[(int)StatDataType.HP];
-            stat.mp = row[(int)StatDataType.MP];
-            stat.atk = row[(int)StatDataType.ATK];
-            stat.def = row[(int)StatDataType.DEF];
-            stat.mdef = row[(int)StatDataType.MDEF];
+            stat.hp = float.Parse(row[(int)StatDataType.HP]);
+            stat.mp = float.Parse(row[(int)StatDataType.MP]);
+            stat.atk = float.Parse(row[(int)StatDataType.ATK]);
+            stat.def = float.Parse(row[(int)StatDataType.DEF]);
+            stat.mdef = float.Parse(row[(int)StatDataType.MDEF]);
             
-            stat.accuracy = row[(int)StatDataType.HIT];
-            stat.dodge = row[(int)StatDataType.EVASE];
-            stat.critical = row[(int)StatDataType.CRIT];
-            stat.strWeight = row[(int)StatDataType.STRCOR];
-            stat.magWeight = row[(int)StatDataType.MAGCOR];
+            stat.accuracy = float.Parse(row[(int)StatDataType.HIT]);
+            stat.evase = float.Parse(row[(int)StatDataType.EVASE]);
+            stat.critical = float.Parse(row[(int)StatDataType.CRIT]);
+            stat.strWeight = float.Parse(row[(int)StatDataType.STRCOR]);
+            stat.magWeight = float.Parse(row[(int)StatDataType.MAGCOR]);
             
-            stat.str = row[(int)StatDataType.STR];
-            stat.vit = row[(int)StatDataType.VIT];
-            stat.mag = row[(int)StatDataType.MAG];
-            stat.agi = row[(int)StatDataType.AGI];
-            stat.luk = row[(int)StatDataType.LUK];
-            stat.vitWeight = row[(int)StatDataType.STATUP];
+            stat.str = float.Parse(row[(int)StatDataType.STR]);
+            stat.vit = float.Parse(row[(int)StatDataType.VIT]);
+            stat.mag = float.Parse(row[(int)StatDataType.MAG]);
+            stat.agi = float.Parse(row[(int)StatDataType.AGI]);
+            stat.luk = float.Parse(row[(int)StatDataType.LUK]);
+            stat.statUp = float.Parse(row[(int)StatDataType.STATUP]);
         }
         return stats;
     }
@@ -186,17 +224,19 @@ public class DB
     private SkillData[] ParseClassSkill(DataTable sheet, string[] header, int colNum)
     {
         SkillData[] skills = new SkillData[sheet.Rows.Count+1];
-        for (int i = 1; i <= sheet.Rows.Count; i++)
+        for (int i = 1; i < sheet.Rows.Count; i++)
         {
             SkillData skill = ScriptableObject.CreateInstance<SkillData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => (p ?? String.Empty).ToString());
+            if(row[(int)SkillDataType.이름] == "")
+                continue;
             skill.skillType = row[(int)SkillDataType.무기유형];
             skill.rank = Convert.ToInt32(row[(int)SkillDataType.랭크]);
             skill.atttackType = row[(int)SkillDataType.유형];
             skill.name = row[(int)SkillDataType.이름];
-            skill.damage = Convert.ToSingle(row[(int)SkillDataType.데미지]);
-            skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모]);
+            skill.damage = Convert.ToSingle(row[(int)SkillDataType.데미지] == string.Empty ? "0" : row[(int)SkillDataType.데미지]);
+            skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모] == string.Empty ? "0" : row[(int)SkillDataType.MP소모]);
         }
 
         return skills;
@@ -233,8 +273,10 @@ public class DB
         AGI,
         LUK,
     }
-    private void ParseEnemyData(DataTable sheet, string[] header, int colNum)
+    private Dictionary<string, EnemyStatData> ParseEnemyData(DataTable sheet, string[] header, int colNum)
     {
+        Dictionary<string, EnemyStatData> result = new Dictionary<string, EnemyStatData>();
+        
         for(int i=1; i<sheet.Rows.Count; i++)
         {
             EnemyStatData enemyStat = ScriptableObject.CreateInstance<EnemyStatData>();
@@ -270,15 +312,15 @@ public class DB
                     property |= EnemyProperty.Movement;
             }
 
-            AttackType strongType = AttackType.None;
+            AttackType registerType = AttackType.None;
             AttackType weakType = AttackType.None;
-            for (; idx < header.Length; idx++)
+            for (idx++ ; idx < header.Length; idx++)
             {
                 AttackType currentType = AttackTypeHelper.GetFromKorean(header[idx]);
-                if(currentType == AttackType.None)
+                if(currentType != AttackType.None)
                 {
                     if(row[idx].Contains("R"))
-                        strongType |= currentType;
+                        registerType |= currentType;
                     if(row[idx].Contains("W"))
                         weakType |= currentType;
                 }
@@ -287,8 +329,14 @@ public class DB
                     Debug.Log($"[DB::ParseEnemyData] {header[idx]} 유효하지 않음");
                 }
             }
+
+            enemyStat.ResistType = registerType;
+            enemyStat.WeakType = weakType;
             
-            enemyData.Add(enemyStat.name, enemyStat);
+            result.Add(enemyStat.name, enemyStat);
+            Debug.Log($"[DB::ParseEnemyData] Added {enemyStat.name} : Property {enemyStat.Property} ResistType {enemyStat.ResistType} WeakType {enemyStat.WeakType}");
+            
         }
+        return result;
     }
 }

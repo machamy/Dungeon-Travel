@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Rabbit : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("토끼");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"토끼");
     [HideInInspector]
     public float currentHp;
 

@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Fallen_Queen : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("몰락한여왕");
+    EnemyStatData enemyStatData = DB.GetEnemyData(2,"몰락한여왕");
     [HideInInspector]
     public float currentHp;
     private bool isReady;

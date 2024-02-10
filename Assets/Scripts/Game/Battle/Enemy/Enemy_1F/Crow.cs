@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Crow : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("까마귀");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"까마귀");
     [HideInInspector]
     public float currentHp;
 

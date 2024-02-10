@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Forest_Guardian : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("숲의 수호자");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"숲의 수호자");
     [HideInInspector]
     public float currentHp;
     private bool isReady; // 2페이즈

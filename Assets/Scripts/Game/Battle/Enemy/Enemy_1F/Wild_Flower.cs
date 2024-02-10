@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Wild_Flower : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("야생꽃");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"야생꽃");
     [HideInInspector]
     public float currentHp;
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Tree_Spirit : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("나무정령");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"나무정령");
     [HideInInspector]
     public float currentHp;
 

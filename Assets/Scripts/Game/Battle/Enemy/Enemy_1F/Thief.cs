@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Thief : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"도적");
     [HideInInspector]
     public float currentHp;
 
