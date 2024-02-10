@@ -112,18 +112,17 @@ public class DB
         ATK = 3,
         DEF = 4,
         MDEF = 5,
-        적중률 = 6,
-        회피율 = 7,
-        크리율 = 8,
-        근력보정 = 9,
-        마법보정 = 10,
-        lv2 = 11,
-        STR = 12,
-        VIT = 13,
-        MAG = 14,
-        AGI = 15,
-        LUK = 16,
-        VIT보정 = 17
+        HIT = 6,
+        EVASE = 7,
+        CRIT = 8,
+        STRCOR = 9,
+        MAGCOR = 10,
+        STR = 11,
+        VIT = 12,
+        MAG = 13,
+        AGI = 14,
+        LUK = 15,
+        STATUP = 16
     }
 
 
@@ -152,18 +151,18 @@ public class DB
             stat.def = row[(int)StatDataType.DEF];
             stat.mdef = row[(int)StatDataType.MDEF];
             
-            stat.accuracy = row[(int)StatDataType.적중률];
-            stat.dodge = row[(int)StatDataType.회피율];
-            stat.critical = row[(int)StatDataType.크리율];
-            stat.strWeight = row[(int)StatDataType.근력보정];
-            stat.magWeight = row[(int)StatDataType.마법보정];
+            stat.accuracy = row[(int)StatDataType.HIT];
+            stat.dodge = row[(int)StatDataType.EVASE];
+            stat.critical = row[(int)StatDataType.CRIT];
+            stat.strWeight = row[(int)StatDataType.STRCOR];
+            stat.magWeight = row[(int)StatDataType.MAGCOR];
             
             stat.str = row[(int)StatDataType.STR];
             stat.vit = row[(int)StatDataType.VIT];
             stat.mag = row[(int)StatDataType.MAG];
             stat.agi = row[(int)StatDataType.AGI];
             stat.luk = row[(int)StatDataType.LUK];
-            stat.vitWeight = row[(int)StatDataType.VIT보정];
+            stat.vitWeight = row[(int)StatDataType.STATUP];
         }
         return stats;
     }
@@ -223,9 +222,9 @@ public class DB
         ATK,
         DEF,
         MDEF,
-        적중률,
-        회피율,
-        크리율,
+        HIT,
+        AVOID,
+        CRIT,
         STRCRET,
         MAGCRET,
         STR,
@@ -234,40 +233,57 @@ public class DB
         AGI,
         LUK,
     }
-    private enum EnemyWeakType
-    {
-        SLASH = 15,
-        PENETRATE,
-        SMASH,
-        FLAME,
-        ICE,
-        WIND,
-        LIGHTNING,
-        SHINING,
-        DARK,
-    }
     private void ParseEnemyData(DataTable sheet, string[] header, int colNum)
     {
         for(int i=1; i<sheet.Rows.Count; i++)
         {
             EnemyStatData enemyStat = ScriptableObject.CreateInstance<EnemyStatData>();
-            var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
-                p => float.Parse((p ?? "0").ToString()));
-            enemyStat.name = Convert.ToString(row[(int)EnemyStatType.NAME]);
-            enemyStat.hp = row[(int)EnemyStatType.HP];
-            enemyStat.atk = row[(int)EnemyStatType.ATK];
-            enemyStat.def = row[(int)EnemyStatType.DEF];
-            enemyStat.mdef = row[(int)EnemyStatType.MDEF];
-            enemyStat.accuracy = row[(int)EnemyStatType.적중률];
-            enemyStat.dodge = row[(int)EnemyStatType.회피율];
-            enemyStat.critical = row[(int)EnemyStatType.크리율];
-            enemyStat.strcret = row[(int)EnemyStatType.STRCRET];
-            enemyStat.magcret = row[(int)EnemyStatType.MAGCRET];
-            enemyStat.str = row[(int)EnemyStatType.STR];
-            enemyStat.vit = row[(int)EnemyStatType.VIT];
-            enemyStat.mag = row[(int)EnemyStatType.MAG];
-            enemyStat.agi = row[(int)EnemyStatType.AGI];
-            enemyStat.luk = row[(int)EnemyStatType.LUK];
+            var row = Array.ConvertAll(sheet.Rows[i].ItemArray, p => ((p ?? "0").ToString()));
+            
+            enemyStat.name = row[(int)EnemyStatType.NAME];
+            enemyStat.hp = float.Parse(row[(int)EnemyStatType.HP]);
+            enemyStat.atk = float.Parse(row[(int)EnemyStatType.ATK]);
+            enemyStat.def = float.Parse(row[(int)EnemyStatType.DEF]);
+            enemyStat.mdef = float.Parse(row[(int)EnemyStatType.MDEF]);
+            
+            enemyStat.accuracy = float.Parse(row[(int)EnemyStatType.HIT]);
+            enemyStat.dodge = float.Parse(row[(int)EnemyStatType.AVOID]);
+            enemyStat.critical = float.Parse(row[(int)EnemyStatType.CRIT]);
+            enemyStat.strcret = float.Parse(row[(int)EnemyStatType.STRCRET]);
+            enemyStat.magcret = float.Parse(row[(int)EnemyStatType.MAGCRET]);
+            
+            enemyStat.str = float.Parse(row[(int)EnemyStatType.STR]);
+            enemyStat.vit = float.Parse(row[(int)EnemyStatType.VIT]);
+            enemyStat.mag = float.Parse(row[(int)EnemyStatType.MAG]);
+            enemyStat.agi = float.Parse(row[(int)EnemyStatType.AGI]);
+            enemyStat.luk = float.Parse(row[(int)EnemyStatType.LUK]);
+            
+            // 현재 열 위치
+            int idx = (int)EnemyStatType.LUK;
+            EnemyProperty property = EnemyProperty.None;
+            for (int delta = 0; delta < 2; delta++)
+            {
+                idx += 1;
+                if (header[idx] == "선공")
+                    property |= EnemyProperty.Hostile;
+                if (header[idx] == "행동패턴")
+                    property |= EnemyProperty.Movement;
+            }
+
+            AttackType strongType = AttackType.None;
+            AttackType weakType = AttackType.None;
+            for (; idx < header.Length; idx++)
+            {
+                AttackType currentType;
+                if(Enum.TryParse<AttackType>(header[idx], out currentType))
+                {
+                    if(row[idx].Contains("R"))
+                        strongType |= currentType;
+                    if(row[idx].Contains("W"))
+                        weakType |= currentType;
+                };
+            }
+            
             enemyData.Add(enemyStat.name, enemyStat);
         }
     }
