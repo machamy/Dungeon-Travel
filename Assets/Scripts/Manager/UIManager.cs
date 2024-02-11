@@ -60,15 +60,14 @@ namespace Scripts.Manager
             SelectButton(firstSelectButton);
         }
 
-        /*private bool cooltime = true; 
-        public IEnumerator WaitForCooltime()
+        public IEnumerator WaitForSelectButton(GameObject button)
         {
-            yield return new WaitForSeconds(0.001f);
-            cooltime = true;
-        }*/
+            yield return null;
+            EventSystem.current.SetSelectedGameObject(button);
+        }
 
         public void SelectButton(GameObject button) =>
-            EventSystem.current.SetSelectedGameObject(button);
+            StartCoroutine(WaitForSelectButton(button));
 
         public void SelectNavigate(InputActionReference navigation) =>
             ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move =

@@ -24,13 +24,14 @@ namespace GeneralMonsterStates
                 {
                     entity.ChangeState(GMStates.Chase);
                 }
-                else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
-                {
-                    entity.ChangeState(GMStates.Flee);
-                }
+                // 적 속성 두개로 감소됨 - machamy
+                // else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
+                // {
+                //     entity.ChangeState(GMStates.Flee);
+                // }
             }
 
-            if (entity.MonsterProperty.HasFlag(EnemyProperty.Move))
+            if (entity.MonsterProperty.HasFlag(EnemyProperty.Movement))
             {
                 entity.Patrol();
             }           
@@ -151,11 +152,11 @@ namespace GeneralMonsterStates
                 if (Vector3.Distance(entity.transform.position, entity.target.position) <= entity.AIData.detectRadius)
                 {
                     entity.checker.canChaseOrFlee = true;
-                    if (entity.checker.canChaseOrFlee && entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
+                    if (entity.checker.canChaseOrFlee && entity.MonsterProperty.HasFlag(EnemyProperty.Hostile))
                     {
                         entity.ChangeState(GMStates.Chase);
                     }
-                    else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
+                    else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Hostile))
                     {
                         entity.ChangeState(GMStates.Flee);
                     }

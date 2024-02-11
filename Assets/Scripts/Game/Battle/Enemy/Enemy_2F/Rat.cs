@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Rat : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("쥐");
+    EnemyStatData enemyStatData = DB.GetEnemyData(2,"쥐");
     [HideInInspector]
     public float currentHp;
 
@@ -19,6 +19,9 @@ public class Rat : Enemy_Base
     }
     public override void EnemyAttack()
     {
+        BuffManager buffManager = gameObject.GetComponent<BuffManager>();
+        if (buffManager.isStun == true)
+            return;
         //기본공격
         SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
     }

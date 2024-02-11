@@ -94,6 +94,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4120926291794551505}
   - component: {fileID: 7460361265242445682}
+  - component: {fileID: 4477265657687308652}
   m_Layer: 0
   m_Name: Wild_Flower
   m_TagString: Untagged
@@ -129,4 +130,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a69a6bbaa8327ea4aa4d4ada287c6342, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isDead: 0
   currentHp: 0
+--- !u!114 &4477265657687308652
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8827268227931404770}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281041f33575b4449b71071cb37e2013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSilence: 0
+  isStun: 0

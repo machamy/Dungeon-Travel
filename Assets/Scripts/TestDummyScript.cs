@@ -57,8 +57,8 @@ namespace Scripts
 
         void LoadTest()
         {
-            Debug.Log("Saves : " + SaveLoadManager.Instance.LoadAll().Count);
-            SaveData data = SaveLoadManager.Instance.Load(testSaveName);
+            Debug.Log("Saves : " + SaveLoadManager.Instance.UpdateAll().Count);
+            SaveData data = SaveLoadManager.Instance.GetData(testSaveName);
             Debug.Log($"Loaded! : {data}");
         }
     }

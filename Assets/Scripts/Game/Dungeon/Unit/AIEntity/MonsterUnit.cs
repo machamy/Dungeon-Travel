@@ -223,7 +223,8 @@ namespace Scripts.Game.Dungeon.Unit
         public override void Setup()
         {
             base.Setup();
-            monsterData = DB.GetEnemyData(monsterName);
+            // TODO: 현재층 임시로 1로 설정해둠 - machamy
+            monsterData = DB.GetEnemyData(1,monsterName);
             gameObject.name = $"{ID}_{monsterName}";
             monsterProperty = monsterData.Property;
 

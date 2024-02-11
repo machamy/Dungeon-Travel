@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Forest_Guardian : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("숲의 수호자");
+    EnemyStatData enemyStatData = DB.GetEnemyData(1,"숲의 수호자");
     [HideInInspector]
     public float currentHp;
     private bool isReady; // 2페이즈
@@ -29,12 +29,20 @@ public class Forest_Guardian : Enemy_Base
         else // 광화를 제외한 상황
         {
             int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
-            if (weight < 33)
+            BuffManager buffManager = gameObject.GetComponent<BuffManager>();
+            if (buffManager.isStun == true)
+                return;
+            if (buffManager.isSilence == true)
                 weight = 0;
-            else if (weight < 66)
-                weight = 1;
             else
-                weight = 2;
+            {
+                if (weight < 33)
+                    weight = 0;
+                else if (weight < 66)
+                    weight = 1;
+                else
+                    weight = 2;
+            }
 
             switch (weight)
             {

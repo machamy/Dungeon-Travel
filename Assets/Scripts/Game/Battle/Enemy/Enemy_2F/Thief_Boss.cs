@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Thief_Boss : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData("도적대장");
+    EnemyStatData enemyStatData = DB.GetEnemyData(2,"도적대장");
     [HideInInspector]
     public float currentHp;
     private bool isReady;
@@ -27,10 +27,18 @@ public class Thief_Boss : Enemy_Base
             isReady = true;
         }
         int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
-        if (weight < 50)
+        BuffManager buffManager = gameObject.GetComponent<BuffManager>();
+        if (buffManager.isStun == true)
+            return;
+        if (buffManager.isSilence == true)
             weight = 0;
         else
-            weight = 1;
+        {
+            if (weight < 50)
+                weight = 0;
+            else
+                weight = 1;
+        }
 
         switch (weight)
         {

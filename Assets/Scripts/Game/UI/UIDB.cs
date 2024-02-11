@@ -24,7 +24,9 @@ public class UIDB : MonoBehaviour
                 Main_Equip,
                 Main_Status,
                 Main_Party,
-                Main_Config
+                Main_Config,
+                    Main_ConfigType,
+                        Main_ConfigVideo,
 
     }
 

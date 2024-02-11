@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8719214394925101203}
   - component: {fileID: 1746835513231258121}
+  - component: {fileID: -251631159489170090}
   m_Layer: 0
   m_Name: MainCharacter
   m_TagString: Untagged
@@ -51,12 +52,18 @@ MonoBehaviour:
     mp: 0
     atk: 40
     def: 30
-  advancedStat:
+    mdef: 0
+    accuracy: 0
+    dodge: 0
+    critical: 0
+    strWeight: 0
+    magWeight: 0
     str: 0
     vit: 0
     mag: 0
-    agi: 30
+    agi: 0
     luk: 0
+    vitWeight: 0
   position: 0
   unitName: Player
   className: 
@@ -65,8 +72,21 @@ MonoBehaviour:
   maxMP: 0
   currentHP: 100
   currentMP: 0
-  ATK: 0
-  DEF: 0
+  isdead: 0
+--- !u!114 &-251631159489170090
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1258213257351392868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 281041f33575b4449b71071cb37e2013, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isSilence: 0
+  isStun: 0
 --- !u!1 &1777465141582993294
 GameObject:
   m_ObjectHideFlags: 0
