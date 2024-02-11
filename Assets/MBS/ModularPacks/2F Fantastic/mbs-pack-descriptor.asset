@@ -28,6 +28,25 @@ TextAsset:
     \"guid\": \"42f77d7898c931f4cb9b48f4aa70842c\",\n                           
     \"type\": 3\n                        },\n                        {\n                           
     \"instanceID\": 0\n                        }\n                    ]\n               
+    }\n            ]\n        },\n        {\n            \"guid\": \"299c83c6163141e497800c6ac069deec\",\n           
+    \"name\": \"HalfWall\",\n            \"_modules\": [\n                {\n                   
+    \"guid\": \"0a2324e6006140b986f506509b99b44a\",\n                    \"name\":
+    \"largeHalf\",\n                    \"prefabs\": [\n                        {\n                           
+    \"fileID\": 4745567604816562516,\n                            \"guid\": \"e784af4d98886b646bab3ffac436bb64\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"d78f6b653ff349cd945848e6ceb16bc6\",\n                   
+    \"name\": \"medHalf\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 3151294414641730724,\n                           
+    \"guid\": \"59a6f8b5db9dc5d4b978dc9e6c8907ac\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"6c908ea340bf435baa00f76bce0957e0\",\n                   
+    \"name\": \"smallHalf\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 7761403521582501992,\n                           
+    \"guid\": \"42f77d7898c931f4cb9b48f4aa70842c\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
     }\n            ]\n        }\n    ],\n    \"_floorGroups\": [\n        {\n           
     \"guid\": \"715426053cfe48a98aaae6d11f1470c5\",\n            \"name\": \"2F 4x4Floor\",\n           
     \"_modules\": [\n                {\n                    \"guid\": \"f0ab066839f5447e8df011260b99990e\",\n                   
