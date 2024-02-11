@@ -10,7 +10,15 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public Stat stat;
-    public Skill[] skills = new Skill[4];
+    public BattleSkill[] skills = new BattleSkill[4];
+
+    public void Awake() // 임시 코드
+    {
+        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "It's a fireball", Cost = 30, Property = "fire"};
+        skills[1] = new BattleSkill() { Name = "second~~", Infomation = "22222", Cost = 22, Property = "thunder" };
+        skills[2] = new BattleSkill() { Name = "Tird~~", Infomation = "33333", Cost = 33, Property = "earth" };
+        skills[3] = new BattleSkill() { Name = "4th", Infomation = "444444444", Cost = 44, Property = "water" };
+    }
 
     public int position = -1;
 

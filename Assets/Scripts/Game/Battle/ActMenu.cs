@@ -1,20 +1,29 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class ActMenu : MonoBehaviour
 {
     public enum Acting { Attack, Skill, Guard, Item }
-    private enum ActState { ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, Guard, EndTurn }
+    public enum ActState { Waiting, ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, Guard, EndTurn }
 
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu;
 
     public Image[] skillnamePanelImage = new Image[4];
+    public TextMeshProUGUI[] skillname = new TextMeshProUGUI[4];
+    public TextMeshProUGUI[] skillcost = new TextMeshProUGUI[4];
+    public TextMeshProUGUI skill_Info;
+    public TextMeshProUGUI skillProperty;
+
     public Image[] itemnamePanelImage = new Image[3];
     public GameObject[] itemamountPanel = new GameObject[3];
 
-    private ActState aState;
+    public ActState aState;
+
+    private Unit unit;
+    private BattleSkill[] battleSkills = new BattleSkill[4];
 
     private int currenttarget, currentskill, currentitem;
     private bool isChooseActworked;
@@ -27,6 +36,12 @@ public class ActMenu : MonoBehaviour
         abxy.SetActive(false);
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
+    }
+
+    public void GetUnit(Unit getunit)
+    {
+        unit = getunit;
+        battleSkills = unit.skills;
     }
 
     private void Update()
@@ -106,7 +121,7 @@ public class ActMenu : MonoBehaviour
             {
                 currentskill++;
                 if (currentskill >= 4) { currentskill--; }
-                ChangeSkillColor();
+                ChangeSkill();
 
                 Debug.Log(currentskill);
             }
@@ -115,7 +130,7 @@ public class ActMenu : MonoBehaviour
             {
                 currentskill--;
                 if (currentskill <= -1) { currentskill++; }
-                ChangeSkillColor();
+                ChangeSkill();
 
                 Debug.Log(currentskill);
             }
@@ -223,11 +238,17 @@ public class ActMenu : MonoBehaviour
         skillmenu.SetActive(true);
         itemmenu.SetActive(false);
 
-        ChangeSkillColor();
+        for (int i = 0; i <= 3; i++)
+        {
+            skillname[i].text = battleSkills[i].Name;
+            skillcost[i].text = battleSkills[i].Cost.ToString() + "MP";
+        }
+
+        ChangeSkill();
         StartCoroutine(ApearMenuAnimation(skillmenu));
     }
 
-    public void ChangeSkillColor()
+    public void ChangeSkill()
     {
         Color selectColor = Color.yellow;
         Color nonselectColor = Color.white;
@@ -236,7 +257,10 @@ public class ActMenu : MonoBehaviour
         {
             skillnamePanelImage[i].color = nonselectColor;
         }
+
         skillnamePanelImage[currentskill].color = selectColor;
+        skill_Info.text = battleSkills[currentskill].Infomation;
+        skillProperty.text = battleSkills[currentskill].Property;
     }
 
     public void SetUpItem()

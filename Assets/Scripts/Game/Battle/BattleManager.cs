@@ -53,7 +53,9 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         endcanvas.SetActive(false);
-        bState = BattleState.START;      
+        bState = BattleState.START;
+
+        actmenu.aState = ActMenu.ActState.ChooseAct;
 
         SpawnCount = 0;
         SetupBattle();
@@ -63,6 +65,8 @@ public class BattleManager : MonoBehaviour
     private void SetupBattle()
     {
         PlayerSpawn();
+        actmenu.GetUnit(playerunit[0]);
+
 
         // 적 프리펩 불러오기
         for(int i = 0; i < EnemySpawnerPoints.Length; i++) // 적 스폰 위치 받아오기
