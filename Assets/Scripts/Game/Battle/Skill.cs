@@ -8,4 +8,6 @@ public class Skill : MonoBehaviour
     public string consumtion_type;  //MP or HP
     public string consumtion_value;
     public string skill_info;
+    public float skill_damage;
+    public string skill_damagetype;
 }

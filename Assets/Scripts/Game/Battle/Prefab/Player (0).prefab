@@ -64,6 +64,11 @@ MonoBehaviour:
     agi: 50
     luk: 0
     vitWeight: 0
+  skills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   position: 0
   unitName: Player
   className: 
