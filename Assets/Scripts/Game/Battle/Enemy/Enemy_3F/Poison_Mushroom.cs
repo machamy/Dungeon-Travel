@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rabbit : Enemy_Base
+public class Poison_Mushroom : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData(1,"토끼");
+    EnemyStatData enemyStatData = DB.GetEnemyData(3, "독버섯");
     [HideInInspector]
     public float currentHp;
 
@@ -22,9 +22,13 @@ public class Rabbit : Enemy_Base
         BuffManager buffManager = gameObject.GetComponent<BuffManager>();
         if (buffManager.isStun == true)
             return;
-        //기본공격
-        SingleAttack(enemyStatData.atk, AttackType.Smash, AttackProperty.Physics);
+        //맹독
+        int AttackRange = UnityEngine.Random.Range(0, 5);
+        GameObject go = GameObject.Find("Player (" + AttackRange + ")(Clone)");
+        BuffManager pBuffManager = go.GetComponent<BuffManager>();
+        pBuffManager.Poison(3, enemyStatData.atk, 50); // 확률은 아직
     }
+
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         if (enemyStatData.WeakType == attackType)

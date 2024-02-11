@@ -2,6 +2,7 @@ using Scripts.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Scripts;
 
 public class Forest_Guardian : Enemy_Base
 {
@@ -28,7 +29,7 @@ public class Forest_Guardian : Enemy_Base
         }
         else // 광화를 제외한 상황
         {
-            int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
+            int weight = Utility.WeightedRandom(50, 50); // 가중치 아직 안건드림
             BuffManager buffManager = gameObject.GetComponent<BuffManager>();
             if (buffManager.isStun == true)
                 return;
