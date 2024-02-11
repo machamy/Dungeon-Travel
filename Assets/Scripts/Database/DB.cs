@@ -107,7 +107,7 @@ public class DB
             //     if (header[colNum] == "EOF")
             //         break;
             string[] sheetName = table.TableName.Split("_");
-
+            Debug.Log("[DB::UpdateDB] parsing sheet : "+table.TableName);
             switch (sheetName.Length)
             {
                 case 1:

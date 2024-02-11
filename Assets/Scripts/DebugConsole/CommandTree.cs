@@ -29,7 +29,7 @@ namespace Scripts.DebugConsole
             CommandTreeNode commandNode = new CommandTreeNode(parent, command.Name,command);
             commandNode.path = path;
             
-            Debug.Log($"Add command {command.Name} ({command.ParamNum})");
+            Debug.Log($"[CommandTree::Add] Add command {command.Name} ({command.ParamNum})");
             parent.child.Add(command.Name, commandNode);
         }
 
