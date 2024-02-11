@@ -1,35 +1,36 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ActMenu : MonoBehaviour
 {
     public enum Acting {Attack,Skill,Guard,Item}
-    private enum ActState {ChoseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, Guard, EndTurn }
+    private enum ActState {ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, Guard, EndTurn }
 
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu;
+    public Image[] skillnamePanelImage = new Image[4];
 
     private ActState aState;
 
     private int currenttarget, currentskill;
-    private bool isChoseActworked;
+    private bool isChooseActworked;
 
+    
     private void Awake()
     {
-        isChoseActworked = false;
-
+        isChooseActworked = false;
+        
         abxy.SetActive(false);
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
-
-        aState = ActState.ChoseAct;
     }
 
     private void Update()
     {
-        if(aState == ActState.ChoseAct)
+        if(aState == ActState.ChooseAct)
         {
-            if (!isChoseActworked) { ChoseAct(); isChoseActworked = true; }
+            if (!isChooseActworked) { ChooseAct(); isChooseActworked = true; }
 
             if(Input.GetKeyDown(KeyCode.A))
             {
@@ -91,8 +92,8 @@ public class ActMenu : MonoBehaviour
 
             if(Input.GetKeyDown(KeyCode.Escape))
             {
-                aState = ActState.ChoseAct;
-                ChoseAct();
+                aState = ActState.ChooseAct;
+                ChooseAct();
             }
         }
 
@@ -102,6 +103,7 @@ public class ActMenu : MonoBehaviour
             {
                 currentskill++;
                 if (currentskill >= 4) { currentskill--; }
+                ChageSkillColor();
 
                 Debug.Log(currentskill);
             }
@@ -109,22 +111,23 @@ public class ActMenu : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.DownArrow))
             {
                 currentskill--;
-                if (currentskill < 1) { currentskill++; }
+                if (currentskill <= -1) { currentskill++; }
+                ChageSkillColor();
 
                 Debug.Log(currentskill);
             }
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                aState = ActState.EndTurn;
+                aState = ActState.SkillTarget;
 
-                Debug.Log("목표: " + currentskill);
+                Debug.Log("스킬 " + currentskill);
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                aState = ActState.ChoseAct;
-                ChoseAct();
+                aState = ActState.ChooseAct;
+                ChooseAct();
             }
         }
 
@@ -161,7 +164,7 @@ public class ActMenu : MonoBehaviour
         }
     }
 
-    private void ChoseAct()
+    private void ChooseAct()
     {
         abxy.SetActive(true);
         skillmenu.SetActive(false);
@@ -183,7 +186,20 @@ public class ActMenu : MonoBehaviour
         skillmenu.SetActive(true);
         itemmenu.SetActive(false);
 
+        ChageSkillColor();
         StartCoroutine(SkillMenuAnimation());
+    }
+
+    public void ChageSkillColor()
+    {
+        Color selectColor = Color.yellow;
+        Color nonselectColor = Color.white;
+
+        for (int i = 0; i <=3; i++)
+        {
+            skillnamePanelImage[i].color = nonselectColor;
+        }
+        skillnamePanelImage[currentskill].color = selectColor;
     }
 
     public void SetUpItem()

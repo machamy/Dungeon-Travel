@@ -10,6 +10,7 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public Stat stat;
+    public Skill[] skills = new Skill[4];
 
     public int position = -1;
 
@@ -29,7 +30,7 @@ public class Unit : MonoBehaviour
     public void ConnectHUD(HUDmanager getHUD)
     {
         HUD = getHUD;
-        HUD.SetupHUD(maxHP, maxMP);
+        HUD.SetupHUD(maxHP, maxMP,unitName,className);
     }
 
     public void TakeDamage(float damage, AttackType attackType, AttackProperty attackProperty)  //유닛 체력 계산
@@ -61,13 +62,5 @@ public class Unit : MonoBehaviour
     public void MPShort()
     {
         Debug.Log("마나 부족");
-    }
-
-    public void Update()
-    {
-        if(isdead)
-        {
-            
-        }
     }
 }
