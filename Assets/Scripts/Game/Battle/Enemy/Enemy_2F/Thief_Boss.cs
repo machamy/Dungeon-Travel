@@ -2,6 +2,7 @@ using Scripts.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Scripts;
 
 public class Thief_Boss : Enemy_Base
 {
@@ -26,7 +27,7 @@ public class Thief_Boss : Enemy_Base
             Bandits(); // 도적단(패시브)
             isReady = true;
         }
-        int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
+        int weight = Utility.WeightedRandom(50, 50); // 가중치 아직 안건드림
         BuffManager buffManager = gameObject.GetComponent<BuffManager>();
         if (buffManager.isStun == true)
             return;
@@ -52,6 +53,15 @@ public class Thief_Boss : Enemy_Base
     }
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
+        if (enemyStatData.WeakType == attackType)
+        {
+            atk *= 2f; // 임시
+            //크리확률 증가
+        }
+        if (enemyStatData.ResistType == attackType)
+        {
+            atk /= 2f; // 임시
+        }
         currentHp -= atk;
         if (currentHp <= 0)
         {
@@ -74,8 +84,9 @@ public class Thief_Boss : Enemy_Base
     public void Double_Slash()
     {
         Unit unit;
-        int AttackRange = UnityEngine.Random.Range(0, BattleManager.Instance.playerPrefab.Length);
-        unit = BattleManager.Instance.playerPrefab[AttackRange].GetComponent<Unit>();
+        int AttackRange = UnityEngine.Random.Range(0, 5);
+        GameObject go = GameObject.Find("Player (" + AttackRange + ")(Clone)");
+        unit = go.GetComponent<Unit>();
 
         unit.TakeDamage(enemyStatData.atk * 0.75f, AttackType.Slash, AttackProperty.Physics);
         unit.TakeDamage(enemyStatData.atk * 0.75f, AttackType.Slash, AttackProperty.Physics);

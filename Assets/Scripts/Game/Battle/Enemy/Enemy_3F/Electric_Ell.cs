@@ -1,12 +1,12 @@
-using Scripts;
 using Scripts.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Scripts;
 
-public class Thief_Vanguard : Enemy_Base
+public class Electric_Ell : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData(2,"도적선봉대");
+    EnemyStatData enemyStatData = DB.GetEnemyData(3, "전기장어 정령");
     [HideInInspector]
     public float currentHp;
 
@@ -20,30 +20,24 @@ public class Thief_Vanguard : Enemy_Base
     }
     public override void EnemyAttack()
     {
-        int weight = Utility.WeightedRandom(50, 50); // 가중치 아직 안건드림
         BuffManager buffManager = gameObject.GetComponent<BuffManager>();
+        int weight = Utility.WeightedRandom(50, 50); // 가중치는 아직
         if (buffManager.isStun == true)
             return;
         if (buffManager.isSilence == true)
             weight = 0;
-        else
-        {
-            if (weight < 50)
-                weight = 0;
-            else
-                weight = 1;
-        }
-
         switch (weight)
         {
-            case 0: // 기본공격
-                SingleAttack(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
+            case 0:
+                SingleAttack(enemyStatData.atk, AttackType.Smash, AttackProperty.Physics); //기본공격
                 break;
-            case 1: // 베고 찌르기
-                Cut_Stab();
+            case 1:
+                Electric_Whip(); // 전기 채찍
                 break;
         }
+        
     }
+
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         if (enemyStatData.WeakType == attackType)
@@ -62,15 +56,9 @@ public class Thief_Vanguard : Enemy_Base
             return;
         }
     }
-
-    public void Cut_Stab()
+    private void Electric_Whip()
     {
-        Unit unit;
-        int AttackRange = UnityEngine.Random.Range(0, 5);
-        GameObject go = GameObject.Find("Player (" + AttackRange + ")(Clone)");
-        unit = go.GetComponent<Unit>();
-
-        unit.TakeDamage(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
-        unit.TakeDamage(enemyStatData.atk, AttackType.Slash, AttackProperty.Physics);
+        SingleAttack(enemyStatData.atk, AttackType.Lightning, AttackProperty.Magic);
+        //중간확률 혼란
     }
 }

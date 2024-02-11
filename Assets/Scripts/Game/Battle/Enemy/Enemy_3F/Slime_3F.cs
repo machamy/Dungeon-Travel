@@ -2,10 +2,11 @@ using Scripts.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Enemy_Base;
 
-public class Rabbit : Enemy_Base
+public class Slime_3F : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData(1,"토끼");
+    EnemyStatData enemyStatData = DB.GetEnemyData(3, "슬라임");
     [HideInInspector]
     public float currentHp;
 
@@ -25,6 +26,7 @@ public class Rabbit : Enemy_Base
         //기본공격
         SingleAttack(enemyStatData.atk, AttackType.Smash, AttackProperty.Physics);
     }
+
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         if (enemyStatData.WeakType == attackType)

@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Rabbit : Enemy_Base
+public class Bat : Enemy_Base
 {
-    EnemyStatData enemyStatData = DB.GetEnemyData(1,"토끼");
+    EnemyStatData enemyStatData = DB.GetEnemyData(3, "박쥐");
     [HideInInspector]
     public float currentHp;
 
@@ -23,8 +23,9 @@ public class Rabbit : Enemy_Base
         if (buffManager.isStun == true)
             return;
         //기본공격
-        SingleAttack(enemyStatData.atk, AttackType.Smash, AttackProperty.Physics);
+        SingleAttack(enemyStatData.atk, AttackType.Penetrate, AttackProperty.Physics);
     }
+
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
         if (enemyStatData.WeakType == attackType)

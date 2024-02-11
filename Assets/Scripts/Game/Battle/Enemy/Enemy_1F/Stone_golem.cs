@@ -2,6 +2,7 @@ using Scripts.Data;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Scripts;
 
 public class Stone_golem : Enemy_Base
 {
@@ -23,7 +24,7 @@ public class Stone_golem : Enemy_Base
     {
         if((currentHp)/(enemyStatData.hp) > 0.5f) // hp가 50퍼 초과일때
         {
-            int weight = UnityEngine.Random.Range(0, 99); // 가중치 아직 안건드림
+            int weight = Utility.WeightedRandom(50, 50); // 가중치 아직 안건드림
             BuffManager buffManager = gameObject.GetComponent<BuffManager>();
             if (buffManager.isStun == true)
                 return;
@@ -62,10 +63,20 @@ public class Stone_golem : Enemy_Base
     }
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
+        if (enemyStatData.WeakType == attackType)
+        {
+            atk *= 2f; // 임시
+            //크리확률 증가
+        }
+        if (enemyStatData.ResistType == attackType)
+        {
+            atk /= 2f; // 임시
+        }
         currentHp -= atk;
         if (currentHp <= 0)
         {
             Destroy(gameObject);
+            return;
         }
     }
     public void Stomp()

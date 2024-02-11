@@ -28,10 +28,20 @@ public class Slime : Enemy_Base
 
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
+        if (enemyStatData.WeakType == attackType)
+        {
+            atk *= 2f; // 임시
+            //크리확률 증가
+        }
+        if (enemyStatData.ResistType == attackType)
+        {
+            atk /= 2f; // 임시
+        }
         currentHp -= atk;
         if (currentHp <= 0)
         {
             Destroy(gameObject);
+            return;
         }
     }
 }

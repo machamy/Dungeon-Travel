@@ -1,3 +1,4 @@
+using Scripts;
 using Scripts.Data;
 using System;
 using System.Collections;
@@ -8,7 +9,7 @@ using UnityEngine;
 public class Enemy_Base : MonoBehaviour
 {
     private Unit unit;
-    public bool isDead;
+    public bool isDead = false;
     public enum AttackProperty
     {
         Physics, // 물리
@@ -55,9 +56,10 @@ public class Enemy_Base : MonoBehaviour
     /// <param name="attackType"></param>
     public void SingleAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-        int AttackRange = UnityEngine.Random.Range(0, BattleManager.Instance.playerPrefab.Length);
-        unit = BattleManager.Instance.playerPrefab[AttackRange].GetComponent<Unit>();
-        unit.TakeDamage(atk,attackType,attackProperty);
+        int AttackRange = UnityEngine.Random.Range(0, 5);
+        GameObject go = GameObject.Find("Player (" + AttackRange + ")(Clone)");
+        unit = go.GetComponent<Unit>();
+        unit.TakeDamage(atk, attackType, attackProperty);
     }
     /// <summary>
     /// 광역공격
@@ -66,9 +68,10 @@ public class Enemy_Base : MonoBehaviour
     /// <param name="attackType"></param>
     public void WideAttack(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-        for(int i = 0; i < BattleManager.Instance.playerPrefab.Length; i++)
+        for(int i = 0; i < 5; i++)
         {
-            unit = BattleManager.Instance.playerPrefab[i].GetComponent<Unit>();
+            GameObject go = GameObject.Find("Player (" + i + ")(Clone)");
+            unit = go.GetComponent<Unit>();
             unit.TakeDamage(atk, attackType, attackProperty);
         }
     }
