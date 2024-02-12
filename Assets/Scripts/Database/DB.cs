@@ -98,6 +98,7 @@ public class DB
     public void UpdateDB()
     {
         ExcelReader er = new ExcelReader(fileName);
+        ClearDB(); // << 분리할수도 있음
         foreach (var table in er.Read())
         {
             string[] header = Array.ConvertAll(table.Rows[0].ItemArray,
@@ -121,6 +122,7 @@ public class DB
                 case 2:
                     if (sheetName[1].Equals(DB_NAME_STAT))
                     {
+                        // Debug.Log(classStatData[ClassType.Paladin]);
                         classStatData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassStat(table, header, colNum));
                     }
                     else if (sheetName[1].Equals(DB_NAME_SKILL))
