@@ -28,6 +28,12 @@ TextAsset:
     \"guid\": \"42f77d7898c931f4cb9b48f4aa70842c\",\n                           
     \"type\": 3\n                        },\n                        {\n                           
     \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"94fbb88e334e4211bdbcb8685c97e29a\",\n                   
+    \"name\": \"NoedgeFull\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 8822956515441778124,\n                           
+    \"guid\": \"cba99076e9b84d44f8df02f50e10e461\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
     }\n            ]\n        },\n        {\n            \"guid\": \"299c83c6163141e497800c6ac069deec\",\n           
     \"name\": \"HalfWall\",\n            \"_modules\": [\n                {\n                   
     \"guid\": \"0a2324e6006140b986f506509b99b44a\",\n                    \"name\":
@@ -45,6 +51,26 @@ TextAsset:
     \"name\": \"smallHalf\",\n                    \"prefabs\": [\n                       
     {\n                            \"fileID\": 7761403521582501992,\n                           
     \"guid\": \"42f77d7898c931f4cb9b48f4aa70842c\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    }\n            ]\n        },\n        {\n            \"guid\": \"ec1f5225367e497fae8db3341703b6e4\",\n           
+    \"name\": \"OneSide FullWall\",\n            \"_modules\": [\n               
+    {\n                    \"guid\": \"d7bc7a46c11a41769a249b3b38f52925\",\n                   
+    \"name\": \"New Wall Module\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 8214289662199232385,\n                           
+    \"guid\": \"ad3f081685d69124c8d8836236f0c64d\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"8b85603328e44f2aba1d2555873211bd\",\n                   
+    \"name\": \"New Wall Module (1)\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 8439751715075455498,\n                           
+    \"guid\": \"6b16ccba2bfb5ea4ea304d8a0b2a9b4f\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    },\n                {\n                    \"guid\": \"4a10f95bc10c4840b1170b340d9ca892\",\n                   
+    \"name\": \"New Wall Module (2)\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 6723264127659633077,\n                           
+    \"guid\": \"9323dd85ffb59f54ebee253b2ba117b1\",\n                           
     \"type\": 3\n                        },\n                        {\n                           
     \"instanceID\": 0\n                        }\n                    ]\n               
     }\n            ]\n        }\n    ],\n    \"_floorGroups\": [\n        {\n           
@@ -87,11 +113,19 @@ TextAsset:
     \"type\": 3\n                        },\n                        {\n                           
     \"instanceID\": 0\n                        }\n                    ]\n               
     }\n            ]\n        },\n        {\n            \"guid\": \"39d3f752c10a4145941d4e69956195bf\",\n           
-    \"name\": \"2F 2x4 Floor\",\n            \"_modules\": [\n                {\n                   
+    \"name\": \"4x4 BlackPlane\",\n            \"_modules\": [\n                {\n                   
     \"guid\": \"6bfe2707552d4d10a4b80fd02574cb91\",\n                    \"name\":
     \"New Floor Module\",\n                    \"prefabs\": [\n                       
-    {\n                            \"fileID\": 1504269054789325513,\n                           
-    \"guid\": \"b12f1a3677ab36e4ba820c45e4853db4\",\n                           
+    {\n                            \"fileID\": 7176066024687779812,\n                           
+    \"guid\": \"213e0ac2ea49a3849a1214a0a62f0683\",\n                           
+    \"type\": 3\n                        },\n                        {\n                           
+    \"instanceID\": 0\n                        }\n                    ]\n               
+    }\n            ]\n        },\n        {\n            \"guid\": \"9c2f993d7c8c46bc9215256b2e26d666\",\n           
+    \"name\": \"2x2 BlackPlane\",\n            \"_modules\": [\n                {\n                   
+    \"guid\": \"4183df5c0d5b43639f67d9b1b5829f2a\",\n                    \"name\":
+    \"New Floor Module\",\n                    \"prefabs\": [\n                       
+    {\n                            \"fileID\": 2931137628331465874,\n                           
+    \"guid\": \"41f275bafd4c2ab4b856a5727b7a86d5\",\n                           
     \"type\": 3\n                        },\n                        {\n                           
     \"instanceID\": 0\n                        }\n                    ]\n               
     }\n            ]\n        }\n    ],\n    \"_decoratorGroups\": [],\n    \"_decoratorCategories\":
