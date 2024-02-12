@@ -53,7 +53,9 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         endcanvas.SetActive(false);
-        bState = BattleState.START;      
+        bState = BattleState.START;
+
+        actmenu.aState = ActMenu.ActState.ChooseAct;
 
         SpawnCount = 0;
         SetupBattle();
@@ -63,6 +65,8 @@ public class BattleManager : MonoBehaviour
     private void SetupBattle()
     {
         PlayerSpawn();
+        actmenu.GetUnit(playerunit[0]);
+
 
         // 적 프리펩 불러오기
         for(int i = 0; i < EnemySpawnerPoints.Length; i++) // 적 스폰 위치 받아오기
@@ -147,16 +151,16 @@ public class BattleManager : MonoBehaviour
 
         if(bState == BattleState.ENEMYTURN)
         {
-            Enemy_Base[] enemy_Base = new Enemy_Base[enemyPrefab.Length];
+            Enemy_Base[] live_enemy = new Enemy_Base[enemyPrefab.Length];
             int count = 0;
-            for(int i =0; i<enemyPrefab.Length;i++)
+            for(int i =0; i<SpawnCount;i++)
             {
-                if (enemyPrefab[i].isDead == false)
-                    enemy_Base[count++] = enemyPrefab[i];
+              if (enemyPrefab[i].isDead == false)
+                    live_enemy[count++] = enemyPrefab[i];
             }
             for (int i =0; i < count; i++)
             {
-                enemyPrefab[i].EnemyAttack();
+                live_enemy[i].EnemyAttack();
             }
             bState = BattleState.PLAYERTURN;
         }

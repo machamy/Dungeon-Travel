@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Script.Data;
 using Script.Global;
 using UnityEngine;
@@ -11,7 +11,7 @@ namespace Scripts.Data
         public string atttackType;
         public int rank;
         public string skillType;
-        public string name;
+        public string Skillname;
         public float damage;
         public float mpCost;
     }

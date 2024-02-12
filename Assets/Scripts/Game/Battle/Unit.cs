@@ -10,6 +10,15 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public Stat stat;
+    public BattleSkill[] skills = new BattleSkill[4];
+
+    public void Awake() // 임시 코드
+    {
+        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "It's a fireball", Cost = 30, Property = "fire"};
+        skills[1] = new BattleSkill() { Name = "second~~", Infomation = "22222", Cost = 22, Property = "thunder" };
+        skills[2] = new BattleSkill() { Name = "Tird~~", Infomation = "33333", Cost = 33, Property = "earth" };
+        skills[3] = new BattleSkill() { Name = "4th", Infomation = "444444444", Cost = 44, Property = "water" };
+    }
 
     public int position = -1;
 
@@ -29,7 +38,7 @@ public class Unit : MonoBehaviour
     public void ConnectHUD(HUDmanager getHUD)
     {
         HUD = getHUD;
-        HUD.SetupHUD(maxHP, maxMP);
+        HUD.SetupHUD(maxHP, maxMP,unitName,className);
     }
 
     public void TakeDamage(float damage, AttackType attackType, AttackProperty attackProperty)  //유닛 체력 계산
@@ -61,13 +70,5 @@ public class Unit : MonoBehaviour
     public void MPShort()
     {
         Debug.Log("마나 부족");
-    }
-
-    public void Update()
-    {
-        if(isdead)
-        {
-            
-        }
     }
 }
