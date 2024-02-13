@@ -22,6 +22,7 @@ public class UIDB : MonoBehaviour
                         Main_ItemParty,
                 Main_Skill,
                 Main_Equip,
+                    Main_EquipItem,
                 Main_Status,
                 Main_Party,
                 Main_Config,

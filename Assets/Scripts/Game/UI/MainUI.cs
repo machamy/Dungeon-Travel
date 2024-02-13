@@ -14,13 +14,14 @@ using System.Runtime.CompilerServices;
 
 public class MainUI : MonoBehaviour
 {
-    public GameObject placeContainer, mainMenuContainer, menuContainer, partyContainer,
-        itemContainer, configContainer;
-    public GameObject blockPartyPanel, partyBlackPanel;
+    public GameObject townMapContainer, menuContainer, characterContainer,
+        itemContainer, equipContainer, tabContainer, configContainer;
+    public GameObject mainMenuPanel, blockPartyPanel, partyBlackPanel, beforeAfterPanel;
     public GameObject placeFirstSelect, menuFirstSelect, useDeleteFirstSelect,
-        itemPartyFirstSelect, configFirstSelect, videoFirstSelect;
+        characterFirstSelect, configFirstSelect, videoFirstSelect;
 
-    public GameObject itemButtonPrefab, itemButtonParent;
+    public GameObject itemButtonPrefab, itemButtonParent, skillButtonParent,
+        equipButtonParent;
 
     private string selectedButtonName;
     private GameObject selectedItem; 
@@ -29,6 +30,8 @@ public class MainUI : MonoBehaviour
     public Image dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f),
         lightblue = new(0, 1, 1, 0.5f), blue = new(0, 0.5f, 1, 0.5f);
+
+    private int currentTabIndex = 1;
 
 
     private void Awake()
@@ -39,21 +42,21 @@ public class MainUI : MonoBehaviour
     public void Place(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIDB.State.Main_Place,
-            placeContainer, disableUI, placeFirstSelect);
+            townMapContainer, disableUI, placeFirstSelect);
     }
 
     public void Menu(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIDB.State.Main_Menu,
             menuContainer, disableUI, menuFirstSelect);
-        partyContainer.SetActive(true);
+        characterContainer.SetActive(true);
     }
 
     public void OnMenu()
     {
         if (UIManager.Instance.currentState != UIDB.State.Main_Place) return;
-        mainMenuContainer.SetActive(true);
-        Menu(placeContainer);
+        mainMenuPanel.SetActive(true);
+        Menu(townMapContainer);
     }
 
 
@@ -62,7 +65,7 @@ public class MainUI : MonoBehaviour
         UIManager.Instance.SetUI(UIDB.State.Main_Item,
             itemContainer, disableUI, null);
 
-        if (disableUI != null)
+        if (disableUI == menuContainer)
             UIManager.Instance.GetInventoryItem(itemButtonPrefab, itemButtonParent);
         else UIManager.Instance.SelectButton(selectedItem);
     }
@@ -77,14 +80,49 @@ public class MainUI : MonoBehaviour
     public void ItemParty()
     {
         UIManager.Instance.SetUI(UIDB.State.Main_ItemParty,
-            partyBlackPanel, blockPartyPanel, itemPartyFirstSelect);
+            partyBlackPanel, blockPartyPanel, characterFirstSelect);
+    }
+
+    public void Equip(GameObject disableUI)
+    {
+        if (disableUI == menuContainer)
+            UIManager.Instance.GetInventoryItem(itemButtonPrefab, equipButtonParent);
+
+        UIManager.Instance.SetUI(UIDB.State.Main_Equip,
+            equipContainer, disableUI, characterFirstSelect);
+    }
+
+    public void EquipItem()
+    {
+        UIManager.Instance.SetUI(UIDB.State.Main_EquipItem,
+            beforeAfterPanel, null, equipButtonParent.transform.
+            GetChild(0).GetChild(1).gameObject);
+    }
+
+    public void OnXMove(InputValue value)
+    {
+        if (UIManager.Instance.currentState != UIDB.State.Main_EquipItem) return;
+
+        int index = UIManager.Instance.GetTabIndex(value, currentTabIndex, 3);
+        if (index != -1) SwitchTab(index);
+    }
+
+    public void SwitchTab(int value)
+    {
+        tabContainer.transform.GetChild(currentTabIndex).
+            GetComponent<Image>().color = lightblue;
+        tabContainer.transform.GetChild(currentTabIndex = value).
+            GetComponent<Image>().color = yellow;
+
+        UIManager.Instance.SelectButton(equipButtonParent.transform.
+            GetChild(0).GetChild(1).gameObject);
     }
 
     public void Config(GameObject disableUI)
     {
         UIManager.Instance.SetUI(UIDB.State.Main_Config,
             configContainer, disableUI, configFirstSelect);
-        partyContainer.SetActive(false);
+        characterContainer.SetActive(false);
     }
 
     public void ConfigVideo()
@@ -98,7 +136,7 @@ public class MainUI : MonoBehaviour
         switch (UIManager.Instance.currentState)
         {
             case UIDB.State.Main_Menu:
-                Place(mainMenuContainer); break;
+                Place(mainMenuPanel); break;
 
             case UIDB.State.Main_Item:
                 Menu(itemContainer); break;
@@ -109,6 +147,12 @@ public class MainUI : MonoBehaviour
 
             case UIDB.State.Main_ItemParty:
                 ItemUseDelete(partyBlackPanel); break;
+
+            case UIDB.State.Main_Equip:
+                Menu(equipContainer); break;
+
+            case UIDB.State.Main_EquipItem:
+                Equip(beforeAfterPanel); break;
 
             case UIDB.State.Main_Config:
                 Menu(configContainer); break;
@@ -141,6 +185,14 @@ public class MainUI : MonoBehaviour
     {
         if (UIManager.Instance.currentState != UIDB.State.Main_Item) return;
         AutoScroll.Instance.ScrollWheel(value);
+    }
+
+    public void CharacterClick()
+    {
+        if (UIManager.Instance.currentState == UIDB.State.Main_Equip)
+        {
+            EquipItem();
+        }
     }
 
     private void Update()

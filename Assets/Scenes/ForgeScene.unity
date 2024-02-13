@@ -6467,10 +6467,7 @@ MonoBehaviour:
   itemNameText: {fileID: 1182791005}
   buttonDescriptionText: {fileID: 1339108428}
   talkText: {fileID: 1480864413}
-  typeButton:
-  - {fileID: 369777779}
-  - {fileID: 953788310}
-  - {fileID: 308617398}
+  tabContainer: {fileID: 1937369197}
 --- !u!114 &1433298702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8850,7 +8847,7 @@ GameObject:
   - component: {fileID: 1937369198}
   - component: {fileID: 1937369199}
   m_Layer: 5
-  m_Name: TypeContainer
+  m_Name: TabContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

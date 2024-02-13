@@ -190,7 +190,7 @@ namespace Scripts.Game.Dungeon.Unit
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(initialPosition, moveRadius);
 
-            Gizmos.color = Color.blue;
+            Gizmos.color = Color.lightblue;
             Gizmos.DrawWireSphere(transform.position, attackRange);
         }
     }

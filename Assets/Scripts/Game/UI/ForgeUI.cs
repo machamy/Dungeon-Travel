@@ -17,12 +17,12 @@ public class ForgeUI : MonoBehaviour
     public GameObject menuFirstSelect, weaponFirstSelect, askBuyFirstSelect, askExitFirstSelect;
 
     public TextMeshProUGUI itemNameText, buttonDescriptionText, talkText;
-    
-    public GameObject[] typeButton = new GameObject[3];
 
-    int currentType = 0;
+    public GameObject tabContainer;
 
-    private Color blue = new(0, 1, 1, 0.5f), yellow = new(1, 1, 0, 0.5f);
+    private int currentTabIndex = 1;
+
+    private Color lightblue = new(0, 1, 1, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
 
     private void Awake()
@@ -48,17 +48,16 @@ public class ForgeUI : MonoBehaviour
     {
         if (UIManager.Instance.currentState != UIDB.State.Forge_Weapon) return;
 
-        int axis = (int)value.Get<float>();
-        if (axis == 0) return;
-        if (currentType + axis < 0 || currentType + axis > 2) return;
-
-        SwitchType(currentType + axis);
+        int index = UIManager.Instance.GetTabIndex(value, currentTabIndex, 3);
+        if (index != -1) SwitchTab(index);
     }
 
-    public void SwitchType(int value)
+    public void SwitchTab(int value)
     {
-        typeButton[currentType].GetComponent<Image>().color = blue;
-        typeButton[currentType = value].GetComponent<Image>().color = yellow;
+        tabContainer.transform.GetChild(currentTabIndex).
+            GetComponent<Image>().color = lightblue;
+        tabContainer.transform.GetChild(currentTabIndex = value).
+            GetComponent<Image>().color = yellow;
 
         UIManager.Instance.SelectButton(weaponFirstSelect);
     }
