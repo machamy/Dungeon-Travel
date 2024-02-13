@@ -92,7 +92,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: P_MOD_Floor_01_O_straight_tiny
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 449083828649237265, guid: 2aad6afdd13781540939f8e8c90481f3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

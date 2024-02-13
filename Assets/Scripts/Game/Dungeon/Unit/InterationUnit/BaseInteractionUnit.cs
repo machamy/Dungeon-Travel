@@ -18,14 +18,15 @@ namespace Scripts.Game.Dungeon.Unit
         
         All = 1 << 8 - 1
     }
+    
 
     /// <summary>
     /// 기본적인 상호작용 유닛.
     /// </summary>
     /// <remarks>
-    /// 현재 "공격F"과 "사용E"에 대해서만 적용되어있다.
+    /// TODO : Focus는 별도 컴포넌트로 분리 가능 - machamy
     /// </remarks>
-    public abstract class BaseInteractionUnit : MonoBehaviour
+    public abstract class BaseInteractionUnit : FocusUnit
     {
         /// <summary>
         /// 가능한 상호작용의 종류 Flag
@@ -33,30 +34,6 @@ namespace Scripts.Game.Dungeon.Unit
         public InteractionType type;
         public float hp;
 
-        /// <summary>
-        /// 히든일 경우 포커스 될 시 표시하지 않는다
-        /// </summary>
-        public bool isHidden = false;
-
-        protected bool isFocused = false;
-        protected Material outline;
-
-
-        public bool IsFocused
-        {
-            get => isFocused;
-            set
-            {
-                isFocused = value;
-                OnFocusEvent(value);
-            }
-        }
-
-        public virtual void Start()
-        {
-            Shader shader = Shader.Find("Draw/OutlineShader");
-            outline = new Material(shader);
-        }
 
         public virtual void Update()
         {
@@ -101,26 +78,6 @@ namespace Scripts.Game.Dungeon.Unit
         public virtual bool OnIntersectOut(PlayerUnit unit)
         {
             return false;
-        }
-
-        private Renderer renderer;
-        private List<Material> materialList = new List<Material>();
-
-        public void OnFocusEvent(bool val)
-        {
-            if (isHidden || this.renderer is null)
-                return;
-            renderer = GetComponent<Renderer>();
-
-            materialList.Clear();
-            materialList.AddRange(this.renderer.sharedMaterials);
-
-            if (val)
-                materialList.Add(outline);
-            else
-                materialList.Remove(outline);
-
-            renderer.materials = materialList.ToArray();
         }
 
     }

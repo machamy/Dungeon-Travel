@@ -11,8 +11,8 @@ namespace Scripts.Game.Dungeon.Unit
 
         private void OnTriggerEnter(Collider other)
         {
-            BaseInteractionUnit unit;
-            if (other.gameObject.TryGetComponent<BaseInteractionUnit>(out unit))
+            BaseInteractionUnit unit = other.gameObject.GetComponentInParent<BaseInteractionUnit>();
+            if (unit)
             {
                 unitSet.Add(unit);
                 Debug.Log($"in {unit}");
@@ -20,8 +20,8 @@ namespace Scripts.Game.Dungeon.Unit
         }
         private void OnTriggerExit(Collider other)
         {
-            BaseInteractionUnit unit;
-            if (other.gameObject.TryGetComponent<BaseInteractionUnit>(out unit))
+            BaseInteractionUnit unit = other.gameObject.GetComponentInParent<BaseInteractionUnit>();
+            if (unit)
             {
                 unitSet.Remove(unit);
                 Debug.Log($"exit {unit}");
