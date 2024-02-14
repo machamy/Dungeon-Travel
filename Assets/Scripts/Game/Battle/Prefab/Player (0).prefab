@@ -69,6 +69,7 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  isguard: 0
   position: 0
   unitName: Player
   className: 

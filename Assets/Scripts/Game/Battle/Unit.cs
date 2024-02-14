@@ -11,6 +11,7 @@ public class Unit : MonoBehaviour
     public Class _class;
     public Stat stat;
     public BattleSkill[] skills = new BattleSkill[4];
+    public bool isguard;
 
     public void Awake() // 임시 코드
     {
