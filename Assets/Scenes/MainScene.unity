@@ -3854,7 +3854,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1239853195}
         m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: ItemParty
+        m_MethodName: SkillUse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -4108,7 +4108,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1239853195}
         m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: Item
+        m_MethodName: Skill
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 444919064}
@@ -9458,7 +9458,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1239853195}
         m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: ItemParty
+        m_MethodName: ItemUse
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11581,7 +11581,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -60, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1043589621
@@ -14194,6 +14194,7 @@ MonoBehaviour:
   menuContainer: {fileID: 444919064}
   characterContainer: {fileID: 438437941}
   itemContainer: {fileID: 1168798875}
+  skillContainer: {fileID: 719986321}
   equipContainer: {fileID: 1907536705}
   tabContainer: {fileID: 2128585534}
   configContainer: {fileID: 627428939}
@@ -14203,14 +14204,16 @@ MonoBehaviour:
   beforeAfterPanel: {fileID: 169709149}
   placeFirstSelect: {fileID: 310347848}
   menuFirstSelect: {fileID: 647548525}
-  useDeleteFirstSelect: {fileID: 849128810}
+  itemUseDeleteFirstSelect: {fileID: 849128810}
+  skillUseDeleteFirstSelect: {fileID: 315494767}
   characterFirstSelect: {fileID: 1783365144}
   configFirstSelect: {fileID: 870596682}
   videoFirstSelect: {fileID: 1472619174}
   itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
   itemButtonParent: {fileID: 1615118387}
-  skillButtonParent: {fileID: 0}
+  skillButtonParent: {fileID: 1664058685}
   equipButtonParent: {fileID: 1043589619}
+  topPanelText: {fileID: 2044151318}
   buttonDescriptionText: {fileID: 300734969}
   itemDescriptionText: {fileID: 702762454}
   dungeonCircle: {fileID: 933522738}
@@ -18831,7 +18834,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -60, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1615118390
@@ -19438,7 +19441,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -60, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &1664058687

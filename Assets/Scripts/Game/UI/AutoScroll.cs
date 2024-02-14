@@ -17,17 +17,16 @@ public class AutoScroll : MonoBehaviour
     public int posN, posNInScreen = 0;
 
     private GameObject selectedButton;
+    private UIDB.State state;
 
     private void Update()
     {
-        selectedButton = UIManager.Instance.GetSelectedButton();
+        state = UIManager.Instance.currentState;
 
-        if (selectedButton == null ||
-            selectedButton.transform.parent.parent.gameObject != gameObject)
-        {
-            posY = posN = posNInScreen = 0;
-            return;
-        }
+        if (state is not (UIDB.State.Main_Item or UIDB.State.Main_SkillList
+            or UIDB.State.Main_EquipList)) return;
+
+        selectedButton = UIManager.Instance.GetSelectedButton();
 
         posN = selectedButton.transform.parent.GetSiblingIndex();
         posNInScreen = posN - posY / height;
@@ -42,8 +41,8 @@ public class AutoScroll : MonoBehaviour
             posY -= height;
             posNInScreen = 0;
         }
-        else if (posNInScreen > amount + 1 || posNInScreen < -1)
-            posY = posN = posNInScreen = 0;
+
+        if (posN == 0) posY = posNInScreen = 0;
 
         transform.localPosition = new Vector3(316.5f, posY, 0);
     }

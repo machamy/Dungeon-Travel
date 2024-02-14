@@ -6,10 +6,10 @@ using TMPro;
 public class ActMenu : MonoBehaviour
 {
     public enum Acting { Attack, Skill, Guard, Item }
-    public enum ActState { Waiting, ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, Guard, EndTurn }
+    public enum ActState { Waiting, ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, SetUpGuard, EndTurn }
 
     public GameObject ActCanvas;
-    public GameObject abxy, skillmenu, itemmenu;
+    public GameObject abxy, skillmenu, itemmenu, guardmenu;
 
     public Image[] skillnamePanelImage = new Image[4];
     public TextMeshProUGUI[] skillname = new TextMeshProUGUI[4];
@@ -19,6 +19,9 @@ public class ActMenu : MonoBehaviour
 
     public Image[] itemnamePanelImage = new Image[3];
     public GameObject[] itemamountPanel = new GameObject[3];
+
+    private bool guard_OX;
+    public TextMeshProUGUI guard_O, guard_X;
 
     public ActState aState;
 
@@ -32,10 +35,12 @@ public class ActMenu : MonoBehaviour
     private void Awake()
     {
         isChooseActworked = false;
+        guard_OX = true;
 
         abxy.SetActive(false);
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
+        guardmenu.SetActive(false);
     }
 
     public void GetUnit(Unit getunit)
@@ -76,10 +81,10 @@ public class ActMenu : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.B))
             {
-                aState = ActState.Guard;
+                aState = ActState.SetUpGuard;
                 Debug.Log("Press B");
 
-                Guard();
+                SetUpGuard();
             }
         }
 
@@ -214,6 +219,47 @@ public class ActMenu : MonoBehaviour
                 ChooseAct();
             }
         }
+
+        if(aState == ActState.ItemTarget)
+        {
+
+        }
+
+        if(aState == ActState.SetUpGuard)
+        {
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                guard_OX = !guard_OX;
+                ChangeGuardColor();
+                Debug.Log(guard_OX);
+            }
+            if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                guard_OX = !guard_OX;
+                ChangeGuardColor();
+                Debug.Log(guard_OX);
+            }
+            if(Input.GetKeyDown(KeyCode.Return))
+            {
+                if(guard_OX)
+                {
+                   Debug.Log(guard_OX);
+                   unit.isguard = guard_OX;
+
+                    aState = ActState.EndTurn;
+                }
+                else
+                {
+                    aState = ActState.ChooseAct;
+                    ChooseAct();
+                }
+            }
+            if(Input.GetKeyDown(KeyCode.Escape))
+            {
+                aState = ActState.ChooseAct;
+                ChooseAct();
+            }
+        }
     }
 
     private void ChooseAct()
@@ -221,6 +267,7 @@ public class ActMenu : MonoBehaviour
         abxy.SetActive(true);
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
+        guardmenu.SetActive(false);
     }
 
     public void SetUpAttack()
@@ -228,6 +275,8 @@ public class ActMenu : MonoBehaviour
         abxy.SetActive(false);
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
+        guardmenu.SetActive(false);
+
         currenttarget = 0;
     }
 
@@ -237,6 +286,7 @@ public class ActMenu : MonoBehaviour
         abxy.SetActive(false);
         skillmenu.SetActive(true);
         itemmenu.SetActive(false);
+        guardmenu.SetActive(false);
 
         for (int i = 0; i <= 3; i++)
         {
@@ -269,6 +319,7 @@ public class ActMenu : MonoBehaviour
         abxy.SetActive(false);
         skillmenu.SetActive(false);
         itemmenu.SetActive(true);
+        guardmenu.SetActive(false);
 
         ChangeItemColor();
         StartCoroutine(ApearMenuAnimation(itemmenu));
@@ -288,9 +339,36 @@ public class ActMenu : MonoBehaviour
         itemamountPanel[currentitem].SetActive(true);
     }
 
-    public void Guard()
+    public void SetUpGuard()
     {
         Debug.Log("가드");
+        abxy.SetActive(false);
+        skillmenu.SetActive(false);
+        itemmenu.SetActive(false);
+        guardmenu.SetActive(true);
+
+        ChangeGuardColor();
+    }
+
+    public void ChangeGuardColor()
+    {
+        if(guard_OX)
+        {
+            guard_O.fontStyle = FontStyles.Bold;
+            guard_O.color = Color.yellow;
+
+            guard_X.fontStyle = FontStyles.Normal;
+            guard_X.color = Color.red;
+            
+        }
+        else
+        {
+            guard_O.fontStyle = FontStyles.Normal;
+            guard_O.color = Color.red;
+
+            guard_X.fontStyle = FontStyles.Bold;
+            guard_X.color = Color.yellow;
+        }
     }
 
 
