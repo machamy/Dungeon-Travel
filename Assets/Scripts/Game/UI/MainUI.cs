@@ -14,15 +14,35 @@ using System.Runtime.CompilerServices;
 
 public class MainUI : MonoBehaviour
 {
-    public GameObject townMapContainer, menuContainer, characterContainer,
-        itemContainer, skillContainer, equipContainer, tabContainer, configContainer;
-    public GameObject mainMenuPanel, blockPartyPanel, partyBlackPanel, beforeAfterPanel;
-    public GameObject placeFirstSelect, menuFirstSelect, itemUseDeleteFirstSelect,
-        skillUseDeleteFirstSelect, characterFirstSelect, configFirstSelect,
-        videoFirstSelect;
+    public enum State
+    {
+        Place = 0,
+        Menu = 1,
+            Item = 10,
+                ItemUseDelete = 100,
+                    ItemUse = 1000,
+            Skill = 20,
+                SkillList = 200,
+                    SkillUseDelete = 2000,
+                        SkillUse = 20000,
+            Equip = 30,
+                EquipList = 300,
+            Status = 40,
+            Party = 50,
+            Config = 60,
+                ConfigType = 600,
+                ConfigVideo = 601,
+    } private State currentState = 0;
 
-    public GameObject itemButtonPrefab, itemButtonParent, skillButtonParent,
-        equipButtonParent;
+    public void ChangeState(int state) => currentState = (State)state;
+    public void PrevState() => currentState = (State)((int)currentState / 10);
+
+
+
+
+    public Button _MainMenu, _ItemUseDelete, _SkillUseDelete, _SkillList, _EquipList;
+
+    public GameObject itemButtonPrefab;
 
     private string selectedButtonName;
     private GameObject selectedItem, selectedCharacter; 
@@ -34,121 +54,37 @@ public class MainUI : MonoBehaviour
 
     private int currentTabIndex = 1;
 
-
-    private void Awake()
-    {
-        UIManager.Instance.currentState = UIDB.State.Main_Place;
-    }
-
-    public void Place(GameObject disableUI)
-    {
-        UIManager.Instance.SetUI(UIDB.State.Main_Place,
-            townMapContainer, disableUI, placeFirstSelect);
-    }
-
     public void Menu(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIDB.State.Main_Menu,
-            menuContainer, disableUI, menuFirstSelect);
-        characterContainer.SetActive(true);
 
         topPanelText.text = "MAIN MENU";
     }
 
-    public void OnMenu()
-    {
-        if (UIManager.Instance.currentState != UIDB.State.Main_Place) return;
-        mainMenuPanel.SetActive(true);
-        Menu(townMapContainer);
-    }
+    public void OnMenu() => _MainMenu.onClick.Invoke();
 
 
     public void Item(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIDB.State.Main_Item,
-            itemContainer, disableUI, selectedItem);
-
-        if (disableUI == menuContainer)
-            UIManager.Instance.GetInventoryItem(itemButtonPrefab, itemButtonParent);
 
         topPanelText.text = "ITEM";
     }
 
-    public void ItemUseDelete()
-    {
-        UIManager.Instance.SetUI(UIDB.State.Main_ItemUseDelete,
-            blockPartyPanel, partyBlackPanel, itemUseDeleteFirstSelect);
-    }
-
-    public void ItemUse()
-    {
-        UIManager.Instance.SetUI(UIDB.State.Main_ItemUse,
-            partyBlackPanel, blockPartyPanel, characterFirstSelect);
-    }
-
     public void Skill(GameObject disableUI)
     {
-        if (disableUI == menuContainer)
-            UIManager.Instance.GetInventoryItem(itemButtonPrefab, skillButtonParent);
-
-        UIManager.Instance.SetUI(UIDB.State.Main_Skill,
-            skillContainer, disableUI, characterFirstSelect);
-
         topPanelText.text = "SKILL";
     }
 
-    public void SkillList()
-    {
-        if (UIManager.Instance.currentState == UIDB.State.Main_Skill)
-        {
-            selectedCharacter = UIManager.Instance.GetSelectedButton();
-            selectedCharacter.GetComponent<Image>().color = blue;
-        }
-
-        UIManager.Instance.SetUI(UIDB.State.Main_SkillList,
-            null, null, UIManager.Instance.currentState == UIDB.State.Main_Skill ? 
-            skillButtonParent.transform.GetChild(0).GetChild(1).gameObject : selectedItem);
-    }
-
-    public void SkillUseDelete()
-    {
-        UIManager.Instance.SetUI(UIDB.State.Main_SkillUseDelete,
-            blockPartyPanel, partyBlackPanel, skillUseDeleteFirstSelect);
-    }
-
-    public void SkillUse()
-    {
-        UIManager.Instance.SetUI(UIDB.State.Main_SkillUse,
-            partyBlackPanel, blockPartyPanel, characterFirstSelect);
-    }
 
     public void Equip(GameObject disableUI)
     {
-        if (disableUI == menuContainer)
-            UIManager.Instance.GetInventoryItem(itemButtonPrefab, equipButtonParent);
-
-        UIManager.Instance.SetUI(UIDB.State.Main_Equip,
-            equipContainer, disableUI, characterFirstSelect);
 
         topPanelText.text = "EQUIP";
     }
 
-    public void EquipList()
-    {
-        if (UIManager.Instance.currentState == UIDB.State.Main_Equip)
-        {
-            selectedCharacter = UIManager.Instance.GetSelectedButton();
-            selectedCharacter.GetComponent<Image>().color = blue;
-        }
-
-        UIManager.Instance.SetUI(UIDB.State.Main_EquipList,
-            beforeAfterPanel, null, equipButtonParent.transform.
-            GetChild(0).GetChild(1).gameObject);
-    }
 
     public void OnXMove(InputValue value)
     {
-        if (UIManager.Instance.currentState != UIDB.State.Main_EquipList) return;
+        if (currentState != State.EquipList) return;
 
         int index = UIManager.Instance.GetTabIndex(value, currentTabIndex, 3);
         if (index != -1) SwitchTab(index);
@@ -156,95 +92,73 @@ public class MainUI : MonoBehaviour
 
     public void SwitchTab(int value)
     {
-        tabContainer.transform.GetChild(currentTabIndex).
+        /*tabContainer.transform.GetChild(currentTabIndex).
             GetComponent<Image>().color = lightblue;
         tabContainer.transform.GetChild(currentTabIndex = value).
-            GetComponent<Image>().color = yellow;
+            GetComponent<Image>().color = yellow;*/
 
-        UIManager.Instance.SelectButton(equipButtonParent.transform.
-            GetChild(0).GetChild(1).gameObject);
     }
 
     public void Config(GameObject disableUI)
     {
-        UIManager.Instance.SetUI(UIDB.State.Main_Config,
-            configContainer, disableUI, configFirstSelect);
-        characterContainer.SetActive(false);
 
         topPanelText.text = "CONFIG";
     }
 
-    public void ConfigVideo()
-    {
-        UIManager.Instance.SetUI(UIDB.State.Main_ConfigVideo,
-            null, null, videoFirstSelect);
-    }
 
     public void OnCancel()
     {
-        switch (UIManager.Instance.currentState)
+        switch (currentState)
         {
-            case UIDB.State.Main_Menu:
-                Place(mainMenuPanel); break;
+            case State.Menu:
+                break;
 
-            case UIDB.State.Main_Item:
-                Menu(itemContainer); break;
+            case State.Item:
+                break;
 
-            case UIDB.State.Main_ItemUseDelete:
-                Item(null);
+            case State.ItemUseDelete:
                 selectedItem.GetComponent<Image>().color = lightblue; break;
 
-            case UIDB.State.Main_ItemUse:
-                ItemUseDelete(); break;
+            case State.ItemUse:
+                break;
 
-            case UIDB.State.Main_Skill:
-                Menu(skillContainer); break;
+            case State.Skill:
+                break;
 
-            case UIDB.State.Main_SkillList:
-                Skill(null);
+            case State.SkillList:
                 selectedCharacter.GetComponent<Image>().color = lightblue; break;
 
-            case UIDB.State.Main_SkillUseDelete:
-                SkillList();
+            case State.SkillUseDelete:
                 selectedItem.GetComponent<Image>().color = lightblue; break;
 
-            case UIDB.State.Main_SkillUse:
-                SkillUseDelete(); break;
+            case State.SkillUse:
+                break;
 
-            case UIDB.State.Main_Equip:
-                Menu(equipContainer); break;
+            case State.Equip:
+                break;
 
-            case UIDB.State.Main_EquipList:
-                Equip(beforeAfterPanel);
+            case State.EquipList:
                 selectedCharacter.GetComponent<Image>().color = lightblue; break;
 
-            case UIDB.State.Main_Config:
-                Menu(configContainer); break;
+            case State.Config:
+                break;
 
-            case UIDB.State.Main_ConfigVideo:
-                Config(null); break;
+            case State.ConfigVideo:
+                break;
         }
     }
 
     public void OnSubmit()
     {
-        switch (UIManager.Instance.currentState)
+        switch (currentState)
         {
-            case UIDB.State.Main_Item:
-                selectedItem = UIManager.Instance.GetSelectedButton();
-                selectedItem.GetComponent<Image>().color = blue;
-                ItemUseDelete(); break;
 
-            case UIDB.State.Main_SkillList:
-                selectedItem = UIManager.Instance.GetSelectedButton();
-                selectedItem.GetComponent<Image>().color = blue;
-                SkillUseDelete(); break;
         }
     }
 
     public void OnClick()
     {
-        switch (UIManager.Instance.currentState)
+        switch (currentState)
         {
             
         }
@@ -262,13 +176,64 @@ public class MainUI : MonoBehaviour
 
     public void CharacterClick()
     {
-        switch (UIManager.Instance.currentState)
-        {
-            case UIDB.State.Main_Equip:
-                EquipList(); break;
+        selectedCharacter = UIManager.Instance.GetSelectedButton();
+        selectedCharacter.GetComponent<Image>().color = blue;
 
-            case UIDB.State.Main_Skill:
-                SkillList(); break;
+        switch (currentState)
+        {
+            case State.Equip:
+                _EquipList.onClick.Invoke(); break;
+
+            case State.Skill:
+                _SkillList.onClick.Invoke(); break;
+        }
+    }
+
+
+    public void GetInventoryItem(GameObject parent)
+    {
+        UIManager.Instance.ClearChildren(parent);
+        int posN = 0; int length = UIDB.inventoryItemList.Count;
+        foreach (string itemName in UIDB.inventoryItemList)
+        {
+            GameObject buttonPrefab = Instantiate(itemButtonPrefab);
+            buttonPrefab.transform.SetParent(parent.transform);
+
+            Button button = buttonPrefab.GetComponentInChildren<Button>();
+            Navigation navigation = button.navigation;
+            button.onClick.AddListener(delegate { ItemClick(); } );
+
+            buttonPrefab.name = itemName;
+            buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
+
+            if (posN == 0)
+            {
+                UIManager.Instance.SelectButton
+                    (buttonPrefab.transform.GetChild(1).gameObject);
+            }
+            if (posN == length - 1)
+            {
+                navigation.mode = Navigation.Mode.Explicit;
+                navigation.selectOnUp = buttonPrefab.transform.parent.
+                    GetChild(length - 2).GetComponentInChildren<Button>();
+                button.navigation = navigation;
+            }
+            posN++;
+        }
+    }
+
+    private void ItemClick()
+    {
+        selectedItem = UIManager.Instance.GetSelectedButton();
+        selectedItem.GetComponent<Image>().color = blue;
+
+        switch (currentState)
+        {
+            case State.Item:
+                _ItemUseDelete.onClick.Invoke(); break;
+
+            case State.Skill:
+                _SkillUseDelete.onClick.Invoke(); break;
         }
     }
 

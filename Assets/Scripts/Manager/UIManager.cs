@@ -19,8 +19,6 @@ namespace Scripts.Manager
     public class UIManager : MonoBehaviour
     {
         public const string NAME = "@UI";
-
-        [HideInInspector] public UIDB.State currentState;
         
 
         private static UIManager instance;
@@ -48,16 +46,6 @@ namespace Scripts.Manager
         public void init()
         {
             DontDestroyOnLoad(gameObject);
-        }
-
-        
-        public void SetUI(UIDB.State state, GameObject enableUI, GameObject disableUI,
-            GameObject firstSelectButton)
-        {
-            currentState = state;
-            enableUI?.SetActive(true);
-            disableUI?.SetActive(false);
-            SelectButton(firstSelectButton);
         }
 
         public IEnumerator WaitForSelectButton(GameObject button)
@@ -121,35 +109,7 @@ namespace Scripts.Manager
                 Destroy(child.gameObject);
         }
 
-        public void GetInventoryItem(GameObject prefab, GameObject parent)
-        {
-            ClearChildren(parent);
-            int posN = 0; int length = UIDB.inventoryItemList.Count;
-            foreach (string itemName in UIDB.inventoryItemList)
-            {
-                GameObject buttonPrefab = Instantiate(prefab);
-                buttonPrefab.transform.SetParent(parent.transform);
-
-                Button button = buttonPrefab.GetComponentInChildren<Button>();
-                Navigation navigation = button.navigation;
-
-                buttonPrefab.name = itemName;
-                buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
-
-                if (posN == 0)
-                {
-                    SelectButton(buttonPrefab.transform.GetChild(1).gameObject);
-                }
-                if (posN == length - 1)
-                {
-                    navigation.mode = Navigation.Mode.Explicit;
-                    navigation.selectOnUp = buttonPrefab.transform.parent.
-                        GetChild(length - 2).GetComponentInChildren<Button>();
-                    button.navigation = navigation;
-                }
-                posN++;
-            }
-        }
+        
 
         public int GetTabIndex(InputValue value, int now, int max)
         {

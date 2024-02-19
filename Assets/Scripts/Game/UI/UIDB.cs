@@ -15,22 +15,7 @@ public class UIDB : MonoBehaviour
             Forge_Talk,
             Forge_AskExit,
 
-        Main_Place,
-            Main_Menu,
-                Main_Item,
-                    Main_ItemUseDelete,
-                        Main_ItemUse,
-                Main_Skill,
-                    Main_SkillList,
-                        Main_SkillUseDelete,
-                            Main_SkillUse,
-                Main_Equip,
-                    Main_EquipList,
-                Main_Status,
-                Main_Party,
-                Main_Config,
-                    Main_ConfigType,
-                        Main_ConfigVideo,
+        
 
     }
 
