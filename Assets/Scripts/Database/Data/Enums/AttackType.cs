@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.Data
@@ -22,6 +23,19 @@ namespace Scripts.Data
 
     public static class AttackTypeHelper
     {
+        //TODO 작업중
+        private static Dictionary<string, string> eng2kor = new Dictionary<string, string>()
+        {
+            {"Slash", "참격"},
+            {"Penetrate", "관통"},
+            {"Smash", "타격"},
+            {"Flame", "화염"},
+            {"Freezing", "빙결"},
+            {"Wind", "바람"},
+            {"Lightning","빛"},
+            {"Dark", "어둠"}
+        };
+        
         static string[] koreanNames = 
             { "참격", "관통", "타격", "화염", "빙결", "바람", "전격", "빛", "어둠" };
 
