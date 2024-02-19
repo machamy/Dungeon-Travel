@@ -219,7 +219,7 @@ namespace Scripts.Game.Dungeon.Unit
 
         public Collider mosnterCollider;
         #endregion
-
+        
         public override void Setup()
         {
             base.Setup();
@@ -231,6 +231,7 @@ namespace Scripts.Game.Dungeon.Unit
             nav = GetComponent<NavMeshAgent>();
             initialPosition = transform.localPosition;
             target = GameObject.FindWithTag("Player").transform;
+            // TODO: Findwithtag 쓰지 말고 플레이어 싱글톤으로 해서 스태틱으로다가 transform 가져와서 하기.
 
             meshRenderer = GetComponent<MeshRenderer>();
             mosnterCollider = GetComponent<Collider>();

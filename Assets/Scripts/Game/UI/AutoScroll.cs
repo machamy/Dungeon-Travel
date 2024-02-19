@@ -21,11 +21,6 @@ public class AutoScroll : MonoBehaviour
 
     private void Update()
     {
-        state = UIManager.Instance.currentState;
-
-        if (state is not (UIDB.State.Main_Item or UIDB.State.Main_SkillList
-            or UIDB.State.Main_EquipList)) return;
-
         selectedButton = UIManager.Instance.GetSelectedButton();
 
         posN = selectedButton.transform.parent.GetSiblingIndex();
