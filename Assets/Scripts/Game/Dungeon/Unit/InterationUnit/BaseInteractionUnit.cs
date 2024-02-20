@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Scripts.Game.Dungeon.Unit
@@ -19,12 +20,13 @@ namespace Scripts.Game.Dungeon.Unit
         All = 1 << 8 - 1
     }
     
+    
+    
 
     /// <summary>
     /// 기본적인 상호작용 유닛.
     /// </summary>
     /// <remarks>
-    /// TODO : Focus는 별도 컴포넌트로 분리 가능 - machamy
     /// </remarks>
     public abstract class BaseInteractionUnit : FocusUnit
     {
@@ -34,6 +36,21 @@ namespace Scripts.Game.Dungeon.Unit
         public InteractionType type;
         public float hp;
 
+        public bool isCurrentlyInteractable = true;
+
+        /// <summary>
+        /// 오브젝트의 중심 지정해줘야함. 아닐경우 기본 트랜스폼
+        /// </summary>
+        /// <remarks>
+        /// UI가 뜨는 기준으로 삼는다.
+        /// </remarks>
+        public Transform center;
+
+        public override void Start()
+        {
+            base.Start();
+            center = transform;
+        }
 
         public virtual void Update()
         {

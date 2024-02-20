@@ -38,15 +38,15 @@ namespace Scripts.Game.Dungeon.Unit
                 return;
             
 
-            materialList.Clear();
-            materialList.AddRange(this._renderer.sharedMaterials);
-
-            if (val)
-                materialList.Add(outline);
-            else
-                materialList.Remove(outline);
-
-            _renderer.materials = materialList.ToArray();
+            // materialList.Clear();
+            // materialList.AddRange(this._renderer.sharedMaterials);
+            //
+            // if (val)
+            //     materialList.Add(outline);
+            // else
+            //     materialList.Remove(outline);
+            //
+            // _renderer.materials = materialList.ToArray();
         }
 
         protected void init()

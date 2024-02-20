@@ -23,8 +23,13 @@ namespace Scripts.Game.Dungeon.Unit
         private GameManager gm;
         PlayerInput pInput;
 
+        #region FloatingUI
+        //TODO : 기능 구현 우선. 추후 focuseUnit이나 BIU로 옮길예정.
         public GameObject FloatingInteractionUIPrefab;
         private GameObject FloatingInteractionUIgo;
+        public FloatingUI floatingUI;
+        #endregion
+
         
         void Awake()
         {
@@ -41,8 +46,9 @@ namespace Scripts.Game.Dungeon.Unit
             gm.PlayerActionMap = pi.currentActionMap;
             if(!FloatingInteractionUIgo)
             {
-                FloatingInteractionUIgo = Instantiate(FloatingInteractionUIPrefab);
+                FloatingInteractionUIgo = Instantiate<GameObject>(FloatingInteractionUIPrefab,FindObjectOfType<Canvas>().transform);
                 FloatingInteractionUIgo.SetActive(false);
+                floatingUI = FloatingInteractionUIgo.GetComponent<FloatingUI>();
             }
         }
 
@@ -248,10 +254,19 @@ namespace Scripts.Game.Dungeon.Unit
 
                 // 포커스 해제시(변경 X)
                 if (value is null)
+                {
+                    FloatingInteractionUIgo.SetActive(false);
                     return;
+                }
 
                 // 포커스 변경시
                 value.IsFocused = true;
+                if (!focusUnit)
+                    floatingUI = FloatingInteractionUIgo.GetComponent<FloatingUI>();
+                
+                floatingUI.Text = DB.UI_INTERACTION_NAME;
+                floatingUI.target = focusUnit.center;
+                FloatingInteractionUIgo.SetActive(true);
             }
         }
     }
