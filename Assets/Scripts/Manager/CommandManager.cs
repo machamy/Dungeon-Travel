@@ -115,8 +115,30 @@ namespace Scripts.DebugConsole
             
 
             #endregion
-            
-            
+
+            #region GameManager
+            CreateCommand("fade",new Command("start", (time)=>
+            {
+                float num;
+                if (!float.TryParse(time, out num))
+                {
+                    Print("유효한 시간입력 안됨. 5.0s로 설정");
+                    num = 5.0f;
+                }
+                StartCoroutine(GameManager.Instance.Fade(num, 0, 1));
+                
+            }));
+            CreateCommand("fade",new Command("end", (time)=>
+            {
+                float num;
+                if (!float.TryParse(time, out num))
+                {
+                    Print("유효한 시간입력 안됨. 5.0s로 설정");
+                    num = 5.0f;
+                }
+                StartCoroutine(GameManager.Instance.Fade(num, 1, 0));
+            }));
+            #endregion
         }
         
         
@@ -182,6 +204,8 @@ namespace Scripts.DebugConsole
             {
                 UpdateInputOutput();
             }
+            
+            commandField.transform.SetAsLastSibling(); // 콘솔 껐다 켜면 보이게
             commandField.SetActive(true);
             input.Select();
             OnSelct("");
