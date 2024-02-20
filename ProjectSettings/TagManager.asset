@@ -21,7 +21,7 @@ TagManager:
   - 
   - 
   - 
-  - 
+  - Console
   - 
   - 
   - 
@@ -43,4 +43,13 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 2025089517
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 116485313
+    locked: 0
+  - name: Console
+    uniqueID: 3906985163
     locked: 0
