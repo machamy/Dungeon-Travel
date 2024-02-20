@@ -22,6 +22,9 @@ namespace Scripts.Game.Dungeon.Unit
         public Vector3 MoveVector => moveVec;
         private GameManager gm;
         PlayerInput pInput;
+
+        public GameObject FloatingInteractionUIPrefab;
+        private GameObject FloatingInteractionUIgo;
         
         void Awake()
         {
@@ -36,6 +39,11 @@ namespace Scripts.Game.Dungeon.Unit
             focusUnit = null;
             var pi = GetComponent<PlayerInput>();
             gm.PlayerActionMap = pi.currentActionMap;
+            if(!FloatingInteractionUIgo)
+            {
+                FloatingInteractionUIgo = Instantiate(FloatingInteractionUIPrefab);
+                FloatingInteractionUIgo.SetActive(false);
+            }
         }
 
         // Update is called once per frame
