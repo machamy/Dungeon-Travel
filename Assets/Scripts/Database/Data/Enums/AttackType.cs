@@ -46,7 +46,7 @@ namespace Scripts.Data
         public static string GetCodename(this AttackType type)
         {
             string result;
-            if(eng2kor.TryGetValue(type.ToString(), out result))
+            if(eng2kor.TryGetValue(type, out result))
                 return result;
             return "NLL";
         }
