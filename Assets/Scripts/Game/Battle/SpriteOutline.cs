@@ -5,27 +5,32 @@ using UnityEngine;
 public class SpriteOutline : MonoBehaviour
 {
     public Color color = Color.red;
+    public bool OnOff;
 
     [Range(0, 16)]
-    public int outlineSize = 1;
+    public int outlineSize = 2;
 
     private SpriteRenderer spriteRenderer;
 
     void OnEnable()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-
-        UpdateOutline(true);
+        OnOff = false;
     }
 
-    void OnDisable()
+    public void OffOutline()
     {
-        UpdateOutline(false);
+        OnOff = false;
+    }
+
+    public void OnOutline()
+    {
+        OnOff = true;
     }
 
     void Update()
     {
-        UpdateOutline(true);
+        UpdateOutline(OnOff);
     }
 
     void UpdateOutline(bool outline)

@@ -25,12 +25,17 @@ public class ActMenu : MonoBehaviour
 
     public ActState aState;
 
-    private Unit unit;
+    private Unit[] units = new Unit[6];
+    private SpriteOutline[] outlines = new SpriteOutline[6];
+
+    private Unit turnunit;
+    private SpriteOutline turnoutline;
     private BattleSkill[] battleSkills = new BattleSkill[4];
 
     private int currenttarget, currentskill, currentitem;
     private bool isChooseActworked;
 
+    private int currentturn = 0;
 
     private void Awake()
     {
@@ -43,10 +48,13 @@ public class ActMenu : MonoBehaviour
         guardmenu.SetActive(false);
     }
 
-    public void GetUnit(Unit getunit)
+    public void GetUnitComp(Unit[] getunits, SpriteOutline[] getoutlines)
     {
-        unit = getunit;
-        battleSkills = unit.skills;
+        units = getunits;
+        outlines = getoutlines;
+        if (outlines[0] == null) { Debug.Log("null"); }
+
+        battleSkills = units[currentturn].skills;
     }
 
     private void Update()
@@ -208,9 +216,15 @@ public class ActMenu : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.Return))
             {
-                aState = ActState.ItemTarget;
+
+                
 
                 Debug.Log("아이템 " + currentitem);
+
+                ChangePlayerOutline();
+                itemmenu.SetActive(false);
+
+                aState = ActState.ItemTarget;
             }
 
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -222,7 +236,38 @@ public class ActMenu : MonoBehaviour
 
         if(aState == ActState.ItemTarget)
         {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                currenttarget++;
+                if (currenttarget >= 5) { currenttarget--; }
 
+                ChangePlayerOutline();
+                Debug.Log(currenttarget);
+            }
+
+            if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                currenttarget--;
+                if (currenttarget < 0) { currenttarget++; }
+
+                ChangePlayerOutline();
+                Debug.Log(currenttarget);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                aState = ActState.EndTurn;
+
+                Debug.Log("목표: " + currenttarget);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                itemmenu.SetActive(true);
+                aState = ActState.SetUpItem;
+                SetUpItem();
+                
+            }
         }
 
         if(aState == ActState.SetUpGuard)
@@ -244,7 +289,7 @@ public class ActMenu : MonoBehaviour
                 if(guard_OX)
                 {
                    Debug.Log(guard_OX);
-                   unit.isguard = guard_OX;
+                   units[currentturn].isguard = guard_OX;
 
                     aState = ActState.EndTurn;
                 }
@@ -282,6 +327,8 @@ public class ActMenu : MonoBehaviour
 
     public void SetUpSkill()
     {
+        currenttarget = 0;
+
         Debug.Log("스킬메뉴");
         abxy.SetActive(false);
         skillmenu.SetActive(true);
@@ -315,6 +362,8 @@ public class ActMenu : MonoBehaviour
 
     public void SetUpItem()
     {
+        currenttarget = 0;
+
         Debug.Log("아이템");
         abxy.SetActive(false);
         skillmenu.SetActive(false);
@@ -337,6 +386,15 @@ public class ActMenu : MonoBehaviour
         }
         itemnamePanelImage[currentitem].color = selectColor;
         itemamountPanel[currentitem].SetActive(true);
+    }
+
+    public void ChangePlayerOutline()
+    {
+        for(int i = 0; i <= 4; i++)
+        {
+            outlines[i].OffOutline();
+        }
+        outlines[currenttarget].OnOutline();
     }
 
     public void SetUpGuard()
@@ -381,7 +439,7 @@ public class ActMenu : MonoBehaviour
         Vector2 startPosition = ObjRectTransform.anchoredPosition;
         Vector2 targetPosition = new Vector2(-500f, 0f);
 
-        float duration = 0.5f; // 애니메이션 지속 시간 설정
+        float duration = 0.5f;
         float elapsedTime = 0f;
 
         while (elapsedTime < duration)
@@ -391,9 +449,7 @@ public class ActMenu : MonoBehaviour
             yield return null;
         }
 
-        // 애니메이션 완료 후 최종 위치 설정
         ObjRectTransform.anchoredPosition = targetPosition;
         yield break;
     }
-
 }

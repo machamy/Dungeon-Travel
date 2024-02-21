@@ -10,7 +10,6 @@ public class HUDmanager : MonoBehaviour
     public TMP_Text HPtext,MPtext;
 
     public TMP_Text playerNameText;
-    public TMP_Text playerClassText;
 
     private Unit unit;
 
@@ -33,7 +32,6 @@ public class HUDmanager : MonoBehaviour
         MPtext.text = MP + "/" + _maxMP;
 
         playerNameText.text = PlayerName;
-        playerClassText.text = ClassName;
 
         HUD.SetActive(true);
     }
