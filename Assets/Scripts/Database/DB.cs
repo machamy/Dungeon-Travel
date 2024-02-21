@@ -38,10 +38,17 @@ public class DB
 
     private string fileName = "Dungeon_Travel_stats.xlsx";
 
-    private string DB_NAME_STAT = "STAT";
-    private string DB_NAME_SKILL = "SKL";
-    private string DB_NAME_EQUIPMENT = "EQUIPMENT";
-    private string DB_NAME_ENEMY = "ENMY";
+    #region 상수 필드
+    public const string DB_NAME_STAT = "STAT";
+    public const string DB_NAME_SKILL = "SKL";
+    public const string DB_NAME_EQUIPMENT = "EQUIPMENT";
+    public const string DB_NAME_ENEMY = "ENMY";
+
+    public const string UI_INTERACTION_NAME = "상호작용";
+
+    #endregion
+    
+
 
 
     public static StatData GetStatData(ClassType _class, int lv) 
@@ -175,7 +182,7 @@ public class DB
     private StatData[] ParseClassStat(DataTable sheet, string[] header, int colNum)
     {
         StatData[] stats = new StatData[sheet.Rows.Count+1];
-        stats[0] = new StatData();
+        stats[0] = ScriptableObject.CreateInstance<StatData>();
         for (int i = 1 ; i < sheet.Rows.Count; i++)
         {
             StatData stat = ScriptableObject.CreateInstance<StatData>();
