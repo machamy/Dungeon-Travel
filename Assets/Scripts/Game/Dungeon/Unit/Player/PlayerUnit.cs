@@ -73,8 +73,8 @@ namespace Scripts.Game.Dungeon.Unit
                 moveVec = dir.normalized;
                 // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
-            transform.position += moveVec * (speed * Time.deltaTime);
-
+            // transform.position += moveVec * (speed * Time.deltaTime);
+            rigid.MovePosition(transform.position + moveVec * (speed * Time.fixedDeltaTime));
             
             //rigid.velocity = Vector3.zero; 이거하면 계단에서 안내려옴
         }
