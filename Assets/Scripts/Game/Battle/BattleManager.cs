@@ -46,6 +46,7 @@ public class BattleManager : MonoBehaviour
     public Enemy_Base[] enemyPrefab = new Enemy_Base[4];
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
+    private SpriteOutline[] playeroutline = new SpriteOutline[6];
 
     public bool isEncounter;
     public int TurnCount;
@@ -65,11 +66,11 @@ public class BattleManager : MonoBehaviour
     private void SetupBattle()
     {
         PlayerSpawn();
-        actmenu.GetUnit(playerunit[0]);
 
+        actmenu.GetUnitComp(playerunit, playeroutline);
 
         // 적 프리펩 불러오기
-        for(int i = 0; i < EnemySpawnerPoints.Length; i++) // 적 스폰 위치 받아오기
+        for (int i = 0; i < EnemySpawnerPoints.Length; i++) // 적 스폰 위치 받아오기
         {
             EnemySpawnerPoints[i] = GameObject.Find("EnemySpawner" + i).GetComponent<Transform>();
         }
@@ -89,14 +90,11 @@ public class BattleManager : MonoBehaviour
         //플레이어 프리펩 불러오기
         for (int i = 0; i < playerPrefab.Length; i++)
         {
-            GameObject tempplayerGO = Instantiate(playerPrefab[i], playerStation[i].transform);  //플레이어 프리펩 생성
-            Unit tempplayerunit = tempplayerGO.GetComponent<Unit>();
-            int position = tempplayerunit.position;
-            Destroy(tempplayerGO);  //위치 가져오려고 만들었는데 나중에 고쳐야될듯
-
-            playerGO[i] = Instantiate(playerPrefab[i], playerStation[position].transform);
+            playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
+            playeroutline[i] = playerGO[i].GetComponent<SpriteOutline>();
             playerunit[i] = playerGO[i].GetComponent<Unit>();
-            playerunit[i].ConnectHUD(playerStation[position].GetComponent<HUDmanager>());  //유닛스크립트에 HUD 매니저 연결
+            playerunit[i].ConnectHUD(playerStation[i].GetComponent<HUDmanager>());  //유닛스크립트에 HUD 매니저 연결
+
             Debug.Log("Player" + i + "세팅 완료");
         }
     }

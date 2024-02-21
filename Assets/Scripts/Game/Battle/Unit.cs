@@ -1,24 +1,36 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Scripts.Entity;
 using Unity.VisualScripting;
 using Scripts.Data;
 using static Enemy_Base;
+using JetBrains.Annotations;
+using Unity.IO.LowLevel.Unsafe;
 
 public class Unit : MonoBehaviour
 {
     public Class _class;
     public Stat stat;
+    public SpriteOutline outline;
     public BattleSkill[] skills = new BattleSkill[4];
+    public BattleSkill exampleskill = new BattleSkill();
     public bool isguard;
 
-    public void Awake() // 임시 코드
+    public void Awake()
     {
-        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "It's a fireball", Cost = 30, Property = "fire"};
-        skills[1] = new BattleSkill() { Name = "second~~", Infomation = "22222", Cost = 22, Property = "thunder" };
-        skills[2] = new BattleSkill() { Name = "Tird~~", Infomation = "33333", Cost = 33, Property = "earth" };
-        skills[3] = new BattleSkill() { Name = "4th", Infomation = "444444444", Cost = 44, Property = "water" };
+        outline = GetComponent<SpriteOutline>();
+    }
+
+    public void OnOutline()
+    {
+        outline.OnOff = true;
+    }
+
+    public void OffOutline()
+    {
+        outline.OnOff = false;
     }
 
     public int position = -1;
