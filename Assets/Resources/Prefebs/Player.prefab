@@ -224,6 +224,8 @@ MonoBehaviour:
   speed: 5
   interactionRange: 2
   PlayerInteractionBox: {fileID: 1976714745936703034}
+  FloatingInteractionUIPrefab: {fileID: 410884251543125587, guid: 93063bda20e719d4aa6179cffd9d257a, type: 3}
+  floatingUI: {fileID: 0}
   minSlopeAngle: 45
   PlayerHeight: 4
 --- !u!54 &6102178046626577297
