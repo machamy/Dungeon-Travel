@@ -55,8 +55,11 @@ namespace Scripts.Game.Dungeon.Unit
         // Update is called once per frame
         void FixedUpdate()
         {
+            if(IsPaused)
+            {
+                return;
+            }
             playerMove();
-
             playerTurn();
         }
 
@@ -74,7 +77,7 @@ namespace Scripts.Game.Dungeon.Unit
                 // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
             // transform.position += moveVec * (speed * Time.deltaTime);
-            rigid.MovePosition(transform.position + moveVec * (speed * Time.fixedDeltaTime));
+            rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
             
             //rigid.velocity = Vector3.zero; 이거하면 계단에서 안내려옴
         }
@@ -232,6 +235,28 @@ namespace Scripts.Game.Dungeon.Unit
             }
         }
 
+        
+        private bool isPaused = false;
+        public bool IsPaused => isPaused;
+        
+        /// <summary>
+        /// 플레이어를 정지시킨다(입력,중력,물리 모두 무시)
+        /// </summary>
+        public void Pause()
+        {
+            rigid.isKinematic = true;
+            isPaused = true;
+        }
+
+        /// <summary>
+        /// 플레이어의 정지상태 해제
+        /// </summary>
+        public void UnPause()
+        {
+            rigid.isKinematic = false;
+            isPaused = false;
+        }
+
 
         private BaseInteractionUnit focusUnit;
 
@@ -264,9 +289,12 @@ namespace Scripts.Game.Dungeon.Unit
                 if (!focusUnit)
                     floatingUI = FloatingInteractionUIgo.GetComponent<FloatingUI>();
                 
-                floatingUI.Text = DB.UI_INTERACTION_NAME;
-                floatingUI.target = focusUnit.center;
-                FloatingInteractionUIgo.SetActive(true);
+                if(!focusUnit.isHidden)
+                {
+                    floatingUI.Text = DB.UI_INTERACTION_NAME;
+                    floatingUI.target = focusUnit.center;
+                    FloatingInteractionUIgo.SetActive(true);
+                }
             }
         }
     }
