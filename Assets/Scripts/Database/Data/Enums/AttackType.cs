@@ -33,7 +33,8 @@ namespace Scripts.Data
             {AttackType.Flame, "화염"},
             {AttackType.Freezing, "빙결"},
             {AttackType.Wind, "바람"},
-            {AttackType.Lightning,"빛"},
+            {AttackType.Lightning ,"전격"},
+            {AttackType.Light,"빛"},
             {AttackType.Dark, "어둠"}
         };
         //
