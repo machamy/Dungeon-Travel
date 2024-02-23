@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -37,8 +38,14 @@ public class FloatingUI : MonoBehaviour
         // _rectTransform = GetComponent<RectTransform>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
+    {
+        // 첫 프레임 이동
+        MovePos();
+    }
+
+    
+    void LateUpdate()
     {
         if(target)
         {
