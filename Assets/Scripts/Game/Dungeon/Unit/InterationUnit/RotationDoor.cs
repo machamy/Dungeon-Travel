@@ -32,6 +32,9 @@ public class DoubleRotationDoor : BaseInteractionUnit, IDoor
     public override void OnUsed(PlayerUnit unit)
     {
         float angle = Mathf.Abs(Vector3.Angle(transform.right, unit.transform.forward));
+        if (isMoving)
+            return;
+        
         if (isOpened)
         {
             Close();
