@@ -53,12 +53,12 @@ public class Thief_Boss : Enemy_Base
     }
     public override void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
     {
-        if (enemyStatData.WeakType == attackType)
+        if (enemyStatData.weakType == attackType)
         {
             atk *= 2f; // 임시
             //크리확률 증가
         }
-        if (enemyStatData.ResistType == attackType)
+        if (enemyStatData.resistType == attackType)
         {
             atk /= 2f; // 임시
         }
