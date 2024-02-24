@@ -40,6 +40,7 @@ public class FloatingUI : MonoBehaviour
 
     private void OnEnable()
     {
+        cam = FindObjectOfType<Camera>().GetComponent<Camera>();
         // 첫 프레임 이동
         if(target)
             MovePos();
