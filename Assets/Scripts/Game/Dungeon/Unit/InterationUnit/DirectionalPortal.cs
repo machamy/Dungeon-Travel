@@ -10,9 +10,9 @@ namespace Scripts.Game.Dungeon.Unit
     /// 앞으로 가면 실내로, 반대면 실외로 간다.
     /// </summary>
     /// TODO: 페이드 아웃시 플레이어 못움직이게
-    public class IndoorPortal : BaseInteractionUnit
+    public class DirectionalPortal : BaseInteractionUnit
     {
-        [FormerlySerializedAs("InsidePortal")] public IndoorPortal Destination;
+        [FormerlySerializedAs("InsidePortal")] public DirectionalPortal Destination;
         public bool isActive = true;
         public float fadeTime = 0.0f;
         [Header("이동시 좌표 변형(곱연산)")] public Vector3 positionModifier = new Vector3(1, 1, 1);
