@@ -92,22 +92,28 @@ namespace Scripts.Data
         
         public object Clone()
         {
-            StatData clone = new StatData();
+            StatData clone = ScriptableObject.CreateInstance<StatData>();
             clone.hp = hp;
             clone.mp = mp;
             clone.atk = atk;
             clone.def = def;
             clone.mdef = mdef;
 
+            clone.accuracy = accuracy;
+            clone.evase = evase;
+            clone.critical = critical;
+            
             clone.strWeight = strWeight;
             clone.magWeight = magWeight;
-            clone.statUp = statUp;
+
             
             clone.str = str;
             clone.vit = vit;
             clone.mag = mag;
             clone.agi = agi;
             clone.luk = luk;
+            
+            clone.statUp = statUp;
             return clone;
         }
 

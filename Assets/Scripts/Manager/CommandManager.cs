@@ -67,6 +67,8 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
+            #region 기초 명령어
+
             CreateCommand(null, new Command("say", (s) => Print(s),"뒤의 모든 내용을 그대로 출력한다"));
             CreateCommand("say",new Command("log",Debug.Log,"뒤의 모든 내용을 그대로 로깅한다."));
             CreateCommand(null, new Command("cmds",() => Print("All commands :\n"+tree.GetAllCommandName())));
@@ -83,6 +85,8 @@ namespace Scripts.DebugConsole
                 }));
             CreateCommand("search",new Command("cmds",str => Print(string.Join("\n", GetCommandsStartWith(str))), "해당 문자로 시작하는 모든 명령어 출력"));
 
+            #endregion
+            
             #region 세이브로드
             //저장
             CreateCommand(null, new Command("save", delegate(string s)

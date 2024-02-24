@@ -24,7 +24,7 @@ namespace Script.Global
     public class PlayerData
     {
         
-        public Stat _stat;
+        public DeprecatedStat _stat;
         
         public int lv;
         //public List<Item> itemList;

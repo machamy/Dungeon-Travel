@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Scripts.Data;
+using System;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -6,26 +7,28 @@ namespace Scripts.Entity
 {
 
 
-    public class Entity : MonoBehaviour
+    public abstract class Entity
     {
         [SerializeField]
         protected int lv;
         [SerializeField]
         protected string name;
 
+        public String Name => name;
+
         /// <summary>
         /// 아이템/버프/2차스탯이 반영되기 전 기본 스탯
         /// </summary>
-        public Stat rawBaseStat = new Stat();
+        public StatData rawBaseStat;
 
         /// <summary>
-        /// 아이템/퍼브/2차스탯이 반영된 스탯
+        /// 아이템/버프/2차스탯이 반영된 스탯
         /// </summary>
-        public Stat FinalStat
+        public StatData FinalStat
         {
             get
             {
-                Stat result = (Stat)rawBaseStat.Clone();
+                StatData result = (StatData)rawBaseStat.Clone();
                 // result = result + 모든 아이템의 stat 변화
                 // result = result + 모든 버프의 stat 변화
                 return result;
@@ -40,12 +43,5 @@ namespace Scripts.Entity
         /// 현재 마나
         /// </summary>
         public float mp;
-
-
-        private void Start()
-        {
-            hp = FinalStat.hp;
-            mp = FinalStat.mp;
-        }
     }
 }

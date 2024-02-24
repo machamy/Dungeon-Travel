@@ -17,9 +17,18 @@ namespace Scripts.Manager
     public class PartyManager
     {
         private List<Character> party;
+        
+        public int MaxAmount = 5;
+
+        public PartyManager()
+        {
+            party = new List<Character>();
+        }
 
         public void Add(Character character)
         {
+            if (party.Count > MaxAmount)
+                return;
             party.Add(character);
         }
 
@@ -30,12 +39,24 @@ namespace Scripts.Manager
 
         public Character Get(int idx)
         {
+            if (idx >= party.Count)
+                return null ;
             return party[idx];
         }
 
         public List<Character> GetAll()
         {
             return party.ToList() ;
+        }
+
+
+        public void RegisterTestParty()
+        {
+            for (int i = 0; i < MaxAmount; i++)
+            {
+                Character character = new Character($"TestCharacter_{i}");
+                character.SetClass(Class.ClassList[i+1]);
+            }
         }
     }
 }

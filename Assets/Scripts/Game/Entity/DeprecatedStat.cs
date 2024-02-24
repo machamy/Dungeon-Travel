@@ -4,10 +4,10 @@ namespace Scripts.Entity
 {
     
     /// <summary>
-    /// 스탯
+    /// 스탯 사용안함!!!@!!@!@
     /// </summary>
     [Serializable]
-    public class Stat : ICloneable
+    public class DeprecatedStat : ICloneable
     {
         //1차 스탯
         /// <summary>
@@ -82,7 +82,7 @@ namespace Scripts.Entity
         
         public object Clone()
         {
-            Stat clone = new Stat();
+            DeprecatedStat clone = new DeprecatedStat();
             clone.hp = hp;
             clone.mp = mp;
             clone.atk = atk;
@@ -101,9 +101,9 @@ namespace Scripts.Entity
             return clone;
         }
 
-        public static Stat operator+(Stat origin, Stat other)
+        public static DeprecatedStat operator+(DeprecatedStat origin, DeprecatedStat other)
         {
-            Stat result = (Stat)origin.Clone();
+            DeprecatedStat result = (DeprecatedStat)origin.Clone();
             result.hp += other.hp;
             result.mp += other.mp;
             result.atk += other.atk;

@@ -19,7 +19,7 @@ namespace Scripts.Manager
         public const string NAME = "@SaveLoader";
         public string basePath;
         public string extension = ".savedata";
-        
+         
         private static SaveLoadManager instance;
         private SaveData currentSave;
 

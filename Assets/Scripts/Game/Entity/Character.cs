@@ -1,6 +1,8 @@
-﻿using System;
+﻿using Scripts.Data;
+using System;
 using System.Text;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Scripts.Entity
 {
@@ -20,28 +22,75 @@ namespace Scripts.Entity
         
         public int LV => lv;
 
-        private void Start()
+        public Character(string name, int lv = 0)
         {
-            if (LV == 0)
+            this.name = name;
+            this.lv = lv;
+            if (lv == 0)
             {
-                lv = 1;
-                if(!initialed)
-                    init();
+                this.lv = 1;
+                // if(!initialized)
+                //     init();
             }
         }
 
-        private bool initialed = false;
+        public Character SetClass(Class @class)
+        {
+            this._class = @class;
+
+            StatData statData = DB.GetStatData(_class.type,LV);
+            rawBaseStat = statData;
+
+            return this;
+        }
+        
 
         /// <summary>
-        /// 캐릭터 첫 생성시
-        /// 기본 스탯, 현재 HP, MP 등의 값을 할당
+        /// 레벨업시 호출되는 함수
         /// </summary>
-        public void init()
+        /// <remarks>
+        /// 레벨간 hp차이만큼 더한다.
+        /// TODO: 장비에 %증가가 있다면 반영해야함
+        /// </remarks>
+        public void LevelUp()
         {
-            // rawBaseStat = (Stat)_class.defaultStat.Clone();
-            // currentHP = UpdateMaxHP();
-            // currentMP = UpdateMaxMP();
+            if(lv >= 50)
+            {
+                Debug.LogError("최대레벨 도달");
+                return;
+            } 
+            SetLevel(lv+1);
         }
+
+        /// <summary>
+        /// 엔티티의 레벨을 주어진 레벨로 설정한다.
+        /// </summary>
+        /// <param name="level"></param>
+        public void SetLevel(int level)
+        {
+            if (level>50 )            {
+                Debug.LogError("최대레벨 도달");
+                return;
+            }
+            lv++;
+
+            StatData statData = DB.GetStatData(_class.type, LV);
+            hp += statData.hp - rawBaseStat.hp;
+            rawBaseStat = statData;
+        }
+
+        private bool initialized = false;
+
+        // /// <summary>
+        // /// 캐릭터 첫 생성시
+        // /// 기본 스탯, 현재 HP, MP 등의 값을 할당
+        // /// </summary>
+        // public void init()
+        // {
+        //     // rawBaseStat = (Stat)_class.defaultStat.Clone();
+        //     // currentHP = UpdateMaxHP();
+        //     // currentMP = UpdateMaxMP();
+        // }
 
 
         /// <summary>

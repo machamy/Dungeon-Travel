@@ -12,7 +12,7 @@ using Unity.IO.LowLevel.Unsafe;
 public class Unit : MonoBehaviour
 {
     public Class _class;
-    public Stat stat;
+    public DeprecatedStat stat;
     public SpriteOutline outline;
     public BattleSkill[] skills = new BattleSkill[4];
     public BattleSkill exampleskill = new BattleSkill();

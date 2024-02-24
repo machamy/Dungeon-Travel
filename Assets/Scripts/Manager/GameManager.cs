@@ -54,6 +54,8 @@ namespace Scripts.Manager
         public void init()
         {
             PartyManager = new PartyManager();
+            PartyManager.RegisterTestParty();
+            
             CommandManager cm = CommandManager.Instance; // commandManager 생성
             DontDestroyOnLoad(gameObject);
             InputActionClass input = new InputActionClass();
