@@ -101,7 +101,9 @@ namespace Scripts.Manager
             a.Invoke();
         }
 
+        #region Fade
 
+        
         private Image fadeImage;
 
         public Image FadeImage
@@ -155,5 +157,7 @@ namespace Scripts.Manager
             
             callback?.Invoke();
         }
+        #endregion
+
     }
 }
