@@ -54,7 +54,7 @@ public class Unit : MonoBehaviour
         HUD.SetupHUD(maxHP, maxMP,unitName,className);
     }
 
-    public void TakeDamage(float damage, AttackType attackType, AttackProperty attackProperty)  //유닛 체력 계산
+    public void TakeDamage(float damage, AttackType attackType, Enemy_Base.AttackProperty attackProperty)  //유닛 체력 계산
     {
         if(isdead) return;
 

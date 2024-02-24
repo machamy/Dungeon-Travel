@@ -44,7 +44,7 @@ public class Enemy_Base : MonoBehaviour
         }
         //다른 부과효과 삽입
     }
-    public virtual void EnemyDamaged(float atk, AttackType attackType, AttackProperty attackProperty)
+    public virtual void EnemyDamaged(float atk, Scripts.Data.AttackType attackType, AttackProperty attackProperty)
     {
         // 적이 공격받았을때 처리하는 함수
         // 오버라이딩으로 각각 스크립트에서 약점,저항 처리
@@ -53,8 +53,8 @@ public class Enemy_Base : MonoBehaviour
     /// 단일공격
     /// </summary>
     /// <param name="atk"></param>
-    /// <param name="attackType"></param>
-    public void SingleAttack(float atk, AttackType attackType, AttackProperty attackProperty)
+    /// <param name="attackPropertyparam>
+    public void SingleAttack(float atk, Scripts.Data.AttackType attackType, AttackProperty attackProperty)
     {
         int AttackRange = UnityEngine.Random.Range(0, 5);
         GameObject go = GameObject.Find("Player (" + AttackRange + ")(Clone)");
@@ -65,8 +65,8 @@ public class Enemy_Base : MonoBehaviour
     /// 광역공격
     /// </summary>
     /// <param name="atk"></param>
-    /// <param name="attackType"></param>
-    public void WideAttack(float atk, AttackType attackType, AttackProperty attackProperty)
+    /// <param name="attackPropertyparam>
+    public void WideAttack(float atk, Scripts.Data.AttackType attackType, AttackProperty attackProperty)
     {
         for(int i = 0; i < 5; i++)
         {
@@ -79,8 +79,8 @@ public class Enemy_Base : MonoBehaviour
     /// 전후공격
     /// </summary>
     /// <param name="atk"></param>
-    /// <param name="attackType"></param>
-    public void DoubleAttack(float atk, AttackType attackType, AttackProperty attackProperty)
+    /// <param name="attackPropertyparam>
+    public void DoubleAttack(float atk, Scripts.Data.AttackType attackType, AttackProperty attackProperty)
     {
 
 
@@ -89,8 +89,8 @@ public class Enemy_Base : MonoBehaviour
     /// 전열공격
     /// </summary>
     /// <param name="atk"></param>
-    /// <param name="attackType"></param>
-    public void ForwardAttack(float atk, AttackType attackType, AttackProperty attackProperty)
+    /// <param name="attackPropertyparam>
+    public void ForwardAttack(float atk, Scripts.Data.AttackType attackType, AttackProperty attackProperty)
     {
 
     }
@@ -98,8 +98,8 @@ public class Enemy_Base : MonoBehaviour
     /// 후열공격
     /// </summary>
     /// <param name="atk"></param>
-    /// <param name="attackType"></param>
-    public void BackwardAttack(float atk, AttackType attackType, AttackProperty attackProperty)
+    /// <param name="attackPropertyparam>
+    public void BackwardAttack(float atk, Scripts.Data.AttackType attackType, AttackProperty attackProperty)
     {
 
     }

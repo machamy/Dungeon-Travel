@@ -16,7 +16,7 @@ namespace Scripts.Data
         Freezing= 1 << 4, // 빙결
         Wind= 1 << 5, // 바람
         Lightning = 1 << 6, // 전격
-        Light= 1 << 7, // 빛
+        Light= 1 << 7, // 빛,광휘
         Dark= 1 << 8, // 어둠
         
         All = int.MaxValue
@@ -34,8 +34,8 @@ namespace Scripts.Data
             {AttackType.Freezing, "빙결"},
             {AttackType.Wind, "바람"},
             {AttackType.Lightning ,"전격"},
-            {AttackType.Light,"빛"},
-            {AttackType.Dark, "어둠"}
+            {AttackType.Light,"광휘"},
+            {AttackType.Dark, "어둠"},
         };
         //
         // static string[] koreanNames = 
@@ -53,6 +53,8 @@ namespace Scripts.Data
         }
         public static AttackType GetFromKorean(string kor)
         {
+            if (kor == "빛")
+                kor = "광휘";
             var result = eng2kor.FirstOrDefault(e => (e.Value == kor)).Key;
             return result;
         }

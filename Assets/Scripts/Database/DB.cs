@@ -12,7 +12,7 @@ using UnityEngine.Events;
 
 /// <summary>
 /// 게임 DB가 담기는 싱글턴 클래스
-/// TODO: 기획자에게 파일 받은 후 작업예정.
+/// TODO: 파싱 함수 별도 클래스로 분리
 /// </summary>
 public class DB
 {
@@ -134,7 +134,8 @@ public class DB
                     }
                     else if (sheetName[1].Equals(DB_NAME_SKILL))
                     {
-                        classSkillData.Add(ClassTypeHelper.FromCodename(sheetName[0]), ParseClassSkill(table, header, colNum));
+                        ClassType classType = ClassTypeHelper.FromCodename(sheetName[0]);
+                        classSkillData.Add(classType, ParseClassSkill(table, header, colNum, classType));
                     }
                     break;
                 case 3:
@@ -226,8 +227,11 @@ public class DB
         랭크 = 1,
         유형 = 2,
         이름 = 3,
-        데미지 = 4,
-        MP소모 = 5,
+        물리_데미지 = 4,
+        속성_데미지 = 5,
+        MP소모 = 6,
+  
+        LastIdx = 6
     }
     
     /// <summary>
@@ -237,7 +241,7 @@ public class DB
     /// <param name="header"></param>
     /// <param name="colNum"></param>
     /// <returns></returns>
-    private SkillData[] ParseClassSkill(DataTable sheet, string[] header, int colNum)
+    private SkillData[] ParseClassSkill(DataTable sheet, string[] header, int colNum, ClassType classType = ClassType.Null)
     {
         SkillData[] skills = new SkillData[sheet.Rows.Count+1];
         for (int i = 1; i < sheet.Rows.Count; i++)
@@ -247,12 +251,76 @@ public class DB
                 p => (p ?? String.Empty).ToString());
             if(row[(int)SkillDataType.이름] == "")
                 continue;
-            skill.skillType = row[(int)SkillDataType.무기유형];
+
+            skill.classType = classType;
+            
+            skill.weaponType = row[(int)SkillDataType.무기유형];
+            
             skill.rank = Convert.ToInt32(row[(int)SkillDataType.랭크]);
-            skill.atttackType = row[(int)SkillDataType.유형];
+            skill.rawType = row[(int)SkillDataType.유형];
             skill.name = row[(int)SkillDataType.이름];
-            skill.damage = Convert.ToSingle(row[(int)SkillDataType.데미지] == string.Empty ? "0" : row[(int)SkillDataType.데미지]);
+            skill.skillName = skill.name;
+            
+            skill.physicsDamage = Convert.ToSingle(row[(int)SkillDataType.물리_데미지] == string.Empty ? "0" : row[(int)SkillDataType.물리_데미지]);
+            skill.propertyDamage = Convert.ToSingle(row[(int)SkillDataType.속성_데미지] == string.Empty ? "0" : row[(int)SkillDataType.속성_데미지]);
             skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모] == string.Empty ? "0" : row[(int)SkillDataType.MP소모]);
+
+            var booleanArr = row.Skip((int)SkillDataType.LastIdx + 1).Select((a) => a.ToUpper() == "TRUE").ToArray();
+            int idx = 0;
+            skill.isPassive = booleanArr[idx++];
+            skill.isSelf = booleanArr[idx++];
+
+            
+            TargetType Ally = TargetType.None;
+            if(booleanArr[idx++])
+                Ally |= TargetType.Single;
+            if(booleanArr[idx++])
+                Ally |= TargetType.Front;
+            if(booleanArr[idx++])
+                Ally |= TargetType.Back;
+            if(booleanArr[idx++])
+                Ally |= TargetType.Area;
+            
+            TargetType Enemy = TargetType.None;
+            if(booleanArr[idx++])
+                Enemy |= TargetType.Single;
+            if(booleanArr[idx++])
+                Enemy |= TargetType.Front;
+            if(booleanArr[idx++])
+                Enemy |= TargetType.Back;
+            if(booleanArr[idx++])
+                Enemy |= TargetType.Area;
+
+            skill.allyTargetType = Ally;
+            skill.enemyTargetType = Enemy;
+            
+            skill.isBuff = booleanArr[idx++];
+            skill.isDebuff = booleanArr[idx++];
+            skill.isHealing = booleanArr[idx++];
+            skill.isMelee= booleanArr[idx++];
+            skill.isRanged= booleanArr[idx++];
+            
+            AttackType attackType = AttackType.None;
+            for (; (int)SkillDataType.LastIdx+ 1+ idx < header.Length; idx++)
+            {
+                string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
+                if(rawHeader == String.Empty)
+                    continue;
+                AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
+                if(currentType != AttackType.None)
+                {
+                    if(booleanArr[idx])
+                        attackType |= currentType;
+                }
+                else
+                {
+                    Debug.Log($"[DB::ParseEnemyData] {header[(int)SkillDataType.LastIdx+ 1 +idx]}({(int)SkillDataType.LastIdx+ 1 +idx}) 유효하지 않음");
+                }
+            }
+
+            skill.attackType = attackType;
+            
+            Debug.Log($"Register Skill {skill}");
         }
 
         return skills;
@@ -332,7 +400,10 @@ public class DB
             AttackType weakType = AttackType.None;
             for (idx++ ; idx < header.Length; idx++)
             {
-                AttackType currentType = AttackTypeHelper.GetFromKorean(header[idx]);
+                string rawHeader = header[idx];
+                if(rawHeader == String.Empty)
+                    continue;
+                AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
                 if(currentType != AttackType.None)
                 {
                     if(row[idx].Contains("R"))
@@ -346,11 +417,11 @@ public class DB
                 }
             }
 
-            enemyStat.ResistType = registerType;
-            enemyStat.WeakType = weakType;
+            enemyStat.resistType = registerType;
+            enemyStat.weakType = weakType;
             
             result.Add(enemyStat.name, enemyStat);
-            Debug.Log($"[DB::ParseEnemyData] Added {enemyStat.name} : Property {enemyStat.Property} ResistType {enemyStat.ResistType} WeakType {enemyStat.WeakType}");
+            Debug.Log($"[DB::ParseEnemyData] Added {enemyStat.name} : Property {enemyStat.Property} ResistType {enemyStat.resistType} WeakType {enemyStat.weakType}");
             
         }
         return result;

@@ -1,18 +1,46 @@
+using OpenCover.Framework.Model;
 using System;
 using Script.Data;
 using Script.Global;
+using Scripts.Entity;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Scripts.Data
 {
     [Serializable]
     public class SkillData:ScriptableObject, IDBdata
     {
-        public string atttackType;
+        public ClassType classType;
+        
+        public string weaponType;
         public int rank;
-        public string skillType;
-        public string Skillname;
-        public float damage;
+        public string rawType;
+
+        public string skillName;
+
+        public float physicsDamage;
+        public float propertyDamage;
         public float mpCost;
+
+        public bool isPassive;
+        public bool isSelf;
+
+        public TargetType allyTargetType;
+        public TargetType enemyTargetType;
+
+        public bool isBuff;
+        public bool isDebuff;
+        public bool isHealing;
+        public bool isRanged;
+        public bool isMelee;
+        
+        public AttackType attackType;
+
+
+        public override string ToString()
+        {
+            return $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}, {nameof(mpCost)}: {mpCost}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}";
+        }
     }
 }

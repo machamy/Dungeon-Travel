@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [Serializable]
 public class EnemyStatData : ScriptableObject, IDBdata
@@ -78,10 +79,10 @@ public class EnemyStatData : ScriptableObject, IDBdata
     /// <summary>
     /// 취약 방어 타입
     /// </summary>
-    public AttackType WeakType;
+    [FormerlySerializedAs("weakProperty")] [FormerlySerializedAs("WeakType")] public AttackType weakType;
     /// <summary>
     /// 방어 타입
     /// </summary>
-    public AttackType ResistType;
+    [FormerlySerializedAs("resistProperty")] [FormerlySerializedAs("ResistType")] public AttackType resistType;
     
 }
