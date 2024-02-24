@@ -54,8 +54,9 @@ namespace Scripts.Entity
             this.className = name;
         }
 
-        static Class()
+        public static void InitClassList()
         {
+            ClassList = new List<Class>();
             ClassList.Add(new Class(ClassType.Null, "Null"));
             ClassList.Add(new Class(ClassType.Paladin, "Paladin"));
             ClassList.Add(new Class(ClassType.Fighter, "Fighter"));

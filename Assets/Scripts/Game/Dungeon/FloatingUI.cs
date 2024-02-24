@@ -41,7 +41,8 @@ public class FloatingUI : MonoBehaviour
     private void OnEnable()
     {
         // 첫 프레임 이동
-        MovePos();
+        if(target)
+            MovePos();
     }
 
     

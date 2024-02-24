@@ -148,6 +148,13 @@ public class DB
                     break;
             }
         }
+        
+        EndDBupdate();
+    }
+
+    private void EndDBupdate()
+    {
+        Class.InitClassList();
     }
     
     private enum StatDataType : int

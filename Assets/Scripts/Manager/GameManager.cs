@@ -54,7 +54,7 @@ namespace Scripts.Manager
         public void init()
         {
             PartyManager = new PartyManager();
-            PartyManager.RegisterTestParty();
+
             
             CommandManager cm = CommandManager.Instance; // commandManager 생성
             DontDestroyOnLoad(gameObject);
@@ -64,6 +64,7 @@ namespace Scripts.Manager
             SceneManager.sceneUnloaded += SceneUnloaded;
             
             DB.Instance.UpdateDB();
+            PartyManager.RegisterTestParty();
         }
 
         /// <summary>
