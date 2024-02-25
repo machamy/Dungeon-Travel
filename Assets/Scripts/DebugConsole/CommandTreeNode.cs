@@ -19,7 +19,7 @@ namespace Scripts.DebugConsole
             this.name = name;
         }
 
-        public List<CommandTreeNode> getChilds()
+        public List<CommandTreeNode> GetChildren()
         {
             return child.Values.ToList();
         }

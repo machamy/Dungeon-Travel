@@ -6,8 +6,10 @@ using Scripts.Manager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
+using Character = Scripts.Entity.Character;
 
 
 namespace Scripts.DebugConsole
@@ -67,6 +69,8 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
+            var partyManager = GameManager.Instance.PartyManager;
+            
             #region 기초 명령어
 
             CreateCommand(null, new Command("say", (s) => Print(s),"뒤의 모든 내용을 그대로 출력한다"));
@@ -91,6 +95,64 @@ namespace Scripts.DebugConsole
                               $"{command.descripton}");
                 }));
             CreateCommand("search",new Command("cmds",str => Print(string.Join("\n", GetCommandsStartWith(str))), "해당 문자로 시작하는 모든 명령어 출력"));
+
+            #endregion
+
+            #region Party
+
+            CreateCommand("party", new Command("member", (opt) =>
+            {
+                if (opt == "detail")
+                {
+                    Print(string.Join(", ", partyManager.GetAll().Select(c => $"{c.Name}")));
+                }
+                else
+                {
+                    Print(string.Join("\n ",
+                        partyManager.GetAll().Select(c => $"[{c._class.className}]{c.Name} : {c.hp} {c.mp}")));
+                }
+            }));
+            
+            CreateCommand("status change", new Command("hp", (name, value) =>
+            {
+                Character character = partyManager.GetAll().Find(c => c.Name == name);
+                if (character == null)
+                {
+                    Print($"{name}은 유효한 이름이 아닙니다");
+                    return;
+                }
+
+                float n;
+                if (!float.TryParse(value, out n))
+                {
+                    Print($"{value} 를 float로 변경할 수 없습니다");
+                    return;
+                }
+
+                character.hp = n;
+            }
+                , "status change hp [name] : 현재 hp를 변경한다."));
+
+
+            CreateCommand("status change", new Command("mp", (name, value) =>
+                {
+                    Character character = partyManager.GetAll().Find(c => c.Name == name);
+                    if (character == null)
+                    {
+                        Print($"{name}은 유효한 이름이 아닙니다");
+                        return;
+                    }
+
+                    float n;
+                    if (!float.TryParse(value, out n))
+                    {
+                        Print($"{value} 를 float로 변경할 수 없습니다");
+                        return;
+                    }
+
+                    character.mp = n;
+                }
+                , "status change mp [name] : 현재 mp를 변경한다."));
 
             #endregion
             

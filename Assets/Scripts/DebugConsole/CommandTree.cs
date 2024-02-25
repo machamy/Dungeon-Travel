@@ -101,7 +101,7 @@ namespace Scripts.DebugConsole
             Stack<Tuple<int, CommandTreeNode>> q = new Stack<Tuple<int, CommandTreeNode>>();
             
             
-            foreach (var nxtNode in headerNode.getChilds())
+            foreach (var nxtNode in headerNode.GetChildren())
             {
                 q.Push(new Tuple<int, CommandTreeNode>(0,nxtNode));
             }
@@ -115,7 +115,7 @@ namespace Scripts.DebugConsole
                     sb.Append("-");
                 sb.Append(node.ToString());
                 sb.Append("\n");
-                foreach (var nxtNode in node.getChilds())
+                foreach (var nxtNode in node.GetChildren())
                 {
                     q.Push(new Tuple<int, CommandTreeNode>(lv+1,nxtNode));
                 }
@@ -128,7 +128,7 @@ namespace Scripts.DebugConsole
             Stack<CommandTreeNode> q = new Stack<CommandTreeNode>();
             List<string> res = new List<string>();
             
-            foreach (var node in headerNode.getChilds())
+            foreach (var node in headerNode.GetChildren())
             {
                 //res.Add(node.fullPath);
                 q.Push(node);
@@ -138,7 +138,7 @@ namespace Scripts.DebugConsole
             {
                 var node = q.Pop();
                 res.Add(node.fullPath);
-                foreach (var nxtNode in node.getChilds())
+                foreach (var nxtNode in node.GetChildren())
                 {
                     q.Push(nxtNode);
                 }

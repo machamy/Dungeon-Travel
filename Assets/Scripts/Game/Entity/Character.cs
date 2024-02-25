@@ -24,7 +24,8 @@ namespace Scripts.Entity
         public int LV => lv;
         
         public Inventory Inventory { get; private set; }
-        public Inventory EquipmentInventory { get; private set; }
+
+        public Inventory EquipmentInventory { get; private set; }        // TODO : EquimentInventory 클래스 별도 생성
 
         public Character(string name, int lv = 0)
         {
@@ -36,7 +37,6 @@ namespace Scripts.Entity
                 // if(!initialized)
                 //     init();
             }
-
             Inventory = Inventory.Create(27);
             EquipmentInventory = Inventory.Create(6);
         }
@@ -47,6 +47,8 @@ namespace Scripts.Entity
 
             StatData statData = DB.GetStatData(_class.type,LV);
             rawBaseStat = statData;
+            hp = rawBaseStat.hp;
+            mp = rawBaseStat.mp;
 
             return this;
         }
