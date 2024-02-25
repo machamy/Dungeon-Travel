@@ -10,6 +10,8 @@ namespace Scripts.Game
 
 
         public int MaxSlot { get; private set; }
+        public int Count => itemList.Count;
+        public bool IsFull => MaxSlot >= Count;
 
         private Inventory() { }
 
