@@ -26,6 +26,8 @@ namespace Scripts.Entity
         public Inventory Inventory { get; private set; }
 
         public Inventory EquipmentInventory { get; private set; }        // TODO : EquimentInventory 클래스 별도 생성
+        
+        public SkillTree SkillTree { get; private set; }
 
         public Character(string name, int lv = 0)
         {
@@ -50,6 +52,8 @@ namespace Scripts.Entity
             hp = rawBaseStat.hp;
             mp = rawBaseStat.mp;
 
+            //SkillTree 변경
+            
             return this;
         }
         
