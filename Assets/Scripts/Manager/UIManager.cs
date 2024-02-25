@@ -120,5 +120,37 @@ namespace Scripts.Manager
             return now + axis;
         }
 
+
+        public Stack<GameObject[]> menuStack = new();
+
+        public void PushMenu(GameObject[] menu)
+        {
+            if (menu.Length > 0)
+            {
+                if (menuStack.Count > 0)
+                    SetMenuActive(menuStack.Peek(), false);
+
+                SetMenuActive(menu, true);
+                menuStack.Push(menu);
+            }
+        }
+
+        public void PopMenu()
+        {
+            if (menuStack.Count > 1)
+            {
+                SetMenuActive(menuStack.Pop(), false);
+                SetMenuActive(menuStack.Peek(), true);
+            }
+        }
+
+        private void SetMenuActive(GameObject[] menu, bool isActive)
+        {
+            foreach (GameObject obj in menu)
+            {
+                obj.SetActive(isActive);
+            }
+        }
+
     }
 }
