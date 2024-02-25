@@ -7,20 +7,29 @@ namespace Scripts.Game
     public class Inventory
     {
         private List<BaseItemData> itemList;
-        
-        
-        private int maxSlot;
-        public int MaxSlot => maxSlot;
+
+
+        public int MaxSlot { get; private set; }
+
+        private Inventory() { }
+
+        public static Inventory Create(int maxSlot)
+        {
+            Inventory inv = new Inventory();
+            inv.SetMaxSlot(maxSlot);
+            
+            return inv;
+        }
 
         public void SetMaxSlot(int n)
         {
-            this.maxSlot = n;
+            this.MaxSlot = n;
         }
 
         public bool AddItem(BaseItemData item)
         {
             // 최대 개수 초과
-            if (itemList.Count >= maxSlot)
+            if (itemList.Count >= MaxSlot)
             {
                 return false;
             }

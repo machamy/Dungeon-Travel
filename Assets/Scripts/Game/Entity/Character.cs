@@ -1,4 +1,5 @@
 ﻿using Scripts.Data;
+using Scripts.Game;
 using System;
 using System.Text;
 using Unity.VisualScripting;
@@ -21,6 +22,9 @@ namespace Scripts.Entity
         public Class _class;
         
         public int LV => lv;
+        
+        public Inventory Inventory { get; private set; }
+        public Inventory EquipmentInventory { get; private set; }
 
         public Character(string name, int lv = 0)
         {
@@ -32,6 +36,9 @@ namespace Scripts.Entity
                 // if(!initialized)
                 //     init();
             }
+
+            Inventory = Inventory.Create(27);
+            EquipmentInventory = Inventory.Create(6);
         }
 
         public Character SetClass(Class @class)

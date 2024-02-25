@@ -72,6 +72,13 @@ namespace Scripts.DebugConsole
             CreateCommand(null, new Command("say", (s) => Print(s),"뒤의 모든 내용을 그대로 출력한다"));
             CreateCommand("say",new Command("log",Debug.Log,"뒤의 모든 내용을 그대로 로깅한다."));
             CreateCommand(null, new Command("cmds",() => Print("All commands :\n"+tree.GetAllCommandName())));
+            CreateCommand(null,new Command("cmdlog", () =>
+            {
+                foreach (var cmd in commandLog)
+                {
+                    Print(cmd);
+                }
+            }));
             CreateCommand(null, new Command("help",
                 delegate(string fullPath)
                 {
