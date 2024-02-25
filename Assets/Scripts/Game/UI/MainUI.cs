@@ -164,15 +164,6 @@ public class MainUI : MonoBehaviour
         }
     }
 
-    public void OnScrollWheel(InputValue value)
-    {
-        GameObject selectedButton = UIManager.Instance.GetSelectedButton();
-
-        if (selectedButton == null ||
-            selectedButton.transform.parent.parent.gameObject.name != "Content") return;
-
-        AutoScroll.Instance.ScrollWheel(value);
-    }
 
     public void CharacterClick()
     {

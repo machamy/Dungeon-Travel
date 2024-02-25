@@ -17,7 +17,6 @@ public class AutoScroll : MonoBehaviour
     public int posN, posNInScreen = 0;
 
     private GameObject selectedButton;
-    private UIDB.State state;
 
     private void Update()
     {
@@ -42,21 +41,5 @@ public class AutoScroll : MonoBehaviour
         transform.localPosition = new Vector3(316.5f, posY, 0);
     }
 
-    public void ScrollWheel(InputValue value)
-    {
-        int axis = (int)value.Get<Vector2>().y;
-        if (axis == 0) return;
-        axis /= Mathf.Abs(axis);
-
-        int newN = posN - axis;
-        int newY = posY - axis * height;
-        if (newN == -1 || newN == transform.childCount) return;
-        if (newY < 0 || newY > (transform.childCount - amount - 1) * height) newY = posY;
-
-        UIManager.Instance.SelectButton(transform.GetChild(posN - axis).
-            GetChild(1).gameObject);
-        posY = newY;
-        
-    }
 
 }
