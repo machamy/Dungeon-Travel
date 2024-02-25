@@ -15,12 +15,17 @@ public class Unit : MonoBehaviour
     public DeprecatedStat stat;
     public SpriteOutline outline;
     public BattleSkill[] skills = new BattleSkill[4];
+    public SkillData[] skillDatas = new SkillData[4];
     public BattleSkill exampleskill = new BattleSkill();
     public bool isguard;
+    public string Name;
 
     public void Awake()
     {
-        outline = GetComponent<SpriteOutline>();
+        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire",Cost = 30};
+        skills[1] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire", Cost = 30 };
+        skills[2] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire", Cost = 30 };
+        skills[3] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire", Cost = 30 };
     }
 
     public void OnOutline()
@@ -51,7 +56,7 @@ public class Unit : MonoBehaviour
     public void ConnectHUD(HUDmanager getHUD)
     {
         HUD = getHUD;
-        HUD.SetupHUD(maxHP, maxMP,unitName,className);
+        HUD.SetupHUD(this);
     }
 
     public void TakeDamage(float damage, AttackType attackType, Enemy_Base.AttackProperty attackProperty)  //유닛 체력 계산

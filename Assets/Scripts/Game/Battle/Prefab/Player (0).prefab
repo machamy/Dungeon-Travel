@@ -47,7 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6badfc3ccdd489c4ea91614248946c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _class: {fileID: 0}
   stat:
     hp: 100
     mp: 0
@@ -65,12 +64,13 @@ MonoBehaviour:
     agi: 50
     luk: 0
     vitWeight: 0
-  outline: {fileID: 0}
+  outline: {fileID: 860499906303939361}
   skills:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  exampleskill: {fileID: 0}
   isguard: 0
   position: 0
   unitName: Player

@@ -34,6 +34,8 @@ public class BattleManager : MonoBehaviour
     public enum TurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
 
+    public List<Unit> playerTurnOrder;
+
     public ActMenu actmenu;
 
     public GameObject[] playerStation;
@@ -55,8 +57,6 @@ public class BattleManager : MonoBehaviour
     {
         endcanvas.SetActive(false);
         bState = BattleState.START;
-
-        actmenu.aState = ActMenu.ActState.ChooseAct;
 
         SpawnCount = 0;
         SetupBattle();
@@ -83,6 +83,8 @@ public class BattleManager : MonoBehaviour
             if (random < 0.7f) { bState = BattleState.ENEMYTURN; }
             else { bState = BattleState.SECONDTURN; }
         }
+
+
     }
 
     private void PlayerSpawn() //플레이어 위치에 맞게 소환
@@ -94,10 +96,9 @@ public class BattleManager : MonoBehaviour
             playeroutline[i] = playerGO[i].GetComponent<SpriteOutline>();
             playerunit[i] = playerGO[i].GetComponent<Unit>();
             playerunit[i].ConnectHUD(playerStation[i].GetComponent<HUDmanager>());  //유닛스크립트에 HUD 매니저 연결
-
-            Debug.Log("Player" + i + "세팅 완료");
         }
     }
+
     public void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
         try
@@ -114,29 +115,53 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
+        playerTurnOrder = null;
         Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
 
         for(int i = 0; i < 5; i++)
         {
             agi_ranking[playerunit[i]] = playerunit[i].stat.agi;
         }
-        agi_ranking = agi_ranking.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
-        Debug.Log("Sorted Dictionary:");
+        agi_ranking = agi_ranking.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
 
         foreach (var kvp in agi_ranking)
         {
             Debug.Log("Key: " + kvp.Key + ", Value: " + kvp.Value);
+
+            playerTurnOrder.Add(kvp.Key);
         }
     }
 
+    private void FirstTurn()
+    {
+        PlayerTurnOrder();
+        actmenu.TurnStart(playerTurnOrder[0]);
+    }
     private void SecondTurnOrder()
     {
         float enemyAgi = enemyPrefab[0].GetAgi();
     }
-
+    
     private void Update()
     {
+        switch(bState)
+        {
+            case BattleState.PLAYERTURN:
+                {
+                    break;
+                }
+            case BattleState.ENEMYTURN:
+                {
+                    break;
+                }
+
+            default:
+                {
+                    break;
+                }
+        }
+
         if(bState == BattleState.START)
         {
 
