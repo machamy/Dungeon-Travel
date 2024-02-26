@@ -14,33 +14,11 @@ using System.Runtime.CompilerServices;
 
 public class MainUI : MonoBehaviour
 {
-    public enum State
-    {
-        Place = 0,
-        Menu = 1,
-            Item = 10,
-                ItemUseDelete = 100,
-                    ItemUse = 1000,
-            Skill = 20,
-                SkillList = 200,
-                    SkillUseDelete = 2000,
-                        SkillUse = 20000,
-            Equip = 30,
-                EquipList = 300,
-            Status = 40,
-            Party = 50,
-            Config = 60,
-                ConfigType = 600,
-                ConfigVideo = 601,
-    } private State currentState = 0;
-
-    public void ChangeState(int state) => currentState = (State)state;
-    public void PrevState() => currentState = (State)((int)currentState / 10);
 
 
+    public GameObject mainMenuCanvas;
 
-
-    public Button _MainMenu, _ItemUseDelete, _SkillUseDelete, _SkillList, _EquipList;
+    public GameObject mainMenuFirstSelect;
 
     public GameObject itemButtonPrefab;
 
@@ -54,37 +32,21 @@ public class MainUI : MonoBehaviour
 
     private int currentTabIndex = 1;
 
-    public void Menu(GameObject disableUI)
+
+    public void OnMenu()
     {
-
-        topPanelText.text = "MAIN MENU";
-    }
-
-    public void OnMenu() => _MainMenu.onClick.Invoke();
-
-
-    public void Item(GameObject disableUI)
-    {
-
-        topPanelText.text = "ITEM";
-    }
-
-    public void Skill(GameObject disableUI)
-    {
-        topPanelText.text = "SKILL";
-    }
-
-
-    public void Equip(GameObject disableUI)
-    {
-
-        topPanelText.text = "EQUIP";
+        if (UIManager.Instance.menuStack.Count == 0)
+        {
+            UIManager.Instance.PushMenu(new GameObject[] { mainMenuCanvas });
+            UIManager.Instance.SelectButton(mainMenuFirstSelect);
+        }
+            
     }
 
 
     public void OnXMove(InputValue value)
     {
-        if (currentState != State.EquipList) return;
+        //if (currentState != State.EquipList) return;
 
         int index = UIManager.Instance.GetTabIndex(value, currentTabIndex, 3);
         if (index != -1) SwitchTab(index);
@@ -99,69 +61,10 @@ public class MainUI : MonoBehaviour
 
     }
 
-    public void Config(GameObject disableUI)
-    {
-
-        topPanelText.text = "CONFIG";
-    }
-
 
     public void OnCancel()
     {
-        switch (currentState)
-        {
-            case State.Menu:
-                break;
-
-            case State.Item:
-                break;
-
-            case State.ItemUseDelete:
-                selectedItem.GetComponent<Image>().color = lightblue; break;
-
-            case State.ItemUse:
-                break;
-
-            case State.Skill:
-                break;
-
-            case State.SkillList:
-                selectedCharacter.GetComponent<Image>().color = lightblue; break;
-
-            case State.SkillUseDelete:
-                selectedItem.GetComponent<Image>().color = lightblue; break;
-
-            case State.SkillUse:
-                break;
-
-            case State.Equip:
-                break;
-
-            case State.EquipList:
-                selectedCharacter.GetComponent<Image>().color = lightblue; break;
-
-            case State.Config:
-                break;
-
-            case State.ConfigVideo:
-                break;
-        }
-    }
-
-    public void OnSubmit()
-    {
-        switch (currentState)
-        {
-
-        }
-    }
-
-    public void OnClick()
-    {
-        switch (currentState)
-        {
-            
-        }
+        UIManager.Instance.PopMenu();
     }
 
 
@@ -170,14 +73,7 @@ public class MainUI : MonoBehaviour
         selectedCharacter = UIManager.Instance.GetSelectedButton();
         selectedCharacter.GetComponent<Image>().color = blue;
 
-        switch (currentState)
-        {
-            case State.Equip:
-                _EquipList.onClick.Invoke(); break;
 
-            case State.Skill:
-                _SkillList.onClick.Invoke(); break;
-        }
     }
 
 
@@ -218,14 +114,12 @@ public class MainUI : MonoBehaviour
         selectedItem = UIManager.Instance.GetSelectedButton();
         selectedItem.GetComponent<Image>().color = blue;
 
-        switch (currentState)
-        {
-            case State.Item:
-                _ItemUseDelete.onClick.Invoke(); break;
 
-            case State.Skill:
-                _SkillUseDelete.onClick.Invoke(); break;
-        }
+    }
+
+    public void TopText(string text)
+    {
+        topPanelText.text = text;
     }
 
     private void Update()

@@ -125,19 +125,16 @@ namespace Scripts.Manager
 
         public void PushMenu(GameObject[] menu)
         {
-            if (menu.Length > 0)
-            {
-                if (menuStack.Count > 0)
-                    SetMenuActive(menuStack.Peek(), false);
+            if (menuStack.Count > 0)
+                SetMenuActive(menuStack.Peek(), false);
 
-                SetMenuActive(menu, true);
-                menuStack.Push(menu);
-            }
+            SetMenuActive(menu, true);
+            menuStack.Push(menu);
         }
 
         public void PopMenu()
         {
-            if (menuStack.Count > 1)
+            if (menuStack.Count > 0)
             {
                 SetMenuActive(menuStack.Pop(), false);
                 SetMenuActive(menuStack.Peek(), true);
@@ -147,9 +144,7 @@ namespace Scripts.Manager
         private void SetMenuActive(GameObject[] menu, bool isActive)
         {
             foreach (GameObject obj in menu)
-            {
                 obj.SetActive(isActive);
-            }
         }
 
     }
