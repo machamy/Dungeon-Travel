@@ -42,6 +42,8 @@ namespace Scripts.Data
         public AttackType attackType;
 
 
+        public int pointCost = 1;
+
         public override string ToString()
         {
             return
