@@ -7,17 +7,7 @@ using UnityEngine.EventSystems;
 public class UIDB : MonoBehaviour
 {
 
-    public enum State
-    {
-        Forge_Menu,
-            Forge_Weapon,
-                Forge_AskBuy,
-            Forge_Talk,
-            Forge_AskExit,
 
-        
-
-    }
 
 
     public static Dictionary<string, string> buttonDescription = new()
