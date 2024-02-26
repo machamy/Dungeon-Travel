@@ -79,7 +79,7 @@ namespace Scripts.Game.Dungeon.Unit
             // transform.position += moveVec * (speed * Time.deltaTime);
             rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
             
-            //rigid.velocity = Vector3.zero; 이거하면 계단에서 안내려옴
+            rigid.velocity = Vector3.zero; //이거하면 계단에서 안내려옴
         }
 
         void playerTurn()
