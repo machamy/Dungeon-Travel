@@ -30,7 +30,6 @@ public class BattleStartManager : MonoBehaviour
         BattleManager battlemanager = battlemanagerGO.GetComponent<BattleManager>();
         battlemanager.isEncounter = isEncounter;
 
-        Debug.Log("isEncounter: " + isEncounter);
         Destroy(this.gameObject);
     }
 }

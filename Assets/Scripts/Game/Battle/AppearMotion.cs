@@ -13,7 +13,7 @@ public class AppearMotion : MonoBehaviour
     {
         RectTransform ObjRectTransform = menu.GetComponent<RectTransform>();
 
-        Vector2 startPosition = ObjRectTransform.anchoredPosition;
+        Vector2 startPosition = new Vector2(-1700f, 0f);
         Vector2 targetPosition = new Vector2(-500f, 0f);
 
         float duration = 0.5f;

@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class ActMenu : MonoBehaviour
 {
@@ -11,13 +12,19 @@ public class ActMenu : MonoBehaviour
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu, guardmenu;
 
-    public TextMeshProUGUI[] skillname = new TextMeshProUGUI[4];
-    public TextMeshProUGUI[] skillcost = new TextMeshProUGUI[4];
-    public TextMeshProUGUI skill_Info;
-    public TextMeshProUGUI skillProperty;
+    public TextMeshProUGUI playername;
 
-    public GameObject[] itemamountPanel = new GameObject[3];
+    public TextMeshProUGUI[] skillname;
+    public TextMeshProUGUI[] skillcost;
+    public TextMeshProUGUI skill_info;
+    public TextMeshProUGUI skill_property;
+    public Button[] skillbuttons;
 
+    public GameObject[] itemamountPanel;
+    public TextMeshProUGUI item_info;
+    public TextMeshProUGUI item_property;
+    public Button[] itembuttons;
+ 
     public ActState aState;
 
     private Unit[] units = new Unit[6];
@@ -25,7 +32,7 @@ public class ActMenu : MonoBehaviour
 
     private Unit turnunit;
     private SpriteOutline turnoutline;
-    private BattleSkill[] battleSkills = new BattleSkill[4];
+    private BattleSkill[] playerskills = new BattleSkill[4];
 
     private int currenttarget, currentskill, currentitem;
 
@@ -37,11 +44,22 @@ public class ActMenu : MonoBehaviour
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
         guardmenu.SetActive(false);
+        
     }
 
+
+
+
+
+    /// <summary>
+    /// 현재 턴을 부여받는 플레이어와 플레이어의 위치를 받으면 턴을 실행
+    /// </summary>
+    /// <param name="player"></param>
     public void TurnStart(Unit player)
     {
         turnplayer = player;
+        playerskills = player.skills;
+
         ChooseAct();
     }
 
@@ -49,6 +67,7 @@ public class ActMenu : MonoBehaviour
     {
         units = getunits;
         outlines = getoutlines;
+
         if (outlines[0] == null) { Debug.Log("null"); }
     }
 
@@ -60,40 +79,22 @@ public class ActMenu : MonoBehaviour
         guardmenu.SetActive(false);
     }
 
-    public void SetUpAttack()
-    {
-        abxy.SetActive(false);
-        skillmenu.SetActive(false);
-        itemmenu.SetActive(false);
-        guardmenu.SetActive(false);
-
-        currenttarget = 0;
-    }
-
     public void SetUpSkill()
     {
-        currenttarget = 0;
-
         Debug.Log("스킬메뉴");
-        abxy.SetActive(false);
-        skillmenu.SetActive(true);
-        itemmenu.SetActive(false);
-        guardmenu.SetActive(false);
+
+        playername.text = turnplayer.Name;
 
         for (int i = 0; i <= 3; i++)
         {
-            skillname[i].text = battleSkills[i].Name;
-            skillcost[i].text = battleSkills[i].Cost.ToString() + "MP";
+            skillname[i].text = playerskills[i].Name;
+            skillcost[i].text = playerskills[i].Cost.ToString() + "MP";
         }
     }
-
-    public void ChangeSkill()
+    public void ChangeSkill_Info(int i)
     {
-        Color selectColor = Color.yellow;
-        Color nonselectColor = Color.white;
-
-        skill_Info.text = battleSkills[currentskill].Infomation;
-        skillProperty.text = battleSkills[currentskill].Property;
+        skill_info.text = playerskills[i].Infomation;
+        skill_property.text = playerskills[i].Property;
     }
 
     public void ChangePlayerOutline()
@@ -105,12 +106,9 @@ public class ActMenu : MonoBehaviour
         outlines[currenttarget].OnOutline();
     }
 
-    public void SetUpGuard()
+    public void ChangeItemInfo(int i)
     {
-        Debug.Log("가드");
-        abxy.SetActive(false);
-        skillmenu.SetActive(false);
-        itemmenu.SetActive(false);
-        guardmenu.SetActive(true);
+        item_info.text = playerskills[i].Infomation;
+        item_property.text = playerskills[i].Property;
     }
 }

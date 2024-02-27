@@ -42,7 +42,7 @@ public class BattleManager : MonoBehaviour
     private GameObject[] playerGO = new GameObject[5];
 
     public GameObject[] playerPrefab;
-    private HUDmanager[] playerHUD = new HUDmanager[6];
+    public HUDmanager[] playerHUD = new HUDmanager[6];
 
     private Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
     public Enemy_Base[] enemyPrefab = new Enemy_Base[4];
@@ -56,12 +56,10 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         endcanvas.SetActive(false);
-        bState = BattleState.START;
 
         SpawnCount = 0;
         SetupBattle();
     }
-
 
     private void SetupBattle()
     {
@@ -84,7 +82,7 @@ public class BattleManager : MonoBehaviour
             else { bState = BattleState.SECONDTURN; }
         }
 
-
+        actmenu.TurnStart(playerTurnOrder[0]);
     }
 
     private void PlayerSpawn() //플레이어 위치에 맞게 소환
@@ -97,6 +95,9 @@ public class BattleManager : MonoBehaviour
             playerunit[i] = playerGO[i].GetComponent<Unit>();
             playerunit[i].ConnectHUD(playerStation[i].GetComponent<HUDmanager>());  //유닛스크립트에 HUD 매니저 연결
         }
+
+        PlayerTurnOrder();
+        Debug.Log("스폰 완료");
     }
 
     public void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
@@ -115,12 +116,12 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        playerTurnOrder = null;
+        playerTurnOrder = new List<Unit>();
         Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
 
         for(int i = 0; i < 5; i++)
         {
-            agi_ranking[playerunit[i]] = playerunit[i].stat.agi;
+            agi_ranking.Add(playerunit[i], playerunit[i].stat.agi);
         }
 
         agi_ranking = agi_ranking.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
@@ -147,6 +148,11 @@ public class BattleManager : MonoBehaviour
     {
         switch(bState)
         {
+            case BattleState.START:
+                {
+                    
+                    break;
+                }
             case BattleState.PLAYERTURN:
                 {
                     break;
@@ -155,21 +161,19 @@ public class BattleManager : MonoBehaviour
                 {
                     break;
                 }
-
+            case BattleState.SECONDTURN:
+                {
+                    break;
+                }
+            case BattleState.END:
+                {
+                    endcanvas.SetActive(true);
+                    return;
+                }
             default:
                 {
                     break;
                 }
-        }
-
-        if(bState == BattleState.START)
-        {
-
-        }
-
-        if(bState == BattleState.PLAYERTURN)
-        {
-
         }
 
         if(bState == BattleState.ENEMYTURN)
@@ -186,27 +190,6 @@ public class BattleManager : MonoBehaviour
                 live_enemy[i].EnemyAttack();
             }
             bState = BattleState.PLAYERTURN;
-        }
-
-        if(bState == BattleState.SECONDTURN)
-        {
-
-        }
-
-        if(bState == BattleState.WIN)
-        {
-
-        }
-
-        if(bState == BattleState.LOSE)
-        {
-
-        }
-
-        if (bState == BattleState.END)
-        {
-            endcanvas.SetActive(true);
-            return;
         }
     }
 

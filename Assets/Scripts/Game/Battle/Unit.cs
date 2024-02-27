@@ -23,9 +23,9 @@ public class Unit : MonoBehaviour
     public void Awake()
     {
         skills[0] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire",Cost = 30};
-        skills[1] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire", Cost = 30 };
-        skills[2] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire", Cost = 30 };
-        skills[3] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire", Cost = 30 };
+        skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
+        skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
+        skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
     }
 
     public void OnOutline()
@@ -56,7 +56,7 @@ public class Unit : MonoBehaviour
     public void ConnectHUD(HUDmanager getHUD)
     {
         HUD = getHUD;
-        HUD.SetupHUD(this);
+        //HUD.SetupHUD(this);
     }
 
     public void TakeDamage(float damage, AttackType attackType, Enemy_Base.AttackProperty attackProperty)  //유닛 체력 계산
