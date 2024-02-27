@@ -97,6 +97,9 @@ public class DB
         classSkillData = new();
         Equipments = new();
         enemyDataList = new();
+        
+        classSkillData.Add(ClassType.Null,new SkillData[]{});
+        classStatData.Add(ClassType.Null,new StatData[]{});
     }
     
     /// <summary>

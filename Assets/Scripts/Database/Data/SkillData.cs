@@ -46,8 +46,7 @@ namespace Scripts.Data
 
         public override string ToString()
         {
-            return
-                $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}, {nameof(mpCost)}: {mpCost}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}";
+            return $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}, {nameof(mpCost)}: {mpCost}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}, {nameof(pointCost)}: {pointCost}";
         }
     }
 }

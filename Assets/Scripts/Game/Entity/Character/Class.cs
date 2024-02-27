@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 using JetBrains.Annotations;
+using Scripts.Data;
 using UnityEngine;
 
 namespace Scripts.Entity
@@ -48,10 +49,22 @@ namespace Scripts.Entity
         public string className;
         public string name => className;
 
+        private SkillData[] SkillArray;
+
         public Class(ClassType type, string name)
         {
             this.type = type;
             this.className = name;
+        }
+
+        public SkillData[] GetSkillArr()
+        {
+            if (SkillArray == null)
+            {
+                SkillArray = DB.GetSkillDataArr(this.type);
+            }
+
+            return SkillArray;
         }
 
         public static void InitClassList()
