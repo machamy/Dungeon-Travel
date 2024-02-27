@@ -16,7 +16,7 @@ public class MainUI : MonoBehaviour
 {
 
 
-    public GameObject mainMenuCanvas;
+    public GameObject townMapCanvas, mainMenuCanvas;
 
     public GameObject mainMenuFirstSelect;
 
@@ -32,15 +32,18 @@ public class MainUI : MonoBehaviour
 
     private int currentTabIndex = 1;
 
+    public void Awake()
+    {
+        UIManager.Instance.PushMenu(townMapCanvas);
+    }
 
     public void OnMenu()
     {
-        if (UIManager.Instance.menuStack.Count == 0)
+        if (UIManager.Instance.menuStack.Count == 1)
         {
-            UIManager.Instance.PushMenu(new GameObject[] { mainMenuCanvas });
+            UIManager.Instance.PushMenu(mainMenuCanvas);
             UIManager.Instance.SelectButton(mainMenuFirstSelect);
         }
-            
     }
 
 
@@ -114,12 +117,7 @@ public class MainUI : MonoBehaviour
         selectedItem = UIManager.Instance.GetSelectedButton();
         selectedItem.GetComponent<Image>().color = blue;
 
-
-    }
-
-    public void TopText(string text)
-    {
-        topPanelText.text = text;
+        
     }
 
     private void Update()

@@ -121,30 +121,34 @@ namespace Scripts.Manager
         }
 
 
-        public Stack<GameObject[]> menuStack = new();
+        public Stack<GameObject> menuStack = new Stack<GameObject>();
 
-        public void PushMenu(GameObject[] menu)
+        public void PushMenu(GameObject menu)
         {
-            if (menuStack.Count > 0)
-                SetMenuActive(menuStack.Peek(), false);
+            if (instance.menuStack.Count > 0)
+                instance.menuStack.Peek().SetActive(false);
 
-            SetMenuActive(menu, true);
-            menuStack.Push(menu);
+            menu.SetActive(true);
+            instance.menuStack.Push(menu);
         }
 
         public void PopMenu()
         {
-            if (menuStack.Count > 0)
+            if (instance.menuStack.Count > 0)
             {
-                SetMenuActive(menuStack.Pop(), false);
-                SetMenuActive(menuStack.Peek(), true);
+                instance.menuStack.Pop().SetActive(false);
+                instance.menuStack.Peek().SetActive(true);
+
+                SetDefaultButton(instance.menuStack.Peek());
             }
         }
 
-        private void SetMenuActive(GameObject[] menu, bool isActive)
+        private void SetDefaultButton(GameObject menu)
         {
-            foreach (GameObject obj in menu)
-                obj.SetActive(isActive);
+            GameObject defaultButton = menu.GetComponentInChildren<Button>()?.gameObject;
+
+            if (defaultButton != null)
+                SelectButton(defaultButton);
         }
 
     }
