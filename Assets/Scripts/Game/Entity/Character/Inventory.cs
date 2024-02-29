@@ -15,7 +15,7 @@ namespace Scripts.Game
 
         protected Inventory() { }
 
-        public static Inventory CreateCreateInstance(int maxSlot)
+        public static Inventory CreateInstance(int maxSlot)
         {
             Inventory inv = new Inventory();
             inv.SetMaxSlot(maxSlot);

@@ -40,7 +40,7 @@ namespace Scripts.Entity
                 // if(!initialized)
                 //     init();
             }
-            Inventory = Inventory.Create(27);
+            Inventory = Inventory.CreateInstance(27);
             EquipmentInventory = EquipmentInventory.CreateInstance();
             SkillTree = new SkillTree();
         }
