@@ -102,7 +102,7 @@ namespace Scripts.Game
         /// </summary>
         /// <param name="skill"></param>
         /// <returns>스킬의 배움 여부 / 없는 스킬일경우에도 false</returns>
-        public bool IsKnow(SkillData skill)
+        public bool IsLearned(SkillData skill)
         {
             if(!_skillLearnDictionary.ContainsKey(skill))
             {

@@ -1,4 +1,5 @@
-﻿using Scripts.Data;
+﻿using Game.Entity.Character;
+using Scripts.Data;
 using Scripts.Game;
 using System;
 using System.Text;
@@ -25,7 +26,7 @@ namespace Scripts.Entity
         
         public Inventory Inventory { get; private set; }
 
-        public Inventory EquipmentInventory { get; private set; }        // TODO : EquimentInventory 클래스 별도 생성
+        public EquipmentInventory EquipmentInventory { get; private set; }        // TODO : EquimentInventory 클래스 별도 생성
         
         public SkillTree SkillTree { get; private set; }
 
@@ -40,7 +41,8 @@ namespace Scripts.Entity
                 //     init();
             }
             Inventory = Inventory.Create(27);
-            EquipmentInventory = Inventory.Create(6);
+            EquipmentInventory = EquipmentInventory.CreateInstance();
+            SkillTree = new SkillTree();
         }
 
         public Character SetClass(Class @class)
@@ -53,6 +55,7 @@ namespace Scripts.Entity
             mp = rawBaseStat.mp;
 
             //SkillTree 변경
+            SkillTree.SetClass(_class);
             
             return this;
         }
@@ -73,6 +76,7 @@ namespace Scripts.Entity
                 return;
             } 
             SetLevel(lv+1);
+            OnLevelUpEvent(lv+1);
         }
 
         /// <summary>
@@ -109,8 +113,8 @@ namespace Scripts.Entity
         /// <summary>
         /// 레벨업시 호출되는 함수
         /// </summary>
-        /// <param name="lvDelta"></param>
-        protected void OnLevelUpEvent(int lvDelta)
+        /// <param name="newLevel"></param>
+        protected void OnLevelUpEvent(int newLevel)
         {
             // 기존 스탯에 각 클래스의 성장 능력치를 더한다.
             // rawBaseStat += _class.growStat;

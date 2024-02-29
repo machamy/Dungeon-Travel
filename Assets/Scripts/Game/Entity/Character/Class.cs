@@ -9,7 +9,7 @@ namespace Scripts.Entity
 {
     public enum ClassType : int
     {
-        Null,Paladin, Fighter, Ranger, Cleric, Wizard
+        Null, Paladin, Fighter, Ranger, Cleric, Wizard
         //, Rouges
     }
 

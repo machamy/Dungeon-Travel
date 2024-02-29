@@ -13,9 +13,9 @@ namespace Scripts.Game
         public int Count => itemList.Count;
         public bool IsFull => MaxSlot >= Count;
 
-        private Inventory() { }
+        protected Inventory() { }
 
-        public static Inventory Create(int maxSlot)
+        public static Inventory CreateCreateInstance(int maxSlot)
         {
             Inventory inv = new Inventory();
             inv.SetMaxSlot(maxSlot);
