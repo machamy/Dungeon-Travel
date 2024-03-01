@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -33,14 +34,15 @@ public class FloatingUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        cam = FindObjectOfType<Camera>().GetComponent<Camera>();
+        cam = FindObjectsOfType<Camera>().First(c => c.name.ToLower().StartsWith("main"));
+        Debug.Log(cam);
         _tmp = GetComponentInChildren<TextMeshProUGUI>();
         // _rectTransform = GetComponent<RectTransform>();
     }
 
     private void OnEnable()
     {
-        cam = FindObjectOfType<Camera>().GetComponent<Camera>();
+        cam= FindObjectsOfType<Camera>().First(c => c.name.ToLower().StartsWith("main"));
         // 첫 프레임 이동
         if(target)
             MovePos();
