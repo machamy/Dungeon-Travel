@@ -14,6 +14,7 @@ namespace Scripts.Game
         {
             this.rank = rank;
             this.points = points;
+            _skillLearnDictionary = new Dictionary<SkillData, bool>();
         }
 
         /// <summary>
@@ -34,6 +35,8 @@ namespace Scripts.Game
             
             foreach (SkillData skillData in @class.GetSkillArr())
             {
+                if(skillData == null)
+                    continue;
                 _skillLearnDictionary.Add(skillData,false);
             }
         }
