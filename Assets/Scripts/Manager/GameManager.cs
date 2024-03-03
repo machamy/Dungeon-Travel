@@ -29,6 +29,7 @@ namespace Scripts.Manager
         public InputActionMap UIActionMap;
 
 
+        public int day = 22;
         
         
         public static GameManager Instance
@@ -61,10 +62,20 @@ namespace Scripts.Manager
             InputActionClass input = new InputActionClass();
             PlayerActionMap = input.DungeonPlayer;
 
+            SceneManager.sceneLoaded += Sceneloaded;
             SceneManager.sceneUnloaded += SceneUnloaded;
             
             DB.Instance.UpdateDB();
             PartyManager.RegisterTestParty();
+        }
+        
+        /// <summary>
+        /// 새 씬에 들어갈 경우 초기화
+        /// </summary>
+        /// <param name="scene"></param>
+        public void Sceneloaded(Scene scene, LoadSceneMode mode)
+        {
+
         }
 
         /// <summary>

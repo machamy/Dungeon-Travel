@@ -8,11 +8,13 @@ public class QuraterviewCamera : MonoBehaviour
 {
     public Transform target;
     public Vector3 offset;
+    public bool isMain = false;
 
 
     private void Start()
     {
-        GameManager.Instance.qCamera = this;
+        if(isMain)
+            GameManager.Instance.qCamera = this;
     }
 
     // Update is called once per frame
