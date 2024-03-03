@@ -41,7 +41,7 @@ namespace Scripts.Game.Dungeon.Unit
 
         private void Start()
         {
-            focusUnit = null;
+            _focusedInteractionUnit = null;
             var pi = GetComponent<PlayerInput>();
             gm.PlayerActionMap = pi.currentActionMap;
             if(!FloatingInteractionUIgo)
@@ -100,22 +100,22 @@ namespace Scripts.Game.Dungeon.Unit
 
         void OnUse()
         {
-            if (focusUnit is null)
+            if (_focusedInteractionUnit is null)
                 return;
-            if (!focusUnit.type.HasFlag(InteractionType.Use))
+            if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Use))
                 return;
-            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
-            focusUnit.OnUsed(this);
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {_focusedInteractionUnit}");
+            _focusedInteractionUnit.OnUsed(this);
         }
 
         void OnAttack()
         {
-            if (focusUnit is null)
+            if (_focusedInteractionUnit is null)
                 return;
-            if (!focusUnit.type.HasFlag(InteractionType.Attack))
+            if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Attack))
                 return;
-            Debug.Log($"[PlayerUnit::OnUse()] Execute to {focusUnit}");
-            focusUnit.OnAttacked(this, damage: 1.0f);
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {_focusedInteractionUnit}");
+            _focusedInteractionUnit.OnAttacked(this, damage: 1.0f);
         }
 
         private RaycastHit slopeHit;
@@ -144,7 +144,7 @@ namespace Scripts.Game.Dungeon.Unit
         /// <param name="iu"></param>
         void OnIntersect(BaseInteractionUnit iu)
         {
-            if (!focusUnit.type.HasFlag(InteractionType.Intersect))
+            if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Intersect))
                 return;
             Debug.Log($"[PlayerUnit::OnIntersect(BaseInteractionUnit)] Execute to {iu.name}");
         }
@@ -156,7 +156,7 @@ namespace Scripts.Game.Dungeon.Unit
         {
             if (!PlayerInteractionBox.unitSet.Any())
             {
-                FocusUnit = null;
+                FocusedInteractionUnit = null;
                 return;
             }
                 
@@ -164,17 +164,17 @@ namespace Scripts.Game.Dungeon.Unit
             iter.MoveNext();
             if (PlayerInteractionBox.unitSet.Count == 1)
             {
-                FocusUnit = iter.Current;
+                FocusedInteractionUnit = iter.Current;
             }else //if (PlayerInteractionBox.unitSet.Count > 1)
             {
                 //상호작용 가능한 오브젝트가 여러개인 경우 가운데에 있는 오브젝트 선택
                 var bu = GetInteractionByRay();
                 
                if(bu is null)
-                   FocusUnit = iter.Current;
+                   FocusedInteractionUnit = iter.Current;
                else
                {
-                   FocusUnit = bu;
+                   FocusedInteractionUnit = bu;
                }
             } 
         }
@@ -258,24 +258,24 @@ namespace Scripts.Game.Dungeon.Unit
         }
 
 
-        private BaseInteractionUnit focusUnit;
+        private BaseInteractionUnit _focusedInteractionUnit;
 
         /// <summary>
         /// 포커스 등록/해제 관리용 프라퍼티
         /// </summary>
-        public BaseInteractionUnit FocusUnit
+        public BaseInteractionUnit FocusedInteractionUnit
         {
-            get => focusUnit;
+            get => _focusedInteractionUnit;
             set
             {
                 // 변경 X
-                if (focusUnit == value)
+                if (_focusedInteractionUnit == value)
                     return;
                 
-                if (focusUnit is not null)
-                    focusUnit.IsFocused = false;
+                if (_focusedInteractionUnit is not null)
+                    _focusedInteractionUnit.IsFocused = false;
 
-                focusUnit = value;
+                _focusedInteractionUnit = value;
 
                 // 포커스 해제시(변경 X)
                 if (value is null)
@@ -286,13 +286,13 @@ namespace Scripts.Game.Dungeon.Unit
 
                 // 포커스 변경시
                 value.IsFocused = true;
-                if (!focusUnit)
+                if (!_focusedInteractionUnit)
                     floatingUI = FloatingInteractionUIgo.GetComponent<FloatingUI>();
                 
-                if(!focusUnit.isHidden)
+                if(!_focusedInteractionUnit.isHidden)
                 {
                     floatingUI.Text = DB.UI_INTERACTION_NAME;
-                    floatingUI.target = focusUnit.center;
+                    floatingUI.target = _focusedInteractionUnit.center;
                     FloatingInteractionUIgo.SetActive(true);
                 }
             }
