@@ -7,10 +7,14 @@ using System.Linq;
 using ExcelDataReader;
 using UnityEngine;
 
+
+/// <summary>
+/// 개선필요
+/// </summary>
 public class ExcelReader
 {
     private string path;
-
+    
     public ExcelReader(string name = "Dungeon_Travel_stats.xlsx")
     {
        path = Path.Combine(Application.dataPath,name );

@@ -1,12 +1,21 @@
 ﻿using Scripts.Data;
 using Scripts.Entity;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Scripts.Game
 {
+    /// <summary>
+    /// 스킬 트리 클래스. 이름 변경 가능
+    /// </summary>
+    /// <remarks>
+    /// 
+    /// </remarks>
     public class SkillTree
     {
+        
+        
         public int points;
         public int rank;
 
@@ -114,6 +123,25 @@ namespace Scripts.Game
             }
 
             return _skillLearnDictionary[skill];
+        }
+
+        /// <summary>
+        /// 모든 스킬을 가져온다
+        /// </summary>
+        /// <returns>모든 SkillData의 List</returns>
+        public List<SkillData> GetSkills()
+        {
+            return _skillLearnDictionary.Keys.ToList();
+        }
+
+        /// <summary>
+        /// 해당 랭크의 모든 스킬을 가져온다
+        /// </summary>
+        /// <param name="rank">가져올 랭크</param>
+        /// <returns>해당 랭크의 SkillData List</returns>
+        public List<SkillData> GetSkillsByRank(int rank)
+        {
+            return _skillLearnDictionary.Keys.Where(s => s.rank == rank).ToList();
         }
     }
 }
