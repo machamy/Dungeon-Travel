@@ -28,7 +28,7 @@ public class HUDmanager : MonoBehaviour
         HPtext.text = HP + "/" + _maxHP;
         MPtext.text = MP + "/" + _maxMP;
 
-        playerNameText.text = player.Name;
+        playerNameText.text = player.unitName;
 
         this.gameObject.SetActive(true);
     }
@@ -39,7 +39,7 @@ public class HUDmanager : MonoBehaviour
     }
 
     /// <summary>
-    /// HP바와 MP바, HP텍스트, MP텍스트 업데이트
+    /// HP바,MP바, HP텍스트, MP텍스트 업데이트
     /// </summary>
     /// <param name="currentHP"></param>
     /// <param name="currentMP"></param>

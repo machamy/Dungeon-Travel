@@ -20,6 +20,7 @@ public class ActMenu : MonoBehaviour
     public TextMeshProUGUI skill_property;
     public Button[] skillbuttons;
 
+    public Items items;
     public GameObject[] itemamountPanel;
     public TextMeshProUGUI item_info;
     public TextMeshProUGUI item_property;
@@ -83,7 +84,7 @@ public class ActMenu : MonoBehaviour
     {
         Debug.Log("스킬메뉴");
 
-        playername.text = turnplayer.Name;
+        playername.text = turnplayer.unitName;
 
         for (int i = 0; i <= 3; i++)
         {
@@ -108,7 +109,7 @@ public class ActMenu : MonoBehaviour
 
     public void ChangeItemInfo(int i)
     {
-        item_info.text = playerskills[i].Infomation;
-        item_property.text = playerskills[i].Property;
+        item_info.text = items.items[i].infomation;
+        item_property.text = items.items[i].type.ToString();
     }
 }

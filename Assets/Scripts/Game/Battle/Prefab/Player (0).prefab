@@ -70,8 +70,14 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  skillDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   exampleskill: {fileID: 0}
   isguard: 0
+  Name: Magician
   position: 0
   unitName: Player
   className: 
@@ -160,5 +166,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   color: {r: 1, g: 1, b: 0, a: 1}
-  OnOff: 1
+  OnOff: 0
   outlineSize: 2

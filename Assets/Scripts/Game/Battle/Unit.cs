@@ -18,7 +18,6 @@ public class Unit : MonoBehaviour
     public SkillData[] skillDatas = new SkillData[4];
     public BattleSkill exampleskill = new BattleSkill();
     public bool isguard;
-    public string Name;
 
     public void Awake()
     {
@@ -56,7 +55,7 @@ public class Unit : MonoBehaviour
     public void ConnectHUD(HUDmanager getHUD)
     {
         HUD = getHUD;
-        //HUD.SetupHUD(this);
+        HUD.SetupHUD(this);
     }
 
     public void TakeDamage(float damage, AttackType attackType, Enemy_Base.AttackProperty attackProperty)  //유닛 체력 계산
@@ -75,18 +74,21 @@ public class Unit : MonoBehaviour
         HUD.UpdateHUD(currentHP, currentMP);
     }
 
-    public void ConsumeMP(float consume_amount)  //유닛 마나 계산
+    /// <summary>
+    /// 마나가 충분하지 않으면 false, 마나가 충분하면 마나소모를 한 후 true반환
+    /// </summary>
+    /// <param name="consume_amount"></param>
+    /// <returns></returns>
+    public bool ConsumeMP(float consume_amount)  //유닛 마나 계산
     {
         currentMP -= consume_amount;
         if (currentMP <= 0)
         {
             currentMP += consume_amount;
+            return false;
         }
         HUD.UpdateHUD(currentHP, currentMP);
-    }
-    
-    public void MPShort()
-    {
         Debug.Log("마나 부족");
+        return true;
     }
 }

@@ -1,5 +1,4 @@
-﻿using Scripts.Data;
-using Unity.VisualScripting;
+using Scripts.Data;
 using UnityEngine;
 
 namespace Scripts.Entity.Item
@@ -13,5 +12,6 @@ namespace Scripts.Entity.Item
         public ItemType type;
 
         public bool isUsable;
+        public string infomation;
     }
 }
