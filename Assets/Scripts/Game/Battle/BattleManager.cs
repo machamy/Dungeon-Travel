@@ -6,6 +6,7 @@ using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using System;
+using TMPro;
 
 public class BattleManager : MonoBehaviour
 {    
@@ -41,51 +42,28 @@ public class BattleManager : MonoBehaviour
     public GameObject[] playerStation;
     private GameObject[] playerGO = new GameObject[5];
 
+    public HUDmanager[] HUDs = new HUDmanager[6];
     public GameObject[] playerPrefab;
     public HUDmanager[] playerHUD = new HUDmanager[6];
 
-    private Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
+    public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
     public Enemy_Base[] enemyPrefab = new Enemy_Base[4];
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private SpriteOutline[] playeroutline = new SpriteOutline[6];
 
     public bool isEncounter;
+
     public int TurnCount;
+    public TextMeshProUGUI Turn;
     public GameObject endcanvas;
     private void Awake()
     {
-        endcanvas.SetActive(false);
-
+        bState = BattleState.START;
         SpawnCount = 0;
-        SetupBattle();
     }
 
     private void SetupBattle()
-    {
-        PlayerSpawn();
-
-        actmenu.GetUnitComp(playerunit, playeroutline);
-
-        // 적 프리펩 불러오기
-        for (int i = 0; i < EnemySpawnerPoints.Length; i++) // 적 스폰 위치 받아오기
-        {
-            EnemySpawnerPoints[i] = GameObject.Find("EnemySpawner" + i).GetComponent<Transform>();
-        }
-        EnemySpawn(Define_Battle.Enemy_Type.Rabbit); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
-
-
-        if (isEncounter) //첫 턴 플로우차트
-        {
-            float random = UnityEngine.Random.value;
-            if (random < 0.7f) { bState = BattleState.ENEMYTURN; }
-            else { bState = BattleState.SECONDTURN; }
-        }
-
-        actmenu.TurnStart(playerTurnOrder[0]);
-    }
-
-    private void PlayerSpawn() //플레이어 위치에 맞게 소환
     {
         //플레이어 프리펩 불러오기
         for (int i = 0; i < playerPrefab.Length; i++)
@@ -93,11 +71,25 @@ public class BattleManager : MonoBehaviour
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playeroutline[i] = playerGO[i].GetComponent<SpriteOutline>();
             playerunit[i] = playerGO[i].GetComponent<Unit>();
-            playerunit[i].ConnectHUD(playerStation[i].GetComponent<HUDmanager>());  //유닛스크립트에 HUD 매니저 연결
+            playerunit[i].ConnectHUD(HUDs[i]);
+        }
+        actmenu.GetUnitComp(playerunit, playeroutline);
+
+        // 적 프리펩 불러오기
+        EnemySpawn(Define_Battle.Enemy_Type.Rabbit); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
+
+
+        if (isEncounter) //첫 턴 플로우차트
+        {
+            float random = UnityEngine.Random.value;
+            if (random < 0.7f) { bState = BattleState.SECONDTURN; } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
+            else { bState = BattleState.SECONDTURN; } 
         }
 
         PlayerTurnOrder();
         Debug.Log("스폰 완료");
+
+        actmenu.TurnStart(playerTurnOrder[0]);
     }
 
     public void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
@@ -114,7 +106,7 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
+    private List<Unit> PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
         playerTurnOrder = new List<Unit>();
         Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
@@ -132,6 +124,8 @@ public class BattleManager : MonoBehaviour
 
             playerTurnOrder.Add(kvp.Key);
         }
+
+        return playerTurnOrder;
     }
 
     private void FirstTurn()
@@ -150,7 +144,9 @@ public class BattleManager : MonoBehaviour
         {
             case BattleState.START:
                 {
-                    
+                    TurnCount = 0;
+                    endcanvas.SetActive(false);
+                    SetupBattle();
                     break;
                 }
             case BattleState.PLAYERTURN:
@@ -174,8 +170,11 @@ public class BattleManager : MonoBehaviour
                 {
                     break;
                 }
+            
         }
+        Turn.text = "Turn   " + TurnCount.ToString();
 
+        /*
         if(bState == BattleState.ENEMYTURN)
         {
             Enemy_Base[] live_enemy = new Enemy_Base[enemyPrefab.Length];
@@ -191,6 +190,14 @@ public class BattleManager : MonoBehaviour
             }
             bState = BattleState.PLAYERTURN;
         }
+        */
     }
 
+    public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill useSkill)
+    {
+        if (attackplayer.ConsumeMP(useSkill.Cost))
+        {
+            //damagedplayer.ConsumeMP(useSkill.damage);
+        }
+    }
 }

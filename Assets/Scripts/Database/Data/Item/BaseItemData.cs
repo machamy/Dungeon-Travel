@@ -1,4 +1,4 @@
-﻿using Scripts.Data;
+using Scripts.Data;
 using UnityEngine;
 
 namespace Scripts.Entity.Item
@@ -10,5 +10,6 @@ namespace Scripts.Entity.Item
         public Sprite itemSprite;
 
         public ItemType type;
+        public string infomation;
     }
 }
