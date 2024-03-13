@@ -116,6 +116,7 @@ public class DB
         
         classSkillData.Add(ClassType.Null,new SkillData[]{});
         classStatData.Add(ClassType.Null,new StatData[]{});
+        
     }
     
     /// <summary>
@@ -156,6 +157,13 @@ public class DB
                         ClassType classType = ClassTypeHelper.FromCodename(sheetName[0]);
                         classSkillData.Add(classType, ParseClassSkill(table, header, colNum, classType));
                     }
+                    else if (sheetName[1].Equals(DB_NAME_ENEMYSKILL))
+                    {
+                        int floor = int.Parse(sheetName[0].Replace("F", ""));
+                        while (enemySkillList.Count <= floor)
+                            enemySkillList.Add(new Dictionary<string, List<SkillData>>());
+                        enemySkillList[floor] = ParseEnemySkillData(table, header, colNum);
+                    }
                     break;
                 case 3:
                     if (sheetName[1].Equals(DB_NAME_ENEMY))
@@ -164,15 +172,6 @@ public class DB
                         while(enemyDataList.Count <= floor)
                             enemyDataList.Add(new Dictionary<string, EnemyStatData>());
                         enemyDataList[floor] = ParseEnemyData(table, header, colNum);
-                    }
-                    break;
-                case 4:
-                    if (sheetName[1].Equals(DB_NAME_ENEMYSKILL))
-                    {
-                        int floor = int.Parse(sheetName[0].Replace("F", ""));
-                        while (enemySkillList.Count <= floor)
-                            enemySkillList.Add(new Dictionary<string, List<SkillData>>());
-                        enemySkillList[floor] = ParseEnemySkillData(table, header, colNum);
                     }
                     break;
             }
@@ -535,33 +534,41 @@ public class DB
                 }
                 else
                 {
-                    Debug.Log($"[DB::ParseEnemyData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
+                    Debug.Log($"[DB::ParseEnemySkillData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
                 }
             }
 
             skill.attackType = attackType;
-            if(i == 1)
-            {
-                skillList.Add(skill);
-            }
-            else if (i != sheet.Rows.Count - 1)
-            {
-                skills.Add(postName, skillList);
-            }
-            else
-            {
-                if (postName == skill.enemyName)
-                {
-                    skillList.Add(skill);
-                }
-                else
-                {
-                    skills.Add(postName, skillList);
-                    skillList = new List<SkillData>();
-                }
-            }
-            postName = skill.enemyName;
-            Debug.Log($"Register Skill {skill}");
+            
+            if(!skills.ContainsKey(skill.enemyName))
+                skills.Add(skill.enemyName,new List<SkillData>());
+            skills[skill.enemyName].Add(skill);
+            
+            
+            
+            // if(i == 1)
+            // {
+            //     skillList.Add(skill);
+            // }
+            // else if (i != sheet.Rows.Count - 1)
+            // {
+            //     skills.Add(postName, skillList);
+            //     // 키가 없으면
+            // }
+            // else
+            // {
+            //     if (postName == skill.enemyName)
+            //     {
+            //         skillList.Add(skill);
+            //     }
+            //     else
+            //     {
+            //         skills.Add(postName, skillList);
+            //         skillList = new List<SkillData>();
+            //     }
+            // }
+            // postName = skill.enemyName;
+            Debug.Log($"Register EnemySkill {skill}");
         }
 
         return skills;
