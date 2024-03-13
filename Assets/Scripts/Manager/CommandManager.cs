@@ -233,8 +233,20 @@ namespace Scripts.DebugConsole
             tree.Add(path, command);
             tree.dirty = true; // 아직 처리 안함.
         }
+        /// <summary>
+        /// 콘솔 창에 그대로 출력한다. 인자가 여러개일 경우 개행된다.
+        /// </summary>
+        /// <param name="str"></param>
+        public void Print(params string[] str)
+        {
+            output.text += "\n" + string.Join("\n",str);
+            StartCoroutine(GameManager.DoNextFrame(() => scrollrect.verticalNormalizedPosition = 0));
+        }
 
-        private void Update()
+
+        #region Console_UI
+
+          private void Update()
         {
             if(Input.GetKeyDown(KeyCode.BackQuote))
             {
@@ -338,15 +350,7 @@ namespace Scripts.DebugConsole
         }
 
 
-        /// <summary>
-        /// 콘솔 창에 그대로 출력한다. 인자가 여러개일 경우 개행된다.
-        /// </summary>
-        /// <param name="str"></param>
-        public void Print(params string[] str)
-        {
-            output.text += "\n" + string.Join("\n",str);
-            StartCoroutine(GameManager.DoNextFrame(() => scrollrect.verticalNormalizedPosition = 0));
-        }
+
 
         private void UpdateACtext(string value)
         {
@@ -375,5 +379,8 @@ namespace Scripts.DebugConsole
                 select e;
             return query.ToList();
         }
+
+        #endregion
+      
     }
 }
