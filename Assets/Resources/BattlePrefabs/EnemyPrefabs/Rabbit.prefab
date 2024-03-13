@@ -93,7 +93,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4120926291794551505}
-  - component: {fileID: -2591828760405281809}
   - component: {fileID: 4297188591167188227}
   - component: {fileID: 4390671035005405954}
   m_Layer: 0
@@ -119,20 +118,6 @@ Transform:
   - {fileID: 8725096218638957094}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-2591828760405281809
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8827268227931404770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4de25b99896d8374595b0b63d7409efb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDead: 0
-  currentHp: 0
 --- !u!114 &4297188591167188227
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145,7 +130,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6badfc3ccdd489c4ea91614248946c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _class: {fileID: 0}
   stat:
     hp: 0
     mp: 0
@@ -163,6 +147,20 @@ MonoBehaviour:
     agi: 0
     luk: 0
     vitWeight: 0
+  outline: {fileID: 0}
+  skills:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  skillDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  exampleskill: {fileID: 0}
+  isguard: 0
+  Name: 
   position: -1
   unitName: Enemy
   className: 

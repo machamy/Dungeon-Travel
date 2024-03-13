@@ -93,7 +93,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4120926291794551505}
-  - component: {fileID: 3460591147160751091}
   - component: {fileID: -6878743239665097572}
   m_Layer: 0
   m_Name: Thief
@@ -118,20 +117,6 @@ Transform:
   - {fileID: 8725096218638957094}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3460591147160751091
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8827268227931404770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0eeecb03233d3ce449c5a51861085388, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDead: 0
-  currentHp: 0
 --- !u!114 &-6878743239665097572
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -35,6 +35,7 @@ public class DB
     private Dictionary<ClassType, SkillData[]> classSkillData = new();
     private Dictionary<string, EquipmentData> Equipments = new();
     private List<Dictionary<string, EnemyStatData>> enemyDataList = new();
+    private List<Dictionary<string, List<SkillData>>> enemySkillList = new();
 
     private string fileName = "Dungeon_Travel_stats.xlsx";
 
@@ -43,6 +44,7 @@ public class DB
     public const string DB_NAME_SKILL = "SKL";
     public const string DB_NAME_EQUIPMENT = "EQUIPMENT";
     public const string DB_NAME_ENEMY = "ENMY";
+    public const string DB_NAME_ENEMYSKILL = "ENMYSKL";
 
     public const string UI_INTERACTION_NAME = "상호작용";
 
@@ -76,6 +78,20 @@ public class DB
     {
         EnemyStatData data;
         var floorData = Instance.enemyDataList[floor];
+        if (floorData.TryGetValue(name, out data))
+            return data;
+        return null;
+    }
+    /// <summary>
+    /// 해당 층의 해당 이름의 몬스터의 스킬을 가져온다.
+    /// </summary>
+    /// <param name="floor"></param>
+    /// <param name="name"></param>
+    /// <returns></returns>
+    public static List<SkillData> GetEnemySkillData(int floor, string name)
+    {
+        List<SkillData> data;
+        var floorData = Instance.enemySkillList[floor];
         if (floorData.TryGetValue(name, out data))
             return data;
         return null;
@@ -148,6 +164,15 @@ public class DB
                         while(enemyDataList.Count <= floor)
                             enemyDataList.Add(new Dictionary<string, EnemyStatData>());
                         enemyDataList[floor] = ParseEnemyData(table, header, colNum);
+                    }
+                    break;
+                case 4:
+                    if (sheetName[1].Equals(DB_NAME_ENEMYSKILL))
+                    {
+                        int floor = int.Parse(sheetName[0].Replace("F", ""));
+                        while (enemySkillList.Count <= floor)
+                            enemySkillList.Add(new Dictionary<string, List<SkillData>>());
+                        enemySkillList[floor] = ParseEnemySkillData(table, header, colNum);
                     }
                     break;
             }
@@ -428,5 +453,117 @@ public class DB
             
         }
         return result;
+    }
+
+    private enum EnemySkillDataType
+    {
+        적이름,
+        유형,
+        스킬이름,
+        물리데미지,
+        속성데미지,
+        가중치,
+        LastIdx = 5,
+    }
+    private Dictionary<string, List<SkillData>> ParseEnemySkillData(DataTable sheet, string[] header, int colNum)
+    {
+        Dictionary<string, List<SkillData>> skills = new Dictionary<string, List<SkillData>> ();
+        List<SkillData> skillList = new List<SkillData>();
+        string postName = null;
+        for (int i = 1; i < sheet.Rows.Count; i++)
+        {
+            SkillData skill = ScriptableObject.CreateInstance<SkillData>();
+            var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
+                p => (p ?? String.Empty).ToString());
+            if (row[(int)EnemySkillDataType.스킬이름] == "")
+                continue;
+            
+
+            skill.enemyName = row[(int)EnemySkillDataType.적이름];
+            skill.skillName = skill.name;
+
+            skill.physicsDamage = Convert.ToSingle(row[(int)EnemySkillDataType.물리데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.물리데미지]);
+            skill.propertyDamage = Convert.ToSingle(row[(int)EnemySkillDataType.속성데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.속성데미지]);
+            skill.skillWeight = Convert.ToInt32(row[(int)EnemySkillDataType.가중치] == string.Empty ? "0" : row[(int)EnemySkillDataType.가중치]);
+
+            var booleanArr = row.Skip((int)EnemySkillDataType.LastIdx + 1).Select((a) => a.ToUpper() == "TRUE").ToArray();
+            int idx = 0;
+            skill.isPassive = booleanArr[idx++];
+            skill.isSelf = booleanArr[idx++];
+
+
+            TargetType Ally = TargetType.None;
+            if (booleanArr[idx++])
+                Ally |= TargetType.Single;
+            if (booleanArr[idx++])
+                Ally |= TargetType.Front;
+            if (booleanArr[idx++])
+                Ally |= TargetType.Back;
+            if (booleanArr[idx++])
+                Ally |= TargetType.Area;
+
+            TargetType Enemy = TargetType.None;
+            if (booleanArr[idx++])
+                Enemy |= TargetType.Single;
+            if (booleanArr[idx++])
+                Enemy |= TargetType.Front;
+            if (booleanArr[idx++])
+                Enemy |= TargetType.Back;
+            if (booleanArr[idx++])
+                Enemy |= TargetType.Area;
+
+            skill.allyTargetType = Ally;
+            skill.enemyTargetType = Enemy;
+
+            skill.isBuff = booleanArr[idx++];
+            skill.isDebuff = booleanArr[idx++];
+            skill.isHealing = booleanArr[idx++];
+            skill.isMelee = booleanArr[idx++];
+            skill.isRanged = booleanArr[idx++];
+
+            AttackType attackType = AttackType.None;
+            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length; idx++)
+            {
+                string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
+                if (rawHeader == String.Empty)
+                    continue;
+                AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
+                if (currentType != AttackType.None)
+                {
+                    if (booleanArr[idx])
+                        attackType |= currentType;
+                }
+                else
+                {
+                    Debug.Log($"[DB::ParseEnemyData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
+                }
+            }
+
+            skill.attackType = attackType;
+            if(i == 1)
+            {
+                skillList.Add(skill);
+            }
+            else if (i != sheet.Rows.Count - 1)
+            {
+                skills.Add(postName, skillList);
+            }
+            else
+            {
+                if (postName == skill.enemyName)
+                {
+                    skillList.Add(skill);
+                }
+                else
+                {
+                    skills.Add(postName, skillList);
+                    skillList = new List<SkillData>();
+                }
+            }
+            postName = skill.enemyName;
+            Debug.Log($"Register Skill {skill}");
+        }
+
+        return skills;
     }
 }

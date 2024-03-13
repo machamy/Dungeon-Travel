@@ -12,6 +12,7 @@ namespace Scripts.Data
     public class SkillData:ScriptableObject, IDBdata
     {
         public ClassType classType;
+        public string enemyName;
         
         public string weaponType;
         public int rank;
@@ -26,6 +27,7 @@ namespace Scripts.Data
         public float physicsDamage;
         public float propertyDamage;
         public float mpCost;
+        public int skillWeight;
 
         public bool isPassive;
         public bool isSelf;

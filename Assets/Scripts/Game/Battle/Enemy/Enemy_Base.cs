@@ -4,18 +4,30 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Scripts.Entity;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class Enemy_Base : MonoBehaviour
 {
     private Unit unit;
     public bool isDead = false;
+    private Enemy enemy;
+    private Boss boss;
     public enum AttackProperty
     {
         Physics, // 물리
         Magic, // 마법
     }
 
+    public Enemy_Base(Enemy enemy)
+    {
+        this.enemy = enemy;
+    }
+    public Enemy_Base(Boss boss)
+    {
+        this.boss = boss;
+    }
     public virtual void Init()
     {
 
@@ -59,7 +71,7 @@ public class Enemy_Base : MonoBehaviour
         int AttackRange = UnityEngine.Random.Range(0, 5);
         GameObject go = GameObject.Find("Player (" + AttackRange + ")(Clone)");
         unit = go.GetComponent<Unit>();
-        unit.TakeDamage(atk, attackType, attackProperty);
+        unit.TakeDamage(atk, attackType);
     }
     /// <summary>
     /// 광역공격
@@ -72,7 +84,7 @@ public class Enemy_Base : MonoBehaviour
         {
             GameObject go = GameObject.Find("Player (" + i + ")(Clone)");
             unit = go.GetComponent<Unit>();
-            unit.TakeDamage(atk, attackType, attackProperty);
+            unit.TakeDamage(atk, attackType);
         }
     }
     /// <summary>

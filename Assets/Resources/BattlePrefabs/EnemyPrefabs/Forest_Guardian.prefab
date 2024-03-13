@@ -93,7 +93,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4120926291794551505}
-  - component: {fileID: -1537940740766323364}
   - component: {fileID: -345465792525411091}
   m_Layer: 0
   m_Name: Forest_Guardian
@@ -118,20 +117,6 @@ Transform:
   - {fileID: 8725096218638957094}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &-1537940740766323364
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8827268227931404770}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0f6b900287ec73a4eaf872e01e4200a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isDead: 0
-  currentHp: 0
 --- !u!114 &-345465792525411091
 MonoBehaviour:
   m_ObjectHideFlags: 0
