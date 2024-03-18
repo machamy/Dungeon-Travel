@@ -10,9 +10,6 @@ using UnityEditor.PackageManager;
 
 public class Enemy_Skill
 {
-    private static Enemy_Skill instance;
-    public static Enemy_Skill Instance { get { return instance; } }
-
     public List<Action<SkillData, EnemyStatData>> GetSkillList(int floor, string enemyName)
     {
         List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();

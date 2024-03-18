@@ -523,7 +523,7 @@ public class DB
             AttackType attackType = AttackType.None;
             for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length; idx++)
             {
-                string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
+                string rawHeader = header[(int)SkillDataType.LastIdx + idx];
                 if (rawHeader == String.Empty)
                     continue;
                 AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);

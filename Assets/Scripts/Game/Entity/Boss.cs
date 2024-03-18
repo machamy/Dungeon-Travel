@@ -13,22 +13,24 @@ namespace Scripts.Entity
         private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
         float currentHp;
         bool passiveTrigger = false;
+        Enemy_Skill skill;
         public Enemy_Base NewBoss(int floor, string name)
         {
             enemyStatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
-            skillLists = Enemy_Skill.Instance.GetSkillList(floor, name);
+            skillLists = skill.GetSkillList(floor, name);
             currentHp = enemyStatData.hp;
             return new Enemy_Base(this);
         }
-        public float GetAgi()
+        public float Agi
         {
-            return enemyStatData.agi;
+            get { return enemyStatData.agi; }
         }
 
-        public float GetHp()
+
+        public float Hp
         {
-            return enemyStatData.hp;
+            get { return enemyStatData.hp; }
         }
 
         public void Attack()

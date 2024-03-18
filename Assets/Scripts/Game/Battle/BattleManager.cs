@@ -5,6 +5,7 @@ using System.Xml;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using Scripts.Entity;
 using System;
 using TMPro;
 
@@ -48,6 +49,7 @@ public class BattleManager : MonoBehaviour
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
     public Enemy_Base[] enemyPrefab = new Enemy_Base[4];
+    public Enemy enemy = new Enemy();
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private SpriteOutline[] playeroutline = new SpriteOutline[6];
@@ -74,10 +76,12 @@ public class BattleManager : MonoBehaviour
             playerunit[i].ConnectHUD(HUDs[i]);
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
-
+        DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
         // 적 프리펩 불러오기
-        EnemySpawn(Define_Battle.Enemy_Type.Rabbit); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
+        EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
 
+        
+        
 
         if (isEncounter) //첫 턴 플로우차트
         {
@@ -92,18 +96,16 @@ public class BattleManager : MonoBehaviour
         actmenu.TurnStart(playerTurnOrder[0]);
     }
 
-    public void EnemySpawn(Define_Battle.Enemy_Type enemy_Type) // 적 스폰하는 함수 프리펩으로 받아와서 생성
+    public void EnemySpawn(int floor, string name) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
-        try
-        {
-            enemyPrefab[SpawnCount] = Instantiate(Resources.Load<Enemy_Base>($"BattlePrefabs/EnemyPrefabs/{enemy_Type}"));
-            enemyPrefab[SpawnCount].transform.position = EnemySpawnerPoints[SpawnCount].position;
-            enemyPrefab[SpawnCount].transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
-        }
-        catch
-        {
-            Debug.LogError($"Load 문제 발생 BattlePrefabs/EnemyPrefabs/{enemy_Type}확인 바람");
-        }
+        enemyPrefab[SpawnCount] = enemy.NewEnemy(floor, name);
+        Debug.Log(enemyPrefab[SpawnCount]);
+        string sprite_name = Convert.ToString(floor) + "_" + name;
+        SpriteRenderer sr = enemyPrefab[SpawnCount].AddComponent<SpriteRenderer>();
+        sr.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
+        enemyPrefab[SpawnCount].AddComponent<BuffManager>();
+        enemyPrefab[SpawnCount].transform.position = EnemySpawnerPoints[SpawnCount].position;
+        enemyPrefab[SpawnCount].transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
     }
 
     private List<Unit> PlayerTurnOrder() //플레이어끼리만 비교해놓음
@@ -135,7 +137,7 @@ public class BattleManager : MonoBehaviour
     }
     private void SecondTurnOrder()
     {
-        float enemyAgi = enemyPrefab[0].GetAgi();
+        float enemyAgi = enemyPrefab[0].Agi;
     }
     
     private void Update()
