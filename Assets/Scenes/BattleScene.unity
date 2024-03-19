@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -5737,6 +5737,7 @@ MonoBehaviour:
   - {fileID: 1543747143}
   - {fileID: 1526662454}
   - {fileID: 1268307527}
+  items: {fileID: 0}
   itemamountPanel:
   - {fileID: 191126425}
   - {fileID: 593336816}
@@ -10148,7 +10149,7 @@ MonoBehaviour:
   - {fileID: 251500455}
   - {fileID: 1000766004}
   enemyPrefab:
-  - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
+  - {fileID: 8827268227931404770, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
   - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
   - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
   - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}

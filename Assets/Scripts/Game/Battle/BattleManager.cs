@@ -5,9 +5,11 @@ using System.Xml;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 using Scripts.Entity;
 using System;
 using TMPro;
+using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class BattleManager : MonoBehaviour
 {    
@@ -48,8 +50,9 @@ public class BattleManager : MonoBehaviour
     public HUDmanager[] playerHUD = new HUDmanager[6];
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
-    public Enemy_Base[] enemyPrefab = new Enemy_Base[4];
-    public Enemy enemy = new Enemy();
+    public GameObject[] enemyPrefab = new GameObject[4];
+    private Enemy_Base enemy_Base = null;
+    private Enemy enemy = new Enemy();
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private SpriteOutline[] playeroutline = new SpriteOutline[6];
@@ -76,12 +79,9 @@ public class BattleManager : MonoBehaviour
             playerunit[i].ConnectHUD(HUDs[i]);
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
-        //DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
-        // 적 프리펩 불러오기
-        //EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
+        DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
+        EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
 
-        
-        
 
         if (isEncounter) //첫 턴 플로우차트
         {
@@ -98,14 +98,25 @@ public class BattleManager : MonoBehaviour
 
     public void EnemySpawn(int floor, string name) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
-        enemyPrefab[SpawnCount] = enemy.NewEnemy(floor, name);
-        Debug.Log(enemyPrefab[SpawnCount]);
-        string sprite_name = Convert.ToString(floor) + "_" + name;
-        SpriteRenderer sr = enemyPrefab[SpawnCount].AddComponent<SpriteRenderer>();
-        sr.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
-        enemyPrefab[SpawnCount].AddComponent<BuffManager>();
-        enemyPrefab[SpawnCount].transform.position = EnemySpawnerPoints[SpawnCount].position;
-        enemyPrefab[SpawnCount].transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
+        try
+        {
+            var newEnemy = Instantiate(enemyPrefab[SpawnCount], EnemySpawnerPoints[SpawnCount].position, Quaternion.identity);
+            newEnemy.transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
+            newEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
+
+            enemy_Base = newEnemy.AddComponent<Enemy_Base>();
+            enemy_Base = enemy.NewEnemy(floor, name); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+            Debug.Log(enemy_Base.hp);
+
+            string sprite_name = Convert.ToString(floor) + "F_" + name;
+            Image image = newEnemy.AddComponent<Image>(); // 스프라이트 불러오기
+            image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
+            newEnemy.AddComponent<BuffManager>();
+        }
+        catch
+        {
+            Debug.LogError($"BattlePrefabs/EnemySprites/Load문제 발생");
+        }
     }
 
     private List<Unit> PlayerTurnOrder() //플레이어끼리만 비교해놓음
@@ -137,7 +148,7 @@ public class BattleManager : MonoBehaviour
     }
     private void SecondTurnOrder()
     {
-        float enemyAgi = enemyPrefab[0].Agi;
+        
     }
     
     private void Update()

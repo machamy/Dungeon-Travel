@@ -25,7 +25,6 @@ public class Enemy_Base : MonoBehaviour
     {
         this.enemy = enemy;
         hp = enemy.enemyStatData.hp;
-        Debug.Log(hp);
     }
     public Enemy_Base(Boss boss)
     {
