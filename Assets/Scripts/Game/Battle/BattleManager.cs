@@ -50,9 +50,8 @@ public class BattleManager : MonoBehaviour
     public HUDmanager[] playerHUD = new HUDmanager[6];
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
-    public GameObject[] enemyPrefab = new GameObject[4];
+    public Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
     private Enemy_Base enemy_Base = null;
-    private Enemy enemy = new Enemy();
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private SpriteOutline[] playeroutline = new SpriteOutline[6];
@@ -66,6 +65,10 @@ public class BattleManager : MonoBehaviour
     {
         bState = BattleState.START;
         SpawnCount = 0;
+        for (int i = 0; i < 4;i++)
+        {
+            enemyPrefab[i] = new Enemy(); // 배열에 객체 생성
+        }
     }
 
     private void SetupBattle()
@@ -81,12 +84,12 @@ public class BattleManager : MonoBehaviour
         actmenu.GetUnitComp(playerunit, playeroutline);
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
-
+        EnemySpawn(1, "슬라임");
 
         if (isEncounter) //첫 턴 플로우차트
         {
             float random = UnityEngine.Random.value;
-            if (random < 0.7f) { bState = BattleState.SECONDTURN; } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
+            if (random < 0.7f) { bState = BattleState.ENEMYTURN; } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
             else { bState = BattleState.SECONDTURN; } 
         }
 
@@ -100,16 +103,16 @@ public class BattleManager : MonoBehaviour
     {
         try
         {
-            var newEnemy = Instantiate(enemyPrefab[SpawnCount], EnemySpawnerPoints[SpawnCount].position, Quaternion.identity);
-            newEnemy.transform.parent = EnemySpawnerPoints[SpawnCount++].transform;
+            GameObject cloneEnemy = new GameObject($"Clone({SpawnCount})");
+            var newEnemy = Instantiate(cloneEnemy, EnemySpawnerPoints[SpawnCount].position, Quaternion.identity);
+            newEnemy.transform.parent = EnemySpawnerPoints[SpawnCount].transform;
             newEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
 
-            enemy_Base = newEnemy.AddComponent<Enemy_Base>();
-            enemy_Base = enemy.NewEnemy(floor, name); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+            enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
             Debug.Log(enemy_Base.hp);
 
             string sprite_name = Convert.ToString(floor) + "F_" + name;
-            Image image = newEnemy.AddComponent<Image>(); // 스프라이트 불러오기
+            SpriteRenderer image = newEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
             image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
             newEnemy.AddComponent<BuffManager>();
         }
@@ -168,6 +171,8 @@ public class BattleManager : MonoBehaviour
                 }
             case BattleState.ENEMYTURN:
                 {
+                    enemyPrefab[0].Attack();
+                    bState = BattleState.PLAYERTURN;
                     break;
                 }
             case BattleState.SECONDTURN:

@@ -8,7 +8,7 @@ using Scripts.Entity;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Enemy_Base : MonoBehaviour
+public class Enemy_Base
 {
     private Unit unit;
     public bool isDead = false;
@@ -20,7 +20,6 @@ public class Enemy_Base : MonoBehaviour
         Physics, // 물리
         Magic, // 마법
     }
-
     public Enemy_Base(Enemy enemy)
     {
         this.enemy = enemy;

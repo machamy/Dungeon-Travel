@@ -26,7 +26,7 @@ namespace Scripts.Entity
 
         public void Attack()
         {
-            int[] weightArr = new int[] { };
+            int[] weightArr = new int[5];
             foreach(SkillData skilldata in  skillDatas)
             {
                 int i = 0;

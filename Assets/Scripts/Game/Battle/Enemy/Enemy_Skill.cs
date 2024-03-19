@@ -104,7 +104,11 @@ public class Enemy_Skill
     }
     public GameObject[] GetOpponent(TargetType enemyTargetType) // 공격대상을 받아오는 함수
     {
-        GameObject[] go = null;
+        GameObject[] go = new GameObject[5];
+        for(int i=0;i < 5;i++)
+        {
+            go[i] = new GameObject();
+        }
         switch (enemyTargetType)
         {
             case TargetType.Single:
@@ -132,7 +136,15 @@ public class Enemy_Skill
         {
             BuffManager buffManager = Opponent[i].GetComponent<BuffManager>();
             Unit unit = Opponent[i].GetComponent<Unit>();
-            unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
+            if (unit == null)
+            {
+                continue;
+            }
+            else
+            {
+                unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
+                Debug.Log("공격완료");
+            }
             if(skillData.isDebuff == true)
             {
                 //디버프 처리
