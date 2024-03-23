@@ -8,12 +8,13 @@ namespace Scripts.Entity
 {
     public class Boss
     {
-        private EnemyStatData enemyStatData = new EnemyStatData();
+        private EnemyStatData enemyStatData;
         private List<SkillData> skillDatas = new List<SkillData>();
         private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
         float currentHp;
         bool passiveTrigger = false;
-        Enemy_Skill skill;
+        public bool isDead = false;
+        Enemy_Skill skill = new Enemy_Skill();
         public Enemy_Base NewBoss(int floor, string name)
         {
             enemyStatData = DB.GetEnemyData(floor, name);
@@ -35,7 +36,7 @@ namespace Scripts.Entity
 
         public void Attack()
         {
-            int[] weightArr = new int[] { };
+            int[] weightArr = new int[5];
             foreach (SkillData skilldata in skillDatas)
             {
                 int i = 0;
@@ -52,6 +53,18 @@ namespace Scripts.Entity
             {
                 int weight = Utility.WeightedRandom(weightArr);
                 skillLists[weight].Invoke(skillDatas[weight], enemyStatData);
+            }
+        }
+
+        public void GetDamaged(float damage, AttackType attackType)
+        {
+            if (isDead) return;
+
+            currentHp -= damage;
+            if (currentHp <= 0)
+            {
+                isDead = true;
+
             }
         }
     }

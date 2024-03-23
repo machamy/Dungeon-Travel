@@ -12,6 +12,7 @@ namespace Scripts.Entity
         private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
         float currentHp;
         bool passiveTrigger = false;
+        public bool isDead = false;
         Enemy_Skill skill = new Enemy_Skill();
         public Enemy_Base NewEnemy(int floor, string name)
         {
@@ -21,8 +22,6 @@ namespace Scripts.Entity
             currentHp = enemyStatData.hp;
             return new Enemy_Base(this);
         }
-
-        
 
         public void Attack()
         {
@@ -34,6 +33,18 @@ namespace Scripts.Entity
             }
             int weight = Utility.WeightedRandom(weightArr);
             skillLists[weight].Invoke(skillDatas[weight],enemyStatData);
+        }
+
+        public void GetDamaged(float damage, AttackType attackType)
+        {
+            if(isDead) return;
+
+            currentHp -= damage;
+            if(currentHp <= 0)
+            {
+                isDead = true;
+                
+            }
         }
     }
 }

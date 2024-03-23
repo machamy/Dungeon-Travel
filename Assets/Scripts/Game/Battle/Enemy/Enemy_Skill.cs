@@ -105,15 +105,12 @@ public class Enemy_Skill
     public GameObject[] GetOpponent(TargetType enemyTargetType) // 공격대상을 받아오는 함수
     {
         GameObject[] go = new GameObject[5];
-        for(int i=0;i < 5;i++)
-        {
-            go[i] = new GameObject();
-        }
         switch (enemyTargetType)
         {
             case TargetType.Single:
                 int AttackRange = Utility.WeightedRandom(20, 20, 20, 20, 20);
-                go[0] = GameObject.Find("Player (" + AttackRange + ")(Clone)");
+                GameObject clone = GameObject.Find($"Player ({AttackRange})(Clone)");
+                go[0] = clone;
                 break;
             case TargetType.Front:
                 break;
@@ -122,7 +119,8 @@ public class Enemy_Skill
             case TargetType.Area:
                 for (int i = 0; i < 5; i++)
                 {
-                    go[i] = GameObject.Find("Player (" + i + ")(Clone)");
+                    GameObject _clone = GameObject.Find($"Player ({i})(Clone)");
+                    go[i] = _clone;
                 }
                 break;
         }
@@ -132,20 +130,15 @@ public class Enemy_Skill
     public void EnemyAttack(SkillData skillData , EnemyStatData enemyStatData = null) // 특별한 로직이 아닌 일반적인 공격
     {
         GameObject[] Opponent = GetOpponent(skillData.enemyTargetType);
-        for(int i =0; i < Opponent.Length; i++)
+        for (int i = 0; i < Opponent.Length; i++)
         {
+            if (Opponent[i] == null)
+                continue;
             BuffManager buffManager = Opponent[i].GetComponent<BuffManager>();
             Unit unit = Opponent[i].GetComponent<Unit>();
-            if (unit == null)
-            {
-                continue;
-            }
-            else
-            {
-                unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
-                Debug.Log("공격완료");
-            }
-            if(skillData.isDebuff == true)
+            unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
+            Debug.Log("공격완료");
+            if (skillData.isDebuff == true)
             {
                 //디버프 처리
             }

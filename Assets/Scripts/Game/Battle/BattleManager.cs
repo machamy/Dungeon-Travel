@@ -50,8 +50,9 @@ public class BattleManager : MonoBehaviour
     public HUDmanager[] playerHUD = new HUDmanager[6];
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
-    public Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
-    private Enemy_Base enemy_Base = null;
+    Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
+    Boss bossPrefab;
+    Enemy_Base enemy_Base = null;
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private SpriteOutline[] playeroutline = new SpriteOutline[6];
@@ -65,10 +66,6 @@ public class BattleManager : MonoBehaviour
     {
         bState = BattleState.START;
         SpawnCount = 0;
-        for (int i = 0; i < 4;i++)
-        {
-            enemyPrefab[i] = new Enemy(); // 배열에 객체 생성
-        }
     }
 
     private void SetupBattle()
@@ -83,6 +80,7 @@ public class BattleManager : MonoBehaviour
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
+
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         EnemySpawn(1, "슬라임");
 
@@ -98,23 +96,38 @@ public class BattleManager : MonoBehaviour
 
         actmenu.TurnStart(playerTurnOrder[0]);
     }
-
-    public void EnemySpawn(int floor, string name) // 적 스폰하는 함수 프리펩으로 받아와서 생성
+    /// <summary>
+    /// 적을 스폰하는 함수
+    /// </summary>
+    /// <param name="floor"></param>
+    /// <param name="name"></param>
+    /// <param name="boss"> 만약 보스 객체라면 3번째 인자로 true </param>
+    public void EnemySpawn(int floor, string name, bool boss = false) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
         try
         {
-            GameObject cloneEnemy = new GameObject($"Clone({SpawnCount})");
-            var newEnemy = Instantiate(cloneEnemy, EnemySpawnerPoints[SpawnCount].position, Quaternion.identity);
-            newEnemy.transform.parent = EnemySpawnerPoints[SpawnCount].transform;
-            newEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
+            GameObject cloneEnemy = new GameObject($"{name}({SpawnCount})");
+            cloneEnemy.transform.position = EnemySpawnerPoints[SpawnCount].position;
+            cloneEnemy.transform.SetParent(EnemySpawnerPoints[SpawnCount]);
+            cloneEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
 
-            enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+            if(boss)
+            {
+                bossPrefab = new Boss();
+                enemy_Base = bossPrefab.NewBoss(floor, name);
+                SpawnCount++;
+            }
+            else
+            {
+                enemyPrefab[SpawnCount] = new Enemy();
+                enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+            }    
             Debug.Log(enemy_Base.hp);
 
             string sprite_name = Convert.ToString(floor) + "F_" + name;
-            SpriteRenderer image = newEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
+            SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
             image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
-            newEnemy.AddComponent<BuffManager>();
+            cloneEnemy.AddComponent<BuffManager>();
         }
         catch
         {
@@ -171,7 +184,14 @@ public class BattleManager : MonoBehaviour
                 }
             case BattleState.ENEMYTURN:
                 {
-                    enemyPrefab[0].Attack();
+                    if (bossPrefab != null && bossPrefab.isDead == false)
+                        bossPrefab.Attack();
+                    for(int i = 0;i<enemyPrefab.Length;i++)
+                    {
+                        if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                            enemyPrefab[i].Attack();
+
+                    }
                     bState = BattleState.PLAYERTURN;
                     break;
                 }
@@ -191,24 +211,6 @@ public class BattleManager : MonoBehaviour
             
         }
         Turn.text = "Turn   " + TurnCount.ToString();
-
-        /*
-        if(bState == BattleState.ENEMYTURN)
-        {
-            Enemy_Base[] live_enemy = new Enemy_Base[enemyPrefab.Length];
-            int count = 0;
-            for(int i =0; i<SpawnCount;i++)
-            {
-              if (enemyPrefab[i].isDead == false)
-                    live_enemy[count++] = enemyPrefab[i];
-            }
-            for (int i =0; i < count; i++)
-            {
-                live_enemy[i].EnemyAttack();
-            }
-            bState = BattleState.PLAYERTURN;
-        }
-        */
     }
 
     public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill useSkill)
