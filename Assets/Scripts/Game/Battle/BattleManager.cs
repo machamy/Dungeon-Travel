@@ -111,23 +111,23 @@ public class BattleManager : MonoBehaviour
             cloneEnemy.transform.SetParent(EnemySpawnerPoints[SpawnCount]);
             cloneEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
 
-            if(boss)
+            string sprite_name = Convert.ToString(floor) + "F_" + name;
+            SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
+            image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
+            cloneEnemy.AddComponent<BuffManager>();
+
+            if (boss)
             {
                 bossPrefab = new Boss();
-                enemy_Base = bossPrefab.NewBoss(floor, name);
+                enemy_Base = bossPrefab.NewBoss(floor, name,cloneEnemy);
                 SpawnCount++;
             }
             else
             {
                 enemyPrefab[SpawnCount] = new Enemy();
-                enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
-            }    
+                enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name,cloneEnemy); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+            }
             Debug.Log(enemy_Base.hp);
-
-            string sprite_name = Convert.ToString(floor) + "F_" + name;
-            SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
-            image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
-            cloneEnemy.AddComponent<BuffManager>();
         }
         catch
         {

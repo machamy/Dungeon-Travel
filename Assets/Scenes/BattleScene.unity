@@ -10148,11 +10148,6 @@ MonoBehaviour:
   - {fileID: 1482666486}
   - {fileID: 251500455}
   - {fileID: 1000766004}
-  enemyPrefab:
-  - {fileID: 8827268227931404770, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
-  - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
-  - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
-  - {fileID: -2591828760405281809, guid: adb3e7904c0fd1b448b4965fc162f296, type: 3}
   isEncounter: 0
   TurnCount: 0
   Turn: {fileID: 1655812252}

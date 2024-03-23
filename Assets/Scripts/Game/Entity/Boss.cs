@@ -11,12 +11,14 @@ namespace Scripts.Entity
         private EnemyStatData enemyStatData;
         private List<SkillData> skillDatas = new List<SkillData>();
         private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
+        GameObject gameObject = null;
         float currentHp;
         bool passiveTrigger = false;
         public bool isDead = false;
         Enemy_Skill skill = new Enemy_Skill();
-        public Enemy_Base NewBoss(int floor, string name)
+        public Enemy_Base NewBoss(int floor, string name,GameObject gameObject)
         {
+            this.gameObject = gameObject;
             enemyStatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
             skillLists = skill.GetSkillList(floor, name);
@@ -64,7 +66,7 @@ namespace Scripts.Entity
             if (currentHp <= 0)
             {
                 isDead = true;
-
+                UnityEngine.Object.Destroy(gameObject);
             }
         }
     }

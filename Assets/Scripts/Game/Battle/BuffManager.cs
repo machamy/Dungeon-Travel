@@ -20,7 +20,7 @@ public class BuffManager : MonoBehaviour
     public bool isStun = false;
     private enum DeBuffType
     {
-        Burn,
+        Blood,
         Poison,
         Blind,
         Stun,
@@ -32,15 +32,15 @@ public class BuffManager : MonoBehaviour
     {
         if (debuffDic == null)
             return;
-        if (debuffDic.ContainsKey(DeBuffType.Burn)) // 화상일때
+        if (debuffDic.ContainsKey(DeBuffType.Blood)) // 화상일때
         {
-            debuffDic[DeBuffType.Burn].duration -= 1;
+            debuffDic[DeBuffType.Blood].duration -= 1;
             Unit unit = gameObject.GetComponent<Unit>();
-            unit.currentHP -= debuffDic[DeBuffType.Burn].damage;
+            unit.currentHP -= debuffDic[DeBuffType.Blood].damage;
 
-            if (debuffDic[DeBuffType.Burn].duration <= 0)
+            if (debuffDic[DeBuffType.Blood].duration <= 0)
             {
-                debuffDic.Remove(DeBuffType.Burn);
+                debuffDic.Remove(DeBuffType.Blood);
             }
         }
         if (debuffDic.ContainsKey(DeBuffType.Poison)) // 독일때 
@@ -81,33 +81,33 @@ public class BuffManager : MonoBehaviour
 
         }
     }
-    public void Burn(int duration, float damage, float probability) // 화상
+    public void Blood(int probability, int duration, float damage) // 화상
     {
-        if (debuffDic[DeBuffType.Burn] != null)
+        if (debuffDic[DeBuffType.Blood] != null)
         {
-            debuffDic[DeBuffType.Burn].duration += duration;
+            return;
         }
         else
         {
-            int weight = UnityEngine.Random.Range(0, 100); // 확률은 아직
+            int weight = Utility.WeightedRandom(probability, 100 - probability);
             if (weight <= probability)
             {
                 BuffData buffData = new BuffData(duration, damage);
-                debuffDic.Add(DeBuffType.Burn, buffData);
+                debuffDic.Add(DeBuffType.Blood, buffData);
             }
             else
                 return;
         }
     }
-    public void Poison(int duration, float damage, float probability) // 독
+    public void Poison(int probability, int duration, float damage) // 독
     {
         if (debuffDic[DeBuffType.Poison] != null)
         {
-            debuffDic[DeBuffType.Poison].duration += duration;
+            return;
         }
         else
         {
-            int weight = UnityEngine.Random.Range(0, 100); // 확률은 아직
+            int weight = Utility.WeightedRandom(probability, 100 - probability);
             if (weight <= probability)
             {
                 BuffData buffData = new BuffData(duration, damage);
@@ -117,20 +117,20 @@ public class BuffManager : MonoBehaviour
                 return;
         }
     }
-    public void Blind(int duration, float damage, float probability) // 실명
+    public void Blind(int probability, int duration, float damage = 0) // 실명
     {
 
     }
-    public void Stun(int duration, float damage, float probability) // 기절
+    public void Stun(int probability, int duration, float damage = 0) // 기절
     {
         if (debuffDic[DeBuffType.Stun] != null)
         {
-            debuffDic[DeBuffType.Stun].duration += duration;
+            return;
         }
         else
         {
             isStun = true;
-            int weight = UnityEngine.Random.Range(0, 100); // 확률은 아직
+            int weight = Utility.WeightedRandom(probability, 100 - probability);
             if (weight <= probability)
             {
                 BuffData buffData = new BuffData(duration, damage);
@@ -140,16 +140,16 @@ public class BuffManager : MonoBehaviour
                 return;
         }
     }
-    public void Silence(int duration, float damage, float probability) // 침묵
+    public void Silence(int probability, int duration, float damage = 0) // 침묵
     {
         if (debuffDic[DeBuffType.Silence] != null)
         {
-            debuffDic[DeBuffType.Silence].duration += duration;
+            return;
         }
         else
         {
             isSilence = true;
-            int weight = UnityEngine.Random.Range(0,100); // 확률은 아직
+            int weight = Utility.WeightedRandom(probability, 100 - probability);
             if (weight <= probability)
             {
                 BuffData buffData = new BuffData(duration, damage);
@@ -159,15 +159,15 @@ public class BuffManager : MonoBehaviour
                 return;
         }
     }
-    public void Confuse(int duration, float damage, float probability)
+    public void Confuse(int probability, int duration, float damage = 0)
     {
         if (debuffDic[DeBuffType.Confuse] != null)
         {
-            debuffDic[DeBuffType.Confuse].duration += duration;
+            return;
         }
         else
         {
-            int weight = UnityEngine.Random.Range(0, 100); // 확률은 아직
+            int weight = Utility.WeightedRandom(probability, 100 - probability);
             if (weight <= probability)
             {
                 BuffData buffData = new BuffData(duration, damage);
