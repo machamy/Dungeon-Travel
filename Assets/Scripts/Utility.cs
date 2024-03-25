@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Scripts
 {
@@ -26,6 +26,26 @@ namespace Scripts
             }
 
             int random = Random.Range(0, total);
+            int idx = 0;
+
+            // 당첨 될때까지 반복
+            while (true)
+            {
+                if (random < weights[idx])
+                    return idx;
+                idx++;
+                random -= weights[idx];
+            }
+        }
+        public static float WeightedRandom(params float[] weights)
+        {
+            float total = 0;
+            foreach (int weight in weights)
+            {
+                total += weight;
+            }
+
+            float random = Random.Range(0, total);
             int idx = 0;
 
             // 당첨 될때까지 반복

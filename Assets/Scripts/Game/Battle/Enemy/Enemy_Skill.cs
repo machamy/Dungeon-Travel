@@ -138,10 +138,8 @@ public class Enemy_Skill
             Unit unit = Opponent[i].GetComponent<Unit>();
             unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
             Debug.Log("공격완료");
-            if (skillData.isDebuff == true)
-            {
-                //디버프 처리
-            }
+            if(skillData.debuffType != DebuffType.None)
+                buffManager.debuffAction[skillData.debuffType].Invoke(skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
         }
     }
 

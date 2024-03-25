@@ -26,6 +26,7 @@ namespace Scripts.Data
 
         public float physicsDamage;
         public float propertyDamage;
+        public float buffRatio;
         public float mpCost;
         public int skillWeight;
 
@@ -42,13 +43,13 @@ namespace Scripts.Data
         public bool isMelee;
         
         public AttackType attackType;
-
+        public DebuffType debuffType;
 
         public int pointCost = 1;
 
         public override string ToString()
         {
-            return $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(enemyName)}: {enemyName}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}, {nameof(mpCost)}: {mpCost}, {nameof(skillWeight)}: {skillWeight}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}, {nameof(pointCost)}: {pointCost}";
+            return $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(enemyName)}: {enemyName}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}, {nameof(mpCost)}: {mpCost}, {nameof(skillWeight)}: {skillWeight}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType},{nameof(debuffType)}: {debuffType} ,{nameof(pointCost)}: {pointCost}";
         }
     }
 }

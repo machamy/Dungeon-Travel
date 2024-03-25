@@ -461,8 +461,9 @@ public class DB
         스킬이름,
         물리데미지,
         속성데미지,
+        비율,
         가중치,
-        LastIdx = 5,
+        LastIdx = 6,
     }
     private Dictionary<string, List<SkillData>> ParseEnemySkillData(DataTable sheet, string[] header, int colNum)
     {
@@ -484,6 +485,7 @@ public class DB
             skill.physicsDamage = Convert.ToSingle(row[(int)EnemySkillDataType.물리데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.물리데미지]);
             skill.propertyDamage = Convert.ToSingle(row[(int)EnemySkillDataType.속성데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.속성데미지]);
             skill.skillWeight = Convert.ToInt32(row[(int)EnemySkillDataType.가중치] == string.Empty ? "0" : row[(int)EnemySkillDataType.가중치]);
+            skill.buffRatio = Convert.ToSingle(row[(int)EnemySkillDataType.비율] == string.Empty ? "0" : row[(int)EnemySkillDataType.비율]);
 
             var booleanArr = row.Skip((int)EnemySkillDataType.LastIdx + 1).Select((a) => a.ToUpper() == "TRUE").ToArray();
             int idx = 0;
@@ -521,9 +523,9 @@ public class DB
             skill.isRanged = booleanArr[idx++];
 
             AttackType attackType = AttackType.None;
-            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length; idx++)
+            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length - 1; idx++)
             {
-                string rawHeader = header[(int)SkillDataType.LastIdx + idx];
+                string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
                 if (rawHeader == String.Empty)
                     continue;
                 AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
@@ -537,37 +539,23 @@ public class DB
                     Debug.Log($"[DB::ParseEnemySkillData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
                 }
             }
-
             skill.attackType = attackType;
-            
+
+            DebuffType debuffType = DebuffType.None;
+            string[] debuffArr = (row[header.Length - 1] == string.Empty ? "null" : row[header.Length - 1]).Split('/');
+            for(int j=0; j<debuffArr.Length; j++)
+            {
+                if (DebuffTypeHelper.typeChange.TryGetValue(debuffArr[j], out DebuffType currentType))
+                    debuffType |= currentType;
+                else
+                    continue;
+            }
+            skill.debuffType = debuffType;
+
             if(!skills.ContainsKey(skill.enemyName))
                 skills.Add(skill.enemyName,new List<SkillData>());
             skills[skill.enemyName].Add(skill);
-            
-            
-            
-            // if(i == 1)
-            // {
-            //     skillList.Add(skill);
-            // }
-            // else if (i != sheet.Rows.Count - 1)
-            // {
-            //     skills.Add(postName, skillList);
-            //     // 키가 없으면
-            // }
-            // else
-            // {
-            //     if (postName == skill.enemyName)
-            //     {
-            //         skillList.Add(skill);
-            //     }
-            //     else
-            //     {
-            //         skills.Add(postName, skillList);
-            //         skillList = new List<SkillData>();
-            //     }
-            // }
-            // postName = skill.enemyName;
+
             Debug.Log($"Register EnemySkill {skill}");
         }
 
