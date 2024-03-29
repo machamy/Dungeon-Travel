@@ -2743,12 +2743,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569040}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: PushMenu
+      - m_Target: {fileID: 984569043}
+        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
+        m_MethodName: PushUI
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1410734434}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 984569041}
+        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
+        m_MethodName: GetInventoryItem
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1043589619}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -7257,12 +7269,24 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569040}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: PushMenu
+      - m_Target: {fileID: 984569043}
+        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
+        m_MethodName: PushUI
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 753801221}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 984569041}
+        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
+        m_MethodName: GetInventoryItem
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 1664058685}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
@@ -14156,9 +14180,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569040}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: PushMenu
+      - m_Target: {fileID: 984569043}
+        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
+        m_MethodName: PushUI
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 877233448}
@@ -21160,6 +21184,7 @@ GameObject:
   - component: {fileID: 984569042}
   - component: {fileID: 984569041}
   - component: {fileID: 984569040}
+  - component: {fileID: 984569043}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -21291,6 +21316,18 @@ MonoBehaviour:
   m_DefaultActionMap: MainUI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &984569043
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984569036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10e8237b2c3aa0847933eab1dab2550a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &992815230
 GameObject:
   m_ObjectHideFlags: 0
@@ -25316,9 +25353,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569040}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: PushMenu
+      - m_Target: {fileID: 984569043}
+        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
+        m_MethodName: PushUI
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1131262576}
@@ -28244,9 +28281,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569040}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: PushMenu
+      - m_Target: {fileID: 984569043}
+        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
+        m_MethodName: PushUI
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 45554081}
@@ -42248,9 +42285,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569040}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: PushMenu
+      - m_Target: {fileID: 984569043}
+        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
+        m_MethodName: PushUI
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 1487113926}
