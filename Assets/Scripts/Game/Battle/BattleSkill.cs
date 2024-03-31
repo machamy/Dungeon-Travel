@@ -12,4 +12,5 @@ public class BattleSkill : MonoBehaviour
     public string Type;
     public float atk;
     public int Cost;
+    public bool isAttack;
 }

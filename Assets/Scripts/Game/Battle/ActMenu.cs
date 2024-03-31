@@ -13,6 +13,7 @@ public class ActMenu : MonoBehaviour
 
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu, guardmenu;
+    public UnityEngine.UI.Button[] PlayerStation;
 
     public TextMeshProUGUI playername;
 
@@ -28,6 +29,8 @@ public class ActMenu : MonoBehaviour
     public TextMeshProUGUI item_property;
     public UnityEngine.UI.Button[] itembuttons;
  
+
+
     public ActState aState;
 
     private Unit[] units = new Unit[6];
@@ -49,7 +52,6 @@ public class ActMenu : MonoBehaviour
         guardmenu.SetActive(false);
         
     }
-
 
     /// <summary>
     /// 현재 턴을 부여받는 플레이어를 받으면 턴을 실행
@@ -92,20 +94,26 @@ public class ActMenu : MonoBehaviour
             skillcost[i].text = playerskills[i].Cost.ToString() + "MP";
         }
     }
+
     public void ChangeSkill_Info(int i)
     {
         skill_info.text = playerskills[i].Infomation;
         skill_property.text = playerskills[i].Property;
     }
 
-    public void ChangePlayerOutline()
-    {
-        for(int i = 0; i <= 4; i++)
-        {
-            outlines[i].OffOutline();
-        }
-        outlines[currenttarget].OnOutline();
+    /// <summary>
+    /// 공격 스킬이면 상대를 타겟으로 정하고 아니면 우리팀을 타겟으로 정함
+    /// </summary>
+    /// <param name="skill_ID"></param>
+    public void Skill_Type_check(int skill_ID)
+    {   
+        for(int i = 0; i<5; i++) { PlayerStation[i].interactable = true; }
+        if (playerskills[skill_ID].isAttack) {}
+        else { PlayerStation[0].Select();}
     }
+
+    public void OnPlayerOutline(int outlineUnit) {outlines[outlineUnit].OnOutline();}
+    public void OffPlayerOutline(int outlineUnit) {outlines[outlineUnit].OffOutline();}
 
     public void ChangeItemInfo(int i)
     {

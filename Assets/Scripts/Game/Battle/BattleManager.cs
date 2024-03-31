@@ -87,15 +87,18 @@ public class BattleManager : MonoBehaviour
 
         if (isEncounter) //첫 턴 플로우차트
         {
-            float random = UnityEngine.Random.value;
-            if (random < 0.7f) { bState = BattleState.ENEMYTURN; } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
-            else { bState = BattleState.SECONDTURN; } 
+            if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
+            else { bState = BattleState.SECONDTURN; Debug.Log("그냥 턴"); } 
+        }
+        else
+        {
+            
         }
 
         PlayerTurnOrder();
         Debug.Log("스폰 완료");
 
-        actmenu.TurnStart(playerTurnOrder[0]);
+        assignTurn(playerunit[0]);
     }
     /// <summary>
     /// 적을 스폰하는 함수
@@ -136,9 +139,9 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void assignTurn()
+    public void assignTurn(Unit assignedUnit)
     {
-
+        actmenu.TurnStart(assignedUnit);
     }
     public void endTurn()
     {
