@@ -16,25 +16,14 @@ public class Unit : MonoBehaviour
     public SpriteOutline outline;
     public BattleSkill[] skills = new BattleSkill[4];
     public SkillData[] skillDatas = new SkillData[4];
-    public BattleSkill exampleskill = new BattleSkill();
     public bool isguard;
 
     public void Awake()
     {
-        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "It's an Infomation", Property = "fire",Cost = 30};
+        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "Infomation panel", Property = "fire",Cost = 30};
         skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
         skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
         skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
-    }
-
-    public void OnOutline()
-    {
-        outline.OnOff = true;
-    }
-
-    public void OffOutline()
-    {
-        outline.OnOff = false;
     }
 
     public int position = -1;
@@ -90,5 +79,39 @@ public class Unit : MonoBehaviour
         HUD.UpdateHUD(currentHP, currentMP);
         Debug.Log("마나 부족");
         return true;
+    }
+
+    private Color color = Color.red;
+    private bool OnOff;
+
+    [Range(0, 16)]
+    public int outlineSize = 2;
+
+    private SpriteRenderer spriteRenderer;
+
+    void OnEnable()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        UpdateOutline(false);
+    }
+
+    public void OffOutline()
+    {
+        UpdateOutline(false);
+    }
+
+    public void OnOutline()
+    {
+        UpdateOutline(true);
+    }
+
+    void UpdateOutline(bool outline)
+    {
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        spriteRenderer.GetPropertyBlock(mpb);
+        mpb.SetFloat("_Outline", outline ? 1f : 0);
+        mpb.SetColor("_OutlineColor", color);
+        mpb.SetFloat("_OutlineSize", outlineSize);
+        spriteRenderer.SetPropertyBlock(mpb);
     }
 }

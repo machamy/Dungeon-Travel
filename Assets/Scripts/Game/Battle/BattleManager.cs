@@ -79,6 +79,7 @@ public class BattleManager : MonoBehaviour
             playerunit[i].ConnectHUD(HUDs[i]);
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
+
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
 
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
@@ -133,6 +134,15 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogError($"BattlePrefabs/EnemySprites/Load문제 발생");
         }
+    }
+
+    public void assignTurn()
+    {
+
+    }
+    public void endTurn()
+    {
+
     }
 
     private List<Unit> PlayerTurnOrder() //플레이어끼리만 비교해놓음

@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class ActMenu : MonoBehaviour
 {
@@ -18,13 +20,13 @@ public class ActMenu : MonoBehaviour
     public TextMeshProUGUI[] skillcost;
     public TextMeshProUGUI skill_info;
     public TextMeshProUGUI skill_property;
-    public Button[] skillbuttons;
+    public UnityEngine.UI.Button[] skillbuttons;
 
     public Items items;
     public GameObject[] itemamountPanel;
     public TextMeshProUGUI item_info;
     public TextMeshProUGUI item_property;
-    public Button[] itembuttons;
+    public UnityEngine.UI.Button[] itembuttons;
  
     public ActState aState;
 
@@ -49,17 +51,15 @@ public class ActMenu : MonoBehaviour
     }
 
 
-
-
-
     /// <summary>
-    /// 현재 턴을 부여받는 플레이어와 플레이어의 위치를 받으면 턴을 실행
+    /// 현재 턴을 부여받는 플레이어를 받으면 턴을 실행
     /// </summary>
     /// <param name="player"></param>
     public void TurnStart(Unit player)
     {
         turnplayer = player;
         playerskills = player.skills;
+        abxy.transform.position = player.transform.position;
 
         ChooseAct();
     }
