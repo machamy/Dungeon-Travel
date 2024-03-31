@@ -120,36 +120,5 @@ namespace Scripts.Manager
             return now + axis;
         }
 
-
-        public Stack<GameObject> menuStack = new Stack<GameObject>();
-
-        public void PushMenu(GameObject menu)
-        {
-            if (instance.menuStack.Count > 0)
-                instance.menuStack.Peek().SetActive(false);
-
-            menu.SetActive(true);
-            instance.menuStack.Push(menu);
-        }
-
-        public void PopMenu()
-        {
-            if (instance.menuStack.Count > 0)
-            {
-                instance.menuStack.Pop().SetActive(false);
-                instance.menuStack.Peek().SetActive(true);
-
-                SetDefaultButton(instance.menuStack.Peek());
-            }
-        }
-
-        private void SetDefaultButton(GameObject menu)
-        {
-            GameObject defaultButton = menu.GetComponentInChildren<Button>()?.gameObject;
-
-            if (defaultButton != null)
-                SelectButton(defaultButton);
-        }
-
     }
 }

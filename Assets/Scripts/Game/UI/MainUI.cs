@@ -34,15 +34,15 @@ public class MainUI : MonoBehaviour
 
     public void Awake()
     {
-        UIManager.Instance.PushMenu(townMapCanvas);
+        UIStack.Instance.PushUI(townMapCanvas);
     }
 
     public void OnMenu()
     {
-        if (UIManager.Instance.menuStack.Count == 1)
+        if (UIStack.Instance.menuStack.Count == 1)
         {
-            UIManager.Instance.PushMenu(mainMenuCanvas);
-            UIManager.Instance.SelectButton(mainMenuFirstSelect);
+            UIStack.Instance.PushUI(mainMenuCanvas);
+            //UIManager.Instance.SelectButton(mainMenuFirstSelect);
         }
     }
 
@@ -67,7 +67,7 @@ public class MainUI : MonoBehaviour
 
     public void OnCancel()
     {
-        UIManager.Instance.PopMenu();
+        UIStack.Instance.PopUI();
     }
 
 
