@@ -77,7 +77,6 @@ MonoBehaviour:
   - {fileID: 0}
   exampleskill: {fileID: 0}
   isguard: 0
-  Name: Magician
   position: 0
   unitName: Player
   className: 

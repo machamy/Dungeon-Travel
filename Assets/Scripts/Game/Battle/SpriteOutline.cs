@@ -4,8 +4,8 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class SpriteOutline : MonoBehaviour
 {
-    public Color color = Color.red;
-    public bool OnOff;
+    private Color color = Color.red;
+    private bool OnOff;
 
     [Range(0, 16)]
     public int outlineSize = 2;
@@ -15,22 +15,17 @@ public class SpriteOutline : MonoBehaviour
     void OnEnable()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        OnOff = false;
+        UpdateOutline(false);
     }
 
     public void OffOutline()
     {
-        OnOff = false;
+        UpdateOutline(false);
     }
 
     public void OnOutline()
     {
-        OnOff = true;
-    }
-
-    void Update()
-    {
-        UpdateOutline(OnOff);
+        UpdateOutline(true);
     }
 
     void UpdateOutline(bool outline)

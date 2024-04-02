@@ -79,6 +79,7 @@ public class BattleManager : MonoBehaviour
             playerunit[i].ConnectHUD(HUDs[i]);
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
+
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
 
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
@@ -86,15 +87,18 @@ public class BattleManager : MonoBehaviour
 
         if (isEncounter) //첫 턴 플로우차트
         {
-            float random = UnityEngine.Random.value;
-            if (random < 0.7f) { bState = BattleState.ENEMYTURN; } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
-            else { bState = BattleState.SECONDTURN; } 
+            if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
+            else { bState = BattleState.SECONDTURN; Debug.Log("그냥 턴"); } 
+        }
+        else
+        {
+            
         }
 
         PlayerTurnOrder();
         Debug.Log("스폰 완료");
 
-        actmenu.TurnStart(playerTurnOrder[0]);
+        assignTurn(playerunit[0]);
     }
     /// <summary>
     /// 적을 스폰하는 함수
@@ -133,6 +137,15 @@ public class BattleManager : MonoBehaviour
         {
             Debug.LogError($"BattlePrefabs/EnemySprites/Load문제 발생");
         }
+    }
+
+    public void assignTurn(Unit assignedUnit)
+    {
+        actmenu.TurnStart(assignedUnit);
+    }
+    public void endTurn()
+    {
+
     }
 
     private List<Unit> PlayerTurnOrder() //플레이어끼리만 비교해놓음
