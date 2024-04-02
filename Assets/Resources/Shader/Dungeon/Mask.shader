@@ -11,8 +11,8 @@ Shader "Unlit/Mask"
 
         Stencil
         {
-            Ref 1
-            Comp Never   // 항상 렌더링 하지 않음
+            Ref 10
+            Comp Never   
             Fail Replace // 렌더링 실패한 부분의 스텐실 버퍼에 1을 채움
         }
 
@@ -21,11 +21,15 @@ Shader "Unlit/Mask"
 
         struct Input { float4 color:COLOR; };
 
-        void surf (Input IN, inout SurfaceOutput o){}
+        void surf (Input IN, inout SurfaceOutput o)
+        {
+            o.Alpha = 0;
+        }
         float4 Lightingnolight(SurfaceOutput s, float3 lightDir, float atten)
         {
             return float4(0, 0, 0, 0);
         }
+        
         ENDCG
     }
     FallBack ""

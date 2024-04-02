@@ -6,17 +6,20 @@ Shader "Unlit/StencilTarget"
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
-        LOD 100
+
 
         Pass
         {
-
+            Tags {
+            "RenderType"="Opaque"
+            "Queue"="Geometry" 
+            }
+            LOD 100
             Stencil
-        {
-            Ref 1
-            Comp NotEqual // 스텐실 버퍼가 1인 곳에만 렌더링
-        }
+            {
+                Ref 10
+                Comp NotEqual 
+            }
             CGPROGRAM
             #pragma vertex vert
             #pragma fragment frag

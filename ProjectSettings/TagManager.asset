@@ -7,6 +7,8 @@ TagManager:
   - MBS:Floor
   - MBS:Wall
   - Interaction
+  - CutoutSphere
+  - CutoutMask
   layers:
   - Default
   - TransparentFX
@@ -18,8 +20,8 @@ TagManager:
   - Obstacle
   - PlayerInteraction
   - FogOfWar
-  - 
-  - 
+  - CSG
+  - CutoutMask
   - 
   - Console
   - 
@@ -52,4 +54,7 @@ TagManager:
     locked: 0
   - name: Console
     uniqueID: 3906985163
+    locked: 0
+  - name: CutoutSphere
+    uniqueID: 2023323553
     locked: 0
