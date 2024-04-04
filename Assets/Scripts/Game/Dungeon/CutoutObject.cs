@@ -11,14 +11,20 @@ namespace Scripts.Game.Dungeon
     public class CutoutObject: MonoBehaviour
     {
         public Camera cam;
-        public GameObject target;
+        [FormerlySerializedAs("target")] public GameObject maskObject;
+        public GameObject maskCollider;
         [FormerlySerializedAs("CutoutMask")] public LayerMask CutoutLayer;
 
         public float time = 2f;
         public float size = 5f;
 
         private bool IsLarge = false;
-        
+
+        private void Start()
+        {
+            maskCollider.transform.localScale = Vector3.one * size;
+        }
+
         private void Update()
         {
             if (cam is null)
@@ -29,15 +35,16 @@ namespace Scripts.Game.Dungeon
 
             RaycastHit hit;
             
-            if(Physics.Raycast(cam.transform.position,(target.transform.position-cam.transform.position).normalized, out hit, Mathf.Infinity,CutoutLayer))
+            if(Physics.Raycast(cam.transform.position,(maskObject.transform.position-cam.transform.position).normalized, out hit, Mathf.Infinity,CutoutLayer))
             {
                 if (hit.collider.tag.Contains("CutoutMask"))
                 {
-                    target.transform.DOScale(0, time);
+                    maskObject.transform.DOScale(0, time);
+                    // maskObject.GetComponent<MeshRenderer>().material.DOFade()
                 }
                 else
                 {
-                    target.transform.DOScale(size, time);
+                    maskObject.transform.DOScale(size, time);
                 }
             }
         }
