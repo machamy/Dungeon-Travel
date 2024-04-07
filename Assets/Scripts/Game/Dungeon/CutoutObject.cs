@@ -10,7 +10,7 @@ namespace Scripts.Game.Dungeon
 {
     public class CutoutObject: MonoBehaviour
     {
-        public Camera cam;
+        public CameraObstacleChecker cam;
         [FormerlySerializedAs("target")] public GameObject maskObject;
         public GameObject maskCollider;
         [FormerlySerializedAs("CutoutMask")] public LayerMask CutoutLayer;
@@ -29,7 +29,7 @@ namespace Scripts.Game.Dungeon
         {
             if (cam is null)
             {
-                cam = GameManager.Instance.qCamera.GetComponent<Camera>();
+                cam = GameManager.Instance.qCamera.GetComponent<CameraObstacleChecker>();
                 return;
             }
 

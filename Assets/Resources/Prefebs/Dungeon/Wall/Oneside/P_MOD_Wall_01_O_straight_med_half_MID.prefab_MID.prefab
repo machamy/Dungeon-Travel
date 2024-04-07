@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8259965067656532392}
+  - component: {fileID: 7208210431555804022}
   m_Layer: 0
   m_Name: P_MOD_Wall_01_O_straight_med_half_MID.prefab_MID
   m_TagString: Untagged
@@ -32,6 +33,18 @@ Transform:
   - {fileID: 7600030242586345601}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7208210431555804022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8987688944226709218}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e7bcdfb759345db9a325d3dc1884ed4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8241483738509622966
 PrefabInstance:
   m_ObjectHideFlags: 0
