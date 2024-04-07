@@ -9,6 +9,7 @@ TagManager:
   - Interaction
   - CutoutSphere
   - CutoutMask
+  - Obstacle
   layers:
   - Default
   - TransparentFX
@@ -49,7 +50,7 @@ TagManager:
   - name: UI
     uniqueID: 2025089517
     locked: 0
-  - name: New Layer 2
+  - name: Obstacle
     uniqueID: 116485313
     locked: 0
   - name: Console
