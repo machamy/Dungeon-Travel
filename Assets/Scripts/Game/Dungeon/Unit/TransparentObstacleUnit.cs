@@ -44,7 +44,7 @@ namespace Scripts.Game.Dungeon.Unit
 
         public void DoTransparent()
         {
-            Debug.Log($"{isTransparent} , {_becomingTransparent} , {_becomingOpaque}");
+            // Debug.Log($"{isTransparent} , {_becomingTransparent} , {_becomingOpaque}");
             if (isTransparent) // 투명일경우 탈출
             {
                 RunCheckTimer();

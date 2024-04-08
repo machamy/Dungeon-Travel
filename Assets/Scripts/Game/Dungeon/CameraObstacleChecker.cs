@@ -4,11 +4,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraObstacleChecker : MonoBehaviour
 {
     public LayerMask layer;
-    public GameObject target;
+    [FormerlySerializedAs("target")] public GameObject Target;
 
     public HashSet<GameObject> HandlingObjects { get; private set; }
 
@@ -26,11 +27,24 @@ public class CameraObstacleChecker : MonoBehaviour
 
     private void LateUpdate()
     {
-        Vector3 v = (target.transform.position - transform.position);
-        RaycastHit[] hits = Physics.RaycastAll(transform.position, v.normalized, v.magnitude, layer);
-        Debug.DrawRay(transform.position, v.normalized* v.magnitude,Color.cyan);
-        foreach (var hit in hits)
+        ShootRay(Target);
+    }
+
+    /// <summary>
+    /// 최적화를 위해 따로 선언. 배열의 크기만큼 레이캐스트함.
+    /// </summary>
+    private RaycastHit[] hits = new RaycastHit[10];
+    
+    private void ShootRay(GameObject target) => ShootRay(target.transform.position);
+    
+    private void ShootRay(Vector3 targetPos){
+        var originPos = transform.position;
+        Vector3 v = (targetPos - originPos);
+        var size = Physics.RaycastNonAlloc(originPos, v.normalized, hits, v.magnitude, layer);
+        Debug.DrawRay(originPos, v.normalized* v.magnitude,Color.cyan);
+        for(int i = 0; i < size; i++)
         {
+            RaycastHit hit = hits[i];
             GameObject obj = hit.collider.gameObject;
             
             TransparentObstacleUnit toUnit;
