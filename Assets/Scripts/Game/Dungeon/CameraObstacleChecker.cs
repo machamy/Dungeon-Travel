@@ -13,6 +13,9 @@ public class CameraObstacleChecker : MonoBehaviour
 
     public HashSet<GameObject> HandlingObjects { get; private set; }
 
+    [Header("x : 좌우 y : 위아래 z : 앞뒤")]
+    public List<Vector3> rayOffsets;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +30,13 @@ public class CameraObstacleChecker : MonoBehaviour
 
     private void LateUpdate()
     {
-        ShootRay(Target);
+        Vector3 targetPos = Target.transform.position;
+        // ShootRay(targetPos);
+
+        foreach (var offset in rayOffsets)
+        {
+            ShootRay(Target.transform.TransformPoint(offset));
+        }
     }
 
     /// <summary>
@@ -46,10 +55,8 @@ public class CameraObstacleChecker : MonoBehaviour
         {
             RaycastHit hit = hits[i];
             GameObject obj = hit.collider.gameObject;
-            
-            TransparentObstacleUnit toUnit;
-            
-            if(obj.TryGetComponent(out toUnit) || obj.transform.parent.TryGetComponent(out toUnit))
+
+            if(obj.TryGetComponent(out TransparentObstacleUnit toUnit) || obj.transform.parent.TryGetComponent(out toUnit))
             {
                 toUnit.DoTransparent();
             }
