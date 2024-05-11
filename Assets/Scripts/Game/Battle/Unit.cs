@@ -56,6 +56,7 @@ public class Unit : MonoBehaviour
         {
             currentHP = 0;
             isdead = true;
+            HUD.DeadColor();
             HUD.UpdateHUD(0, maxHP);
             return;
         }
@@ -63,6 +64,12 @@ public class Unit : MonoBehaviour
         HUD.UpdateHUD(currentHP, currentMP);
     }
 
+
+    /// <summary>
+    /// 마나가 충분한지 아닌지 판단, 충분하면 true 아니면 false
+    /// </summary>
+    /// <param name="necessaryMP"></param>
+    /// <returns></returns>
     public bool enoughMP(float necessaryMP)
     {
         if (currentMP < necessaryMP) return false;

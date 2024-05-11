@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Unity.VisualScripting;
 
 public class HUDmanager : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class HUDmanager : MonoBehaviour
     private float HP, MP;
     private float _maxHP, _maxMP;
 
+    /// <summary>
+    /// 유닛 소환될 때
+    /// </summary>
+    /// <param name="player"></param>
     public void SetupHUD(Unit player)
     {
         _maxHP = player.maxHP;
@@ -50,5 +55,11 @@ public class HUDmanager : MonoBehaviour
 
         HPtext.text = currentHP + "/" + _maxHP;
         MPtext.text = currentMP + "/" + _maxMP;
+    }
+
+    public void DeadColor()
+    {
+        Image deadpanel = GetComponent<Image>();
+        deadpanel.color = new Color(0.5f,0.5f,0.5f,0.4f);
     }
 }

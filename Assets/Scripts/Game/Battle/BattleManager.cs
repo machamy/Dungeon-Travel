@@ -214,6 +214,7 @@ public class BattleManager : MonoBehaviour
 
                     PlayerTurnOrder();
                     bState = BattleState.PLAYERTURN;
+                    TurnCount++;
                     break;
                 }
 
