@@ -15,6 +15,9 @@ namespace Scripts.Game.Dungeon.Unit
         [SerializeField] protected float interactionRange;
         //[SerializeField] protected QuraterviewCamera Camera;
 
+        protected StateMachine<PlayerUnit> StateMachine = default;
+        [SerializeField] protected Animator animator;
+
         [SerializeField] internal PlayerInteractionBox PlayerInteractionBox;
         
         Rigidbody rigid;
@@ -31,12 +34,12 @@ namespace Scripts.Game.Dungeon.Unit
         #endregion
 
         
+        
         void Awake()
         {
             rigid = GetComponentInChildren<Rigidbody>();
             gm = GameManager.Instance;
             // pInput.GetComponent<PlayerInput>();
-            
         }
 
         private void Start()
@@ -68,6 +71,8 @@ namespace Scripts.Game.Dungeon.Unit
             CheckInteraction();
         }
 
+        #region 움직임 관련
+
         void playerMove()
         {
             if (IsOnSlope())
@@ -81,6 +86,24 @@ namespace Scripts.Game.Dungeon.Unit
             
             rigid.velocity = Vector3.zero; //이거하면 계단에서 안내려옴
         }
+        private RaycastHit slopeHit;
+        public float minSlopeAngle;
+        public float PlayerHeight;
+        private bool IsOnSlope()
+        {
+            Debug.DrawRay(transform.position, Vector3.down * (PlayerHeight / 2 + 0.3f), Color.red);
+            if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, PlayerHeight/2+0.3f))
+            {
+                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                return angle < minSlopeAngle;
+            }
+
+            return false;
+        }
+
+        private Vector3 GetSlopeDir(Vector3 moveVector){
+            return Vector3.ProjectOnPlane(moveVector, slopeHit.normal);
+        }
 
         void playerTurn()
         {
@@ -90,7 +113,11 @@ namespace Scripts.Game.Dungeon.Unit
             rigid.angularVelocity = Vector3.zero;
         }
 
-        // Input System에서 사용. 패드,키보드 등의 입력을 vector2로 받아온다.
+
+        #endregion
+        
+        #region 입력 처리 부분
+// Input System에서 사용. 패드,키보드 등의 입력을 vector2로 받아온다.
         void OnMove(InputValue value)
         {
             Vector2 inputVec = value.Get<Vector2>(); //이미 normalized된 녀석.
@@ -118,24 +145,10 @@ namespace Scripts.Game.Dungeon.Unit
             _focusedInteractionUnit.OnAttacked(this, damage: 1.0f);
         }
 
-        private RaycastHit slopeHit;
-        public float minSlopeAngle;
-        public float PlayerHeight;
-        private bool IsOnSlope()
-        {
-            Debug.DrawRay(transform.position, Vector3.down * (PlayerHeight / 2 + 0.3f), Color.red);
-            if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, PlayerHeight/2+0.3f))
-            {
-                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-                return angle < minSlopeAngle;
-            }
+        #endregion
+        
 
-            return false;
-        }
 
-        private Vector3 GetSlopeDir(Vector3 moveVector){
-            return Vector3.ProjectOnPlane(moveVector, slopeHit.normal);
-        }
 
         
         /// <summary>
@@ -149,6 +162,7 @@ namespace Scripts.Game.Dungeon.Unit
             Debug.Log($"[PlayerUnit::OnIntersect(BaseInteractionUnit)] Execute to {iu.name}");
         }
 
+        #region 상호작용 관련
         /// <summary>
         /// 상호작용 가능한 유닛을 focusUnit에 등록
         /// </summary>
@@ -234,6 +248,11 @@ namespace Scripts.Game.Dungeon.Unit
                 iu.OnIntersectOut(this);
             }
         }
+        
+
+        #endregion
+
+
 
         
         private bool isPaused = false;
