@@ -78,11 +78,11 @@ namespace Scripts.Game.Dungeon.Unit
         {
             if (moveVec.magnitude > 0)
             {
-                StateMachine.ChangeState(PlayerStates.Run);
+                // StateMachine.ChangeState(PlayerStates.Run);
             }
             else
             {
-                StateMachine.ChangeState(PlayerStates.Idle);
+                // StateMachine.ChangeState(PlayerStates.Idle);
             }
             if (IsOnSlope())
             {
