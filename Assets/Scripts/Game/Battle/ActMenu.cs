@@ -9,7 +9,7 @@ using UnityEngine.InputSystem;
 public class ActMenu : MonoBehaviour
 {
     public enum Acting { Attack, Skill, Guard, Item }
-    public enum ActState { Waiting, ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, SetUpGuard, EndTurn }
+    public enum ActState { Waiting , ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, SetUpGuard, EndTurn }
 
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu, guardmenu;
@@ -61,7 +61,7 @@ public class ActMenu : MonoBehaviour
     {
         turnplayer = player;
         playerskills = player.skills;
-        abxy.transform.position = player.transform.position;
+        //abxy.transform.position = player.transform.position;
 
         ChooseAct();
     }
@@ -95,6 +95,10 @@ public class ActMenu : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 턴 부여받은 유닛의 스킬로 바꿈
+    /// </summary>
+    /// <param name="i"></param>
     public void ChangeSkill_Info(int i)
     {
         skill_info.text = playerskills[i].Infomation;

@@ -33,7 +33,7 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
-    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
+    public enum BattleState { PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum TurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
@@ -69,11 +69,14 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        tState = TurnState.END;
-        bState = BattleState.START;
-        SpawnCount = 0;
+        SetupBattle();
     }
 
+    private void Start()
+    {
+        tState = TurnState.END;
+        SpawnCount = 0;
+    }
     private void SetupBattle()
     {
         //플레이어 프리펩 불러오기
@@ -91,20 +94,21 @@ public class BattleManager : MonoBehaviour
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         EnemySpawn(1, "슬라임");
 
-        if (isEncounter) //첫 턴 플로우차트
+        /*if (isEncounter) //첫 턴 플로우차트
         {
             if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
             else { bState = BattleState.SECONDTURN; Debug.Log("그냥 턴"); } 
         }
         else
         {
-            
         }
+        */
+
         Debug.Log("SetUpBattle 끝");
 
-        PlayerTurnOrder();
-        assignTurn(playerunit[0]);
+        FirstTurn();
     }
+    
     /// <summary>
     /// 적을 스폰하는 함수
     /// </summary>
@@ -144,15 +148,6 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void assignTurn(Unit assignedUnit)
-    {
-        actmenu.TurnStart(assignedUnit);
-    }
-    public void endTurn()
-    {
-
-    }
-
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
         Dictionary<Unit,float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
@@ -175,57 +170,67 @@ public class BattleManager : MonoBehaviour
     private void FirstTurn()
     {
         PlayerTurnOrder();
-        actmenu.TurnStart(turnQueue.Dequeue());
     }
+
     private void SecondTurnOrder()
     {
         
     }
     
+    public void EndTurn()
+    {
+        tState = TurnState.END;
+    }
+
     private void Update()
     {
-        if (tState == TurnState.END)
+        switch (bState)
         {
-            switch (bState)
-            {
-                case BattleState.START:
+            case BattleState.PLAYERTURN:
+                {
+                    if (turnQueue.Count > 0 && tState == TurnState.END)
                     {
-                        TurnCount = 0;
-                        SetupBattle();
-                        break;
+                        Debug.Log(turnQueue.Peek().ToString() + " 차례");
+                        actmenu.TurnStart(turnQueue.Dequeue());
+                        tState = TurnState.PROCESSING;
                     }
-                case BattleState.PLAYERTURN:
+                    else if(turnQueue.Count <= 0)
                     {
-                        break;
+                        bState = BattleState.ENEMYTURN;
                     }
-                case BattleState.ENEMYTURN:
-                    {
-                        if (bossPrefab != null && bossPrefab.isDead == false)
-                            bossPrefab.Attack();
-                        for (int i = 0; i < enemyPrefab.Length; i++)
-                        {
-                            if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
-                                enemyPrefab[i].Attack();
+                    break;
+                }
 
-                        }
-                        bState = BattleState.PLAYERTURN;
-                        break;
-                    }
-                case BattleState.SECONDTURN:
+            case BattleState.ENEMYTURN:
+                {
+                    if (bossPrefab != null && bossPrefab.isDead == false)
+                        bossPrefab.Attack();
+                    for (int i = 0; i < enemyPrefab.Length; i++)
                     {
-                        break;
-                    }
-                case BattleState.END:
-                    {
-                        endcanvas.SetActive(true);
-                        return;
-                    }
-                default:
-                    {
-                        break;
+                        if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                            enemyPrefab[i].Attack();
+
                     }
 
-            }
+                    PlayerTurnOrder();
+                    bState = BattleState.PLAYERTURN;
+                    break;
+                }
+
+            case BattleState.SECONDTURN:
+                {
+                    break;
+                }
+
+            case BattleState.END:
+                {
+                    endcanvas.SetActive(true);
+                    return;
+                }
+            default:
+                {
+                    break;
+                }
         }
         Turn.text = "Turn   " + TurnCount.ToString();
     }
