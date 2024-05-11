@@ -42,7 +42,7 @@ namespace Scripts.Game.Dungeon.Unit
         public GM_AIData AIData;
         public GM_StateCheck checker;
         
-        private State<GeneralUnit>[] states;
+        private IState<GeneralUnit>[] states;
         private StateMachine<GeneralUnit> stateMachine;
        
 
@@ -53,7 +53,7 @@ namespace Scripts.Game.Dungeon.Unit
             base.Setup();
             
 
-            states = new State<GeneralUnit>[6];
+            states = new IState<GeneralUnit>[6];
             states[(int)GMStates.Idle] = new GeneralMonsterStates.Idle();
             states[(int)GMStates.Chase] = new GeneralMonsterStates.Chase();
             states[(int)GMStates.Flee] = new GeneralMonsterStates.Flee();

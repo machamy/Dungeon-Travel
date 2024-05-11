@@ -1,3 +1,4 @@
+using Scripts.FSM;
 using Scripts.Game.Dungeon.Unit;
 using System;
 using System.Collections;
@@ -31,7 +32,7 @@ namespace Scripts.Game.Dungeon.Unit
         public EM_AIData AIData;
         public EM_StateCheck checker;
 
-        private State<EliteUnit>[] states;
+        private IState<EliteUnit>[] states;
         private StateMachine<EliteUnit> stateMachine;
 
         #endregion
@@ -41,7 +42,7 @@ namespace Scripts.Game.Dungeon.Unit
             base.Setup();
 
 
-            states = new State<EliteUnit>[6];
+            states = new IState<EliteUnit>[6];
             states[(int)EMStates.Idle] = new EliteMonsterStates.Idle();
             states[(int)EMStates.Combat] = new EliteMonsterStates.Combat();
             states[(int)EMStates.Dead] = new EliteMonsterStates.Dead();

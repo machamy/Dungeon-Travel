@@ -1,21 +1,21 @@
 using Scripts.Game.Dungeon.Unit;
 using Scripts.Data;
+using Scripts.FSM;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-using Unity.VisualScripting;
 
 namespace GeneralMonsterStates
 {
-    public class Idle : State<GeneralUnit>
+    public class Idle : IState<GeneralUnit>
     {
-        public override void Enter(GeneralUnit entity)
+        public void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 IDLE 상태 진입.");
         }
 
-        public override void Execute(GeneralUnit entity)
+        public void Execute(GeneralUnit entity)
         {
             if (Vector3.Distance(entity.transform.position, entity.target.position) <= entity.AIData.detectRadius)
             {
@@ -37,22 +37,22 @@ namespace GeneralMonsterStates
             }           
         }
 
-        public override void Exit(GeneralUnit entity)
+        public  void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 IDLE 상태 탈출.");
         }
 
     }
 
-    public class Chase : State<GeneralUnit>
+    public class Chase : IState<GeneralUnit>
     {
-        public override void Enter(GeneralUnit entity)
+        public  void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Chase 상태 진입.");
             entity.checker.isChasingOrFleeing = true;
         }
 
-        public override void Execute(GeneralUnit entity)
+        public  void Execute(GeneralUnit entity)
         {           
             if (!entity.checker.canChaseOrFlee) return;
 
@@ -79,24 +79,24 @@ namespace GeneralMonsterStates
             
         }
 
-        public override void Exit(GeneralUnit entity)
+        public  void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Chase 상태 탈출.");
         }
 
     }
 
-    public class Flee : State<GeneralUnit>
+    public class Flee : IState<GeneralUnit>
     {
         private float fleeTimer;
-        public override void Enter(GeneralUnit entity)
+        public  void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Flee 상태 진입.");
             entity.checker.isChasingOrFleeing = true;
             fleeTimer = 0f;
         }
 
-        public override void Execute(GeneralUnit entity)
+        public  void Execute(GeneralUnit entity)
         {
             if (!entity.checker.canChaseOrFlee) return;
 
@@ -120,21 +120,21 @@ namespace GeneralMonsterStates
             // [TODO] : 해당 state 유지 시간 5초 초과 시 Dead로 change state -> 60초 후 리스폰
         }
 
-        public override void Exit(GeneralUnit entity)
+        public  void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Flee 상태 탈출.");
         }
 
     }
 
-    public class Return : State<GeneralUnit>
+    public class Return : IState<GeneralUnit>
     {
-        public override void Enter(GeneralUnit entity)
+        public  void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Return 상태 진입.");
         }
 
-        public override void Execute(GeneralUnit entity)
+        public  void Execute(GeneralUnit entity)
         {
             if (entity.checker.isChasingOrFleeing && !entity.checker.canChaseOrFlee)
             {
@@ -166,18 +166,18 @@ namespace GeneralMonsterStates
             
         }
 
-        public override void Exit(GeneralUnit entity)
+        public  void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Return 상태 탈출.");
         }
 
     }
 
-    public class Combat : State<GeneralUnit>
+    public class Combat : IState<GeneralUnit>
     {
         int doRush;
 
-        public override void Enter(GeneralUnit entity)
+        public  void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Combat 상태 진입.");
             //전투 돌입 코드
@@ -188,22 +188,22 @@ namespace GeneralMonsterStates
 
         }
 
-        public override void Execute(GeneralUnit entity)
+        public  void Execute(GeneralUnit entity)
         {
 
         }
 
-        public override void Exit(GeneralUnit entity)
+        public  void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Combat 상태 탈출.");
         }
 
     }
 
-    public class Dead : State<GeneralUnit>
+    public class Dead : IState<GeneralUnit>
     {
         float RespawnTimer;
-        public override void Enter(GeneralUnit entity)
+        public  void Enter(GeneralUnit entity)
         {
             Debug.Log("몬스터 Dead 상태 진입. 60초 후 리스폰합니다.");
             RespawnTimer = 0f;
@@ -211,7 +211,7 @@ namespace GeneralMonsterStates
             entity.mosnterCollider.enabled = false;
         }
 
-        public override void Execute(GeneralUnit entity)
+        public  void Execute(GeneralUnit entity)
         {
             RespawnTimer += Time.deltaTime;
             if (RespawnTimer >= 60f)
@@ -220,7 +220,7 @@ namespace GeneralMonsterStates
             }
         }
 
-        public override void Exit(GeneralUnit entity)
+        public  void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Dead 상태 탈출. 리스폰합니다.");
             entity.meshRenderer.enabled = true;
@@ -232,14 +232,14 @@ namespace GeneralMonsterStates
 
 namespace EliteMonsterStates
 {
-    public class Idle : State<EliteUnit>
+    public class Idle : IState<EliteUnit>
     {
-        public override void Enter(EliteUnit entity)
+        public void Enter(EliteUnit entity)
         {
             Debug.Log("몬스터 IDLE 상태 진입.");
         }
 
-        public override void Execute(EliteUnit entity)
+        public void Execute(EliteUnit entity)
         {
             if(Vector3.Distance(entity.transform.localPosition, entity.target.localPosition) < entity.AIData.attackRange)
             {
@@ -247,34 +247,34 @@ namespace EliteMonsterStates
             }
         }
 
-        public override void Exit(EliteUnit entity)
+        public void Exit(EliteUnit entity)
         {
             Debug.Log("몬스터 IDLE 상태 탈출.");
         }
     }
 
-    public class Combat : State<EliteUnit>
+    public class Combat : IState<EliteUnit>
     {
-        public override void Enter(EliteUnit entity)
+        public void Enter(EliteUnit entity)
         {
             Debug.Log("몬스터 COMBAT 상태 진입.");
         }
 
-        public override void Execute(EliteUnit entity)
+        public void Execute(EliteUnit entity)
         {
 
         }
 
-        public override void Exit(EliteUnit entity)
+        public void Exit(EliteUnit entity)
         {
             Debug.Log("몬스터 COMBAT 상태 탈출.");
         }
     }
 
-    public class Dead : State<EliteUnit>
+    public class Dead : IState<EliteUnit>
     {
         float RespawnTimer;
-        public override void Enter(EliteUnit entity)
+        public void Enter(EliteUnit entity)
         {
             Debug.Log("몬스터 Dead 상태 진입. 60초 후 리스폰합니다.");
             RespawnTimer = 0f;
@@ -282,7 +282,7 @@ namespace EliteMonsterStates
             entity.mosnterCollider.enabled = false;
         }
 
-        public override void Execute(EliteUnit entity)
+        public void Execute(EliteUnit entity)
         {
             RespawnTimer += Time.deltaTime;
             if(RespawnTimer >= 60f)
@@ -291,7 +291,7 @@ namespace EliteMonsterStates
             }
         }
 
-        public override void Exit(EliteUnit entity)
+        public void Exit(EliteUnit entity)
         {
             Debug.Log("몬스터 Dead 상태 탈출. 리스폰합니다.");
             entity.meshRenderer.enabled = true;
