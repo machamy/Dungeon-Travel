@@ -469,7 +469,6 @@ public class DB
     {
         Dictionary<string, List<SkillData>> skills = new Dictionary<string, List<SkillData>> ();
         List<SkillData> skillList = new List<SkillData>();
-        string postName = null;
         for (int i = 1; i < sheet.Rows.Count; i++)
         {
             SkillData skill = ScriptableObject.CreateInstance<SkillData>();

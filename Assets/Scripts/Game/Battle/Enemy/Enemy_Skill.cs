@@ -139,7 +139,7 @@ public class Enemy_Skill
             unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
             Debug.Log("공격완료");
             if(skillData.debuffType != DebuffType.None)
-                buffManager.debuffAction[skillData.debuffType].Invoke(skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
+                buffManager.DebuffAdd(skillData.debuffType, skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
         }
     }
 
