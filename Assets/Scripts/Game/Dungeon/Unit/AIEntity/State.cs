@@ -8,4 +8,6 @@ public abstract class State<T> where T : class
     public abstract void Execute(T entity); //해당 상태에서의 실행
     public abstract void Exit(T entity);    //나갈때
 
+    public virtual string StateName => GetType().Name;
+
 }
