@@ -75,6 +75,14 @@ namespace Scripts.Game.Dungeon.Unit
 
         void playerMove()
         {
+            if (moveVec.magnitude > 0)
+            {
+                StateMachine.ChangeState(PlayerStates.Run);
+            }
+            else
+            {
+                StateMachine.ChangeState(PlayerStates.Idle);
+            }
             if (IsOnSlope())
             {
                 var dir = GetSlopeDir(moveVec);
@@ -83,7 +91,7 @@ namespace Scripts.Game.Dungeon.Unit
             }
             // transform.position += moveVec * (speed * Time.deltaTime);
             rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
-            
+
             rigid.velocity = Vector3.zero; //이거하면 계단에서 안내려옴
         }
         private RaycastHit slopeHit;
@@ -123,6 +131,7 @@ namespace Scripts.Game.Dungeon.Unit
             Vector2 inputVec = value.Get<Vector2>(); //이미 normalized된 녀석.
             moveVec = GameManager.Instance.qCamera.
                 GetWorldDiretion(new Vector3(inputVec.x, 0, inputVec.y));//new Vector3(inputVec.x, 0, inputVec.y);
+            
         }
 
         void OnUse()
@@ -146,10 +155,6 @@ namespace Scripts.Game.Dungeon.Unit
         }
 
         #endregion
-        
-
-
-
         
         /// <summary>
         /// 사용안함
@@ -251,9 +256,9 @@ namespace Scripts.Game.Dungeon.Unit
         
 
         #endregion
-
-
-
+        
+        
+        
         
         private bool isPaused = false;
         public bool IsPaused => isPaused;
