@@ -203,17 +203,28 @@ public class BattleManager : MonoBehaviour
 
             case BattleState.ENEMYTURN:
                 {
+                    bool isEnd = true;
                     if (bossPrefab != null && bossPrefab.isDead == false)
                         bossPrefab.Attack();
-                    for (int i = 0; i < enemyPrefab.Length; i++)
+                    for (int i = 0; i < SpawnCount; i++)
                     {
                         if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                        {
                             enemyPrefab[i].Attack();
-
+                            isEnd = false;
+                        }
                     }
 
-                    PlayerTurnOrder();
-                    bState = BattleState.PLAYERTURN;
+                    if(isEnd)
+                    {
+                        bState = BattleState.END;
+                    }
+                    else
+                    {
+                        PlayerTurnOrder();
+                        TurnCount++;
+                        bState = BattleState.PLAYERTURN;
+                    }
                     break;
                 }
 

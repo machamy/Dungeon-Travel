@@ -29,10 +29,6 @@ public class Enemy_Base
     {
         this.boss = boss;
     }
-    public virtual void Init()
-    {
-
-    }
     public float Agi
     {
         get { return enemy.enemyStatData.agi; }
