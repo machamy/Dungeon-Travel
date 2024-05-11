@@ -37,8 +37,11 @@ public class BattleManager : MonoBehaviour
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum TurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
+    public TurnState tState { get; set; }
 
-    public List<Unit> playerTurnOrder;
+    private Queue<Unit> turnQueue = new Queue<Unit>();
+    
+    private int[] agi_rank;
 
     public ActMenu actmenu;
 
@@ -62,8 +65,11 @@ public class BattleManager : MonoBehaviour
     public int TurnCount;
     public TextMeshProUGUI Turn;
     public GameObject endcanvas;
+
+
     private void Awake()
     {
+        tState = TurnState.END;
         bState = BattleState.START;
         SpawnCount = 0;
     }
@@ -94,10 +100,9 @@ public class BattleManager : MonoBehaviour
         {
             
         }
+        Debug.Log("SetUpBattle 끝");
 
         PlayerTurnOrder();
-        Debug.Log("스폰 완료");
-
         assignTurn(playerunit[0]);
     }
     /// <summary>
@@ -148,32 +153,29 @@ public class BattleManager : MonoBehaviour
 
     }
 
-    private List<Unit> PlayerTurnOrder() //플레이어끼리만 비교해놓음
+    private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        playerTurnOrder = new List<Unit>();
-        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
+        Dictionary<Unit,float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
 
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
-            agi_ranking.Add(playerunit[i], playerunit[i].stat.agi);
+            agi_ranking.Add(playerunit[i],playerunit[i].stat.agi);
         }
 
-        agi_ranking = agi_ranking.OrderBy(x => x.Value).ToDictionary(x => x.Key, x => x.Value);
+        var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
 
         foreach (var kvp in agi_ranking)
         {
             Debug.Log("Key: " + kvp.Key + ", Value: " + kvp.Value);
 
-            playerTurnOrder.Add(kvp.Key);
+            turnQueue.Enqueue(kvp.Key);
         }
-
-        return playerTurnOrder;
     }
 
     private void FirstTurn()
     {
         PlayerTurnOrder();
-        actmenu.TurnStart(playerTurnOrder[0]);
+        actmenu.TurnStart(turnQueue.Dequeue());
     }
     private void SecondTurnOrder()
     {
@@ -182,55 +184,54 @@ public class BattleManager : MonoBehaviour
     
     private void Update()
     {
-        switch(bState)
+        if (tState == TurnState.END)
         {
-            case BattleState.START:
-                {
-                    TurnCount = 0;
-                    endcanvas.SetActive(false);
-                    SetupBattle();
-                    break;
-                }
-            case BattleState.PLAYERTURN:
-                {
-                    break;
-                }
-            case BattleState.ENEMYTURN:
-                {
-                    if (bossPrefab != null && bossPrefab.isDead == false)
-                        bossPrefab.Attack();
-                    for(int i = 0;i<enemyPrefab.Length;i++)
+            switch (bState)
+            {
+                case BattleState.START:
                     {
-                        if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
-                            enemyPrefab[i].Attack();
-
+                        TurnCount = 0;
+                        SetupBattle();
+                        break;
                     }
-                    bState = BattleState.PLAYERTURN;
-                    break;
-                }
-            case BattleState.SECONDTURN:
-                {
-                    break;
-                }
-            case BattleState.END:
-                {
-                    endcanvas.SetActive(true);
-                    return;
-                }
-            default:
-                {
-                    break;
-                }
-            
+                case BattleState.PLAYERTURN:
+                    {
+                        break;
+                    }
+                case BattleState.ENEMYTURN:
+                    {
+                        if (bossPrefab != null && bossPrefab.isDead == false)
+                            bossPrefab.Attack();
+                        for (int i = 0; i < enemyPrefab.Length; i++)
+                        {
+                            if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                                enemyPrefab[i].Attack();
+
+                        }
+                        bState = BattleState.PLAYERTURN;
+                        break;
+                    }
+                case BattleState.SECONDTURN:
+                    {
+                        break;
+                    }
+                case BattleState.END:
+                    {
+                        endcanvas.SetActive(true);
+                        return;
+                    }
+                default:
+                    {
+                        break;
+                    }
+
+            }
         }
         Turn.text = "Turn   " + TurnCount.ToString();
     }
 
-    public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill useSkill)
+    public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill usedSkill)
     {
-        if (attackplayer.ConsumeMP(useSkill.Cost))
-        {
-            //damagedplayer.ConsumeMP(useSkill.damage);
-        }
+        
     }
 }

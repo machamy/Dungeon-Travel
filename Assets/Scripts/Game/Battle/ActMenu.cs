@@ -112,9 +112,14 @@ public class ActMenu : MonoBehaviour
         else { PlayerStation[0].Select();}
     }
 
-    public void OnPlayerOutline(int outlineUnit) {outlines[outlineUnit].OnOutline();}
-    public void OffPlayerOutline(int outlineUnit) {outlines[outlineUnit].OffOutline();}
-
+    public void OnPlayerOutline(int outlineUnit)
+    {
+        outlines[outlineUnit].OnOutline();
+    }
+    public void OffPlayerOutline(int outlineUnit)
+    {
+        outlines[outlineUnit].OffOutline();
+    }
     public void ChangeItemInfo(int i)
     {
         item_info.text = items.items[i].infomation;

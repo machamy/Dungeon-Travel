@@ -63,24 +63,25 @@ public class Unit : MonoBehaviour
         HUD.UpdateHUD(currentHP, currentMP);
     }
 
+    public bool enoughMP(float necessaryMP)
+    {
+        if (currentMP < necessaryMP) return false;
+        else return true;
+    }
+
     /// <summary>
     /// 마나가 충분하지 않으면 false, 마나가 충분하면 마나소모를 한 후 true반환
     /// </summary>
     /// <param name="consume_amount"></param>
     /// <returns></returns>
-    public bool ConsumeMP(float consume_amount)  //유닛 마나 계산
+    public void ConsumeMP(float consume_amount)  //유닛 마나 계산
     {
         currentMP -= consume_amount;
-        if (currentMP <= 0)
-        {
-            currentMP += consume_amount;
-            return false;
-        }
         HUD.UpdateHUD(currentHP, currentMP);
-        Debug.Log("마나 부족");
-        return true;
     }
 
+
+    //outline 관련 코드
     private Color color = Color.red;
     private bool OnOff;
 
