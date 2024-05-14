@@ -15,15 +15,24 @@ using System.Runtime.CompilerServices;
 public class TownMapUI : MonoBehaviour
 {
 
-
     private string selectedButtonName;
-    
+    public GameObject townMapCanvas, mainMenuCanvas;
+
     //public TextMeshProUGUI topPanelText, buttonDescriptionText, itemDescriptionText;
 
     public Image dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
+    public void Awake()
+    {
+        UIStack.Instance.PushUI(townMapCanvas);
+        MainUI.Menu += Menu;
+    }
 
+    private void Menu()
+    {
+        UIStack.Instance.PushUI(mainMenuCanvas);
+    }
 
     private void Update()
     {

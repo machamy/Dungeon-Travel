@@ -6,25 +6,13 @@ using UnityEngine;
 public class MainUI : MonoBehaviour
 {
 
-    public GameObject townMapCanvas, mainMenuCanvas;
+    public delegate void menu();
+    public static event menu Menu;
+    public delegate void cancel();
+    public static event cancel Cancel;   
 
-    public void Awake()
-    {
-        UIStack.Instance.PushUI(townMapCanvas);
-    }
-
-    public void OnMenu()
-    {
-        if (UIStack.Instance.menuStack.Count == 1)
-            UIStack.Instance.PushUI(mainMenuCanvas);
-    }
-
-
-    public void OnCancel()
-    {
-        UIStack.Instance.PopUI();
-    }
-
+    public void OnMenu() => Menu();
+    public void OnCancel() => Cancel();
     
     void Update()
     {

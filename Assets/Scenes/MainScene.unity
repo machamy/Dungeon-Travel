@@ -19019,6 +19019,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
   prefabParent: {fileID: 1615118387}
+  useButton: {fileID: 0}
+  characterButton: {fileID: 0}
 --- !u!1 &880689763
 GameObject:
   m_ObjectHideFlags: 0
@@ -21360,8 +21362,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 81cc2a0d07b4b95418830a909fdb7b8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  townMapCanvas: {fileID: 1147759167}
-  mainMenuCanvas: {fileID: 133531697}
 --- !u!1 &992815230
 GameObject:
   m_ObjectHideFlags: 0
@@ -25108,6 +25108,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a2a18002f68ddf46bc3480b847d1ba8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  townMapCanvas: {fileID: 1147759167}
+  mainMenuCanvas: {fileID: 133531697}
   dungeonCircle: {fileID: 933522738}
   guildCircle: {fileID: 281778830}
   shopCircle: {fileID: 2078204327}

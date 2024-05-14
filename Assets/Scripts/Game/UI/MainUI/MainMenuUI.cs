@@ -4,15 +4,13 @@ using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        
+        MainUI.Cancel += Cancel;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Cancel()
     {
-        
+        UIStack.Instance.PopUI();
     }
 }

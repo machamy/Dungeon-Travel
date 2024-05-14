@@ -11,6 +11,8 @@ public class ItemUI : MonoBehaviour
     public GameObject prefabParent;
     private GameObject selectedItem, selectedCharacter;
 
+    public GameObject useButton, characterButton;
+
     private Color lightblue = new(0, 1, 1, 0.5f), blue = new(0, 0.5f, 1, 0.5f);
 
 
@@ -62,5 +64,6 @@ public class ItemUI : MonoBehaviour
     {
         selectedItem = UIManager.Instance.GetSelectedButton();
         selectedItem.GetComponent<Image>().color = blue;
+
     }
 }
