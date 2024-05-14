@@ -1,4 +1,5 @@
 using Scripts.Manager;
+using System.Buffers.Text;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -37,29 +38,38 @@ public class UIStack : MonoBehaviour
 
 
     public Stack<GameObject> menuStack = new Stack<GameObject>();
-    public Stack<GameObject> buttonStack = new Stack<GameObject>();
+    public GameObject currentUI
+    {
+        get => instance.menuStack.Peek();
+        set
+        {
+            instance.menuStack.Push(value);
+            value.SetActive(true);
+        }
+    }
 
     public void PushUI(GameObject menu)
     {
-        if (instance.menuStack.Count > 0)
-            instance.menuStack.Peek().SetActive(false);
+        if (instance.menuStack.Count >= 1)
+            currentUI.SetActive(false);
 
-        menu.SetActive(true);
-        instance.menuStack.Push(menu);
+        currentUI = menu;
 
-        instance.buttonStack.Push(UIManager.Instance.GetSelectedButton());
-        SetDefaultButton(menu);
+        //instance.buttonStack.Push(UIManager.Instance.GetSelectedButton());
+        SetDefaultButton(currentUI);
     }
 
     public void PopUI()
     {
-        if (instance.menuStack.Count > 1)
+        if (instance.menuStack.Count == 1)
         {
-            instance.menuStack.Pop().SetActive(false);
-            instance.menuStack.Peek().SetActive(true);
-
-            UIManager.Instance.SelectButton(instance.buttonStack.Pop());
+            return;
         }
+
+        instance.menuStack.Pop().SetActive(false);
+        currentUI.SetActive(true);
+
+        SetDefaultButton(currentUI);
     }
 
     private void SetDefaultButton(GameObject menu)

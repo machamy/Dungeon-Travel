@@ -529,6 +529,7 @@ GameObject:
   - component: {fileID: 45554084}
   - component: {fileID: 45554083}
   - component: {fileID: 45554082}
+  - component: {fileID: 45554086}
   m_Layer: 5
   m_Name: StatusCanvas
   m_TagString: Untagged
@@ -621,6 +622,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &45554086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45554081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91d5dbe19fabfdd4c802f03d0e7b8ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &49868953
 GameObject:
   m_ObjectHideFlags: 0
@@ -2031,6 +2044,7 @@ GameObject:
   - component: {fileID: 133531701}
   - component: {fileID: 133531700}
   - component: {fileID: 133531699}
+  - component: {fileID: 133531702}
   m_Layer: 5
   m_Name: MainMenuCanvas
   m_TagString: Untagged
@@ -2125,6 +2139,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &133531702
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 133531697}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cbff2181ed9daf41b358559bc7e0234, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &137818649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2755,7 +2781,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 984569041}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
         m_MethodName: GetInventoryItem
         m_Mode: 2
@@ -7281,7 +7307,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 984569041}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
         m_MethodName: GetInventoryItem
         m_Mode: 2
@@ -14192,18 +14218,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 984569041}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: GetInventoryItem
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1615118387}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &647548529
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15905,6 +15919,7 @@ GameObject:
   - component: {fileID: 753801224}
   - component: {fileID: 753801223}
   - component: {fileID: 753801222}
+  - component: {fileID: 753801226}
   m_Layer: 5
   m_Name: SkillCanvas
   m_TagString: Untagged
@@ -16001,6 +16016,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &753801226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 753801221}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f109d3289aeac804c89c256d96c4411e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &753885094
 GameObject:
   m_ObjectHideFlags: 0
@@ -18882,6 +18909,7 @@ GameObject:
   - component: {fileID: 877233452}
   - component: {fileID: 877233451}
   - component: {fileID: 877233450}
+  - component: {fileID: 877233453}
   m_Layer: 5
   m_Name: ItemCanvas
   m_TagString: Untagged
@@ -18977,6 +19005,20 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &877233453
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 877233448}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9e22dd9469e8abc4398695cc8ebb043a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
+  prefabParent: {fileID: 1615118387}
 --- !u!1 &880689763
 GameObject:
   m_ObjectHideFlags: 0
@@ -21182,7 +21224,7 @@ GameObject:
   - component: {fileID: 984569038}
   - component: {fileID: 984569037}
   - component: {fileID: 984569042}
-  - component: {fileID: 984569041}
+  - component: {fileID: 984569044}
   - component: {fileID: 984569040}
   - component: {fileID: 984569043}
   m_Layer: 0
@@ -21264,28 +21306,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8e7fff9d112f134d9b9cfa60d240615, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &984569041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 984569036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6a2a18002f68ddf46bc3480b847d1ba8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  townMapCanvas: {fileID: 1147759167}
-  mainMenuCanvas: {fileID: 133531697}
-  mainMenuFirstSelect: {fileID: 647548525}
-  itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
-  topPanelText: {fileID: 2044151318}
-  buttonDescriptionText: {fileID: 300734969}
-  itemDescriptionText: {fileID: 702762454}
-  dungeonCircle: {fileID: 933522738}
-  guildCircle: {fileID: 281778830}
-  shopCircle: {fileID: 2078204327}
 --- !u!114 &984569042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21328,6 +21348,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10e8237b2c3aa0847933eab1dab2550a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &984569044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 984569036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81cc2a0d07b4b95418830a909fdb7b8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  townMapCanvas: {fileID: 1147759167}
+  mainMenuCanvas: {fileID: 133531697}
 --- !u!1 &992815230
 GameObject:
   m_ObjectHideFlags: 0
@@ -24205,6 +24239,7 @@ GameObject:
   - component: {fileID: 1131262579}
   - component: {fileID: 1131262578}
   - component: {fileID: 1131262577}
+  - component: {fileID: 1131262581}
   m_Layer: 5
   m_Name: PartyCanvas
   m_TagString: Untagged
@@ -24298,6 +24333,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1131262581
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1131262576}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9721fadbef8ead4ba731dbec3e92d6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1131433434
 GameObject:
   m_ObjectHideFlags: 0
@@ -24953,6 +25000,7 @@ GameObject:
   - component: {fileID: 1147759171}
   - component: {fileID: 1147759170}
   - component: {fileID: 1147759169}
+  - component: {fileID: 1147759172}
   m_Layer: 5
   m_Name: TownMapCanvas
   m_TagString: Untagged
@@ -25048,6 +25096,21 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1147759172
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1147759167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a2a18002f68ddf46bc3480b847d1ba8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dungeonCircle: {fileID: 933522738}
+  guildCircle: {fileID: 281778830}
+  shopCircle: {fileID: 2078204327}
 --- !u!1 &1161568628
 GameObject:
   m_ObjectHideFlags: 0
@@ -31460,6 +31523,7 @@ GameObject:
   - component: {fileID: 1410734437}
   - component: {fileID: 1410734436}
   - component: {fileID: 1410734435}
+  - component: {fileID: 1410734439}
   m_Layer: 5
   m_Name: EquipCanvas
   m_TagString: Untagged
@@ -31558,6 +31622,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1410734439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1410734434}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb746c288728a51478207e498d5d7408, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1411880066
 GameObject:
   m_ObjectHideFlags: 0
@@ -33605,6 +33681,7 @@ GameObject:
   - component: {fileID: 1487113930}
   - component: {fileID: 1487113929}
   - component: {fileID: 1487113928}
+  - component: {fileID: 1487113931}
   m_Layer: 5
   m_Name: ConfigCanvas
   m_TagString: Untagged
@@ -33698,6 +33775,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &1487113931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1487113926}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95431f9c41626ac458b1fadb71d6b682, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1487658175
 GameObject:
   m_ObjectHideFlags: 0
