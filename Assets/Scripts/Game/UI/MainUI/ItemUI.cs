@@ -9,22 +9,50 @@ public class ItemUI : MonoBehaviour
 {
     public GameObject itemButtonPrefab;
     public GameObject prefabParent;
-    private GameObject selectedItem, selectedCharacter;
+    private GameObject selectedItem;
 
     public GameObject useButton, characterButton;
+    public GameObject blackPanel;
+
+    public TextMeshProUGUI itemDescriptionText;
 
     private Color lightblue = new(0, 1, 1, 0.5f), blue = new(0, 0.5f, 1, 0.5f);
 
+    public enum UIDepth
+    {
+        ItemSelect, UseSelect, CharacterSelect
+    } private UIDepth depth = UIDepth.ItemSelect;
 
-    private void Awake()
+    private void OnEnable()
     {
         GetInventoryItem(prefabParent);
+        MainUI.Cancel += Cancel;
     }
 
-    public void CharacterClick()
+    private void OnDisable()
     {
-        selectedCharacter = UIManager.Instance.GetSelectedButton();
-        selectedCharacter.GetComponent<Image>().color = blue;
+        MainUI.Cancel -= Cancel;
+    }
+
+    private void Cancel()
+    {
+        switch (depth)
+        {
+            case UIDepth.ItemSelect:
+                UIStack.Instance.PopUI();
+                break;
+            case UIDepth.UseSelect:
+                UIManager.Instance.SelectButton(selectedItem);
+                selectedItem.GetComponent<Image>().color = lightblue;
+                depth--;
+                break;
+            case UIDepth.CharacterSelect:
+                UIManager.Instance.SelectButton(useButton);
+                blackPanel.SetActive(false);
+                depth--;
+                break;
+        }
+        
     }
 
 
@@ -64,6 +92,24 @@ public class ItemUI : MonoBehaviour
     {
         selectedItem = UIManager.Instance.GetSelectedButton();
         selectedItem.GetComponent<Image>().color = blue;
+        depth = UIDepth.UseSelect;
+        UseSelect();
+    }
 
+    private void UseSelect()
+    {
+        UIManager.Instance.SelectButton(useButton);
+    }
+
+    public void CharacterSelect()
+    {
+        UIManager.Instance.SelectButton(characterButton);
+        blackPanel.SetActive(true);
+        depth = UIDepth.CharacterSelect;
+    }
+
+    private void Update()
+    {
+        itemDescriptionText.text = UIManager.Instance.GetSelectedItemDescription();
     }
 }

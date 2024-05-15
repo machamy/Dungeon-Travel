@@ -4,9 +4,14 @@ using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
-    private void Awake()
+    private void OnEnable()
     {
         MainUI.Cancel += Cancel;
+    }
+
+    private void OnDisable()
+    {
+        MainUI.Cancel -= Cancel;
     }
 
     private void Cancel()

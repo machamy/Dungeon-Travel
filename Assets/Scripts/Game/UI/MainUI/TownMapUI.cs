@@ -16,18 +16,23 @@ public class TownMapUI : MonoBehaviour
 {
 
     private string selectedButtonName;
-    public GameObject townMapCanvas, mainMenuCanvas;
+    public GameObject mainMenuCanvas;
 
-    //public TextMeshProUGUI topPanelText, buttonDescriptionText, itemDescriptionText;
+    //public TextMeshProUGUI topPanelText, buttonDescriptionText;
 
     public Image dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
-    public void Awake()
+    public void OnEnable()
     {
-        UIStack.Instance.PushUI(townMapCanvas);
         MainUI.Menu += Menu;
     }
+
+    public void OnDisable()
+    {
+        MainUI.Menu -= Menu;
+    }
+
 
     private void Menu()
     {

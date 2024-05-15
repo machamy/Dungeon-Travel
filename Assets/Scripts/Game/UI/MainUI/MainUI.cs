@@ -9,7 +9,14 @@ public class MainUI : MonoBehaviour
     public delegate void menu();
     public static event menu Menu;
     public delegate void cancel();
-    public static event cancel Cancel;   
+    public static event cancel Cancel;
+
+    public GameObject townMapCanvas;
+
+    private void Awake()
+    {
+        UIStack.Instance.PushUI(townMapCanvas);
+    }
 
     public void OnMenu() => Menu();
     public void OnCancel() => Cancel();
@@ -17,6 +24,5 @@ public class MainUI : MonoBehaviour
     void Update()
     {
         //buttonDescriptionText.text = UIManager.Instance.GetSelectedButtonDescription();
-        //itemDescriptionText.text = UIManager.Instance.GetSelectedItemDescription();
     }
 }
