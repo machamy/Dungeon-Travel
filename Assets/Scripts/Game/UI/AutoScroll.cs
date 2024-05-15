@@ -22,7 +22,8 @@ public class AutoScroll : MonoBehaviour
     {
         selectedButton = UIManager.Instance.GetSelectedButton();
 
-        posN = selectedButton.transform.parent.GetSiblingIndex();
+        posN = selectedButton.transform.parent.parent.name == "Content" ?
+            selectedButton.transform.parent.GetSiblingIndex() : posN;
         posNInScreen = posN - posY / height;
 
         if (posNInScreen == amount + 1)

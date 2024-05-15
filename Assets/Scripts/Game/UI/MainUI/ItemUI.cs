@@ -25,7 +25,7 @@ public class ItemUI : MonoBehaviour
 
     private void OnEnable()
     {
-        GetInventoryItem(prefabParent);
+        GetInventoryItem();
         MainUI.Cancel += Cancel;
     }
 
@@ -39,6 +39,7 @@ public class ItemUI : MonoBehaviour
         switch (depth)
         {
             case UIDepth.ItemSelect:
+                UIManager.Instance.ClearChildren(prefabParent);
                 UIStack.Instance.PopUI();
                 break;
             case UIDepth.UseSelect:
@@ -56,14 +57,13 @@ public class ItemUI : MonoBehaviour
     }
 
 
-    public void GetInventoryItem(GameObject parent)
+    public void GetInventoryItem()
     {
-        UIManager.Instance.ClearChildren(parent);
         int posN = 0; int length = UIDB.inventoryItemList.Count;
         foreach (string itemName in UIDB.inventoryItemList)
         {
             GameObject buttonPrefab = Instantiate(itemButtonPrefab);
-            buttonPrefab.transform.SetParent(parent.transform);
+            buttonPrefab.transform.SetParent(prefabParent.transform);
 
             Button button = buttonPrefab.GetComponentInChildren<Button>();
             Navigation navigation = button.navigation;
