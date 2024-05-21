@@ -33,13 +33,14 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
-    public enum BattleState { PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
+    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum TurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
     public TurnState tState { get; set; }
 
     private Queue<Unit> turnQueue = new Queue<Unit>();
+    private int alivePlayer;
     
     private int[] agi_rank;
 
@@ -69,12 +70,15 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
+        bState = BattleState.START;
+        endcanvas.SetActive(false);
         SetupBattle();
     }
 
     private void Start()
     {
         tState = TurnState.END;
+        alivePlayer = playerPrefab.Length;
         SpawnCount = 0;
     }
     private void SetupBattle()
@@ -105,7 +109,6 @@ public class BattleManager : MonoBehaviour
         */
 
         Debug.Log("SetUpBattle 끝");
-
         FirstTurn();
     }
     
@@ -150,6 +153,7 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
+        bState = BattleState.PLAYERTURN;
         Dictionary<Unit,float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
 
         for (int i = 0; i < 5; i++)
@@ -186,6 +190,10 @@ public class BattleManager : MonoBehaviour
     {
         switch (bState)
         {
+            case BattleState.START:
+                {
+                    break;
+                }
             case BattleState.PLAYERTURN:
                 {
                     if (turnQueue.Count > 0 && tState == TurnState.END)
@@ -236,6 +244,7 @@ public class BattleManager : MonoBehaviour
             case BattleState.END:
                 {
                     endcanvas.SetActive(true);
+                    END();
                     return;
                 }
             default:
@@ -244,8 +253,17 @@ public class BattleManager : MonoBehaviour
                 }
         }
         Turn.text = "Turn   " + TurnCount.ToString();
+
+        if(alivePlayer == 0) { bState = BattleState.END; }
     }
 
+    /// <summary>
+    /// 배틀 종료시 실행
+    /// </summary>
+    public void END()
+    {
+        
+    }
     public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill usedSkill)
     {
         
