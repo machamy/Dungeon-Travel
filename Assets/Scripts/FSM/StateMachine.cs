@@ -9,6 +9,7 @@ namespace Scripts.FSM
     {
         private T ownerEntity;
         private IState<T> currentState;
+        public IState<T> CurrentState => currentState;
 
         public void Setup(T owner, IState<T> entryState)
         {

@@ -16,7 +16,7 @@ namespace Scripts.Game.Dungeon.Unit
         [SerializeField] protected float interactionRange;
         //[SerializeField] protected QuraterviewCamera Camera;
 
-        protected StateMachine<PlayerUnit> StateMachine = default;
+        protected StateMachine<PlayerUnit> StateMachine = new StateMachine<PlayerUnit>();
         [SerializeField] protected Animator animator;
 
         [SerializeField] internal PlayerInteractionBox PlayerInteractionBox;
