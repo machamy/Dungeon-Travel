@@ -17,6 +17,7 @@ public class Unit : MonoBehaviour
     public BattleSkill[] skills = new BattleSkill[4];
     public SkillData[] skillDatas = new SkillData[4];
     public bool isguard;
+    public BattleManager battleManager;
 
     public void Awake()
     {
@@ -41,8 +42,9 @@ public class Unit : MonoBehaviour
     public bool isdead = false;
     private HUDmanager HUD;
 
-    public void ConnectHUD(HUDmanager getHUD)
+    public void Connect(BattleManager battlemanager, HUDmanager getHUD)
     {
+        this.battleManager = battlemanager;
         HUD = getHUD;
         HUD.SetupHUD(this);
     }
@@ -54,16 +56,17 @@ public class Unit : MonoBehaviour
         currentHP -= damage;
         if(currentHP <= 0)
         {
+            Debug.Log(unitName + " 사망");
             currentHP = 0;
             isdead = true;
             HUD.DeadColor();
             HUD.UpdateHUD(0, maxHP);
+            battleManager.DeadPlayer();
             return;
         }
 
         HUD.UpdateHUD(currentHP, currentMP);
     }
-
 
     /// <summary>
     /// 마나가 충분한지 아닌지 판단, 충분하면 true 아니면 false

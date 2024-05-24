@@ -10,6 +10,7 @@ using Scripts.Entity;
 using System;
 using TMPro;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+using UnityEditor;
 
 public class BattleManager : MonoBehaviour
 {    
@@ -35,12 +36,12 @@ public class BattleManager : MonoBehaviour
     #endregion
     public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
-    public enum TurnState { START, PROCESSING, END } // 턴 상태 열거형
+    public enum SmallTurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
-    public TurnState tState { get; set; }
+    public SmallTurnState smallturn { get; set; }
 
     private Queue<Unit> turnQueue = new Queue<Unit>();
-    private int alivePlayer;
+    public int alivePlayer;
     
     private int[] agi_rank;
 
@@ -63,24 +64,19 @@ public class BattleManager : MonoBehaviour
 
     public bool isEncounter;
 
-    public int TurnCount;
-    public TextMeshProUGUI Turn;
+    public int BigTurnCount;
+    public TextMeshProUGUI BigTurn;
     public GameObject endcanvas;
 
 
     private void Awake()
     {
+        SpawnCount = 0;
         bState = BattleState.START;
         endcanvas.SetActive(false);
         SetupBattle();
     }
 
-    private void Start()
-    {
-        tState = TurnState.END;
-        alivePlayer = playerPrefab.Length;
-        SpawnCount = 0;
-    }
     private void SetupBattle()
     {
         //플레이어 프리펩 불러오기
@@ -89,9 +85,10 @@ public class BattleManager : MonoBehaviour
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playeroutline[i] = playerGO[i].GetComponent<SpriteOutline>();
             playerunit[i] = playerGO[i].GetComponent<Unit>();
-            playerunit[i].ConnectHUD(HUDs[i]);
+            playerunit[i].Connect(this, HUDs[i]);
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
+        alivePlayer = playerPrefab.Length;
 
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
 
@@ -100,7 +97,7 @@ public class BattleManager : MonoBehaviour
 
         /*if (isEncounter) //첫 턴 플로우차트
         {
-            if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); } //테스트하려고 SecondTurn으로 바꿔놨어요 원래는 Enemyturn
+            if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); }
             else { bState = BattleState.SECONDTURN; Debug.Log("그냥 턴"); } 
         }
         else
@@ -108,10 +105,17 @@ public class BattleManager : MonoBehaviour
         }
         */
 
-        Debug.Log("SetUpBattle 끝");
+        smallturn = SmallTurnState.END;
         FirstTurn();
     }
-    
+
+    private void FirstTurn()
+    {
+        BigTurnCount = 1;
+        PlayerTurnOrder();
+        bState = BattleState.PLAYERTURN;
+    }
+
     /// <summary>
     /// 적을 스폰하는 함수
     /// </summary>
@@ -143,7 +147,7 @@ public class BattleManager : MonoBehaviour
                 enemyPrefab[SpawnCount] = new Enemy();
                 enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name,cloneEnemy); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
             }
-            Debug.Log(enemy_Base.hp);
+            Debug.Log(enemy_Base.hp + "    " + SpawnCount);
         }
         catch
         {
@@ -153,7 +157,6 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        bState = BattleState.PLAYERTURN;
         Dictionary<Unit,float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
 
         for (int i = 0; i < 5; i++)
@@ -165,25 +168,19 @@ public class BattleManager : MonoBehaviour
 
         foreach (var kvp in agi_ranking)
         {
-            Debug.Log("Key: " + kvp.Key + ", Value: " + kvp.Value);
-
             turnQueue.Enqueue(kvp.Key);
         }
     }
-
-    private void FirstTurn()
-    {
-        PlayerTurnOrder();
-    }
-
-    private void SecondTurnOrder()
-    {
-        
-    }
     
-    public void EndTurn()
+    public void EnemyTrun()
     {
-        tState = TurnState.END;
+    }
+
+    public void EndHalfTurn()
+    {
+        if(bState == BattleState.PLAYERTURN) bState = BattleState.ENEMYTURN;
+        else if(bState==BattleState.ENEMYTURN) bState = BattleState.PLAYERTURN;
+        smallturn = SmallTurnState.START;
     }
 
     private void Update()
@@ -196,43 +193,33 @@ public class BattleManager : MonoBehaviour
                 }
             case BattleState.PLAYERTURN:
                 {
-                    if (turnQueue.Count > 0 && tState == TurnState.END)
+                    if (turnQueue.Count > 0 && smallturn != SmallTurnState.PROCESSING)
                     {
                         Debug.Log(turnQueue.Peek().ToString() + " 차례");
                         actmenu.TurnStart(turnQueue.Dequeue());
-                        tState = TurnState.PROCESSING;
+                        smallturn = SmallTurnState.PROCESSING;
                     }
-                    else if(turnQueue.Count <= 0)
+                    else if(turnQueue.Count <= 0 && smallturn != SmallTurnState.PROCESSING)
                     {
-                        bState = BattleState.ENEMYTURN;
+                        EndHalfTurn();
                     }
                     break;
                 }
 
             case BattleState.ENEMYTURN:
                 {
-                    bool isEnd = true;
                     if (bossPrefab != null && bossPrefab.isDead == false)
                         bossPrefab.Attack();
+
                     for (int i = 0; i < SpawnCount; i++)
                     {
                         if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
                         {
                             enemyPrefab[i].Attack();
-                            isEnd = false;
                         }
                     }
-
-                    if(isEnd)
-                    {
-                        bState = BattleState.END;
-                    }
-                    else
-                    {
-                        PlayerTurnOrder();
-                        TurnCount++;
-                        bState = BattleState.PLAYERTURN;
-                    }
+                    PlayerTurnOrder();
+                    EndHalfTurn();
                     break;
                 }
 
@@ -241,31 +228,54 @@ public class BattleManager : MonoBehaviour
                     break;
                 }
 
-            case BattleState.END:
+            case BattleState.WIN:
                 {
-                    endcanvas.SetActive(true);
-                    END();
+                    break;
+                }
+
+            case BattleState.LOSE:
+                {
                     return;
                 }
+
             default:
                 {
                     break;
                 }
         }
-        Turn.text = "Turn   " + TurnCount.ToString();
 
-        if(alivePlayer == 0) { bState = BattleState.END; }
+        BigTurn.text = "Turn   " + BigTurnCount.ToString();
+
+        if(alivePlayer == 0) { Lose(); }
+    }
+
+
+    public void WIN()
+    {
+        endcanvas.SetActive(true);
+        bState = BattleState.WIN;
     }
 
     /// <summary>
     /// 배틀 종료시 실행
     /// </summary>
-    public void END()
+    public void Lose()
     {
-        
+        endcanvas.SetActive(true);
+        Debug.Log("패배");
+        bState = BattleState.LOSE;
     }
     public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill usedSkill)
     {
         
+    }
+
+    public void SmallTurnEnd()
+    {
+        smallturn = SmallTurnState.END;
+    }
+    public void DeadPlayer()
+    {
+        alivePlayer--;
     }
 }

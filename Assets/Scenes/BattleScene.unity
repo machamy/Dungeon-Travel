@@ -9422,6 +9422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a430d0417fe87a14eae50fbb54bec62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alivePlayer: 0
   actmenu: {fileID: 608267388}
   playerStation:
   - {fileID: 434891125}
@@ -9456,8 +9457,8 @@ MonoBehaviour:
   - {fileID: 2037507441}
   - {fileID: 1608453313}
   isEncounter: 0
-  TurnCount: 0
-  Turn: {fileID: 1655812252}
+  BigTurnCount: 0
+  BigTurn: {fileID: 1655812252}
   endcanvas: {fileID: 912720242}
 --- !u!1 &1073095621
 GameObject:
@@ -11789,7 +11790,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1038278719}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: EndTurn
+        m_MethodName: SmallTurnEnd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
