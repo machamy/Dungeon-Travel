@@ -18,14 +18,14 @@ public class HUDmanager : MonoBehaviour
     /// <summary>
     /// 유닛 소환될 때
     /// </summary>
-    /// <param name="player"></param>
-    public void SetupHUD(Unit player)
+    /// <param name="unit"></param>
+    public void SetupHUD(Unit unit)
     {
-        _maxHP = player.maxHP;
-        _maxMP = player.maxMP;
+        _maxHP = unit.maxHP;
+        _maxMP = unit.maxMP;
 
-        HP = player.maxHP;
-        MP = player.maxMP;
+        HP = unit.maxHP;
+        MP = unit.maxMP;
 
         HPslider.value = HP / _maxHP;
         MPslider.value = MP / _maxMP;
@@ -33,7 +33,15 @@ public class HUDmanager : MonoBehaviour
         HPtext.text = HP + "/" + _maxHP;
         MPtext.text = MP + "/" + _maxMP;
 
-        playerNameText.text = player.unitName;
+        playerNameText.text = unit.unitName;
+
+        this.gameObject.SetActive(true);
+    }
+
+    public void SetupHUDenemy(Enemy_Base unit)
+    {   
+        HPslider.value = 1;
+        MPslider.value = 1;
 
         this.gameObject.SetActive(true);
     }

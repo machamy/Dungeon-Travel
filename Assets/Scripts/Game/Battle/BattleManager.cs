@@ -53,6 +53,7 @@ public class BattleManager : MonoBehaviour
     public HUDmanager[] HUDs = new HUDmanager[6];
     public GameObject[] playerPrefab;
     public HUDmanager[] playerHUD = new HUDmanager[6];
+    public HUDmanager[] enemyHUD = new HUDmanager[6];
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
     Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
@@ -140,14 +141,14 @@ public class BattleManager : MonoBehaviour
             {
                 bossPrefab = new Boss();
                 enemy_Base = bossPrefab.NewBoss(floor, name,cloneEnemy);
-                SpawnCount++;
             }
             else
             {
                 enemyPrefab[SpawnCount] = new Enemy();
-                enemy_Base = enemyPrefab[SpawnCount++].NewEnemy(floor, name,cloneEnemy); // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+                enemy_Base = enemyPrefab[SpawnCount].NewEnemy(floor, name,cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성 
             }
-            Debug.Log(enemy_Base.hp + "    " + SpawnCount);
+            enemy_Base.Connect(this, enemyHUD[SpawnCount]);
+            SpawnCount++;
         }
         catch
         {
@@ -178,8 +179,12 @@ public class BattleManager : MonoBehaviour
 
     public void EndHalfTurn()
     {
-        if(bState == BattleState.PLAYERTURN) bState = BattleState.ENEMYTURN;
-        else if(bState==BattleState.ENEMYTURN) bState = BattleState.PLAYERTURN;
+        if (bState == BattleState.PLAYERTURN) bState = BattleState.ENEMYTURN;
+        else if (bState == BattleState.ENEMYTURN)
+        {
+            bState = BattleState.PLAYERTURN;
+            BigTurnCount++;
+        }
         smallturn = SmallTurnState.START;
     }
 

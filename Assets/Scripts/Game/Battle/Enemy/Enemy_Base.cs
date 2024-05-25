@@ -10,7 +10,9 @@ using UnityEngine.UIElements;
 
 public class Enemy_Base
 {
-    private Unit unit;
+    private BattleManager battleManager;
+    private HUDmanager HUD;
+
     public bool isDead = false;
     public float hp;
     private Enemy enemy;
@@ -29,6 +31,14 @@ public class Enemy_Base
     {
         this.boss = boss;
     }
+
+    public void Connect(BattleManager battlemanager, HUDmanager HUD)
+    {
+        this.battleManager = battlemanager;
+        this.HUD = HUD;
+        HUD.SetupHUDenemy(this);
+    }
+
     public float Agi
     {
         get { return enemy.enemyStatData.agi; }

@@ -42,10 +42,10 @@ public class Unit : MonoBehaviour
     public bool isdead = false;
     private HUDmanager HUD;
 
-    public void Connect(BattleManager battlemanager, HUDmanager getHUD)
+    public void Connect(BattleManager battlemanager, HUDmanager HUD)
     {
         this.battleManager = battlemanager;
-        HUD = getHUD;
+        this.HUD = HUD;
         HUD.SetupHUD(this);
     }
 
