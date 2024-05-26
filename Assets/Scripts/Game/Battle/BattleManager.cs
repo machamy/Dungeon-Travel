@@ -265,7 +265,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
     }
-    public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill usedSkill)
+    public void Attack<T1,T2>(T1 attackUnit, T2 damagedUnit)
     {
         
     }
