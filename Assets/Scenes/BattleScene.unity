@@ -8424,7 +8424,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2160, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -10698,7 +10698,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2160, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -12762,7 +12762,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2160, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -14701,11 +14701,11 @@ MonoBehaviour:
   - {fileID: 191387240}
   HUDs:
   - {fileID: 803658318}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1266412538}
+  - {fileID: 212243843}
+  - {fileID: 1176404469}
+  - {fileID: 253981778}
+  - {fileID: 1513376248}
   playerPrefab:
   - {fileID: 1258213257351392868, guid: 7ce4f14a2d9d8bb43a4168e55944171c, type: 3}
   - {fileID: 8291789612100731223, guid: 34d0d19c7407f3b4da59660f145db3f1, type: 3}
@@ -20004,7 +20004,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2160, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -25115,8 +25115,8 @@ Camera:
   m_GameObject: {fileID: 1911726534}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -28174,7 +28174,7 @@ MonoBehaviour:
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
   m_ReferenceResolution: {x: 2160, y: 1080}
-  m_ScreenMatchMode: 0
+  m_ScreenMatchMode: 1
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
@@ -28395,10 +28395,10 @@ SceneRoots:
   - {fileID: 1911726537}
   - {fileID: 1600002579}
   - {fileID: 734316246}
-  - {fileID: 716441295}
-  - {fileID: 1038278718}
   - {fileID: 1537889187}
   - {fileID: 2123676079}
   - {fileID: 608267387}
   - {fileID: 912720246}
   - {fileID: 1587764972}
+  - {fileID: 716441295}
+  - {fileID: 1038278718}
