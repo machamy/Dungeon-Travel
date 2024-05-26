@@ -11,6 +11,7 @@ using System;
 using TMPro;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEditor;
+using static BattleManager;
 
 public class BattleManager : MonoBehaviour
 {    
@@ -107,6 +108,7 @@ public class BattleManager : MonoBehaviour
         */
 
         smallturn = SmallTurnState.END;
+        StartCoroutine("BattleCoroutine");
         FirstTurn();
     }
 
@@ -188,73 +190,66 @@ public class BattleManager : MonoBehaviour
         smallturn = SmallTurnState.START;
     }
 
-    private void Update()
+
+    IEnumerator BattleCoroutine()
     {
-        switch (bState)
+        while (true)
         {
-            case BattleState.START:
-                {
-                    break;
-                }
-            case BattleState.PLAYERTURN:
-                {
-                    if (turnQueue.Count > 0 && smallturn != SmallTurnState.PROCESSING)
+            switch (bState)
+            {
+                case BattleState.START:
                     {
-                        Debug.Log(turnQueue.Peek().ToString() + " 차례");
-                        actmenu.TurnStart(turnQueue.Dequeue());
-                        smallturn = SmallTurnState.PROCESSING;
+                        break;
                     }
-                    else if(turnQueue.Count <= 0 && smallturn != SmallTurnState.PROCESSING)
+                case BattleState.PLAYERTURN:
                     {
-                        EndHalfTurn();
-                    }
-                    break;
-                }
-
-            case BattleState.ENEMYTURN:
-                {
-                    if (bossPrefab != null && bossPrefab.isDead == false)
-                        bossPrefab.Attack();
-
-                    for (int i = 0; i < SpawnCount; i++)
-                    {
-                        if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                        if (turnQueue.Count > 0)
                         {
-                            enemyPrefab[i].Attack();
+                            Debug.Log(turnQueue.Peek().ToString() + " 차례");
+                            actmenu.TurnStart(turnQueue.Dequeue());
+                            smallturn = SmallTurnState.PROCESSING;
+                            yield return new WaitUntil(()=>smallturn != SmallTurnState.PROCESSING);
                         }
+                        else if (turnQueue.Count <= 0)
+                        {
+                            EndHalfTurn();
+                        }
+                        break;
                     }
-                    PlayerTurnOrder();
-                    EndHalfTurn();
-                    break;
-                }
 
-            case BattleState.SECONDTURN:
-                {
-                    break;
-                }
+                case BattleState.ENEMYTURN:
+                    {
+                        if (bossPrefab != null && bossPrefab.isDead == false)
+                            bossPrefab.Attack();
 
-            case BattleState.WIN:
-                {
-                    break;
-                }
+                        for (int i = 0; i < SpawnCount; i++)
+                        {
+                            if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                            {
+                                enemyPrefab[i].Attack();
+                            }
+                        }
+                        PlayerTurnOrder();
+                        EndHalfTurn();
+                        break;
+                    }
 
-            case BattleState.LOSE:
-                {
-                    return;
-                }
+                case BattleState.SECONDTURN:
+                    {
+                        break;
+                    }
+                default:
+                    {
+                        break;
+                    }
+            }
+            if (alivePlayer == 0) Lose();
+            yield return new WaitForSeconds(0.5f);
+            BigTurn.text = "Turn   " + BigTurnCount.ToString();
 
-            default:
-                {
-                    break;
-                }
+            if (alivePlayer == 0) { Lose(); }
         }
-
-        BigTurn.text = "Turn   " + BigTurnCount.ToString();
-
-        if(alivePlayer == 0) { Lose(); }
     }
-
-
     public void WIN()
     {
         endcanvas.SetActive(true);
@@ -268,7 +263,7 @@ public class BattleManager : MonoBehaviour
     {
         endcanvas.SetActive(true);
         Debug.Log("패배");
-        bState = BattleState.LOSE;
+        StopCoroutine("BattleCoroutine");
     }
     public void Attack(Unit attackplayer, Unit damagedplayer, BattleSkill usedSkill)
     {
