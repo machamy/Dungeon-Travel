@@ -48,6 +48,26 @@ namespace Scripts.Manager
             DontDestroyOnLoad(gameObject);
         }
 
+        public delegate void menu();
+        public static event menu Menu;
+        public delegate void cancel();
+        public static event cancel Cancel;
+        public delegate void navigate();
+        public static event navigate Navigate;
+
+        public void OnMenu() => Menu?.Invoke();
+        public void OnCancel() => Cancel?.Invoke();
+
+        GameObject prevButton = null;
+        private void Update()
+        {
+            if (prevButton != GetSelectedButton())
+            {
+                prevButton = GetSelectedButton();
+                Navigate?.Invoke();
+            }
+        }
+
         public IEnumerator WaitForSelectButton(GameObject button)
         {
             yield return null;
