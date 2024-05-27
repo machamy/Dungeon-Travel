@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Scripts.Manager.UIManager;
 
 public class ItemUI : MonoBehaviour
 {
@@ -26,12 +27,14 @@ public class ItemUI : MonoBehaviour
     private void OnEnable()
     {
         GetInventoryItem();
-        MainUI.Cancel += Cancel;
+        UIManager.Cancel += Cancel;
+        UIManager.Navigate += Navigate;
     }
 
     private void OnDisable()
     {
-        MainUI.Cancel -= Cancel;
+        UIManager.Cancel -= Cancel;
+        UIManager.Navigate -= Navigate;
     }
 
     private void Cancel()
@@ -108,7 +111,7 @@ public class ItemUI : MonoBehaviour
         depth = UIDepth.CharacterSelect;
     }
 
-    private void Update()
+    private void Navigate()
     {
         itemDescriptionText.text = UIManager.Instance.GetSelectedItemDescription();
     }

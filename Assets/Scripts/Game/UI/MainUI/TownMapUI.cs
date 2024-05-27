@@ -11,6 +11,7 @@ using Scripts.Manager;
 using System;
 using UnityEngine.Events;
 using System.Runtime.CompilerServices;
+using static Scripts.Manager.UIManager;
 
 public class TownMapUI : MonoBehaviour
 {
@@ -23,14 +24,21 @@ public class TownMapUI : MonoBehaviour
     public Image dungeonCircle, guildCircle, shopCircle;
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
+    private void Awake()
+    {
+        UIStack.Instance.PushUI(gameObject);
+    }
+
     public void OnEnable()
     {
-        MainUI.Menu += Menu;
+        UIManager.Menu += Menu;
+        UIManager.Navigate += Navigate;
     }
 
     public void OnDisable()
     {
-        MainUI.Menu -= Menu;
+        UIManager.Menu -= Menu;
+        UIManager.Navigate -= Navigate;
     }
 
 
@@ -39,7 +47,7 @@ public class TownMapUI : MonoBehaviour
         UIStack.Instance.PushUI(mainMenuCanvas);
     }
 
-    private void Update()
+    private void Navigate()
     {
         selectedButtonName = UIManager.Instance.GetSelectedButtonName();
         switch (selectedButtonName)
