@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Scripts.DebugConsole;
+using Scripts.Game.Dungeon;
 using Scripts.Game.Dungeon.Unit;
 using Scripts.Manager;
 
@@ -23,7 +24,7 @@ namespace Scripts.Manager
         public const string NAME = "@Game";
         private static GameManager instance;
 
-        public QuraterviewCamera qCamera;
+        public AbstractCamera qCamera;
 
         public InputActionMap PlayerActionMap;
         public InputActionMap UIActionMap;
