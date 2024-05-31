@@ -32,7 +32,7 @@ public class UIStack : MonoBehaviour
 
     public void init()
     {
-        //DontDestroyOnLoad(gameObject);
+        DontDestroyOnLoad(gameObject);
     }
 
 
@@ -56,7 +56,7 @@ public class UIStack : MonoBehaviour
         currentUI = menu;
 
         //instance.buttonStack.Push(UIManager.Instance.GetSelectedButton());
-        SetDefaultButton(currentUI);
+        //SetDefaultButton(currentUI);
     }
 
     public void PopUI()

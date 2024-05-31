@@ -31,14 +31,14 @@ public class TownMapUI : MonoBehaviour
 
     public void OnEnable()
     {
-        UIManager.Menu += Menu;
-        UIManager.Navigate += Navigate;
+        InputManager.Menu += Menu;
+        InputManager.Navigate += Navigate;
     }
 
     public void OnDisable()
     {
-        UIManager.Menu -= Menu;
-        UIManager.Navigate -= Navigate;
+        InputManager.Menu -= Menu;
+        InputManager.Navigate -= Navigate;
     }
 
 

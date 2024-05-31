@@ -5,18 +5,58 @@ using UnityEngine;
 
 public class MainMenuUI : MonoBehaviour
 {
+    public GameObject itemButton;
+
+    public GameObject itemCanvas;
+    public GameObject skillCanvas;
+    public GameObject equipCanvas;
+    public GameObject statusCanvas;
+    public GameObject partyCanvas;
+    public GameObject configCanvas;
+
     private void OnEnable()
     {
-        UIManager.Cancel += Cancel;
+        UIManager.Instance.SelectButton(itemButton);
+        InputManager.Cancel += Cancel;
     }
 
     private void OnDisable()
     {
-        UIManager.Cancel -= Cancel;
+        InputManager.Cancel -= Cancel;
     }
 
     private void Cancel()
     {
         UIStack.Instance.PopUI();
+    }
+
+    public void Item()
+    {
+        UIStack.Instance.PushUI(itemCanvas);
+    }
+
+    public void Skill()
+    {
+        UIStack.Instance.PushUI(skillCanvas);
+    }
+
+    public void Equip()
+    {
+        UIStack.Instance.PushUI(equipCanvas);
+    }
+
+    public void Status()
+    {
+        UIStack.Instance.PushUI(statusCanvas);
+    }
+
+    public void Party()
+    {
+        UIStack.Instance.PushUI(partyCanvas);
+    }
+
+    public void Config()
+    {
+        UIStack.Instance.PushUI(configCanvas);
     }
 }

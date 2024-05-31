@@ -9,7 +9,7 @@ using static Scripts.Manager.UIManager;
 public class ItemUI : MonoBehaviour
 {
     public GameObject itemButtonPrefab;
-    public GameObject prefabParent;
+    public GameObject buttonParent;
     private GameObject selectedItem;
 
     public GameObject useButton, characterButton;
@@ -21,42 +21,46 @@ public class ItemUI : MonoBehaviour
 
     public enum UIDepth
     {
-        ItemSelect, UseSelect, CharacterSelect
-    } private UIDepth depth = UIDepth.ItemSelect;
+        Item, Use, Character
+    } private UIDepth depth = UIDepth.Item;
 
     private void OnEnable()
     {
         GetInventoryItem();
-        UIManager.Cancel += Cancel;
-        UIManager.Navigate += Navigate;
+        InputManager.Cancel += Cancel;
+        InputManager.Navigate += Navigate;
     }
 
     private void OnDisable()
     {
-        UIManager.Cancel -= Cancel;
-        UIManager.Navigate -= Navigate;
+        InputManager.Cancel -= Cancel;
+        InputManager.Navigate -= Navigate;
     }
 
     private void Cancel()
     {
         switch (depth)
         {
-            case UIDepth.ItemSelect:
-                UIManager.Instance.ClearChildren(prefabParent);
+            case UIDepth.Item:
+                UIManager.Instance.ClearChildren(buttonParent);
                 UIStack.Instance.PopUI();
                 break;
-            case UIDepth.UseSelect:
+            case UIDepth.Use:
                 UIManager.Instance.SelectButton(selectedItem);
                 selectedItem.GetComponent<Image>().color = lightblue;
                 depth--;
                 break;
-            case UIDepth.CharacterSelect:
+            case UIDepth.Character:
                 UIManager.Instance.SelectButton(useButton);
                 blackPanel.SetActive(false);
                 depth--;
                 break;
         }
-        
+    }
+
+    private void Navigate()
+    {
+        itemDescriptionText.text = UIManager.Instance.GetSelectedItemDescription();
     }
 
 
@@ -66,7 +70,7 @@ public class ItemUI : MonoBehaviour
         foreach (string itemName in UIDB.inventoryItemList)
         {
             GameObject buttonPrefab = Instantiate(itemButtonPrefab);
-            buttonPrefab.transform.SetParent(prefabParent.transform);
+            buttonPrefab.transform.SetParent(buttonParent.transform);
 
             Button button = buttonPrefab.GetComponentInChildren<Button>();
             Navigation navigation = button.navigation;
@@ -95,24 +99,20 @@ public class ItemUI : MonoBehaviour
     {
         selectedItem = UIManager.Instance.GetSelectedButton();
         selectedItem.GetComponent<Image>().color = blue;
-        depth = UIDepth.UseSelect;
-        UseSelect();
+        Use();
     }
 
-    private void UseSelect()
+    private void Use()
     {
         UIManager.Instance.SelectButton(useButton);
+        depth = UIDepth.Use;
     }
 
-    public void CharacterSelect()
+    public void Character()
     {
         UIManager.Instance.SelectButton(characterButton);
         blackPanel.SetActive(true);
-        depth = UIDepth.CharacterSelect;
+        depth = UIDepth.Character;
     }
 
-    private void Navigate()
-    {
-        itemDescriptionText.text = UIManager.Instance.GetSelectedItemDescription();
-    }
 }

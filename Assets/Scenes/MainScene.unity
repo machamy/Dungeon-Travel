@@ -2151,6 +2151,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cbff2181ed9daf41b358559bc7e0234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemButton: {fileID: 647548525}
+  itemCanvas: {fileID: 877233448}
+  skillCanvas: {fileID: 753801221}
+  equipCanvas: {fileID: 1410734434}
+  statusCanvas: {fileID: 45554081}
+  partyCanvas: {fileID: 1131262576}
+  configCanvas: {fileID: 1487113926}
 --- !u!1 &137818649
 GameObject:
   m_ObjectHideFlags: 0
@@ -2439,9 +2446,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 753801226}
+        m_TargetAssemblyTypeName: SkillUI, Assembly-CSharp
+        m_MethodName: Skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2769,25 +2776,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569043}
-        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
-        m_MethodName: PushUI
-        m_Mode: 2
+      - m_Target: {fileID: 133531702}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: Equip
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1410734434}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: GetInventoryItem
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1043589619}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -4558,9 +4553,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 753801226}
+        m_TargetAssemblyTypeName: SkillUI, Assembly-CSharp
+        m_MethodName: Skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5602,9 +5597,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 753801226}
+        m_TargetAssemblyTypeName: SkillUI, Assembly-CSharp
+        m_MethodName: Skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6858,10 +6853,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 753801226}
+        m_TargetAssemblyTypeName: SkillUI, Assembly-CSharp
+        m_MethodName: UseCharacter
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -6869,18 +6864,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Scripts.Manager.UIManager, Assembly-CSharp
-        m_MethodName: SelectButton
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &315494769
 MonoBehaviour:
@@ -7295,25 +7278,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569043}
-        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
-        m_MethodName: PushUI
-        m_Mode: 2
+      - m_Target: {fileID: 133531702}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: Skill
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 753801221}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: GetInventoryItem
-        m_Mode: 2
-        m_Arguments:
-          m_ObjectArgument: {fileID: 1664058685}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -11099,7 +11070,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &527075850
 RectTransform:
   m_ObjectHideFlags: 0
@@ -14206,13 +14177,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569043}
-        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
-        m_MethodName: PushUI
-        m_Mode: 2
+      - m_Target: {fileID: 133531702}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: Item
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 877233448}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -14360,7 +14331,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 49868954}
-  - {fileID: 1499087535}
   m_Father: {fileID: 753801225}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
@@ -16028,6 +15998,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f109d3289aeac804c89c256d96c4411e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
+  buttonParent: {fileID: 1664058685}
+  characterButton: {fileID: 1395108465}
+  useButton: {fileID: 315494767}
+  blackPanel: {fileID: 527075849}
 --- !u!1 &753885094
 GameObject:
   m_ObjectHideFlags: 0
@@ -18295,7 +18270,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 877233453}
         m_TargetAssemblyTypeName: ItemUI, Assembly-CSharp
-        m_MethodName: CharacterSelect
+        m_MethodName: Character
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -19019,7 +18994,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
-  prefabParent: {fileID: 1615118387}
+  buttonParent: {fileID: 1615118387}
   useButton: {fileID: 849128810}
   characterButton: {fileID: 164009908}
   blackPanel: {fileID: 949951070}
@@ -21304,8 +21279,6 @@ GameObject:
   - component: {fileID: 984569038}
   - component: {fileID: 984569037}
   - component: {fileID: 984569042}
-  - component: {fileID: 984569044}
-  - component: {fileID: 984569040}
   - component: {fileID: 984569043}
   m_Layer: 0
   m_Name: EventSystem
@@ -21374,18 +21347,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &984569040
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 984569036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8e7fff9d112f134d9b9cfa60d240615, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &984569042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21425,22 +21386,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 984569036}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10e8237b2c3aa0847933eab1dab2550a, type: 3}
+  m_Script: {fileID: 11500000, guid: 98780b02d34a52e4aa6073815849f582, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &984569044
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 984569036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81cc2a0d07b4b95418830a909fdb7b8c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  townMapCanvas: {fileID: 1147759167}
 --- !u!1 &992815230
 GameObject:
   m_ObjectHideFlags: 0
@@ -25496,13 +25444,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569043}
-        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
-        m_MethodName: PushUI
-        m_Mode: 2
+      - m_Target: {fileID: 133531702}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: Party
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1131262576}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -28424,13 +28372,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569043}
-        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
-        m_MethodName: PushUI
-        m_Mode: 2
+      - m_Target: {fileID: 133531702}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: Status
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 45554081}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -28782,9 +28730,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 753801226}
+        m_TargetAssemblyTypeName: SkillUI, Assembly-CSharp
+        m_MethodName: Skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -30970,9 +30918,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 753801226}
+        m_TargetAssemblyTypeName: SkillUI, Assembly-CSharp
+        m_MethodName: Skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -34150,81 +34098,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495339743}
-  m_CullTransparentMesh: 1
---- !u!1 &1499087534
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1499087535}
-  - component: {fileID: 1499087537}
-  - component: {fileID: 1499087536}
-  m_Layer: 5
-  m_Name: BlockPartyPanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1499087535
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499087534}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 652953140}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 500, y: -320}
-  m_SizeDelta: {x: 550, y: 700}
-  m_Pivot: {x: 1, y: 0.5}
---- !u!114 &1499087536
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499087534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 1
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1499087537
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1499087534}
   m_CullTransparentMesh: 1
 --- !u!1 &1508350682
 GameObject:
@@ -42454,13 +42327,13 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 984569043}
-        m_TargetAssemblyTypeName: UIStack, Assembly-CSharp
-        m_MethodName: PushUI
-        m_Mode: 2
+      - m_Target: {fileID: 133531702}
+        m_TargetAssemblyTypeName: MainMenuUI, Assembly-CSharp
+        m_MethodName: Config
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 1487113926}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
