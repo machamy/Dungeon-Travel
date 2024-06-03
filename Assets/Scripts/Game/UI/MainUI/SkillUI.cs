@@ -89,7 +89,7 @@ public class SkillUI : MonoBehaviour
             buttonPrefab.name = itemName;
             buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
 
-            if (posN == 0) firstSkillButton = buttonPrefab;
+            if (posN == 0) firstSkillButton = buttonPrefab.transform.GetChild(1).gameObject;
 
             if (posN == length - 1)
             {

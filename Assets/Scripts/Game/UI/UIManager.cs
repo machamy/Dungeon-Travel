@@ -55,8 +55,8 @@ namespace Scripts.Manager
             EventSystem.current.SetSelectedGameObject(button);
         }
 
-        public void SelectButton(GameObject button) =>
-            StartCoroutine(WaitForSelectButton(button));
+        public void SelectButton(GameObject button) => EventSystem.current.SetSelectedGameObject(button);
+        //StartCoroutine(WaitForSelectButton(button));
 
         public void SelectNavigate(InputActionReference navigation) =>
             ((InputSystemUIInputModule)EventSystem.current.currentInputModule).move =
