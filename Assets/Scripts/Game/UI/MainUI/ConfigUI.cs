@@ -40,6 +40,7 @@ public class ConfigUI : MonoBehaviour
                 UIStack.Instance.PopUI();
                 break;
             case UIDepth.Detail:
+                if (UIManager.Instance.GetSelectedButtonName() != "Dropdown") break;
                 UIManager.Instance.SelectButton(selectedType);
                 selectedType.GetComponent<Image>().color = lightblue;
                 depth--;
