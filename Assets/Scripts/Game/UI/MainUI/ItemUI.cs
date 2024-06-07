@@ -77,7 +77,7 @@ public class ItemUI : MonoBehaviour
             button.onClick.AddListener(delegate { ItemClick(); });
 
             buttonPrefab.name = itemName;
-            buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
+            buttonPrefab.GetComponentsInChildren<TextMeshProUGUI>()[1].text = itemName;
 
             if (posN == 0)
             {

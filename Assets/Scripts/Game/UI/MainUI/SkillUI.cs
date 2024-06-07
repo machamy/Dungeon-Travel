@@ -47,6 +47,7 @@ public class SkillUI : MonoBehaviour
         {
             case UIDepth.Character:
                 UIManager.Instance.ClearChildren(buttonParent);
+                AutoScroll.Instance.posN = 0;
                 UIStack.Instance.PopUI();
                 break;
             case UIDepth.Skill:
@@ -87,7 +88,7 @@ public class SkillUI : MonoBehaviour
             button.onClick.AddListener(delegate { ItemClick(); });
 
             buttonPrefab.name = itemName;
-            buttonPrefab.GetComponentInChildren<TextMeshProUGUI>().text = itemName;
+            buttonPrefab.GetComponentsInChildren<TextMeshProUGUI>()[1].text = itemName;
 
             if (posN == 0) firstSkillButton = buttonPrefab.transform.GetChild(1).gameObject;
 
