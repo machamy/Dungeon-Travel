@@ -110,16 +110,6 @@ namespace Scripts.Manager
                 Destroy(child.gameObject);
         }
 
-        
-
-        public int GetTabIndex(InputValue value, int now, int max)
-        {
-            int axis = (int)value.Get<float>();
-            if (axis == 0) return -1;
-            if (now + axis < 1 || now + axis > max) return -1;
-
-            return now + axis;
-        }
 
     }
 }

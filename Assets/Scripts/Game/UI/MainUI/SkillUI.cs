@@ -13,7 +13,7 @@ public class SkillUI : MonoBehaviour
 
     public GameObject characterButton, useButton;
 
-    private GameObject firstSkillButton;
+    private GameObject skillButton;
     private GameObject selectedCharacter;
     private GameObject selectedSkill;
 
@@ -46,8 +46,7 @@ public class SkillUI : MonoBehaviour
         switch (depth)
         {
             case UIDepth.Character:
-                UIManager.Instance.ClearChildren(buttonParent);
-                AutoScroll.Instance.posN = 0;
+                ScrollManager.Instance.posN = 0;
                 UIStack.Instance.PopUI();
                 break;
             case UIDepth.Skill:
@@ -71,13 +70,15 @@ public class SkillUI : MonoBehaviour
     private void Navigate()
     {
         if (depth != UIDepth.Character) return;
-        UIManager.Instance.ClearChildren(buttonParent);
         GetInventoryItem();
     }
 
     public void GetInventoryItem() //temp
     {
         int posN = 0; int length = UIDB.inventoryItemList.Count;
+
+        UIManager.Instance.ClearChildren(buttonParent);
+        ScrollManager.Instance.Reset();
         foreach (string itemName in UIDB.inventoryItemList)
         {
             GameObject buttonPrefab = Instantiate(itemButtonPrefab);
@@ -85,12 +86,12 @@ public class SkillUI : MonoBehaviour
 
             Button button = buttonPrefab.GetComponentInChildren<Button>();
             Navigation navigation = button.navigation;
-            button.onClick.AddListener(delegate { ItemClick(); });
+            button.onClick.AddListener(delegate { SkillClick(); });
 
             buttonPrefab.name = itemName;
             buttonPrefab.GetComponentsInChildren<TextMeshProUGUI>()[1].text = itemName;
 
-            if (posN == 0) firstSkillButton = buttonPrefab.transform.GetChild(1).gameObject;
+            if (posN == 0) skillButton = buttonPrefab.transform.GetChild(1).gameObject;
 
             if (posN == length - 1)
             {
@@ -108,10 +109,10 @@ public class SkillUI : MonoBehaviour
         depth = UIDepth.Skill;
         selectedCharacter = UIManager.Instance.GetSelectedButton();
         selectedCharacter.GetComponent<Image>().color = blue;
-        UIManager.Instance.SelectButton(firstSkillButton);
+        UIManager.Instance.SelectButton(skillButton);
     }
 
-    private void ItemClick()
+    private void SkillClick()
     {
         selectedSkill = UIManager.Instance.GetSelectedButton();
         selectedSkill.GetComponent<Image>().color = blue;

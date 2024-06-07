@@ -42,7 +42,6 @@ public class ItemUI : MonoBehaviour
         switch (depth)
         {
             case UIDepth.Item:
-                UIManager.Instance.ClearChildren(buttonParent);
                 UIStack.Instance.PopUI();
                 break;
             case UIDepth.Use:
@@ -67,6 +66,9 @@ public class ItemUI : MonoBehaviour
     public void GetInventoryItem()
     {
         int posN = 0; int length = UIDB.inventoryItemList.Count;
+
+        UIManager.Instance.ClearChildren(buttonParent);
+        ScrollManager.Instance.Reset();
         foreach (string itemName in UIDB.inventoryItemList)
         {
             GameObject buttonPrefab = Instantiate(itemButtonPrefab);

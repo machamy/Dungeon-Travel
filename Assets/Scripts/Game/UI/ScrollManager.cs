@@ -6,10 +6,11 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using static InputManager;
 
-public class AutoScroll : MonoBehaviour
+public class ScrollManager : MonoBehaviour
 {
-    public static AutoScroll Instance { get; private set; }
+    public static ScrollManager Instance { get; private set; }
     private void Awake() => Instance = this; //temporary singleton
 
     public int height = 80, amount = 6;
@@ -18,7 +19,17 @@ public class AutoScroll : MonoBehaviour
 
     private GameObject selectedButton;
 
-    private void Update()
+    private void OnEnable()
+    {
+        InputManager.Navigate += Navigate;
+    }
+
+    private void OnDisable()
+    {
+        InputManager.Navigate -= Navigate;
+    }
+
+    private void Navigate()
     {
         selectedButton = UIManager.Instance.GetSelectedButton();
 
@@ -42,5 +53,9 @@ public class AutoScroll : MonoBehaviour
         transform.localPosition = new Vector3(316.5f, posY, 0);
     }
 
+    public void Reset()
+    {
+        posN = posNInScreen = posY = 0;
+    }
 
 }

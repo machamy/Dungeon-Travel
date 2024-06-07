@@ -3122,9 +3122,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 1410734439}
+        m_TargetAssemblyTypeName: EquipUI, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -14449,9 +14449,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 1410734439}
+        m_TargetAssemblyTypeName: EquipUI, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -16375,9 +16375,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 1410734439}
+        m_TargetAssemblyTypeName: EquipUI, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31686,6 +31686,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb746c288728a51478207e498d5d7408, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  itemButtonPrefab: {fileID: 2539537350096080991, guid: dbde93234d20bce458c3422e9cab36e8, type: 3}
+  buttonParent: {fileID: 1043589619}
+  characterButton: {fileID: 1887049614}
+  beforeAfterPanel: {fileID: 169709149}
+  tabContainer: {fileID: 2128585534}
 --- !u!1 &1411880066
 GameObject:
   m_ObjectHideFlags: 0
@@ -34510,9 +34515,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 1410734439}
+        m_TargetAssemblyTypeName: EquipUI, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -41070,9 +41075,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: MainUI, Assembly-CSharp
-        m_MethodName: CharacterClick
+      - m_Target: {fileID: 1410734439}
+        m_TargetAssemblyTypeName: EquipUI, Assembly-CSharp
+        m_MethodName: Item
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
