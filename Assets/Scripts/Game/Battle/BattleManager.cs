@@ -51,10 +51,10 @@ public class BattleManager : MonoBehaviour
     public GameObject[] playerStation;
     private GameObject[] playerGO = new GameObject[5];
 
-    public HUDmanager[] HUDs = new HUDmanager[6];
+    public HUDmanager[] HUDs;
     public GameObject[] playerPrefab;
-    public HUDmanager[] playerHUD = new HUDmanager[6];
-    public HUDmanager[] enemyHUD = new HUDmanager[6];
+    public HUDmanager[] playerHUD;
+    public HUDmanager[] enemyHUD;
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
     Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
@@ -87,7 +87,7 @@ public class BattleManager : MonoBehaviour
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playeroutline[i] = playerGO[i].GetComponent<SpriteOutline>();
             playerunit[i] = playerGO[i].GetComponent<Unit>();
-            playerunit[i].Connect(this, HUDs[i]);
+            playerunit[i].Connect(this, playerHUD[i]);
         }
         actmenu.GetUnitComp(playerunit, playeroutline);
         alivePlayer = playerPrefab.Length;
@@ -137,7 +137,6 @@ public class BattleManager : MonoBehaviour
             string sprite_name = Convert.ToString(floor) + "F_" + name;
             SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
             image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
-            cloneEnemy.AddComponent<BuffManager>();
 
             if (boss)
             {

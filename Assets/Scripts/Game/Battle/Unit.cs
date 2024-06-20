@@ -19,15 +19,25 @@ public class Unit : MonoBehaviour
     public bool isguard;
     public BattleManager battleManager;
 
-    public void Awake()
+    public Unit() { }
+    public Unit(BattleManager BM, HUDmanager hud)
     {
-        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "Infomation panel", Property = "fire",Cost = 30};
+        battleManager = BM;
+        HUD = hud;
+        HUD.SetupHUD(this);
+        atk = 5;
+
+        maxHP = 50; maxMP = 50; currentHP = 50; currentMP = 50;
+
+        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "Infomation panel", Property = "fire", Cost = 30 };
         skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
         skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
         skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
-    }
 
-    public int position = -1;
+        Debug.Log("ㅎㅇ");
+    }
+    public int atk;
+    //public int position = -1;
 
     public string unitName;
     public string className;
@@ -42,10 +52,10 @@ public class Unit : MonoBehaviour
     public bool isdead = false;
     private HUDmanager HUD;
 
-    public void Connect(BattleManager battlemanager, HUDmanager HUD)
+    public void Connect(BattleManager bm, HUDmanager hud)
     {
-        this.battleManager = battlemanager;
-        this.HUD = HUD;
+        battleManager = bm;
+        HUD = hud;
         HUD.SetupHUD(this);
     }
 

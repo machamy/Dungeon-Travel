@@ -8,15 +8,13 @@ using Scripts.Entity;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class Enemy_Base
+public class Enemy_Base : Unit
 {
-    private BattleManager battleManager;
-    private HUDmanager HUD;
-
     public bool isDead = false;
     public float hp;
     private Enemy enemy;
     private Boss boss;
+
     public enum AttackProperty
     {
         Physics, // 물리
@@ -26,24 +24,19 @@ public class Enemy_Base
     {
         this.enemy = enemy;
         hp = enemy.enemyStatData.hp;
+        maxHP = enemy.enemyStatData.hp;
+        currentHP = enemy.enemyStatData.hp;
     }
     public Enemy_Base(Boss boss)
     {
         this.boss = boss;
     }
 
-    public void Connect(BattleManager battlemanager, HUDmanager HUD)
-    {
-        this.battleManager = battlemanager;
-        this.HUD = HUD;
-        HUD.SetupHUDenemy(this);
-    }
 
     public float Agi
     {
         get { return enemy.enemyStatData.agi; }
     }
-
 
     public float Hp
     {
