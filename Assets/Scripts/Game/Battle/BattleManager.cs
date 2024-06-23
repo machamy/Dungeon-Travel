@@ -35,14 +35,14 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
-    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, WIN, LOSE, END}  //전투상태 열거형
+    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, END}  //전투상태 열거형
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum SmallTurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
     public SmallTurnState smallturn { get; set; }
 
     private Queue<Unit> turnQueue = new Queue<Unit>();
-    public int alivePlayer;
+    public int alivePlayer, aliveEnemy;
     
     private int[] agi_rank;
 
@@ -59,7 +59,7 @@ public class BattleManager : MonoBehaviour
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
     Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
     Boss bossPrefab;
-    Enemy_Base enemy_Base = null;
+    Enemy_Base[] enemy_Base = new Enemy_Base[4];
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
     private SpriteOutline[] playerOutlines = new SpriteOutline[6], enemyOutlines = new SpriteOutline[4];
@@ -145,14 +145,14 @@ public class BattleManager : MonoBehaviour
             if (boss)
             {
                 bossPrefab = new Boss();
-                enemy_Base = bossPrefab.NewBoss(floor, name,cloneEnemy);
+                enemy_Base[SpawnCount] = bossPrefab.NewBoss(floor, name,cloneEnemy);
             }
             else
             {
                 enemyPrefab[SpawnCount] = new Enemy();
-                enemy_Base = enemyPrefab[SpawnCount].NewEnemy(floor, name,cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성 
+                enemy_Base[SpawnCount] = enemyPrefab[SpawnCount].NewEnemy(floor, name,cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성 
             }
-            enemy_Base.Connect(this, enemyHUD[SpawnCount]);
+            enemy_Base[SpawnCount].Connect(this, enemyHUD[SpawnCount]);
             SpawnCount++;
         }
         catch
@@ -207,7 +207,7 @@ public class BattleManager : MonoBehaviour
                             Debug.Log(turnQueue.Peek().ToString() + " 차례");
                             actmenu.TurnStart(turnQueue.Dequeue());
                             smallturn = SmallTurnState.PROCESSING;
-                            yield return new WaitUntil(()=>smallturn != SmallTurnState.PROCESSING);
+                            yield return new WaitUntil(() => smallturn != SmallTurnState.PROCESSING);
                         }
                         else if (turnQueue.Count <= 0)
                         {
@@ -247,12 +247,18 @@ public class BattleManager : MonoBehaviour
             BigTurn.text = "Turn   " + BigTurnCount.ToString();
 
             if (alivePlayer == 0) { Lose(); }
+            if (SpawnCount == 0) { WIN(); }
         }
     }
+
+    /// <summary>
+    /// 배틀 승리시 실행
+    /// </summary>
     public void WIN()
     {
         endcanvas.SetActive(true);
-        bState = BattleState.WIN;
+        Debug.Log("승리");
+        StopCoroutine("BattleCoroutine");
     }
 
     /// <summary>
@@ -264,16 +270,21 @@ public class BattleManager : MonoBehaviour
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
     }
-    public void Attack()
+    public void Attack(int attackedUnit)
     {
-        
+        enemy_Base[attackedUnit].TakeDamage(5, 0);
     }
 
     public void SmallTurnEnd()
     {
         smallturn = SmallTurnState.END;
     }
-    public void DeadPlayer()
+
+    public void EnemyDead()
+    {
+        SpawnCount--;
+    }
+    public void PlayerDead()
     {
         alivePlayer--;
     }

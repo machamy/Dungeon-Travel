@@ -4,11 +4,11 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class SpriteOutline : MonoBehaviour
 {
-    private Color color = Color.red;
+    private Color color;
     private bool OnOff;
 
     [Range(0, 16)]
-    public int outlineSize = 2;
+    public int outlineSize;
 
     private SpriteRenderer spriteRenderer;
 
@@ -16,7 +16,10 @@ public class SpriteOutline : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateOutline(false);
+        color = Color.red;
+        outlineSize = 3;
     }
+
     public void UpdateOutline(bool outline)
     {
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();

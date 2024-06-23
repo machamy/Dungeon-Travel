@@ -22,6 +22,8 @@ public class Unit : MonoBehaviour
     public Unit() { }
     public Unit(BattleManager BM, HUDmanager hud)
     {
+        isDead = false;
+        isPlayer = true;
         battleManager = BM;
         HUD = hud;
         HUD.SetupHUD(this);
@@ -37,7 +39,6 @@ public class Unit : MonoBehaviour
         Debug.Log("ㅎㅇ");
     }
     public int atk;
-    //public int position = -1;
 
     public string unitName;
     public string className;
@@ -49,7 +50,8 @@ public class Unit : MonoBehaviour
     public float currentHP;
     public float currentMP;
 
-    public bool isdead = false;
+    public bool isPlayer;
+    public bool isDead;
     private HUDmanager HUD;
 
     public void Connect(BattleManager bm, HUDmanager hud)
@@ -61,17 +63,18 @@ public class Unit : MonoBehaviour
 
     public void TakeDamage(float damage, AttackType attackType)  //유닛 체력 계산
     {
-        if(isdead) return;
+        if(isDead) return;
 
         currentHP -= damage;
         if(currentHP <= 0)
         {
             Debug.Log(unitName + " 사망");
             currentHP = 0;
-            isdead = true;
+            isDead = true;
             HUD.DeadColor();
             HUD.UpdateHUD(0, maxHP);
-            battleManager.DeadPlayer();
+            if (isPlayer) { battleManager.PlayerDead(); }
+            else { battleManager.EnemyDead(); }
             return;
         }
 

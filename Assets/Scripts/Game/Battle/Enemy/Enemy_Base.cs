@@ -10,7 +10,6 @@ using UnityEngine.UIElements;
 
 public class Enemy_Base : Unit
 {
-    public bool isDead = false;
     public float hp;
     private Enemy enemy;
     private Boss boss;
@@ -22,6 +21,7 @@ public class Enemy_Base : Unit
     }
     public Enemy_Base(Enemy enemy)
     {
+        isPlayer = false;
         this.enemy = enemy;
         hp = enemy.enemyStatData.hp;
         maxHP = enemy.enemyStatData.hp;
@@ -29,6 +29,7 @@ public class Enemy_Base : Unit
     }
     public Enemy_Base(Boss boss)
     {
+        isPlayer = false;
         this.boss = boss;
         hp = enemy.enemyStatData.hp;
         maxHP = enemy.enemyStatData.hp;
