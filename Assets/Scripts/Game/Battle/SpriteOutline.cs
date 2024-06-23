@@ -17,18 +17,7 @@ public class SpriteOutline : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         UpdateOutline(false);
     }
-
-    public void OffOutline()
-    {
-        UpdateOutline(false);
-    }
-
-    public void OnOutline()
-    {
-        UpdateOutline(true);
-    }
-
-    void UpdateOutline(bool outline)
+    public void UpdateOutline(bool outline)
     {
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         spriteRenderer.GetPropertyBlock(mpb);

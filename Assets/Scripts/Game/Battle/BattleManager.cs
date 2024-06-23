@@ -62,13 +62,14 @@ public class BattleManager : MonoBehaviour
     Enemy_Base enemy_Base = null;
     int SpawnCount; // 스폰장소 지정 변수
     private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
-    private SpriteOutline[] playeroutline = new SpriteOutline[6];
+    private SpriteOutline[] playerOutlines = new SpriteOutline[6], enemyOutlines = new SpriteOutline[4];
 
     public bool isEncounter;
 
     public int BigTurnCount;
     public TextMeshProUGUI BigTurn;
     public GameObject endcanvas;
+    public Material spriteOutline;
 
 
     private void Awake()
@@ -85,11 +86,10 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < playerPrefab.Length; i++)
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
-            playeroutline[i] = playerGO[i].GetComponent<SpriteOutline>();
+            playerOutlines[i] = playerGO[i].GetComponent<SpriteOutline>();
             playerunit[i] = playerGO[i].GetComponent<Unit>();
             playerunit[i].Connect(this, playerHUD[i]);
         }
-        actmenu.GetUnitComp(playerunit, playeroutline);
         alivePlayer = playerPrefab.Length;
 
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
@@ -97,6 +97,7 @@ public class BattleManager : MonoBehaviour
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         EnemySpawn(1, "슬라임");
 
+        actmenu.GetUnitComponent(playerunit, playerOutlines, enemyOutlines);
         /*if (isEncounter) //첫 턴 플로우차트
         {
             if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); }
@@ -137,6 +138,9 @@ public class BattleManager : MonoBehaviour
             string sprite_name = Convert.ToString(floor) + "F_" + name;
             SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
             image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
+            image.material = spriteOutline;
+            enemyOutlines[SpawnCount] = cloneEnemy.AddComponent<SpriteOutline>();
+            cloneEnemy.AddComponent<BuffManager>();
 
             if (boss)
             {
@@ -172,10 +176,6 @@ public class BattleManager : MonoBehaviour
         {
             turnQueue.Enqueue(kvp.Key);
         }
-    }
-    
-    public void EnemyTrun()
-    {
     }
 
     public void EndHalfTurn()
@@ -264,7 +264,7 @@ public class BattleManager : MonoBehaviour
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
     }
-    public void Attack<T1,T2>(T1 attackUnit, T2 damagedUnit)
+    public void Attack()
     {
         
     }

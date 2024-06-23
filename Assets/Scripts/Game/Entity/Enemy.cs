@@ -30,8 +30,8 @@ namespace Scripts.Entity
         public void Attack()
         {
             BuffManager buffManager = gameObject.GetComponent<BuffManager>();
-            if (buffManager.debuffDic.ContainsKey(DebuffType.Stun)) // 기절이라면 공격 함수 실행 x
-                return;
+            //if (buffManager.debuffDic.ContainsKey(DebuffType.Stun)) // 기절이라면 공격 함수 실행 x
+               // return;
             int[] weightArr = new int[5];
             foreach (SkillData skilldata in  skillDatas)
             {

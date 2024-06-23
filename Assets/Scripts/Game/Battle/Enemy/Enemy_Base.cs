@@ -30,6 +30,9 @@ public class Enemy_Base : Unit
     public Enemy_Base(Boss boss)
     {
         this.boss = boss;
+        hp = enemy.enemyStatData.hp;
+        maxHP = enemy.enemyStatData.hp;
+        currentHP = enemy.enemyStatData.hp;
     }
 
 

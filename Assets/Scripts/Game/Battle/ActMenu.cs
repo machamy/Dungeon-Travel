@@ -11,6 +11,7 @@ public class ActMenu : MonoBehaviour
     public enum Acting { Attack, Skill, Guard, Item }
     public enum ActState { Waiting , ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, SetUpGuard, EndTurn }
 
+    public EventSystem eventSystem;
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu, guardmenu;
     public UnityEngine.UI.Button[] PlayerStation;
@@ -34,7 +35,8 @@ public class ActMenu : MonoBehaviour
     public ActState aState;
 
     private Unit[] units = new Unit[6];
-    private SpriteOutline[] outlines = new SpriteOutline[6];
+    private SpriteOutline[] playerOutlines = new SpriteOutline[6];
+    private SpriteOutline[] enemyOutlines = new SpriteOutline[4];
 
     private Unit turnunit;
     private SpriteOutline turnoutline;
@@ -66,12 +68,11 @@ public class ActMenu : MonoBehaviour
         ChooseAct();
     }
 
-    public void GetUnitComp(Unit[] getunits, SpriteOutline[] getoutlines)
+    public void GetUnitComponent(Unit[] getunits, SpriteOutline[] playeroutlines, SpriteOutline[] enemyoutlines)
     {
         units = getunits;
-        outlines = getoutlines;
-
-        if (outlines[0] == null) { Debug.Log("null"); }
+        playerOutlines = playeroutlines;
+        enemyOutlines = enemyoutlines;
     }
 
     private void ChooseAct()
@@ -116,13 +117,33 @@ public class ActMenu : MonoBehaviour
         else { PlayerStation[0].Select();}
     }
 
-    public void OnPlayerOutline(int outlineUnit)
+    public void OnPlayerOutline(int outlineNumber)
     {
-        outlines[outlineUnit].OnOutline();
+        try
+        {
+            if (outlineNumber >= 10)
+                enemyOutlines[outlineNumber - 10].UpdateOutline(true);
+            else
+                playerOutlines[outlineNumber].UpdateOutline(true);
+        }
+        catch
+        {
+            Debug.Log("유닛 없음: on");
+        }
     }
-    public void OffPlayerOutline(int outlineUnit)
+    public void OffPlayerOutline(int outlineNumber)
     {
-        outlines[outlineUnit].OffOutline();
+        try
+        {
+            if (outlineNumber >= 10)
+                enemyOutlines[outlineNumber - 10].UpdateOutline(false);
+            else
+                playerOutlines[outlineNumber].UpdateOutline(false);
+        }
+        catch
+        {
+            Debug.Log("유닛 없음: off");
+        }
     }
     public void ChangeItemInfo(int i)
     {
