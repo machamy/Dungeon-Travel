@@ -10,10 +10,8 @@ public class HUDmanager : MonoBehaviour
 
     public TMP_Text playerNameText;
 
-    private Unit unit;
-
     private float HP, MP;
-    private float _maxHP, _maxMP;
+    private float maxHP, maxMP;
 
     /// <summary>
     /// 유닛 소환될 때
@@ -21,34 +19,31 @@ public class HUDmanager : MonoBehaviour
     /// <param name="unit"></param>
     public void SetupHUD(Unit unit)
     {
-        _maxHP = unit.maxHP;
-        _maxMP = unit.maxMP;
+        maxHP = unit.maxHP;
+        maxMP = unit.maxMP;
 
         HP = unit.maxHP;
         MP = unit.maxMP;
 
-        HPslider.value = HP / _maxHP;
-        MPslider.value = MP / _maxMP;
+        HPslider.value = HP / maxHP;
+        MPslider.value = MP / maxMP;
 
-        HPtext.text = HP + "/" + _maxHP;
-        MPtext.text = MP + "/" + _maxMP;
+        HPtext.text = HP + "/" + maxHP;
+        MPtext.text = MP + "/" + maxMP;
 
         playerNameText.text = unit.unitName;
 
         this.gameObject.SetActive(true);
     }
 
-    public void SetupHUDenemy(Enemy_Base unit)
-    {   
-        HPslider.value = 1;
-        MPslider.value = 1;
-
-        this.gameObject.SetActive(true);
-    }
-
-    public void Asset()
+    public void Dead()
     {
-        
+        HP = 0;
+        UpdateHUD(0, maxHP);
+
+        //HUD 색상 변경
+        Image deadpanel = GetComponent<Image>();
+        deadpanel.color = new Color(0.5f, 0.5f, 0.5f, 0.4f);
     }
 
     /// <summary>
@@ -58,16 +53,10 @@ public class HUDmanager : MonoBehaviour
     /// <param name="currentMP"></param>
     public void UpdateHUD(float currentHP, float currentMP)
     {
-        HPslider.value = currentHP / _maxHP;
-        MPslider.value = currentMP / _maxMP;
+        HPslider.value = currentHP / maxHP;
+        MPslider.value = currentMP / maxMP;
 
-        HPtext.text = currentHP + "/" + _maxHP;
-        MPtext.text = currentMP + "/" + _maxMP;
-    }
-
-    public void DeadColor()
-    {
-        Image deadpanel = GetComponent<Image>();
-        deadpanel.color = new Color(0.5f,0.5f,0.5f,0.4f);
+        HPtext.text = currentHP + "/" + maxHP;
+        MPtext.text = currentMP + "/" + maxMP;
     }
 }

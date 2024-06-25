@@ -14,16 +14,14 @@ namespace Scripts.Entity
         public GameObject gameObject = null;
         float currentHp;
         bool passiveTrigger = false;
-        public bool isDead = false;
         Enemy_Skill skill = new Enemy_Skill();
-        public Enemy_Base NewBoss(int floor, string name,GameObject gameObject)
+        public void NewBoss(int floor, string name,GameObject gameObject)
         {
             this.gameObject = gameObject;
             enemyStatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
             skillLists = skill.GetSkillList(floor, name);
             currentHp = enemyStatData.hp;
-            return new Enemy_Base(this);
         }
         public float Agi
         {
@@ -60,18 +58,6 @@ namespace Scripts.Entity
                 if (buffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
                     weight = 0;
                 skillLists[weight].Invoke(skillDatas[weight], enemyStatData);
-            }
-        }
-
-        public void GetDamaged(float damage, AttackType attackType)
-        {
-            if (isDead) return;
-
-            currentHp -= damage;
-            if (currentHp <= 0)
-            {
-                isDead = true;
-                UnityEngine.Object.Destroy(gameObject);
             }
         }
     }

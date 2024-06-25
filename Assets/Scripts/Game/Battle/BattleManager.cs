@@ -37,31 +37,27 @@ public class BattleManager : MonoBehaviour
     #endregion
 
     public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, END}  //전투상태 열거형
-    public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum SmallTurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
     public SmallTurnState smallturn { get; set; }
 
-    private Queue<Unit> turnQueue = new Queue<Unit>();
-    public int alivePlayer, aliveEnemy;
+    private Queue<int> turnQueue = new Queue<int>();
+    private int alivePlayer, aliveEnemy;
     
     private int[] agi_rank;
 
-    public ActMenu actmenu;
+    public ActMenu actMenu;
 
     public GameObject[] playerStation;
     private GameObject[] playerGO = new GameObject[5];
 
-    public HUDmanager[] HUDs;
     public GameObject[] playerPrefab;
+
     public HUDmanager[] playerHUD;
     public HUDmanager[] enemyHUD;
 
     public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
-    Enemy[] enemyPrefab = new Enemy[4]; // 적을 저장해두는 배열 초기화
-    Boss bossPrefab;
-    Enemy_Base[] enemy_Base = new Enemy_Base[4];
-    int SpawnCount; // 스폰장소 지정 변수
+    int spawnCount; // 스폰장소 지정 변수
     private Unit[] playerUnits = new Unit[6], enemyUnits = new Unit[6];
 
     public bool isEncounter;
@@ -74,7 +70,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        SpawnCount = 0;
+        spawnCount = 0;
         bState = BattleState.START;
         endcanvas.SetActive(false);
         SetupBattle();
@@ -87,7 +83,7 @@ public class BattleManager : MonoBehaviour
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playerUnits[i] = playerGO[i].GetComponent<Unit>();
-            playerUnits[i].Connect(playerHUD[i]);
+            playerUnits[i].InitialSetting(this,playerHUD[i]);
         }
         alivePlayer = playerPrefab.Length;
 
@@ -95,18 +91,9 @@ public class BattleManager : MonoBehaviour
 
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         EnemySpawn(1, "슬라임");
+        aliveEnemy = spawnCount;
 
-        actmenu.GetUnits(playerUnits,enemy_Base);
-        /*if (isEncounter) //첫 턴 플로우차트
-        {
-            if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); }
-            else { bState = BattleState.SECONDTURN; Debug.Log("그냥 턴"); } 
-        }
-        else
-        {
-        }
-        */
-
+        actMenu.GetUnits(playerUnits,enemyUnits);
         smallturn = SmallTurnState.END;
         StartCoroutine("BattleCoroutine");
         FirstTurn();
@@ -129,32 +116,39 @@ public class BattleManager : MonoBehaviour
     {
         try
         {
-            GameObject cloneEnemy = new GameObject($"{name}({SpawnCount})");
+            //게임오브젝트 생성 및 컴포넌트 추가
+            GameObject cloneEnemy = new GameObject($"{name}({spawnCount})");
             SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
             cloneEnemy.AddComponent<BuffManager>();
-            enemyUnits[SpawnCount] = cloneEnemy.AddComponent<Unit>();
-            cloneEnemy.transform.position = EnemySpawnerPoints[SpawnCount].position;
-            cloneEnemy.transform.SetParent(EnemySpawnerPoints[SpawnCount]);
-            cloneEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
+            enemyUnits[spawnCount] = cloneEnemy.AddComponent<Unit>();
 
-            //스프라이트 이미지 설정
+            //게임 오브젝트 위치설정
+            cloneEnemy.transform.position = EnemySpawnerPoints[spawnCount].position;
+            cloneEnemy.transform.SetParent(EnemySpawnerPoints[spawnCount]);
+            cloneEnemy.transform.localScale = new Vector3(5, 5, 1);
+
+            //SpriteRenderer 설정
             string sprite_name = Convert.ToString(floor) + "F_" + name;
             image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
             image.material = spriteOutline;
-            //스프라이트 이미지 설정
 
-            if (boss)
-            {
-                bossPrefab = new Boss();
-                enemy_Base[SpawnCount] = bossPrefab.NewBoss(floor, name, cloneEnemy);
+            //Unit컴포넌트 초기설정
+            enemyUnits[spawnCount].InitialSetting(this,enemyHUD[spawnCount], true);
+
+            if (boss) 
+            { 
+                Boss bossPrefab = new Boss();
+                bossPrefab.NewBoss(floor, name, cloneEnemy);
+                enemyUnits[spawnCount].BossSetting(bossPrefab);
             }
             else
             {
-                enemyPrefab[SpawnCount] = new Enemy();
-                enemy_Base[SpawnCount] = enemyPrefab[SpawnCount].NewEnemy(floor, name,cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+                Enemy enemyPrefab = new Enemy();
+                enemyPrefab.NewEnemy(floor, name, cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+                enemyUnits[spawnCount].EnemySetting(enemyPrefab);
             }
-            enemy_Base[SpawnCount].Connect(enemyHUD[SpawnCount]);
-            SpawnCount++;
+
+            spawnCount++;
         }
         catch
         {
@@ -164,11 +158,11 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        Dictionary<Unit,float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
+        Dictionary<int,float> agi_ranking = new Dictionary<int, float>(); //플레이어끼리 순서 정함
 
         for (int i = 0; i < 5; i++)
         {
-            agi_ranking.Add(playerUnits[i],playerUnits[i].stat.agi);
+            agi_ranking.Add(i,playerUnits[i].stat.agi);
         }
 
         var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
@@ -190,7 +184,6 @@ public class BattleManager : MonoBehaviour
         smallturn = SmallTurnState.START;
     }
 
-
     IEnumerator BattleCoroutine()
     {
         while (true)
@@ -206,7 +199,7 @@ public class BattleManager : MonoBehaviour
                         if (turnQueue.Count > 0)
                         {
                             Debug.Log(turnQueue.Peek().ToString() + " 차례");
-                            actmenu.TurnStart(0);
+                            actMenu.TurnStart(turnQueue.Dequeue());
                             smallturn = SmallTurnState.PROCESSING;
                             yield return new WaitUntil(() => smallturn != SmallTurnState.PROCESSING);
                         }
@@ -219,14 +212,11 @@ public class BattleManager : MonoBehaviour
 
                 case BattleState.ENEMYTURN:
                     {
-                        if (bossPrefab != null && bossPrefab.isDead == false)
-                            bossPrefab.Attack();
-
-                        for (int i = 0; i < SpawnCount; i++)
+                        for (int i = 0; i < spawnCount; i++)
                         {
-                            if (enemyPrefab[i] != null && enemyPrefab[i].isDead == false)
+                            if (enemyUnits[i] != null && !enemyUnits[i].IsDead())
                             {
-                                enemyPrefab[i].Attack();
+                                enemyUnits[i].Attack();
                             }
                         }
                         PlayerTurnOrder();
@@ -243,12 +233,13 @@ public class BattleManager : MonoBehaviour
                         break;
                     }
             }
-            if (alivePlayer == 0) Lose();
-            yield return new WaitForSeconds(0.5f);
+            
             BigTurn.text = "Turn   " + BigTurnCount.ToString();
 
             if (alivePlayer == 0) { Lose(); }
-            if (SpawnCount == 0) { WIN(); }
+            if (aliveEnemy == 0) { WIN(); }
+
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -273,20 +264,11 @@ public class BattleManager : MonoBehaviour
     }
     public void Attack(int attackedUnit)
     {
-        enemy_Base[attackedUnit].TakeDamage(5, 0);
+        enemyUnits[attackedUnit].TakeDamage(5, 0);
     }
 
-    public void EndSmallTurn()
-    {
-        smallturn = SmallTurnState.END;
-    }
+    public void EndSmallTurn() { smallturn = SmallTurnState.END; }
 
-    public void EnemyDead()
-    {
-        SpawnCount--;
-    }
-    public void PlayerDead()
-    {
-        alivePlayer--;
-    }
+    public void EnemyDead() { aliveEnemy--;  }
+    public void PlayerDead() { alivePlayer--; }
 }

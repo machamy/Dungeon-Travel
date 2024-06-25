@@ -14792,9 +14792,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a430d0417fe87a14eae50fbb54bec62e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  alivePlayer: 0
-  aliveEnemy: 0
-  actmenu: {fileID: 608267388}
+  actMenu: {fileID: 608267388}
   playerStation:
   - {fileID: 434891125}
   - {fileID: 1029337046}
@@ -14802,13 +14800,6 @@ MonoBehaviour:
   - {fileID: 1359857661}
   - {fileID: 2143081586}
   - {fileID: 191387240}
-  HUDs:
-  - {fileID: 803658318}
-  - {fileID: 1266412538}
-  - {fileID: 212243843}
-  - {fileID: 1176404469}
-  - {fileID: 253981778}
-  - {fileID: 1513376248}
   playerPrefab:
   - {fileID: 1258213257351392868, guid: 7ce4f14a2d9d8bb43a4168e55944171c, type: 3}
   - {fileID: 8291789612100731223, guid: 34d0d19c7407f3b4da59660f145db3f1, type: 3}
@@ -15082,7 +15073,7 @@ GameObject:
   - component: {fileID: 1084601725}
   - component: {fileID: 1084601724}
   m_Layer: 0
-  m_Name: EnemyStation (11)
+  m_Name: EnemyStation (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15215,14 +15206,14 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 11
+          m_IntArgument: 1
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1038278719}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: SmallTurnEnd
+        m_MethodName: EndSmallTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -21206,7 +21197,7 @@ GameObject:
   - component: {fileID: 1608453315}
   - component: {fileID: 1608453314}
   m_Layer: 0
-  m_Name: EnemyStation (13)
+  m_Name: EnemyStation (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21339,14 +21330,14 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 13
+          m_IntArgument: 3
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1038278719}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: SmallTurnEnd
+        m_MethodName: EndSmallTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -23597,7 +23588,7 @@ GameObject:
   - component: {fileID: 1775062745}
   - component: {fileID: 1775062744}
   m_Layer: 0
-  m_Name: EnemyStation (10)
+  m_Name: EnemyStation (0)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23730,14 +23721,14 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
+          m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1038278719}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: SmallTurnEnd
+        m_MethodName: EndSmallTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -27512,7 +27503,7 @@ GameObject:
   - component: {fileID: 2037507443}
   - component: {fileID: 2037507442}
   m_Layer: 0
-  m_Name: EnemyStation (12)
+  m_Name: EnemyStation (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27645,14 +27636,14 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 12
+          m_IntArgument: 2
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1038278719}
         m_TargetAssemblyTypeName: BattleManager, Assembly-CSharp
-        m_MethodName: SmallTurnEnd
+        m_MethodName: EndSmallTurn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

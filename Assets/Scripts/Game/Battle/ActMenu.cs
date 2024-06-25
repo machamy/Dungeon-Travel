@@ -30,12 +30,10 @@ public class ActMenu : MonoBehaviour
     public TextMeshProUGUI item_property;
     public UnityEngine.UI.Button[] itembuttons;
  
-
-
     public ActState aState;
 
     private Unit[] playerUnits = new Unit[6];
-    private Enemy_Base[] enemyUnits = new Enemy_Base[4];
+    private Unit[] enemyUnits = new Unit[4];
 
     private BattleSkill[] playerskills = new BattleSkill[4];
 
@@ -65,7 +63,7 @@ public class ActMenu : MonoBehaviour
         ChooseAct();
     }
 
-    public void GetUnits(Unit[] playerunits, Enemy_Base[] enemyunits)
+    public void GetUnits(Unit[] playerunits, Unit[] enemyunits)
     {
         playerUnits = playerunits;
         enemyUnits = enemyunits;
@@ -115,10 +113,10 @@ public class ActMenu : MonoBehaviour
         else { PlayerStation[0].Select();}
     }
 
-    public void OnPlayerOutline(int outlineNumber) { playerUnits[outlineNumber].UpdateOutline(true); }
-    public void OffPlayerOutline(int outlineNumber) { playerUnits[outlineNumber].UpdateOutline(false); }
-    public void OnEnemyOutline(int outlineNumber) { enemyUnits[outlineNumber].UpdateOutline(true); }
-    public void OffEnemyOutline(int outlineNumber) { enemyUnits[outlineNumber].UpdateOutline(false); }
+    public void OnPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(true); }
+    public void OffPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(false); }
+    public void OnEnemyOutline(int outlineNumber) { if(enemyUnits[outlineNumber] != null) enemyUnits[outlineNumber].UpdateOutline(true); }
+    public void OffEnemyOutline(int outlineNumber) { if (enemyUnits[outlineNumber] != null) enemyUnits[outlineNumber].UpdateOutline(false); }
 
     public void ChangeItemInfo(int i)
     {

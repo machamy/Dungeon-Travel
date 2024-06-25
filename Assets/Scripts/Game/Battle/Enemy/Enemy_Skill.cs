@@ -5,7 +5,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Data;
-using static Enemy_Base;
 using UnityEditor.PackageManager;
 
 public class Enemy_Skill

@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using Scripts.Entity;
 using Unity.VisualScripting;
 using Scripts.Data;
-using static Enemy_Base;
 using JetBrains.Annotations;
 using Unity.IO.LowLevel.Unsafe;
 using System;
@@ -18,23 +17,6 @@ public class Unit : MonoBehaviour
 
     public SkillData[] skillDatas = new SkillData[4];
     public bool isguard;
-
-    public Unit() { }
-    public Unit(HUDmanager hud)
-    {
-        isDead = false;
-        isPlayer = true;
-        HUD = hud;
-        HUD.SetupHUD(this);
-        atk = 5;
-
-        maxHP = 50; maxMP = 50; currentHP = 50; currentMP = 50;
-
-        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "Infomation panel", Property = "fire", Cost = 30 };
-        skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
-        skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
-        skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
-    }
     public int atk;
 
     public string unitName;
@@ -47,18 +29,58 @@ public class Unit : MonoBehaviour
     public float currentHP;
     public float currentMP;
 
-    public bool isPlayer;
+    public bool isEnemy, isBoss;
     public bool isDead;
     private HUDmanager HUD;
+    private BattleManager battleManager;
 
-    public void Connect(HUDmanager hud)
+    private Enemy enemy;
+    private Boss boss;
+
+    #region 초기세팅
+    public void InitialSetting(BattleManager battleManager, HUDmanager hud, bool isEnemy = false)
     {
-        HUD = hud;
+        this.battleManager = battleManager;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        isEnemy = false; isDead = false;
+
+        atk = 5; maxHP = 50; maxMP = 50; currentHP = 50; currentMP = 50;
+        HUD = hud; HUD.SetupHUD(this);
+
+        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "Infomation panel", Property = "fire", Cost = 30 };
+        skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
+        skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
+        skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
+    }
+
+    public void EnemySetting(Enemy enemy)
+    {
+        isEnemy = true;
+        this.enemy = enemy;
+        maxHP = enemy.enemyStatData.hp;
+        currentHP = enemy.enemyStatData.hp;
         HUD.SetupHUD(this);
     }
 
+    public void BossSetting(Boss boss)
+    {
+        isEnemy = true; isBoss = true;
+        this.boss = boss;
+        maxHP = enemy.enemyStatData.hp;
+        currentHP = enemy.enemyStatData.hp;
+        HUD.SetupHUD(this);
+    }
+    #endregion
 
     #region 배틀관련
+
+    public void Attack()
+    {
+        if(isDead) return;
+        if (isBoss) { boss.Attack(); }
+        else if(isEnemy) { enemy.Attack(); }
+    }
+
     public void TakeDamage(float damage, AttackType attackType)  //유닛 체력 계산
     {
         if(isDead) return;
@@ -66,14 +88,12 @@ public class Unit : MonoBehaviour
         currentHP -= damage;
         if(currentHP <= 0)
         {
-            Debug.Log(unitName + " 사망");
             currentHP = 0;
+            HUD.Dead();
+            Debug.Log(unitName + " 사망");
+            if (isEnemy ) { battleManager.EnemyDead(); }
+            else { battleManager.PlayerDead(); }
             isDead = true;
-            HUD.DeadColor();
-            HUD.UpdateHUD(0, maxHP);
-            if (isPlayer) { BattleManager.Instance.PlayerDead(); }
-            else { BattleManager.Instance.EnemyDead(); }
-            return;
         }
 
         HUD.UpdateHUD(currentHP, currentMP);
@@ -100,22 +120,18 @@ public class Unit : MonoBehaviour
         currentMP -= consume_amount;
         HUD.UpdateHUD(currentHP, currentMP);
     }
+
+    public bool IsDead() { return isDead; }
     #endregion
 
     #region 아웃라인관련
     private Color color = Color.red;
-    private bool OnOff;
-    public int outlineSize = 2;
+    private int outlineSize = 2;
 
     private SpriteRenderer spriteRenderer;
 
-    void OnEnable()
-    {
-        UpdateOutline(false);
-    }
     public void UpdateOutline(bool outline)
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         spriteRenderer.GetPropertyBlock(mpb);
         mpb.SetFloat("_Outline", outline ? 1f : 0);
