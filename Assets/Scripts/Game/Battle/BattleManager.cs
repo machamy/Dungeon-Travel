@@ -35,6 +35,7 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
+
     public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, END}  //전투상태 열거형
     public enum PlayerTurn {None, Player0, Player1, Player2, Player3, Player4};
     public enum SmallTurnState { START, PROCESSING, END } // 턴 상태 열거형
@@ -61,8 +62,7 @@ public class BattleManager : MonoBehaviour
     Boss bossPrefab;
     Enemy_Base[] enemy_Base = new Enemy_Base[4];
     int SpawnCount; // 스폰장소 지정 변수
-    private Unit[] playerunit = new Unit[6], enemyunit = new Unit[6];
-    private SpriteOutline[] playerOutlines = new SpriteOutline[6], enemyOutlines = new SpriteOutline[4];
+    private Unit[] playerUnits = new Unit[6], enemyUnits = new Unit[6];
 
     public bool isEncounter;
 
@@ -86,9 +86,8 @@ public class BattleManager : MonoBehaviour
         for (int i = 0; i < playerPrefab.Length; i++)
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
-            playerOutlines[i] = playerGO[i].GetComponent<SpriteOutline>();
-            playerunit[i] = playerGO[i].GetComponent<Unit>();
-            playerunit[i].Connect(this, playerHUD[i]);
+            playerUnits[i] = playerGO[i].GetComponent<Unit>();
+            playerUnits[i].Connect(playerHUD[i]);
         }
         alivePlayer = playerPrefab.Length;
 
@@ -97,7 +96,7 @@ public class BattleManager : MonoBehaviour
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         EnemySpawn(1, "슬라임");
 
-        actmenu.GetUnitComponent(playerunit, playerOutlines, enemyOutlines);
+        actmenu.GetUnits(playerUnits,enemy_Base);
         /*if (isEncounter) //첫 턴 플로우차트
         {
             if (UnityEngine.Random.value < 0.7f) { bState = BattleState.ENEMYTURN; Debug.Log("적턴"); }
@@ -131,28 +130,30 @@ public class BattleManager : MonoBehaviour
         try
         {
             GameObject cloneEnemy = new GameObject($"{name}({SpawnCount})");
+            SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
+            cloneEnemy.AddComponent<BuffManager>();
+            enemyUnits[SpawnCount] = cloneEnemy.AddComponent<Unit>();
             cloneEnemy.transform.position = EnemySpawnerPoints[SpawnCount].position;
             cloneEnemy.transform.SetParent(EnemySpawnerPoints[SpawnCount]);
             cloneEnemy.transform.localScale = new Vector3(5, 5, 1); // 게임 오브젝트 생성후 스케일 고정까지
 
+            //스프라이트 이미지 설정
             string sprite_name = Convert.ToString(floor) + "F_" + name;
-            SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>(); // 스프라이트 불러오기
             image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
             image.material = spriteOutline;
-            enemyOutlines[SpawnCount] = cloneEnemy.AddComponent<SpriteOutline>();
-            cloneEnemy.AddComponent<BuffManager>();
+            //스프라이트 이미지 설정
 
             if (boss)
             {
                 bossPrefab = new Boss();
-                enemy_Base[SpawnCount] = bossPrefab.NewBoss(floor, name,cloneEnemy);
+                enemy_Base[SpawnCount] = bossPrefab.NewBoss(floor, name, cloneEnemy);
             }
             else
             {
                 enemyPrefab[SpawnCount] = new Enemy();
-                enemy_Base[SpawnCount] = enemyPrefab[SpawnCount].NewEnemy(floor, name,cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성 
+                enemy_Base[SpawnCount] = enemyPrefab[SpawnCount].NewEnemy(floor, name,cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
             }
-            enemy_Base[SpawnCount].Connect(this, enemyHUD[SpawnCount]);
+            enemy_Base[SpawnCount].Connect(enemyHUD[SpawnCount]);
             SpawnCount++;
         }
         catch
@@ -167,7 +168,7 @@ public class BattleManager : MonoBehaviour
 
         for (int i = 0; i < 5; i++)
         {
-            agi_ranking.Add(playerunit[i],playerunit[i].stat.agi);
+            agi_ranking.Add(playerUnits[i],playerUnits[i].stat.agi);
         }
 
         var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
@@ -205,7 +206,7 @@ public class BattleManager : MonoBehaviour
                         if (turnQueue.Count > 0)
                         {
                             Debug.Log(turnQueue.Peek().ToString() + " 차례");
-                            actmenu.TurnStart(turnQueue.Dequeue());
+                            actmenu.TurnStart(0);
                             smallturn = SmallTurnState.PROCESSING;
                             yield return new WaitUntil(() => smallturn != SmallTurnState.PROCESSING);
                         }
@@ -275,7 +276,7 @@ public class BattleManager : MonoBehaviour
         enemy_Base[attackedUnit].TakeDamage(5, 0);
     }
 
-    public void SmallTurnEnd()
+    public void EndSmallTurn()
     {
         smallturn = SmallTurnState.END;
     }

@@ -9,7 +9,7 @@ using UnityEngine.Serialization;
 namespace Scripts.Data
 {
     [Serializable]
-    public class SkillData:ScriptableObject, IDBdata
+    public class SkillData : ScriptableObject, IDBdata
     {
         public ClassType classType;
         public string enemyName;

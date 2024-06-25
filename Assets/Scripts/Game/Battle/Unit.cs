@@ -8,23 +8,22 @@ using Scripts.Data;
 using static Enemy_Base;
 using JetBrains.Annotations;
 using Unity.IO.LowLevel.Unsafe;
+using System;
 
 public class Unit : MonoBehaviour
 {
     public Class _class;
     public DeprecatedStat stat;
-    public SpriteOutline outline;
     public BattleSkill[] skills = new BattleSkill[4];
+
     public SkillData[] skillDatas = new SkillData[4];
     public bool isguard;
-    public BattleManager battleManager;
 
     public Unit() { }
-    public Unit(BattleManager BM, HUDmanager hud)
+    public Unit(HUDmanager hud)
     {
         isDead = false;
         isPlayer = true;
-        battleManager = BM;
         HUD = hud;
         HUD.SetupHUD(this);
         atk = 5;
@@ -35,8 +34,6 @@ public class Unit : MonoBehaviour
         skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
         skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
         skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
-
-        Debug.Log("ㅎㅇ");
     }
     public int atk;
 
@@ -54,13 +51,14 @@ public class Unit : MonoBehaviour
     public bool isDead;
     private HUDmanager HUD;
 
-    public void Connect(BattleManager bm, HUDmanager hud)
+    public void Connect(HUDmanager hud)
     {
-        battleManager = bm;
         HUD = hud;
         HUD.SetupHUD(this);
     }
 
+
+    #region 배틀관련
     public void TakeDamage(float damage, AttackType attackType)  //유닛 체력 계산
     {
         if(isDead) return;
@@ -73,8 +71,8 @@ public class Unit : MonoBehaviour
             isDead = true;
             HUD.DeadColor();
             HUD.UpdateHUD(0, maxHP);
-            if (isPlayer) { battleManager.PlayerDead(); }
-            else { battleManager.EnemyDead(); }
+            if (isPlayer) { BattleManager.Instance.PlayerDead(); }
+            else { BattleManager.Instance.EnemyDead(); }
             return;
         }
 
@@ -102,35 +100,22 @@ public class Unit : MonoBehaviour
         currentMP -= consume_amount;
         HUD.UpdateHUD(currentHP, currentMP);
     }
+    #endregion
 
-
-    //outline 관련 코드
+    #region 아웃라인관련
     private Color color = Color.red;
     private bool OnOff;
-
-    [Range(0, 16)]
     public int outlineSize = 2;
 
     private SpriteRenderer spriteRenderer;
 
     void OnEnable()
     {
+        UpdateOutline(false);
+    }
+    public void UpdateOutline(bool outline)
+    {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateOutline(false);
-    }
-
-    public void OffOutline()
-    {
-        UpdateOutline(false);
-    }
-
-    public void OnOutline()
-    {
-        UpdateOutline(true);
-    }
-
-    void UpdateOutline(bool outline)
-    {
         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
         spriteRenderer.GetPropertyBlock(mpb);
         mpb.SetFloat("_Outline", outline ? 1f : 0);
@@ -138,4 +123,5 @@ public class Unit : MonoBehaviour
         mpb.SetFloat("_OutlineSize", outlineSize);
         spriteRenderer.SetPropertyBlock(mpb);
     }
+    #endregion
 }

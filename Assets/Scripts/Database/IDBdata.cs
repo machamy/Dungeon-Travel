@@ -1,4 +1,4 @@
-﻿namespace Script.Data
+namespace Script.Data
 {
     public interface IDBdata
     {

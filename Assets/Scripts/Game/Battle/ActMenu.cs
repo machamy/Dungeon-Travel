@@ -34,17 +34,13 @@ public class ActMenu : MonoBehaviour
 
     public ActState aState;
 
-    private Unit[] units = new Unit[6];
-    private SpriteOutline[] playerOutlines = new SpriteOutline[6];
-    private SpriteOutline[] enemyOutlines = new SpriteOutline[4];
+    private Unit[] playerUnits = new Unit[6];
+    private Enemy_Base[] enemyUnits = new Enemy_Base[4];
 
-    private Unit turnunit;
-    private SpriteOutline turnoutline;
     private BattleSkill[] playerskills = new BattleSkill[4];
 
-    private int currenttarget, currentskill, currentitem;
-
-    private Unit turnplayer;
+    private int turnPlayerNum;
+    private Unit turnPlayerUnit;
 
     private void Awake()
     {
@@ -59,20 +55,20 @@ public class ActMenu : MonoBehaviour
     /// 현재 턴을 부여받는 플레이어를 받으면 턴을 실행
     /// </summary>
     /// <param name="player"></param>
-    public void TurnStart(Unit player)
+    public void TurnStart(int playerNum)
     {
-        turnplayer = player;
-        playerskills = player.skills;
+        turnPlayerNum = playerNum;
+        turnPlayerUnit = playerUnits[playerNum];
+        playerskills = turnPlayerUnit.skills;
         //abxy.transform.position = player.transform.position;
 
         ChooseAct();
     }
 
-    public void GetUnitComponent(Unit[] getunits, SpriteOutline[] playeroutlines, SpriteOutline[] enemyoutlines)
+    public void GetUnits(Unit[] playerunits, Enemy_Base[] enemyunits)
     {
-        units = getunits;
-        playerOutlines = playeroutlines;
-        enemyOutlines = enemyoutlines;
+        playerUnits = playerunits;
+        enemyUnits = enemyunits;
     }
 
     private void ChooseAct()
@@ -87,12 +83,14 @@ public class ActMenu : MonoBehaviour
     {
         Debug.Log("스킬메뉴");
 
-        playername.text = turnplayer.unitName;
+        playername.text = turnPlayerUnit.unitName;
 
-        for (int i = 0; i <= 3; i++)
+        int skillNumber = 0;
+        while (playerskills[skillNumber] != null)
         {
-            skillname[i].text = playerskills[i].Name;
-            skillcost[i].text = playerskills[i].Cost.ToString() + "MP";
+            skillname[skillNumber].text = playerskills[skillNumber].Name;
+            skillcost[skillNumber].text = playerskills[skillNumber].Cost.ToString() + "MP";
+            skillNumber++;
         }
     }
 
@@ -100,10 +98,10 @@ public class ActMenu : MonoBehaviour
     /// 턴 부여받은 유닛의 스킬로 바꿈
     /// </summary>
     /// <param name="i"></param>
-    public void ChangeSkill_Info(int i)
+    public void ChangeSkill_Info(int skillNumber)
     {
-        skill_info.text = playerskills[i].Infomation;
-        skill_property.text = playerskills[i].Property;
+        skill_info.text = playerskills[skillNumber].Infomation;
+        skill_property.text = playerskills[skillNumber].Property;
     }
 
     /// <summary>
@@ -117,34 +115,11 @@ public class ActMenu : MonoBehaviour
         else { PlayerStation[0].Select();}
     }
 
-    public void OnPlayerOutline(int outlineNumber)
-    {
-        try
-        {
-            if (outlineNumber >= 10)
-                enemyOutlines[outlineNumber - 10].UpdateOutline(true);
-            else
-                playerOutlines[outlineNumber].UpdateOutline(true);
-        }
-        catch
-        {
-            Debug.Log("유닛 없음: on");
-        }
-    }
-    public void OffPlayerOutline(int outlineNumber)
-    {
-        try
-        {
-            if (outlineNumber >= 10)
-                enemyOutlines[outlineNumber - 10].UpdateOutline(false);
-            else
-                playerOutlines[outlineNumber].UpdateOutline(false);
-        }
-        catch
-        {
-            Debug.Log("유닛 없음: off");
-        }
-    }
+    public void OnPlayerOutline(int outlineNumber) { playerUnits[outlineNumber].UpdateOutline(true); }
+    public void OffPlayerOutline(int outlineNumber) { playerUnits[outlineNumber].UpdateOutline(false); }
+    public void OnEnemyOutline(int outlineNumber) { enemyUnits[outlineNumber].UpdateOutline(true); }
+    public void OffEnemyOutline(int outlineNumber) { enemyUnits[outlineNumber].UpdateOutline(false); }
+
     public void ChangeItemInfo(int i)
     {
         item_info.text = items.items[i].infomation;
