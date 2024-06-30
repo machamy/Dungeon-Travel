@@ -93,7 +93,7 @@ public class BattleManager : MonoBehaviour
         EnemySpawn(1, "슬라임");
         aliveEnemy = spawnCount;
 
-        actMenu.GetUnits(playerUnits,enemyUnits);
+        actMenu.SetUnits(playerUnits,enemyUnits);
         smallturn = SmallTurnState.END;
         StartCoroutine("BattleCoroutine");
         FirstTurn();
@@ -261,6 +261,12 @@ public class BattleManager : MonoBehaviour
         endcanvas.SetActive(true);
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
+    }
+    
+
+    public void Attack2(Unit targetUnit, BattleSkill skill)
+    {
+
     }
     public void Attack(int attackedUnit)
     {

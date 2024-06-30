@@ -8596,12 +8596,25 @@ MonoBehaviour:
   skillmenu: {fileID: 715289753}
   itemmenu: {fileID: 836119453}
   guardmenu: {fileID: 1877849200}
-  PlayerStation:
-  - {fileID: 434891127}
-  - {fileID: 1029337048}
-  - {fileID: 1353364490}
-  - {fileID: 2143081588}
-  - {fileID: 191387242}
+  playerStation: []
+  enemyStation: []
+  abxyButtons:
+  - {fileID: 1300993224}
+  - {fileID: 1524837443}
+  - {fileID: 159110144}
+  - {fileID: 1675022153}
+  skillButtons:
+  - {fileID: 1422718229}
+  - {fileID: 1543747143}
+  - {fileID: 1526662454}
+  - {fileID: 1268307527}
+  - {fileID: 708884348}
+  itemButtons:
+  - {fileID: 1089012191}
+  - {fileID: 1480978612}
+  - {fileID: 1839693807}
+  - {fileID: 2101742550}
+  guardButtons: []
   playername: {fileID: 2120782527}
   skillname:
   - {fileID: 1091934880}
@@ -8631,7 +8644,6 @@ MonoBehaviour:
   - {fileID: 1089012191}
   - {fileID: 1480978612}
   - {fileID: 1839693807}
-  aState: 0
 --- !u!1 &613460807
 GameObject:
   m_ObjectHideFlags: 0
@@ -9874,7 +9886,7 @@ GameObject:
   - component: {fileID: 708884349}
   - component: {fileID: 708884348}
   m_Layer: 5
-  m_Name: Button
+  m_Name: BackButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9924,22 +9936,10 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1405966761}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 715289753}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
+      - m_Target: {fileID: 608267388}
+        m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+        m_MethodName: ChooseAct
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -22222,7 +22222,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 608267388}
         m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-        m_MethodName: SetUpSkill
+        m_MethodName: Skill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -28091,33 +28091,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1405966761}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-      - m_Target: {fileID: 836119453}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 1300993224}
-        m_TargetAssemblyTypeName: UnityEngine.UI.Selectable, UnityEngine.UI
-        m_MethodName: Select
+      - m_Target: {fileID: 608267388}
+        m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+        m_MethodName: ChooseAct
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

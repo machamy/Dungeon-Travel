@@ -8,13 +8,18 @@ using UnityEngine.InputSystem;
 
 public class ActMenu : MonoBehaviour
 {
-    public enum Acting { Attack, Skill, Guard, Item }
-    public enum ActState { Waiting , ChooseAct, SetUpAttack, SetUpSkill, SkillTarget, SetUpItem, ItemTarget, SetUpGuard, EndTurn }
-
     public EventSystem eventSystem;
+    private BattleManager battleManager;
     public GameObject ActCanvas;
     public GameObject abxy, skillmenu, itemmenu, guardmenu;
-    public UnityEngine.UI.Button[] PlayerStation;
+
+    public UnityEngine.UI.Button[] playerStation;
+    public UnityEngine.UI.Button[] enemyStation;
+
+    public UnityEngine.UI.Button[] abxyButtons; // a,b,x,y 순서
+    public UnityEngine.UI.Button[] skillButtons; // skill_1, skill_2, skill_3, skill_4, back 순서
+    public UnityEngine.UI.Button[] itemButtons; // item_1, item_2, item_3, back 순서 
+    public UnityEngine.UI.Button[] guardButtons; // o,x 순서
 
     public TextMeshProUGUI playername;
 
@@ -29,13 +34,13 @@ public class ActMenu : MonoBehaviour
     public TextMeshProUGUI item_info;
     public TextMeshProUGUI item_property;
     public UnityEngine.UI.Button[] itembuttons;
- 
-    public ActState aState;
 
     private Unit[] playerUnits = new Unit[6];
     private Unit[] enemyUnits = new Unit[4];
 
-    private BattleSkill[] playerskills = new BattleSkill[4];
+    private BattleSkill[] playerSkills = new BattleSkill[4];
+    private BattleSkill useSkill;
+    private Unit targetUnit;
 
     private int turnPlayerNum;
     private Unit turnPlayerUnit;
@@ -49,6 +54,16 @@ public class ActMenu : MonoBehaviour
         
     }
 
+    public void SetBM(BattleManager battleManager)
+    {
+        this.battleManager = battleManager;
+    }
+    public void SetUnits(Unit[] playerunits, Unit[] enemyunits)
+    {
+        playerUnits = playerunits;
+        enemyUnits = enemyunits;
+    }
+
     /// <summary>
     /// 현재 턴을 부여받는 플레이어를 받으면 턴을 실행
     /// </summary>
@@ -57,39 +72,39 @@ public class ActMenu : MonoBehaviour
     {
         turnPlayerNum = playerNum;
         turnPlayerUnit = playerUnits[playerNum];
-        playerskills = turnPlayerUnit.skills;
-        //abxy.transform.position = player.transform.position;
-
+        playerSkills = turnPlayerUnit.skills;
+        InitialSetting();
         ChooseAct();
     }
 
-    public void GetUnits(Unit[] playerunits, Unit[] enemyunits)
+    private void InitialSetting()
     {
-        playerUnits = playerunits;
-        enemyUnits = enemyunits;
+        playername.text = turnPlayerUnit.unitName;
+
+        int skillNumber = 0;
+        while (playerSkills[skillNumber] != null)
+        {
+            skillname[skillNumber].text = playerSkills[skillNumber].Name;
+            skillcost[skillNumber].text = playerSkills[skillNumber].Cost.ToString() + "MP";
+            skillNumber++;
+        }
     }
 
-    private void ChooseAct()
+    public void ChooseAct()
     {
         abxy.SetActive(true);
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
         guardmenu.SetActive(false);
+        abxyButtons[0].Select();
     }
 
-    public void SetUpSkill()
+    public void Skill()
     {
-        Debug.Log("스킬메뉴");
-
-        playername.text = turnPlayerUnit.unitName;
-
-        int skillNumber = 0;
-        while (playerskills[skillNumber] != null)
-        {
-            skillname[skillNumber].text = playerskills[skillNumber].Name;
-            skillcost[skillNumber].text = playerskills[skillNumber].Cost.ToString() + "MP";
-            skillNumber++;
-        }
+        abxy.SetActive(false);
+        skillmenu.SetActive(true);
+        skillButtons[0].Select();
+        ChangeSkill_Info(0);
     }
 
     /// <summary>
@@ -98,19 +113,31 @@ public class ActMenu : MonoBehaviour
     /// <param name="i"></param>
     public void ChangeSkill_Info(int skillNumber)
     {
-        skill_info.text = playerskills[skillNumber].Infomation;
-        skill_property.text = playerskills[skillNumber].Property;
+        skill_info.text = playerSkills[skillNumber].Infomation;
+        skill_property.text = playerSkills[skillNumber].Property;
     }
 
-    /// <summary>
-    /// 공격 스킬이면 상대를 타겟으로 정하고 아니면 우리팀을 타겟으로 정함
-    /// </summary>
-    /// <param name="skill_ID"></param>
-    public void Skill_Type_check(int skill_ID)
-    {   
-        for(int i = 0; i<5; i++) { PlayerStation[i].interactable = true; }
-        if (playerskills[skill_ID].isAttack) {}
-        else { PlayerStation[0].Select();}
+    public void SkillSelect(int skillNumber)
+    {
+        skillmenu.SetActive(false);
+        useSkill = playerSkills[skillNumber];
+        enemyStation[0].Select();
+    }
+
+    public void SkillTarget(int targetNumber)
+    {
+        targetUnit = enemyUnits[targetNumber];
+    }
+
+    public void ChooseTarget(int setTarget)
+    {
+        // 0~5번은 플레이어 유닛, 100번부터 103은 적 유닛
+        if (setTarget >= 100)
+            targetUnit = enemyUnits[setTarget - 100];
+        else
+            targetUnit = playerUnits[setTarget];
+
+        battleManager.Attack2(targetUnit,useSkill);
     }
 
     public void OnPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(true); }
