@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 4922474874807959688}
   - component: {fileID: -6205443180570946391}
   - component: {fileID: -1032050885001037884}
-  - component: {fileID: 70683195655115691}
   m_Layer: 0
   m_Name: Player (2)
   m_TagString: Untagged
@@ -47,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6badfc3ccdd489c4ea91614248946c81, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _class: {fileID: 0}
   stat:
     hp: 300
     mp: 0
@@ -65,14 +63,18 @@ MonoBehaviour:
     agi: 30
     luk: 0
     vitWeight: 0
-  outline: {fileID: 0}
   skills:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
+  skillDatas:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   isguard: 0
-  position: 2
+  atk: 0
   unitName: Player
   className: 
   unitLevel: 1
@@ -80,7 +82,9 @@ MonoBehaviour:
   maxMP: 0
   currentHP: 100
   currentMP: 0
-  isdead: 0
+  isEnemy: 0
+  isBoss: 0
+  isDead: 0
 --- !u!114 &-6205443180570946391
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -93,8 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281041f33575b4449b71071cb37e2013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSilence: 0
-  isStun: 0
 --- !u!212 &-1032050885001037884
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -147,18 +149,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &70683195655115691
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7228233289732792037}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3bd196aed262bb41bce3c7e53db4655, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 0, a: 1}
-  OnOff: 1
-  outlineSize: 2

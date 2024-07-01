@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 1746835513231258121}
   - component: {fileID: 8206775834126570712}
   - component: {fileID: 6342076012662941930}
-  - component: {fileID: 860499906303939361}
   m_Layer: 0
   m_Name: Player (0)
   m_TagString: Untagged
@@ -64,7 +63,6 @@ MonoBehaviour:
     agi: 50
     luk: 0
     vitWeight: 0
-  outline: {fileID: 860499906303939361}
   skills:
   - {fileID: 0}
   - {fileID: 0}
@@ -75,9 +73,8 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  exampleskill: {fileID: 0}
   isguard: 0
-  position: 0
+  atk: 0
   unitName: Player
   className: 
   unitLevel: 1
@@ -85,7 +82,9 @@ MonoBehaviour:
   maxMP: 0
   currentHP: 100
   currentMP: 0
-  isdead: 0
+  isEnemy: 0
+  isBoss: 0
+  isDead: 0
 --- !u!114 &8206775834126570712
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98,8 +97,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 281041f33575b4449b71071cb37e2013, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSilence: 0
-  isStun: 0
 --- !u!212 &6342076012662941930
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -152,18 +149,3 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &860499906303939361
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1258213257351392868}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3bd196aed262bb41bce3c7e53db4655, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  color: {r: 1, g: 1, b: 0, a: 1}
-  OnOff: 0
-  outlineSize: 2

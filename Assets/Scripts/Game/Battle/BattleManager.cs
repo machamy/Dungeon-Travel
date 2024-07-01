@@ -7,6 +7,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Entity;
+using Scripts.Data;
 using System;
 using TMPro;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -94,6 +95,7 @@ public class BattleManager : MonoBehaviour
         aliveEnemy = spawnCount;
 
         actMenu.SetUnits(playerUnits,enemyUnits);
+        actMenu.SetBM(this);
         smallturn = SmallTurnState.END;
         StartCoroutine("BattleCoroutine");
         FirstTurn();
@@ -264,13 +266,9 @@ public class BattleManager : MonoBehaviour
     }
     
 
-    public void Attack2(Unit targetUnit, BattleSkill skill)
+    public void Attack(Unit targetUnit, float damage, AttackType property)
     {
-
-    }
-    public void Attack(int attackedUnit)
-    {
-        enemyUnits[attackedUnit].TakeDamage(5, 0);
+        targetUnit.TakeDamage(damage,property);
     }
 
     public void EndSmallTurn() { smallturn = SmallTurnState.END; }

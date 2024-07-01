@@ -44,6 +44,7 @@ public class ActMenu : MonoBehaviour
 
     private int turnPlayerNum;
     private Unit turnPlayerUnit;
+    private bool isSkill;
 
     private void Awake()
     {
@@ -96,8 +97,23 @@ public class ActMenu : MonoBehaviour
         skillmenu.SetActive(false);
         itemmenu.SetActive(false);
         guardmenu.SetActive(false);
+        isSkill = false;
         abxyButtons[0].Select();
     }
+
+    public void Attack()
+    {
+        abxy.SetActive(false);
+        enemyStation[0].Select();
+    }
+
+    public void AttackTarget(int targetNumber)
+    {
+        targetUnit = enemyUnits[targetNumber];
+        battleManager.Attack(targetUnit, 5, 0);
+    }
+
+
 
     public void Skill()
     {
@@ -107,39 +123,44 @@ public class ActMenu : MonoBehaviour
         ChangeSkill_Info(0);
     }
 
-    /// <summary>
-    /// 턴 부여받은 유닛의 스킬로 바꿈
-    /// </summary>
-    /// <param name="i"></param>
-    public void ChangeSkill_Info(int skillNumber)
-    {
-        skill_info.text = playerSkills[skillNumber].Infomation;
-        skill_property.text = playerSkills[skillNumber].Property;
-    }
-
     public void SkillSelect(int skillNumber)
     {
         skillmenu.SetActive(false);
         useSkill = playerSkills[skillNumber];
-        enemyStation[0].Select();
-    }
-
-    public void SkillTarget(int targetNumber)
-    {
-        targetUnit = enemyUnits[targetNumber];
-    }
-
-    public void ChooseTarget(int setTarget)
-    {
-        // 0~5번은 플레이어 유닛, 100번부터 103은 적 유닛
-        if (setTarget >= 100)
-            targetUnit = enemyUnits[setTarget - 100];
+        if (turnPlayerUnit.enoughMP(useSkill.Cost))
+        {
+            isSkill = true;
+            enemyStation[0].Select();
+        }
         else
-            targetUnit = playerUnits[setTarget];
-
-        battleManager.Attack2(targetUnit,useSkill);
+        {
+            Debug.Log("마나가 부족합니다");
+        }
     }
 
+    public void SetTarget(int targetNum)
+    {
+        targetUnit = enemyUnits[targetNum];
+
+        if (isSkill)
+        {
+            turnPlayerUnit.ConsumeMP(useSkill.Cost);
+            battleManager.Attack(targetUnit, 10f, 0);
+        }
+        else
+        {
+            battleManager.Attack(targetUnit,5f,0);
+        }
+
+        battleManager.EndSmallTurn();
+        abxyButtons[0].Select();
+    }
+
+    public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
+    {
+        skill_info.text = playerSkills[skillNumber].Infomation;
+        skill_property.text = playerSkills[skillNumber].Property;
+    }
     public void OnPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(true); }
     public void OffPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(false); }
     public void OnEnemyOutline(int outlineNumber) { if(enemyUnits[outlineNumber] != null) enemyUnits[outlineNumber].UpdateOutline(true); }
