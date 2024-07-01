@@ -22,11 +22,14 @@ public class HUDmanager : MonoBehaviour
         maxHP = unit.maxHP;
         maxMP = unit.maxMP;
 
-        HP = unit.maxHP;
-        MP = unit.maxMP;
+        HP = unit.currentHP;
+        MP = unit.currentMP;
 
-        HPslider.value = HP / maxHP;
-        MPslider.value = MP / maxMP;
+        if (maxHP == 0) { HPslider.value = 0; }
+        else { HPslider.value = HP / maxHP; }
+
+        if (maxMP == 0) { MPslider.value = 0; }
+        else { MPslider.value = MP / maxMP; }
 
         HPtext.text = HP + "/" + maxHP;
         MPtext.text = MP + "/" + maxMP;
@@ -53,8 +56,11 @@ public class HUDmanager : MonoBehaviour
     /// <param name="currentMP"></param>
     public void UpdateHUD(float currentHP, float currentMP)
     {
-        HPslider.value = currentHP / maxHP;
-        MPslider.value = currentMP / maxMP;
+        if (maxHP == 0) { HPslider.value = 0; }
+        else { HPslider.value = currentHP / maxHP; }
+
+        if (maxMP == 0) { MPslider.value = 0; }
+        else { MPslider.value = currentMP / maxMP; }
 
         HPtext.text = currentHP + "/" + maxHP;
         MPtext.text = currentMP + "/" + maxMP;

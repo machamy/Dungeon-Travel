@@ -13,9 +13,8 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public DeprecatedStat stat;
-    public BattleSkill[] skills = new BattleSkill[4];
 
-    public SkillData[] skillDatas = new SkillData[4];
+    public SkillData[] skills = new SkillData[4];
     public bool isguard;
     public int atk;
 
@@ -44,13 +43,7 @@ public class Unit : MonoBehaviour
         spriteRenderer = GetComponent<SpriteRenderer>();
         isEnemy = false; isDead = false;
 
-        atk = 5; maxHP = 50; maxMP = 50; currentHP = 50; currentMP = 50;
         HUD = hud; HUD.SetupHUD(this);
-
-        skills[0] = new BattleSkill() { Name = "fireball", Infomation = "Infomation panel", Property = "fire", Cost = 30 };
-        skills[1] = new BattleSkill() { Name = "fireball222", Infomation = "22222", Property = "fire", Cost = 40 };
-        skills[2] = new BattleSkill() { Name = "fireball3333", Infomation = "3333333", Property = "fire", Cost = 50 };
-        skills[3] = new BattleSkill() { Name = "fireball44444", Infomation = "444444444", Property = "fire", Cost = 60 };
     }
 
     public void EnemySetting(Enemy enemy)

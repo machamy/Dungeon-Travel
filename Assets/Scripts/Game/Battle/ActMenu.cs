@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using Scripts.Data;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 
@@ -38,8 +39,8 @@ public class ActMenu : MonoBehaviour
     private Unit[] playerUnits = new Unit[6];
     private Unit[] enemyUnits = new Unit[4];
 
-    private BattleSkill[] playerSkills = new BattleSkill[4];
-    private BattleSkill useSkill;
+    private SkillData[] playerSkills;
+    private SkillData useSkill;
     private Unit targetUnit;
 
     private int turnPlayerNum;
@@ -82,12 +83,11 @@ public class ActMenu : MonoBehaviour
     {
         playername.text = turnPlayerUnit.unitName;
 
-        int skillNumber = 0;
-        while (playerSkills[skillNumber] != null)
+
+        for (int skillNum = 0; skillNum < 4; skillNum++)
         {
-            skillname[skillNumber].text = playerSkills[skillNumber].Name;
-            skillcost[skillNumber].text = playerSkills[skillNumber].Cost.ToString() + "MP";
-            skillNumber++;
+            skillname[skillNum].text = playerSkills[skillNum].skillName;
+            skillcost[skillNum].text = playerSkills[skillNum].mpCost.ToString() + "MP";
         }
     }
 
@@ -107,14 +107,6 @@ public class ActMenu : MonoBehaviour
         enemyStation[0].Select();
     }
 
-    public void AttackTarget(int targetNumber)
-    {
-        targetUnit = enemyUnits[targetNumber];
-        battleManager.Attack(targetUnit, 5, 0);
-    }
-
-
-
     public void Skill()
     {
         abxy.SetActive(false);
@@ -125,10 +117,10 @@ public class ActMenu : MonoBehaviour
 
     public void SkillSelect(int skillNumber)
     {
-        skillmenu.SetActive(false);
         useSkill = playerSkills[skillNumber];
-        if (turnPlayerUnit.enoughMP(useSkill.Cost))
+        if (turnPlayerUnit.enoughMP(useSkill.mpCost))
         {
+            skillmenu.SetActive(false);
             isSkill = true;
             enemyStation[0].Select();
         }
@@ -144,12 +136,12 @@ public class ActMenu : MonoBehaviour
 
         if (isSkill)
         {
-            turnPlayerUnit.ConsumeMP(useSkill.Cost);
-            battleManager.Attack(targetUnit, 10f, 0);
+            turnPlayerUnit.ConsumeMP(useSkill.mpCost);
+            battleManager.Attack(turnPlayerUnit, targetUnit, useSkill);
         }
         else
         {
-            battleManager.Attack(targetUnit,5f,0);
+            battleManager.Attack(turnPlayerUnit, targetUnit, useSkill);
         }
 
         battleManager.EndSmallTurn();
@@ -158,8 +150,8 @@ public class ActMenu : MonoBehaviour
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
     {
-        skill_info.text = playerSkills[skillNumber].Infomation;
-        skill_property.text = playerSkills[skillNumber].Property;
+        skill_info.text = playerSkills[skillNumber].infomation;
+        skill_property.text = playerSkills[skillNumber].attackType.ToString();
     }
     public void OnPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(true); }
     public void OffPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(false); }

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67dae5b63d614825be8f0fd1b95d7267, type: 3}
+  m_Name: Thunder
+  m_EditorClassIdentifier: 
+  classType: 0
+  enemyName: 
+  weaponType: 
+  rank: 0
+  rawType: 
+  skillName: Thunder
+  infomation: qwerqwer
+  parent: 
+  isParent: 0
+  isChildUnlock: 0
+  physicsDamage: 3
+  propertyDamage: 20
+  buffRatio: 0
+  mpCost: 20
+  skillWeight: 0
+  isPassive: 0
+  isSelf: 0
+  allyTargetType: 0
+  enemyTargetType: 0
+  isBuff: 0
+  isDebuff: 0
+  isHealing: 0
+  isRanged: 0
+  isMelee: 0
+  attackType: 64
+  debuffType: 0
+  pointCost: 1

@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 
 namespace Scripts.Data
 {
+    [CreateAssetMenu]
     [Serializable]
     public class SkillData : ScriptableObject, IDBdata
     {
@@ -19,7 +20,8 @@ namespace Scripts.Data
         public string rawType;
 
         public string skillName;
-        
+        public string infomation;
+
         public string parent;
         public bool isParent;
         public bool isChildUnlock;

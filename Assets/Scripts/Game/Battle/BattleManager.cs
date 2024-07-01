@@ -96,15 +96,12 @@ public class BattleManager : MonoBehaviour
 
         actMenu.SetUnits(playerUnits,enemyUnits);
         actMenu.SetBM(this);
-        smallturn = SmallTurnState.END;
-        StartCoroutine("BattleCoroutine");
-        FirstTurn();
-    }
-
-    private void FirstTurn()
-    {
-        BigTurnCount = 1;
         PlayerTurnOrder();
+        StartCoroutine("BattleCoroutine");
+        
+
+        BigTurnCount = 1;
+        smallturn = SmallTurnState.END;
         bState = BattleState.PLAYERTURN;
     }
 
@@ -266,9 +263,9 @@ public class BattleManager : MonoBehaviour
     }
     
 
-    public void Attack(Unit targetUnit, float damage, AttackType property)
+    public void Attack(Unit attackUnit,Unit targetUnit, SkillData useSkill)
     {
-        targetUnit.TakeDamage(damage,property);
+        targetUnit.TakeDamage(10,0);
     }
 
     public void EndSmallTurn() { smallturn = SmallTurnState.END; }

@@ -64,24 +64,19 @@ MonoBehaviour:
     luk: 0
     vitWeight: 0
   skills:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  skillDatas:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6351eae2fafdb0a42a56967c861a5704, type: 2}
+  - {fileID: 11400000, guid: 737ed836d1ebe3b4f800b84fe0eb5345, type: 2}
+  - {fileID: 11400000, guid: 55d2df7c76514d645bf25b26e6fb5ae6, type: 2}
+  - {fileID: 11400000, guid: 3734806c668229a4a876b4d52aa6d6ef, type: 2}
   isguard: 0
   atk: 0
   unitName: Player
   className: 
   unitLevel: 1
-  maxHP: 100
-  maxMP: 0
-  currentHP: 100
-  currentMP: 0
+  maxHP: 150
+  maxMP: 40
+  currentHP: 150
+  currentMP: 40
   isEnemy: 0
   isBoss: 0
   isDead: 0
