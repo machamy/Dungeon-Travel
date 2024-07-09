@@ -137,11 +137,11 @@ public class ActMenu : MonoBehaviour
         if (isSkill)
         {
             turnPlayerUnit.ConsumeMP(useSkill.mpCost);
-            battleManager.Attack(turnPlayerUnit, targetUnit, useSkill);
+            battleManager.SkillAttack(turnPlayerUnit, targetUnit, useSkill);
         }
         else
         {
-            battleManager.Attack(turnPlayerUnit, targetUnit, useSkill);
+            battleManager.Attack(turnPlayerUnit, targetUnit);
         }
 
         battleManager.EndSmallTurn();

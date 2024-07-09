@@ -20,6 +20,7 @@ public class Unit : MonoBehaviour
 
     public string unitName;
     public string className;
+    public AttackType weakType;
 
     public int unitLevel;
 
@@ -42,7 +43,13 @@ public class Unit : MonoBehaviour
         this.battleManager = battleManager;
         spriteRenderer = GetComponent<SpriteRenderer>();
         isEnemy = false; isDead = false;
-
+        if(stat != null)
+        {
+            maxHP = stat.hp;
+            maxMP = stat.mp;
+            currentHP = stat.hp;
+            currentMP = stat.mp;
+        }
         HUD = hud; HUD.SetupHUD(this);
     }
 
@@ -52,6 +59,7 @@ public class Unit : MonoBehaviour
         this.enemy = enemy;
         maxHP = enemy.enemyStatData.hp;
         currentHP = enemy.enemyStatData.hp;
+        weakType = enemy.enemyStatData.weakType;
         HUD.SetupHUD(this);
     }
 
@@ -59,8 +67,9 @@ public class Unit : MonoBehaviour
     {
         isEnemy = true; isBoss = true;
         this.boss = boss;
-        maxHP = enemy.enemyStatData.hp;
-        currentHP = enemy.enemyStatData.hp;
+        maxHP = boss.enemyStatData.hp;
+        currentHP = boss.enemyStatData.hp;
+        weakType = boss.enemyStatData.weakType;
         HUD.SetupHUD(this);
     }
     #endregion
@@ -74,7 +83,7 @@ public class Unit : MonoBehaviour
         else if(isEnemy) { enemy.Attack(); }
     }
 
-    public void TakeDamage(float damage, AttackType attackType)  //유닛 체력 계산
+    public void TakeDamage(float damage)  //유닛 체력 계산
     {
         if(isDead) return;
 

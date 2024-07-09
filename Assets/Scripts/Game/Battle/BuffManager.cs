@@ -30,7 +30,7 @@ public class BuffManager : MonoBehaviour
                 {
                     debuffDic[debuffType].duration -= 1;
                     Unit unit = gameObject.GetComponent<Unit>();
-                    unit.TakeDamage(debuffDic[debuffType].damage, AttackType.None); // 공격 타입은 미정
+                    unit.TakeDamage(debuffDic[debuffType].damage); // 공격 타입은 미정
                     if (debuffDic[debuffType].duration <= 0)
                     {
                         debuffDic.Remove(debuffType);

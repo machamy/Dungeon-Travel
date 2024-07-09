@@ -135,7 +135,7 @@ public class Enemy_Skill
                 continue;
             BuffManager buffManager = Opponent[i].GetComponent<BuffManager>();
             Unit unit = Opponent[i].GetComponent<Unit>();
-            unit.TakeDamage(skillData.physicsDamage, skillData.attackType);
+            unit.TakeDamage(skillData.physicsDamage);
             Debug.Log("공격완료");
             if(skillData.debuffType != DebuffType.None)
                 buffManager.DebuffAdd(skillData.debuffType, skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음

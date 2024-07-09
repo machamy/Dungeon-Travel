@@ -52,9 +52,9 @@ MonoBehaviour:
     atk: 40
     def: 30
     mdef: 0
-    accuracy: 0
+    accuracy: 90
     dodge: 0
-    critical: 0
+    critical: 30
     strWeight: 0
     magWeight: 0
     str: 0

@@ -8,7 +8,7 @@ namespace Scripts.Entity
 {
     public class Boss
     {
-        private EnemyStatData enemyStatData;
+        public EnemyStatData enemyStatData;
         private List<SkillData> skillDatas = new List<SkillData>();
         private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
         public GameObject gameObject = null;
