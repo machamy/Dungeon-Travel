@@ -423,6 +423,8 @@ public class DB
                     property |= EnemyProperty.Movement;
             }
 
+            enemyStat.Property = property;
+
             AttackType registerType = AttackType.None;
             AttackType weakType = AttackType.None;
             for (idx++ ; idx < header.Length; idx++)
