@@ -15,9 +15,9 @@ using UnityEditor;
 using static BattleManager;
 
 public class BattleManager : MonoBehaviour
-{    
+{
     #region 싱글톤
-    private static BattleManager instance = null; 
+    private static BattleManager instance = null;
     public static BattleManager Instance
     {
         get
@@ -30,21 +30,21 @@ public class BattleManager : MonoBehaviour
                 {
                     bm = new GameObject("BattleSystem");
                     instance = bm.AddComponent<BattleManager>();
-                }  
+                }
             }
             return instance;
         }
     }
     #endregion
 
-    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, END}  //전투상태 열거형
+    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, END }  //전투상태 열거형
     public enum SmallTurnState { START, PROCESSING, END } // 턴 상태 열거형
     public BattleState bState { get; set; }
     public SmallTurnState smallturn { get; set; }
 
     private Queue<int> turnQueue = new Queue<int>();
     private int alivePlayer, aliveEnemy;
-    
+
     private int[] agi_rank;
 
     public ActMenu actMenu;
@@ -84,7 +84,7 @@ public class BattleManager : MonoBehaviour
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playerUnits[i] = playerGO[i].GetComponent<Unit>();
-            playerUnits[i].InitialSetting(this,playerHUD[i]);
+            playerUnits[i].InitialSetting(this, playerHUD[i]);
         }
         alivePlayer = playerPrefab.Length;
 
@@ -94,11 +94,11 @@ public class BattleManager : MonoBehaviour
         EnemySpawn(1, "슬라임");
         aliveEnemy = spawnCount;
 
-        actMenu.SetUnits(playerUnits,enemyUnits);
+        actMenu.SetUnits(playerUnits, enemyUnits);
         actMenu.SetBM(this);
         PlayerTurnOrder();
         StartCoroutine("BattleCoroutine");
-        
+
 
         BigTurnCount = 1;
         smallturn = SmallTurnState.END;
@@ -132,10 +132,10 @@ public class BattleManager : MonoBehaviour
             image.material = spriteOutline;
 
             //Unit컴포넌트 초기설정
-            enemyUnits[spawnCount].InitialSetting(this,enemyHUD[spawnCount], true);
+            enemyUnits[spawnCount].InitialSetting(this, enemyHUD[spawnCount], true);
 
-            if (boss) 
-            { 
+            if (boss)
+            {
                 Boss bossPrefab = new Boss();
                 bossPrefab.NewBoss(floor, name, cloneEnemy);
                 enemyUnits[spawnCount].BossSetting(bossPrefab);
@@ -157,11 +157,11 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        Dictionary<int,float> agi_ranking = new Dictionary<int, float>(); //플레이어끼리 순서 정함
+        Dictionary<int, float> agi_ranking = new Dictionary<int, float>(); //플레이어끼리 순서 정함
 
         for (int i = 0; i < 5; i++)
         {
-            agi_ranking.Add(i,playerUnits[i].stat.agi);
+            agi_ranking.Add(i, playerUnits[i].stat.agi);
         }
 
         var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
@@ -232,7 +232,7 @@ public class BattleManager : MonoBehaviour
                         break;
                     }
             }
-            
+
             BigTurn.text = "Turn   " + BigTurnCount.ToString();
 
             if (alivePlayer == 0) { Lose(); }
@@ -261,11 +261,37 @@ public class BattleManager : MonoBehaviour
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
     }
-    
 
-    public void Attack(Unit attackUnit,Unit targetUnit, SkillData useSkill)
+    public void Attack(Unit attackUnit, Unit targetUnit)
     {
-        targetUnit.TakeDamage(10,0);
+        targetUnit.TakeDamage(5);
+    }
+    public void SkillAttack(Unit attackUnit, Unit targetUnit, SkillData useSkill)
+    {
+        float totalDamage = useSkill.physicsDamage; ;
+
+        bool critical;
+
+        if (useSkill.attackType == targetUnit.weakType)
+        {
+            critical = Random(attackUnit.stat.critical + 0.5);
+            totalDamage *= 1.1f;
+        }
+        else
+        {
+            critical = Random(attackUnit.stat.critical + 0.5);
+        }
+
+        if (critical) { totalDamage *= 2.0f; }
+
+        targetUnit.TakeDamage(totalDamage);
+    }
+
+    private bool Random(double probability)
+    {
+        System.Random random = new System.Random();
+        double randomValue = random.NextDouble();
+        return randomValue < probability;
     }
 
     public void EndSmallTurn() { smallturn = SmallTurnState.END; }
