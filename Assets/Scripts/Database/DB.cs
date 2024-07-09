@@ -417,9 +417,11 @@ public class DB
             for (int delta = 0; delta < 2; delta++)
             {
                 idx += 1;
+                if(!row[idx].ToLower().Contains("true"))
+                    continue;
                 if (header[idx] == "선공")
                     property |= EnemyProperty.Hostile;
-                if (header[idx] == "행동패턴")
+                else if (header[idx] == "행동패턴")
                     property |= EnemyProperty.Movement;
             }
 
