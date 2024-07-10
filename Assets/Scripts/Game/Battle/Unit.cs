@@ -12,7 +12,7 @@ using System;
 public class Unit : MonoBehaviour
 {
     public Class _class;
-    public DeprecatedStat stat;
+    public StatData stat;
 
     public SkillData[] skills = new SkillData[4];
     public bool isguard;
@@ -36,19 +36,25 @@ public class Unit : MonoBehaviour
 
     private Enemy enemy;
     private Boss boss;
+    private Character character;
 
     #region 초기세팅
-    public void InitialSetting(BattleManager battleManager, HUDmanager hud, bool isEnemy = false)
+    public void InitialSetting(BattleManager battleManager, HUDmanager hud, Character character = null)
     {
         this.battleManager = battleManager;
         spriteRenderer = GetComponent<SpriteRenderer>();
-        isEnemy = false; isDead = false;
-        if(stat != null)
+        isDead = false;
+        if(character == null)
+            isEnemy = true;
+        else
         {
+            isEnemy = false;
+            this.character = character;
+            stat = character.FinalStat;
             maxHP = stat.hp;
             maxMP = stat.mp;
-            currentHP = stat.hp;
-            currentMP = stat.mp;
+            currentHP = maxHP;
+            currentMP = maxMP;
         }
         HUD = hud; HUD.SetupHUD(this);
     }

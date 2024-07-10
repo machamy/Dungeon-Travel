@@ -1,4 +1,4 @@
-﻿using Game.Entity.Character;
+using Game.Entity.Character;
 using Scripts.Data;
 using Scripts.Game;
 using System;

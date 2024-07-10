@@ -45,6 +45,9 @@ public class BattleManager : MonoBehaviour
     private Queue<int> turnQueue = new Queue<int>();
     private int alivePlayer, aliveEnemy;
 
+    PartyManager partyManager;
+    Character character;
+
     private int[] agi_rank;
 
     public ActMenu actMenu;
@@ -71,6 +74,9 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
+        DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
+        partyManager = new PartyManager();
+        partyManager.RegisterTestParty(); // GameManager가 없어서 임시로 삽입
         spawnCount = 0;
         bState = BattleState.START;
         endcanvas.SetActive(false);
@@ -84,11 +90,10 @@ public class BattleManager : MonoBehaviour
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playerUnits[i] = playerGO[i].GetComponent<Unit>();
-            playerUnits[i].InitialSetting(this, playerHUD[i]);
+            character = partyManager.Get(i);
+            playerUnits[i].InitialSetting(this, playerHUD[i],character);
         }
         alivePlayer = playerPrefab.Length;
-
-        DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
 
         EnemySpawn(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         EnemySpawn(1, "슬라임");
@@ -132,7 +137,7 @@ public class BattleManager : MonoBehaviour
             image.material = spriteOutline;
 
             //Unit컴포넌트 초기설정
-            enemyUnits[spawnCount].InitialSetting(this, enemyHUD[spawnCount], true);
+            enemyUnits[spawnCount].InitialSetting(this, enemyHUD[spawnCount]);
 
             if (boss)
             {

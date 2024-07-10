@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using Scripts.Entity;
 using Unity.VisualScripting;
+using UnityEngine;
 
 namespace Scripts.Manager
 {
@@ -55,7 +56,7 @@ namespace Scripts.Manager
             for (int i = 0; i < MaxAmount; i++)
             {
                 Character character = new Character($"TestCharacter_{i}");
-                character.SetClass(Class.ClassList[i+1]);
+                party.Add(character.SetClass(Class.ClassList[i+1]));
             }
         }
     }
