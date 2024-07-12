@@ -1,3 +1,4 @@
+
 using OpenCover.Framework.Model;
 using System;
 using Script.Data;
@@ -28,6 +29,13 @@ namespace Scripts.Data
 
         public float physicsDamage;
         public float propertyDamage;
+
+        public SkillCalculateElement minPhysicsDamage;
+        public SkillCalculateElement maxPhysicsDamage;
+        public SkillCalculateElement minPropertyDamage;
+        public SkillCalculateElement maxPropertyDamage;
+        
+        
         public float buffRatio;
         public float mpCost;
         public int skillWeight;
@@ -48,6 +56,7 @@ namespace Scripts.Data
         public DebuffType debuffType;
 
         public int pointCost = 1;
+        
 
         public override string ToString()
         {

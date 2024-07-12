@@ -1,11 +1,27 @@
 ﻿using System;
 using Script.Data;
 using Script.Global;
+using System.Diagnostics;
 using UnityEngine;
 using UnityEngine.Serialization;
 
 namespace Scripts.Data
 {
+    public enum Stat
+    {
+        HP,
+        MP,
+        ATK,
+        DEF,
+        MDEF,
+        ACC,
+        CRIT,
+        STR,
+        VIT,
+        MAG,
+        AGI,
+        LUK
+    }
     
     /// <summary>
     /// 스탯
@@ -88,6 +104,24 @@ namespace Scripts.Data
         /// StatUp
         /// </summary>
         public float statUp;
+
+
+        public float Get(Stat stat) => stat switch
+        {
+            Stat.HP => hp,
+            Stat.MP => mp,
+            Stat.ATK => atk,
+            Stat.DEF => def,
+            Stat.MDEF => mdef,
+            Stat.ACC => accuracy,
+            Stat.CRIT => critical,
+            Stat.STR => str,
+            Stat.VIT => vit,
+            Stat.MAG => mag,
+            Stat.AGI => agi,
+            Stat.LUK => luk,
+            _ => throw new ArgumentOutOfRangeException(nameof(stat), stat, null)
+        };
 
         
         public object Clone()
