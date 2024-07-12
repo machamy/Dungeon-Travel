@@ -98,6 +98,7 @@ public class EquipUI : MonoBehaviour
         {
             GameObject buttonPrefab = Instantiate(itemButtonPrefab);
             buttonPrefab.transform.SetParent(buttonParent.transform);
+            buttonPrefab.transform.localScale = Vector3.one; //why????
 
             Button button = buttonPrefab.GetComponentInChildren<Button>();
             Navigation navigation = button.navigation;
