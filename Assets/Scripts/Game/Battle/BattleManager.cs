@@ -142,8 +142,8 @@ public class BattleManager : MonoBehaviour
             if (boss)
             {
                 Boss bossPrefab = new Boss();
-                bossPrefab.NewBoss(floor, name, cloneEnemy);
-                enemyUnits[spawnCount].BossSetting(bossPrefab);
+                bossPrefab.NewEnemy(floor, name, cloneEnemy);
+                enemyUnits[spawnCount].EnemySetting(bossPrefab);
             }
             else
             {

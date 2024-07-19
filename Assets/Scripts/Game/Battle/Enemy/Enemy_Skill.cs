@@ -5,13 +5,20 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Data;
+using Scripts.Entity;
 using UnityEditor.PackageManager;
 
 public class Enemy_Skill
 {
-    public List<Action<SkillData, EnemyStatData>> GetSkillList(int floor, string enemyName)
+    IEnemy enemy;
+    public Enemy_Skill(IEnemy enemy)
     {
-        List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
+        this.enemy = enemy;
+    }
+
+    public List<Action<SkillData>> GetSkillList(int floor, string enemyName)
+    {
+        List<Action<SkillData>> skillLists = new List<Action<SkillData>>();
         switch(floor)
         {
             case 1:
@@ -126,7 +133,7 @@ public class Enemy_Skill
         return go;
     }
 
-    public void EnemyAttack(SkillData skillData , EnemyStatData enemyStatData = null) // 특별한 로직이 아닌 일반적인 공격
+    public void EnemyAttack(SkillData skillData) // 특별한 로직이 아닌 일반적인 공격
     {
         GameObject[] Opponent = GetOpponent(skillData.enemyTargetType);
         for (int i = 0; i < Opponent.Length; i++)
@@ -142,20 +149,20 @@ public class Enemy_Skill
         }
     }
 
-    public List<Action<SkillData, EnemyStatData>> Core_Active() // 이것만 건드리면 됨
+    public void Core_Active(SkillData skillData)
     {
-        List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>
+        enemy.SkillLists = new List<Action<SkillData>>
         {
             EnemyAttack
         };
-        return skillLists;
+        enemy.EnemyStatData.atk++; // 수치는 모름
     }
 
-    public void Berserk(SkillData skillData, EnemyStatData enemyStatData)
+    public void Berserk(SkillData skillData)
     {
-        enemyStatData.atk++;
-        enemyStatData.agi++;
-        enemyStatData.def--;
-        enemyStatData.mdef--; // 수치는 모름
+        enemy.EnemyStatData.atk++;
+        enemy.EnemyStatData.agi++;
+        enemy.EnemyStatData.def--;
+        enemy.EnemyStatData.mdef--; // 수치는 모름
     }
 }

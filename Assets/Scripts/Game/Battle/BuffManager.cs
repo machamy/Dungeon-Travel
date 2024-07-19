@@ -39,7 +39,7 @@ public class BuffManager : MonoBehaviour
             }
         }
     }
-    public void DebuffAdd(DebuffType debuffType,float probability, int duration, float figure) // 화상
+    public void DebuffAdd(DebuffType debuffType,float probability, int duration, float figure)
     {
         if (debuffDic[debuffType] != null)
         {

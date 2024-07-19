@@ -6,37 +6,38 @@ using UnityEngine;
 
 namespace Scripts.Entity
 {
-    public class Boss
+    public class Boss : IEnemy
     {
-        public EnemyStatData enemyStatData;
+        public EnemyStatData EnemyStatData
+        {
+            get { return EnemyStatData; }
+            set { EnemyStatData = value; }
+        }
         private List<SkillData> skillDatas = new List<SkillData>();
-        private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
+        private List<Action<SkillData>> skillLists = new List<Action<SkillData>>();
+        public List<Action<SkillData>> SkillLists
+        {
+            get { return skillLists; }
+            set { skillLists = value; }
+        }
         public GameObject gameObject = null;
         float currentHp;
         bool passiveTrigger = false;
-        Enemy_Skill skill = new Enemy_Skill();
-        public void NewBoss(int floor, string name,GameObject gameObject)
+        BuffManager buffManager;
+        Enemy_Skill skill;
+        public void NewEnemy(int floor, string name,GameObject gameObject)
         {
             this.gameObject = gameObject;
-            enemyStatData = DB.GetEnemyData(floor, name);
+            skill = new Enemy_Skill(this);
+            EnemyStatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
-            skillLists = skill.GetSkillList(floor, name);
-            currentHp = enemyStatData.hp;
-        }
-        public float Agi
-        {
-            get { return enemyStatData.agi; }
-        }
-
-
-        public float Hp
-        {
-            get { return enemyStatData.hp; }
+            SkillLists = skill.GetSkillList(floor, name);
+            currentHp = EnemyStatData.hp;
+            buffManager = gameObject.GetComponent<BuffManager>();
         }
 
         public void Attack()
         {
-            BuffManager buffManager = gameObject.GetComponent<BuffManager>();
             if (buffManager.debuffDic.ContainsKey(DebuffType.Stun)) // 기절이라면 공격 함수 실행 x
                 return;
             int[] weightArr = new int[5];
@@ -47,9 +48,9 @@ namespace Scripts.Entity
                 if (skilldata.skillWeight == 0)
                     passiveTrigger = true;
             }
-            if (passiveTrigger == true && ((currentHp) / (enemyStatData.hp) < 0.5f))
+            if (passiveTrigger == true && ((currentHp) / (EnemyStatData.hp) < 0.5f)) // 체력 변수를 따로 두어서 패시브 트리거를 다르게 두어야함
             {
-                skillLists[0].Invoke(skillDatas[0],enemyStatData); // 패시브 발동
+                SkillLists[0].Invoke(skillDatas[0]); // 패시브 발동
                 passiveTrigger = false;
             }
             else
@@ -57,7 +58,7 @@ namespace Scripts.Entity
                 int weight = Utility.WeightedRandom(weightArr);
                 if (buffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
                     weight = 0;
-                skillLists[weight].Invoke(skillDatas[weight], enemyStatData);
+                SkillLists[weight].Invoke(skillDatas[weight]);
             }
         }
     }
