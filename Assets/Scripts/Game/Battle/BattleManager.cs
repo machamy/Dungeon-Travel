@@ -43,7 +43,8 @@ public class BattleManager : MonoBehaviour
     public SmallTurnState smallturn { get; set; }
 
     private Queue<int> turnQueue = new Queue<int>();
-    private int alivePlayer, aliveEnemy;
+    private int alivePlayer;
+    public int aliveEnemy;
 
     PartyManager partyManager;
     Character character;
@@ -301,6 +302,6 @@ public class BattleManager : MonoBehaviour
 
     public void EndSmallTurn() { smallturn = SmallTurnState.END; }
 
-    public void EnemyDead() { aliveEnemy--;  }
+    public void EnemyDead() { aliveEnemy--; spawnCount--; }
     public void PlayerDead() { alivePlayer--; }
 }

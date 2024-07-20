@@ -10,4 +10,5 @@ public interface IEnemy
     public void NewEnemy(int floor, string name, GameObject gameObject);
     public List<Action<SkillData>> SkillLists { get; set; }
     public EnemyStatData EnemyStatData { get; set; }
+    public int Index { get; set; }
 }

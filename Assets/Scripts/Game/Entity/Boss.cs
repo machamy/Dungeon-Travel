@@ -20,6 +20,7 @@ namespace Scripts.Entity
             get { return skillLists; }
             set { skillLists = value; }
         }
+        public int Index {  get; set; } // 스킬의 인덱스
         public GameObject gameObject = null;
         float currentHp;
         bool passiveTrigger = false;
@@ -34,6 +35,7 @@ namespace Scripts.Entity
             SkillLists = skill.GetSkillList(floor, name);
             currentHp = EnemyStatData.hp;
             buffManager = gameObject.GetComponent<BuffManager>();
+            Index = -1;
         }
 
         public void Attack()
@@ -55,10 +57,14 @@ namespace Scripts.Entity
             }
             else
             {
-                int weight = Utility.WeightedRandom(weightArr);
-                if (buffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
-                    weight = 0;
-                SkillLists[weight].Invoke(skillDatas[weight]);
+                if (Index == -1) // 미리 지정되어있는 스킬이 없을때
+                {
+                    Index = Utility.WeightedRandom(weightArr);
+                    if (buffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
+                        Index = 0;
+                }
+                SkillLists[Index].Invoke(skillDatas[Index]);
+                Index = -1;
             }
         }
     }

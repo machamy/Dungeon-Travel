@@ -19,7 +19,7 @@ public class Enemy_Skill
     public List<Action<SkillData>> GetSkillList(int floor, string enemyName)
     {
         List<Action<SkillData>> skillLists = new List<Action<SkillData>>();
-        switch(floor)
+        switch (floor)
         {
             case 1:
                 switch (enemyName)
@@ -52,7 +52,7 @@ public class Enemy_Skill
                         skillLists.Add(EnemyAttack); // 뿌리
                         break;
                     case "바위골렘":
-                        skillLists.Add(EnemyAttack); // 코어 활성화(패시브)
+                        skillLists.Add(Core_Active); // 코어 활성화(패시브)
                         skillLists.Add(EnemyAttack); // 일반공격
                         skillLists.Add(EnemyAttack); // 발구르기
                         skillLists.Add(EnemyAttack); // 코어 레이저
@@ -66,7 +66,7 @@ public class Enemy_Skill
                 }
                 break;
             case 2:
-                switch(enemyName)
+                switch (enemyName)
                 {
                     case "쥐":
                         skillLists.Add(EnemyAttack);
@@ -80,14 +80,14 @@ public class Enemy_Skill
                         break;
                     case "도적선봉대":
                         skillLists.Add(EnemyAttack);
-                        skillLists.Add(EnemyAttack);
+                        skillLists.Add(Cut_Stab);
                         break;
                     case "도적궁수":
                         skillLists.Add(EnemyAttack);
                         skillLists.Add(EnemyAttack);
                         break;
                     case "도적대장":
-                        skillLists.Add(EnemyAttack);
+                        skillLists.Add(Bandits);
                         skillLists.Add(EnemyAttack);
                         skillLists.Add(EnemyAttack);
                         break;
@@ -105,7 +105,7 @@ public class Enemy_Skill
                 }
                 break;
         }
-        
+
         return skillLists;
     }
     public GameObject[] GetOpponent(TargetType enemyTargetType) // 공격대상을 받아오는 함수
@@ -141,20 +141,17 @@ public class Enemy_Skill
             if (Opponent[i] == null)
                 continue;
             BuffManager buffManager = Opponent[i].GetComponent<BuffManager>();
-            Unit unit = Opponent[i].GetComponent<Unit>();
+            Unit unit = Opponent[i].GetComponent<Unit>(); // 데미지 계산식 나오면 수정
             unit.TakeDamage(skillData.physicsDamage);
             Debug.Log("공격완료");
-            if(skillData.debuffType != DebuffType.None)
+            if (skillData.debuffType != DebuffType.None)
                 buffManager.DebuffAdd(skillData.debuffType, skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
         }
     }
 
     public void Core_Active(SkillData skillData)
     {
-        enemy.SkillLists = new List<Action<SkillData>>
-        {
-            EnemyAttack
-        };
+        enemy.Index = 3; // 다음 공격을 코어 레이저로 고정
         enemy.EnemyStatData.atk++; // 수치는 모름
     }
 
@@ -164,5 +161,31 @@ public class Enemy_Skill
         enemy.EnemyStatData.agi++;
         enemy.EnemyStatData.def--;
         enemy.EnemyStatData.mdef--; // 수치는 모름
+    }
+
+    public void Cut_Stab(SkillData skillData)
+    {
+        AttackType[] attackType = Enum.GetValues(typeof(AttackType)) as AttackType[];
+        GameObject[] Opponent = GetOpponent(skillData.enemyTargetType);
+        BuffManager buffManager = Opponent[0].GetComponent<BuffManager>();
+        Unit unit = Opponent[0].GetComponent<Unit>();
+        foreach(AttackType type in attackType) // 여기서 공격 2번하게 데미지 계산
+        {
+            unit.TakeDamage(skillData.physicsDamage); // 데미지 계산식 나오면 수정
+            Debug.Log("공격완료");
+            if (skillData.debuffType != DebuffType.None)
+                buffManager.DebuffAdd(skillData.debuffType, skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
+        }
+    }
+
+    public void Bandits(SkillData skillData)
+    {
+        if(BattleManager.Instance.aliveEnemy < 3)
+        {
+            for(int i = BattleManager.Instance.aliveEnemy; i < 3; i++)
+            {
+                BattleManager.Instance.EnemySpawn(2, "도적선봉대");
+            }
+        }
     }
 }
