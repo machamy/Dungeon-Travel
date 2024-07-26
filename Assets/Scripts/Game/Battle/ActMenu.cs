@@ -12,7 +12,7 @@ public class ActMenu : MonoBehaviour
     public EventSystem eventSystem;
     private BattleManager battleManager;
     public GameObject ActCanvas;
-    public GameObject abxy, skillmenu, itemmenu, guardmenu;
+    public GameObject abxy, skillMenu, itemMenu, guardMenu;
 
     public UnityEngine.UI.Button[] playerStation;
     public UnityEngine.UI.Button[] enemyStation;
@@ -50,9 +50,9 @@ public class ActMenu : MonoBehaviour
     private void Awake()
     {
         abxy.SetActive(false);
-        skillmenu.SetActive(false);
-        itemmenu.SetActive(false);
-        guardmenu.SetActive(false);
+        skillMenu.SetActive(false);
+        itemMenu.SetActive(false);
+        guardMenu.SetActive(false);
         
     }
 
@@ -94,9 +94,9 @@ public class ActMenu : MonoBehaviour
     public void ChooseAct()
     {
         abxy.SetActive(true);
-        skillmenu.SetActive(false);
-        itemmenu.SetActive(false);
-        guardmenu.SetActive(false);
+        skillMenu.SetActive(false);
+        itemMenu.SetActive(false);
+        guardMenu.SetActive(false);
         isSkill = false;
         abxyButtons[0].Select();
     }
@@ -110,7 +110,7 @@ public class ActMenu : MonoBehaviour
     public void Skill()
     {
         abxy.SetActive(false);
-        skillmenu.SetActive(true);
+        skillMenu.SetActive(true);
         skillButtons[0].Select();
         ChangeSkill_Info(0);
     }
@@ -118,9 +118,30 @@ public class ActMenu : MonoBehaviour
     public void Item()
     {
         abxy.SetActive(false);
-        itemmenu.SetActive(true);
+        itemMenu.SetActive(true);
         itemButtons[0].Select();
         ChangeItemInfo(0);
+    }
+
+    public void Guard()
+    {
+        abxy.SetActive(false);
+        guardMenu.SetActive(true);
+        guardButtons[0].Select();
+    }
+
+    public void OnGuard()
+    {
+        turnPlayerUnit.OnGuard();
+    }
+
+    public void Back()
+    {
+        abxy.SetActive(true);
+        skillMenu.SetActive(false);
+        itemMenu.SetActive(false);
+        guardMenu.SetActive(false);
+        abxyButtons[0].Select();
     }
 
     public void SkillSelect(int skillNumber)
@@ -128,7 +149,7 @@ public class ActMenu : MonoBehaviour
         useSkill = playerSkills[skillNumber];
         if (turnPlayerUnit.enoughMP(useSkill.mpCost))
         {
-            skillmenu.SetActive(false);
+            skillMenu.SetActive(false);
             isSkill = true;
             switch (useSkill.enemyTargetType)
             {

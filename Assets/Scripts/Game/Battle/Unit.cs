@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
     public EnemyStatData enemyStat;
 
     public SkillData[] skills = new SkillData[4];
-    public bool isguard;
+    public bool isGuard;
     public int atk;
 
     public string unitName;
@@ -74,6 +74,11 @@ public class Unit : MonoBehaviour
     #endregion
 
     #region 배틀관련
+    public void OnGuard()
+    {
+        Debug.Log("가드");
+        isGuard = true;
+    }
 
     public void Attack() // 적의 공격
     {
@@ -96,6 +101,12 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)  //유닛 체력 계산
     {
         if(isDead) return;
+        if (isGuard)
+        {
+            Debug.Log("방어");
+            isGuard = false;
+            return;
+;       }
 
         currentHP -= damage;
         if(currentHP <= 0)
