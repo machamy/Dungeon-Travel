@@ -33,8 +33,8 @@ namespace Scripts
             {
                 if (random < weights[idx])
                     return idx;
-                idx++;
                 random -= weights[idx];
+                idx++;
             }
         }
         public static float WeightedRandom(params float[] weights)
@@ -53,8 +53,8 @@ namespace Scripts
             {
                 if (random < weights[idx])
                     return idx;
-                idx++;
                 random -= weights[idx];
+                idx++;
             }
         }
     }
