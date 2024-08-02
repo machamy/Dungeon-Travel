@@ -15,9 +15,32 @@ namespace Scripts.Data
         private float statWeight;
         private float lvWeight;
         
+        /// <summary>
+        /// 비워진값( - )인지
+        /// </summary>
+        public bool isNone { get; private set; }
+
+        /// <summary>
+        /// 스탯과 상관없는 피해인지
+        /// </summary>
+        public bool isRaw { get; private set; }
+        private float rawDamage;
+        
         public SkillCalculateElement(string raw)
         {
-
+            double rawValue;
+            if (Double.TryParse(raw, out rawValue))
+            {
+                isRaw = true;
+                rawDamage = (float) rawValue;
+            }
+            isRaw = false;
+            if (raw == String.Empty || raw == "-")
+            {
+                isNone = true;
+                return;
+            }
+            
             string parsedString =  string.Concat(raw.Where(c => Char.IsDigit(c) ||
                                                                       Char.IsWhiteSpace(c) ||
                                                                       c == '*' ||
@@ -52,7 +75,14 @@ namespace Scripts.Data
 
         public float Get(int skillLv, StatData finalStat)
         {
+            if (isRaw)
+                return rawDamage;
             return finalStat.Get(requiredStat) * statWeight + lvWeight * skillLv;
+        }
+
+        public float GetRaw()
+        {
+            return rawDamage;
         }
 
         public override string ToString()
