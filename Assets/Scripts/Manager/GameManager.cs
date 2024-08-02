@@ -22,12 +22,12 @@ namespace Scripts.Manager
     public class GameManager : MonoBehaviour
     {
         public const string NAME = "@Game";
-        private static GameManager instance;
+        private static GameManager instance = null;
 
         public AbstractCamera qCamera;
 
-        public InputActionMap PlayerActionMap;
-        public InputActionMap UIActionMap;
+        [HideInInspector] public InputActionMap PlayerActionMap;
+        [HideInInspector] public InputActionMap UIActionMap;
 
 
         public int day = 22;
@@ -38,14 +38,13 @@ namespace Scripts.Manager
             get
             {
                 // 없을경우 생성
-                if (instance == null)
+                if (instance is null)
                 {
                     GameObject root = GameObject.Find(NAME);
-                    if (root == null)
+                    if (root is null)
                     {
                         root = new GameObject { name = NAME };
                     }
-
                     instance = root.AddComponent<GameManager>();
                 }
 
