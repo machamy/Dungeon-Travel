@@ -1,8 +1,11 @@
 using Scripts.Data;
+using System;
 using UnityEngine;
 
 namespace Scripts.Entity.Item
 {
+    [CreateAssetMenu]
+    [Serializable]
     public class BaseItemData : ScriptableObject
     {
 

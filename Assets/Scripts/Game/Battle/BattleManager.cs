@@ -277,7 +277,9 @@ public class BattleManager : MonoBehaviour
         float totalDamage = useSkill.physicsDamage; ;
 
         bool critical;
+        bool isAround = false;
 
+        if(isAround) { totalDamage = totalDamage * 0.8f; }
         if (useSkill.attackType == targetUnit.weakType)
         {
             critical = Random(attackUnit.stat.critical + 0.5);

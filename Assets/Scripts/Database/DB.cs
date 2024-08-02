@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -49,11 +48,11 @@ public class DB
     public const string UI_INTERACTION_NAME = "상호작용";
 
     #endregion
-    
 
 
 
-    public static StatData GetStatData(ClassType _class, int lv) 
+
+    public static StatData GetStatData(ClassType _class, int lv)
     {
         return Instance.classStatData[_class][lv];
     }
@@ -113,12 +112,12 @@ public class DB
         classSkillData = new();
         Equipments = new();
         enemyDataList = new();
-        
-        classSkillData.Add(ClassType.Null,new SkillData[]{});
-        classStatData.Add(ClassType.Null,new StatData[]{});
-        
+
+        classSkillData.Add(ClassType.Null, new SkillData[] { });
+        classStatData.Add(ClassType.Null, new StatData[] { });
+
     }
-    
+
     /// <summary>
     /// xlsx 에서 불어와 DB에 등록
     /// </summary>
@@ -135,7 +134,7 @@ public class DB
             //     if (header[colNum] == "EOF")
             //         break;
             string[] sheetName = table.TableName.Split("_");
-            Debug.Log("[DB::UpdateDB] parsing sheet : "+table.TableName);
+            Debug.Log("[DB::UpdateDB] parsing sheet : " + table.TableName);
             switch (sheetName.Length)
             {
                 case 1:
@@ -169,14 +168,14 @@ public class DB
                     if (sheetName[1].Equals(DB_NAME_ENEMY))
                     {
                         int floor = int.Parse(sheetName[0].Replace("F", ""));
-                        while(enemyDataList.Count <= floor)
+                        while (enemyDataList.Count <= floor)
                             enemyDataList.Add(new Dictionary<string, EnemyStatData>());
                         enemyDataList[floor] = ParseEnemyData(table, header, colNum);
                     }
                     break;
             }
         }
-        
+
         EndDBupdate();
     }
 
@@ -184,7 +183,7 @@ public class DB
     {
         Class.InitClassList();
     }
-    
+
     private enum StatDataType : int
     {
         lv = 0,
@@ -216,29 +215,29 @@ public class DB
     /// <returns>StatData배열</returns>
     private StatData[] ParseClassStat(DataTable sheet, string[] header, int colNum)
     {
-        StatData[] stats = new StatData[sheet.Rows.Count+1];
+        StatData[] stats = new StatData[sheet.Rows.Count + 1];
         stats[0] = ScriptableObject.CreateInstance<StatData>();
-        for (int i = 1 ; i < sheet.Rows.Count; i++)
+        for (int i = 1; i < sheet.Rows.Count; i++)
         {
             StatData stat = ScriptableObject.CreateInstance<StatData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => ((p ?? "0").ToString().Replace("%", "").Replace("-", "0")));
             // Debug.Log(row[(int)StatDataType.lv]);
-            int lv = (int) int.Parse(row[(int)StatDataType.lv]);
+            int lv = (int)int.Parse(row[(int)StatDataType.lv]);
             stats[lv] = stat;
-            
+
             stat.hp = float.Parse(row[(int)StatDataType.HP]);
             stat.mp = float.Parse(row[(int)StatDataType.MP]);
             stat.atk = float.Parse(row[(int)StatDataType.ATK]);
             stat.def = float.Parse(row[(int)StatDataType.DEF]);
             stat.mdef = float.Parse(row[(int)StatDataType.MDEF]);
-            
+
             stat.accuracy = float.Parse(row[(int)StatDataType.HIT]);
             stat.evase = float.Parse(row[(int)StatDataType.EVASE]);
             stat.critical = float.Parse(row[(int)StatDataType.CRIT]);
             stat.strWeight = float.Parse(row[(int)StatDataType.STRCOR]);
             stat.magWeight = float.Parse(row[(int)StatDataType.MAGCOR]);
-            
+
             stat.str = float.Parse(row[(int)StatDataType.STR]);
             stat.vit = float.Parse(row[(int)StatDataType.VIT]);
             stat.mag = float.Parse(row[(int)StatDataType.MAG]);
@@ -257,10 +256,10 @@ public class DB
         물리_데미지 = 4,
         속성_데미지 = 5,
         MP소모 = 6,
-  
+
         LastIdx = 6
     }
-    
+
     /// <summary>
     /// 데이터 시트의 내용을 스킬데이터[]로 받아온다.
     /// </summary>
@@ -270,24 +269,24 @@ public class DB
     /// <returns></returns>
     private SkillData[] ParseClassSkill(DataTable sheet, string[] header, int colNum, ClassType classType = ClassType.Null)
     {
-        SkillData[] skills = new SkillData[sheet.Rows.Count+1];
+        SkillData[] skills = new SkillData[sheet.Rows.Count + 1];
         for (int i = 1; i < sheet.Rows.Count; i++)
         {
             SkillData skill = ScriptableObject.CreateInstance<SkillData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray,
                 p => (p ?? String.Empty).ToString());
-            if(row[(int)SkillDataType.이름] == "")
+            if (row[(int)SkillDataType.이름] == "")
                 continue;
 
             skill.classType = classType;
-            
+
             skill.weaponType = row[(int)SkillDataType.무기유형];
-            
+
             skill.rank = Convert.ToInt32(row[(int)SkillDataType.랭크]);
             skill.rawType = row[(int)SkillDataType.유형];
             skill.name = row[(int)SkillDataType.이름];
             skill.skillName = skill.name;
-            
+
             skill.physicsDamage = Convert.ToSingle(row[(int)SkillDataType.물리_데미지] == string.Empty ? "0" : row[(int)SkillDataType.물리_데미지]);
             skill.propertyDamage = Convert.ToSingle(row[(int)SkillDataType.속성_데미지] == string.Empty ? "0" : row[(int)SkillDataType.속성_데미지]);
             skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모] == string.Empty ? "0" : row[(int)SkillDataType.MP소모]);
@@ -297,62 +296,62 @@ public class DB
             skill.isPassive = booleanArr[idx++];
             skill.isSelf = booleanArr[idx++];
 
-            
+
             TargetType Ally = TargetType.None;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Ally |= TargetType.Single;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Ally |= TargetType.Front;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Ally |= TargetType.Back;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Ally |= TargetType.Area;
-            
+
             TargetType Enemy = TargetType.None;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Enemy |= TargetType.Single;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Enemy |= TargetType.Front;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Enemy |= TargetType.Back;
-            if(booleanArr[idx++])
+            if (booleanArr[idx++])
                 Enemy |= TargetType.Area;
 
             skill.allyTargetType = Ally;
             skill.enemyTargetType = Enemy;
-            
+
             skill.isBuff = booleanArr[idx++];
             skill.isDebuff = booleanArr[idx++];
             skill.isHealing = booleanArr[idx++];
-            skill.isMelee= booleanArr[idx++];
-            skill.isRanged= booleanArr[idx++];
-            
+            skill.isMelee = booleanArr[idx++];
+            skill.isRanged = booleanArr[idx++];
+
             AttackType attackType = AttackType.None;
-            for (; (int)SkillDataType.LastIdx+ 1+ idx < header.Length; idx++)
+            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length; idx++)
             {
                 string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
-                if(rawHeader == String.Empty)
+                if (rawHeader == String.Empty)
                     continue;
                 AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
-                if(currentType != AttackType.None)
+                if (currentType != AttackType.None)
                 {
-                    if(booleanArr[idx])
+                    if (booleanArr[idx])
                         attackType |= currentType;
                 }
                 else
                 {
-                    Debug.Log($"[DB::ParseEnemyData] {header[(int)SkillDataType.LastIdx+ 1 +idx]}({(int)SkillDataType.LastIdx+ 1 +idx}) 유효하지 않음");
+                    Debug.Log($"[DB::ParseEnemyData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
                 }
             }
 
             skill.attackType = attackType;
-            
+
             Debug.Log($"Register Skill {skill}");
         }
 
         return skills;
     }
-    
+
     /// <summary>
     /// 데이터시트의 내용을 장비[]
     /// </summary>
@@ -362,7 +361,7 @@ public class DB
     /// <returns></returns>
     private EquipmentData[] ParseEquipment(DataTable sheet, string[] header, int colNum)
     {
-        EquipmentData[] skills = new EquipmentData[sheet.Rows.Count+1];
+        EquipmentData[] skills = new EquipmentData[sheet.Rows.Count + 1];
         return skills;
     }
 
@@ -387,37 +386,37 @@ public class DB
     private Dictionary<string, EnemyStatData> ParseEnemyData(DataTable sheet, string[] header, int colNum)
     {
         Dictionary<string, EnemyStatData> result = new Dictionary<string, EnemyStatData>();
-        
-        for(int i=1; i<sheet.Rows.Count; i++)
+
+        for (int i = 1; i < sheet.Rows.Count; i++)
         {
             EnemyStatData enemyStat = ScriptableObject.CreateInstance<EnemyStatData>();
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray, p => ((p ?? "0").ToString()));
-            
+
             enemyStat.name = row[(int)EnemyStatType.NAME];
             enemyStat.hp = float.Parse(row[(int)EnemyStatType.HP]);
             enemyStat.atk = float.Parse(row[(int)EnemyStatType.ATK]);
             enemyStat.def = float.Parse(row[(int)EnemyStatType.DEF]);
             enemyStat.mdef = float.Parse(row[(int)EnemyStatType.MDEF]);
-            
+
             enemyStat.accuracy = float.Parse(row[(int)EnemyStatType.HIT]);
             enemyStat.dodge = float.Parse(row[(int)EnemyStatType.AVOID]);
             enemyStat.critical = float.Parse(row[(int)EnemyStatType.CRIT]);
             enemyStat.strcret = float.Parse(row[(int)EnemyStatType.STRCRET]);
             enemyStat.magcret = float.Parse(row[(int)EnemyStatType.MAGCRET]);
-            
+
             enemyStat.str = float.Parse(row[(int)EnemyStatType.STR]);
             enemyStat.vit = float.Parse(row[(int)EnemyStatType.VIT]);
             enemyStat.mag = float.Parse(row[(int)EnemyStatType.MAG]);
             enemyStat.agi = float.Parse(row[(int)EnemyStatType.AGI]);
             enemyStat.luk = float.Parse(row[(int)EnemyStatType.LUK]);
-            
+
             // 현재 열 위치
             int idx = (int)EnemyStatType.LUK;
             EnemyProperty property = EnemyProperty.None;
             for (int delta = 0; delta < 2; delta++)
             {
                 idx += 1;
-                if(!row[idx].ToLower().Contains("true"))
+                if (!row[idx].ToLower().Contains("true"))
                     continue;
                 if (header[idx] == "선공")
                     property |= EnemyProperty.Hostile;
@@ -429,17 +428,17 @@ public class DB
 
             AttackType registerType = AttackType.None;
             AttackType weakType = AttackType.None;
-            for (idx++ ; idx < header.Length; idx++)
+            for (idx++; idx < header.Length; idx++)
             {
                 string rawHeader = header[idx];
-                if(rawHeader == String.Empty)
+                if (rawHeader == String.Empty)
                     continue;
                 AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
-                if(currentType != AttackType.None)
+                if (currentType != AttackType.None)
                 {
-                    if(row[idx].Contains("R"))
+                    if (row[idx].Contains("R"))
                         registerType |= currentType;
-                    if(row[idx].Contains("W"))
+                    if (row[idx].Contains("W"))
                         weakType |= currentType;
                 }
                 else
@@ -450,10 +449,10 @@ public class DB
 
             enemyStat.resistType = registerType;
             enemyStat.weakType = weakType;
-            
+
             result.Add(enemyStat.name, enemyStat);
             Debug.Log($"[DB::ParseEnemyData] Added {enemyStat.name} : Property {enemyStat.Property} ResistType {enemyStat.resistType} WeakType {enemyStat.weakType}");
-            
+
         }
         return result;
     }
@@ -471,7 +470,7 @@ public class DB
     }
     private Dictionary<string, List<SkillData>> ParseEnemySkillData(DataTable sheet, string[] header, int colNum)
     {
-        Dictionary<string, List<SkillData>> skills = new Dictionary<string, List<SkillData>> ();
+        Dictionary<string, List<SkillData>> skills = new Dictionary<string, List<SkillData>>();
         List<SkillData> skillList = new List<SkillData>();
         for (int i = 1; i < sheet.Rows.Count; i++)
         {
@@ -480,7 +479,7 @@ public class DB
                 p => (p ?? String.Empty).ToString());
             if (row[(int)EnemySkillDataType.스킬이름] == "")
                 continue;
-            
+
 
             skill.enemyName = row[(int)EnemySkillDataType.적이름];
             skill.skillName = skill.name;
@@ -546,7 +545,7 @@ public class DB
 
             DebuffType debuffType = DebuffType.None;
             string[] debuffArr = (row[header.Length - 1] == string.Empty ? "null" : row[header.Length - 1]).Split('/');
-            for(int j=0; j<debuffArr.Length; j++)
+            for (int j = 0; j < debuffArr.Length; j++)
             {
                 if (DebuffTypeHelper.typeChange.TryGetValue(debuffArr[j], out DebuffType currentType))
                     debuffType |= currentType;
@@ -555,8 +554,8 @@ public class DB
             }
             skill.debuffType = debuffType;
 
-            if(!skills.ContainsKey(skill.enemyName))
-                skills.Add(skill.enemyName,new List<SkillData>());
+            if (!skills.ContainsKey(skill.enemyName))
+                skills.Add(skill.enemyName, new List<SkillData>());
             skills[skill.enemyName].Add(skill);
 
             Debug.Log($"Register EnemySkill {skill}");
