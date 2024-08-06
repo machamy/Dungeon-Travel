@@ -253,11 +253,16 @@ public class DB
         랭크 = 1,
         유형 = 2,
         이름 = 3,
-        물리_데미지 = 4,
-        속성_데미지 = 5,
-        MP소모 = 6,
 
-        LastIdx = 6
+        최소_물리_데미지 = 4,
+
+        최소_속성_데미지 = 6,
+        버프디버프비율 = 8,
+        MP소모 = 9,
+  
+        LastIdx = 9,
+        
+        debuff_start = 34
     }
 
     /// <summary>
@@ -287,10 +292,28 @@ public class DB
             skill.name = row[(int)SkillDataType.이름];
             skill.skillName = skill.name;
 
-            skill.physicsDamage = Convert.ToSingle(row[(int)SkillDataType.물리_데미지] == string.Empty ? "0" : row[(int)SkillDataType.물리_데미지]);
-            skill.propertyDamage = Convert.ToSingle(row[(int)SkillDataType.속성_데미지] == string.Empty ? "0" : row[(int)SkillDataType.속성_데미지]);
-            skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모] == string.Empty ? "0" : row[(int)SkillDataType.MP소모]);
+            
+            // skill.physicsDamage = Convert.ToSingle(row[(int)SkillDataType.최소_물리_데미지] == string.Empty ? "0" : row[(int)SkillDataType.최소_물리_데미지]);
+            // skill.propertyDamage = Convert.ToSingle(row[(int)SkillDataType.최소_속성_데미지] == string.Empty ? "0" : row[(int)SkillDataType.최소_속성_데미지]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)SkillDataType.최소_물리_데미지]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)SkillDataType.최소_물리_데미지 + 1]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)SkillDataType.최소_속성_데미지]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)SkillDataType.최소_속성_데미지 + 1]);
+            
+            string[] buff_debuf =
+                (row[(int)SkillDataType.버프디버프비율] == string.Empty ||  row[(int)SkillDataType.버프디버프비율] == "-" ? "0(0)" : row[(int)SkillDataType.버프디버프비율])
+                .Replace("%","") // % 삭제
+                .Replace(")","") // ) 삭제
+                .Split("(");
+            skill.buffRatio = Convert.ToSingle(buff_debuf[0]);
+            skill.debuffRatio = Convert.ToSingle(buff_debuf[1]);
+            
+            skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모] == string.Empty || row[(int)SkillDataType.MP소모] == "-" ? "0" : row[(int)SkillDataType.MP소모]);
 
+
+            /*
+             *  True/False 값 처리
+             */
             var booleanArr = row.Skip((int)SkillDataType.LastIdx + 1).Select((a) => a.ToUpper() == "TRUE").ToArray();
             int idx = 0;
             skill.isPassive = booleanArr[idx++];
@@ -340,7 +363,7 @@ public class DB
                 }
                 else
                 {
-                    Debug.Log($"[DB::ParseEnemyData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
+                    Debug.Log($"[DB::ParseClassSkill] {header[(int)SkillDataType.LastIdx+ 1 +idx]}({(int)SkillDataType.LastIdx+ 1 +idx}) 유효하지 않음");
                 }
             }
 
@@ -459,14 +482,14 @@ public class DB
 
     private enum EnemySkillDataType
     {
-        적이름,
-        유형,
-        스킬이름,
-        물리데미지,
-        속성데미지,
-        비율,
-        가중치,
-        LastIdx = 6,
+        적이름 = 0,
+        유형 = 1,
+        스킬이름 = 2,
+        최소물리데미지 = 3,
+        최소속성데미지 = 5,
+        비율 = 7,
+        가중치 = 8,
+        LastIdx = 8,
     }
     private Dictionary<string, List<SkillData>> ParseEnemySkillData(DataTable sheet, string[] header, int colNum)
     {
@@ -484,11 +507,28 @@ public class DB
             skill.enemyName = row[(int)EnemySkillDataType.적이름];
             skill.skillName = skill.name;
 
-            skill.physicsDamage = Convert.ToSingle(row[(int)EnemySkillDataType.물리데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.물리데미지]);
-            skill.propertyDamage = Convert.ToSingle(row[(int)EnemySkillDataType.속성데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.속성데미지]);
+            // skill.physicsDamage = Convert.ToSingle(row[(int)EnemySkillDataType.물리데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.물리데미지]);
+            // skill.propertyDamage = Convert.ToSingle(row[(int)EnemySkillDataType.속성데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.속성데미지]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소물리데미지]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지 + 1]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소물리데미지]);
+            skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지 + 1]);
+            
+            
             skill.skillWeight = Convert.ToInt32(row[(int)EnemySkillDataType.가중치] == string.Empty ? "0" : row[(int)EnemySkillDataType.가중치]);
-            skill.buffRatio = Convert.ToSingle(row[(int)EnemySkillDataType.비율] == string.Empty ? "0" : row[(int)EnemySkillDataType.비율]);
-
+            string[] buff_debuf =
+                (row[(int)EnemySkillDataType.비율] == string.Empty ? "0(0)" : row[(int)EnemySkillDataType.비율])
+                .Replace("%","") // % 삭제
+                .Replace(")","") // ) 삭제
+                .Split("(");
+            
+            skill.buffRatio = Convert.ToSingle(buff_debuf[0]);
+            skill.debuffRatio = Convert.ToSingle(buff_debuf[1]);
+            
+            /*
+             * True/False 값 처리
+             */
+            
             var booleanArr = row.Skip((int)EnemySkillDataType.LastIdx + 1).Select((a) => a.ToUpper() == "TRUE").ToArray();
             int idx = 0;
             skill.isPassive = booleanArr[idx++];
