@@ -6,6 +6,7 @@ using Script.Global;
 using Scripts.Entity;
 using UnityEngine;
 using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 namespace Scripts.Data
 {
@@ -27,8 +28,9 @@ namespace Scripts.Data
         public bool isParent;
         public bool isChildUnlock;
 
-        public float physicsDamage;
-        public float propertyDamage;
+        // TODO : 임시 땜빵, 사용 금지
+        public float physicsDamage => Random.Range(minPhysicsDamage.GetRaw(),maxPhysicsDamage.GetRaw());
+        public float propertyDamage=> Random.Range(minPropertyDamage.GetRaw(),maxPropertyDamage.GetRaw());
 
         public SkillCalculateElement minPhysicsDamage;
         public SkillCalculateElement maxPhysicsDamage;
@@ -37,6 +39,7 @@ namespace Scripts.Data
         
         
         public float buffRatio;
+        public float debuffRatio;
         public float mpCost;
         public int skillWeight;
 
@@ -56,11 +59,11 @@ namespace Scripts.Data
         public DebuffType debuffType;
 
         public int pointCost = 1;
-        
 
         public override string ToString()
         {
-            return $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(enemyName)}: {enemyName}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}, {nameof(mpCost)}: {mpCost}, {nameof(skillWeight)}: {skillWeight}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType},{nameof(debuffType)}: {debuffType} ,{nameof(pointCost)}: {pointCost}";
+            return
+                $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(enemyName)}: {enemyName}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(infomation)}: {infomation}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(minPhysicsDamage)}: {minPhysicsDamage}, {nameof(maxPhysicsDamage)}: {maxPhysicsDamage}, {nameof(minPropertyDamage)}: {minPropertyDamage}, {nameof(maxPropertyDamage)}: {maxPropertyDamage}, {nameof(buffRatio)}: {buffRatio}, {nameof(mpCost)}: {mpCost}, {nameof(skillWeight)}: {skillWeight}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}, {nameof(debuffType)}: {debuffType}, {nameof(pointCost)}: {pointCost}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}";
         }
     }
 }
