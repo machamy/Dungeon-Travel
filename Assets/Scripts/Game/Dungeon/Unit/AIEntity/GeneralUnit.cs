@@ -46,14 +46,13 @@ namespace Scripts.Game.Dungeon.Unit
         private IState<GeneralUnit>[] states;
         private StateMachine<GeneralUnit> stateMachine;
        
-
         #endregion
 
         public override void Setup()
         {
             base.Setup();
-            
 
+            #region STATEMACHINE BUILDING
             states = new IState<GeneralUnit>[6];
             states[(int)GMStates.Idle] = new GeneralMonsterStates.Idle();
             states[(int)GMStates.Chase] = new GeneralMonsterStates.Chase();
@@ -64,8 +63,9 @@ namespace Scripts.Game.Dungeon.Unit
 
             stateMachine = new StateMachine<GeneralUnit>();
             stateMachine.Setup(this, states[(int)GMStates.Idle]);
+            #endregion
         }
-        
+
         public override void Updated()
         {
             stateMachine.Execute();

@@ -1,16 +1,10 @@
 using Scripts.Data;
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem.HID;
-using UnityEngine.UIElements;
 
 namespace Scripts.Game.Dungeon.Unit
 {
-    /*
+    
     /// <summary>
     /// 아래 enum은 기획서에 따라 임의로 작명함. DB에 어떻게 저장되냐에 따라 이름 바꾸면 될듯.
     /// </summary>
@@ -38,6 +32,7 @@ namespace Scripts.Game.Dungeon.Unit
         Dead
     }
 
+    /*
     /// <summary>
     /// 몬스터 객체 구현 스크립트. 직렬화된 변수들은 DB에 연결하기 전에 빠른 값 교체 용도로 사용함.
     /// </summary>
@@ -68,7 +63,7 @@ namespace Scripts.Game.Dungeon.Unit
         private StateMachine<MonsterUnit> stateMachine;
 
         #region PROPERTIES
-        public Transform Target{ set => target = value; get => target; }
+        public Transform Target{ set { target = value; } get { return target; } }
         public NavMeshAgent Nav { get { return nav; } }
         public bool CanChaseOrFlee { set => canChase = value; get => canChase; } 
         public float DetectRadius { set => detectRadius = value; get => detectRadius; }
@@ -200,9 +195,11 @@ namespace Scripts.Game.Dungeon.Unit
     {
         #region INITIALIZATION
 
-        [SerializeField] string monsterName;
-        
-        EnemyStatData monsterData;
+        //[SerializeField] string monsterName;
+
+        //EnemyStatData monsterData;
+
+        [SerializeField] TempMonsterData tempMonsterData;
 
         EnemyProperty monsterProperty;
         public EnemyProperty MonsterProperty { get { return monsterProperty; } }
@@ -224,14 +221,15 @@ namespace Scripts.Game.Dungeon.Unit
         {
             base.Setup();
             // TODO: 현재층 임시로 1로 설정해둠 - machamy
-            monsterData = DB.GetEnemyData(1,monsterName);
-            gameObject.name = $"{ID}_{monsterName}";
-            monsterProperty = monsterData.Property;
+            // 임시로 데이터 만들어서 해야하는 상황이라, DB 연동부분 빼놓음 - leejhee
+            // monsterData = DB.GetEnemyData(1, monsterName);
+            gameObject.name = $"{ID}_{tempMonsterData.name}";
+            //monsterProperty = monsterData.Property;
+            monsterProperty = tempMonsterData.Property;
 
             nav = GetComponent<NavMeshAgent>();
             initialPosition = transform.localPosition;
             target = GameObject.FindWithTag("Player").transform;
-            // TODO: Findwithtag 쓰지 말고 플레이어 싱글톤으로 해서 스태틱으로다가 transform 가져와서 하기.
 
             meshRenderer = GetComponent<MeshRenderer>();
             mosnterCollider = GetComponent<Collider>();
