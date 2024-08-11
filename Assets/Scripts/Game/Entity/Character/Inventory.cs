@@ -1,4 +1,4 @@
-﻿using Scripts.Entity.Item;
+using Scripts.Entity.Item;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
@@ -7,7 +7,6 @@ namespace Scripts.Game
     public class Inventory
     {
         private List<BaseItemData> itemList;
-
 
         public int MaxSlot { get; private set; }
         public int Count => itemList.Count;
@@ -25,7 +24,7 @@ namespace Scripts.Game
 
         public void SetMaxSlot(int n)
         {
-            this.MaxSlot = n;
+            MaxSlot = n;
         }
 
         public bool AddItem(BaseItemData item)
@@ -40,32 +39,10 @@ namespace Scripts.Game
             return true;
         }
 
-        public bool SetItem(int slot, BaseItemData item)
+        public void RemoveItem(BaseItemData item)
         {
-            if (itemList.Count > slot)
-            {
-                return false;
-            }
-
-            itemList[slot] = item;
-            return true;
+            itemList.Remove(item);
         }
-
-        public bool RemoveItem(int slot)
-        {
-            return SetItem(slot, null);
-        }
-
-        public BaseItemData GetItem(int slot)
-        {
-            if (itemList.Count > slot)
-            {
-                return null;
-            }
-
-            return itemList[slot];
-        }
-
         
         /// <summary>
         /// 아이템 목록을 복사해 가져온다

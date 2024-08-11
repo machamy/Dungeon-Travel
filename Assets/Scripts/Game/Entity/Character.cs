@@ -23,8 +23,6 @@ namespace Scripts.Entity
         public Class _class;
         
         public int LV => lv;
-        
-        public Inventory Inventory { get; private set; }
 
         public EquipmentInventory EquipmentInventory { get; private set; }        // TODO : EquimentInventory 클래스 별도 생성
         
@@ -40,7 +38,7 @@ namespace Scripts.Entity
                 // if(!initialized)
                 //     init();
             }
-            Inventory = Inventory.CreateInstance(27);
+            //Inventory = Inventory.CreateInstance(27);            => Moved to PartyManager
             EquipmentInventory = EquipmentInventory.CreateInstance();
             SkillTree = new SkillTree();
         }

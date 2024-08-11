@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Scripts.Entity;
+using Scripts.Game;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -18,12 +19,15 @@ namespace Scripts.Manager
     public class PartyManager
     {
         private List<Character> party;
-        
+
+        public Inventory Inventory { get; private set; }
+
         public int MaxAmount = 5;
 
         public PartyManager()
         {
             party = new List<Character>();
+            Inventory = Inventory.CreateInstance(27);
         }
 
         public void Add(Character character)

@@ -14,6 +14,9 @@ namespace Scripts.Entity.Item
 
         public ItemType type;
 
+        public int buyPrice;
+        public int sellPrice;
+
         public bool isUsable;
         public string infomation;
     }
