@@ -4,34 +4,6 @@ using UnityEngine.AI;
 
 namespace Scripts.Game.Dungeon.Unit
 {
-    
-    /// <summary>
-    /// 아래 enum은 기획서에 따라 임의로 작명함. DB에 어떻게 저장되냐에 따라 이름 바꾸면 될듯.
-    /// </summary>
-    public enum MonsterAttackType
-    {
-        firstStrike = 0,    // 선제공격하는 경우
-        neutral,            // 선제공격 안하는 경우 - 중립
-        fleeing,            // 선제공격 안하는 경우 - 도망
-        mustCombat          // 보스와 같이 강제 전투 걸리는 경우
-    }
-
-    public enum MonsterMoveType
-    {
-        doPatrol = 0,       // IDLE 상태에서 이리저리 움직이는지
-        notPatrol           // IDLE 상태에서 자리가 고정되어있는지
-    }
-
-    public enum MonsterStates
-    {
-        Idle = 0,
-        Chase,
-        Flee,
-        Return,
-        Combat,
-        Dead
-    }
-
     /*
     /// <summary>
     /// 몬스터 객체 구현 스크립트. 직렬화된 변수들은 DB에 연결하기 전에 빠른 값 교체 용도로 사용함.

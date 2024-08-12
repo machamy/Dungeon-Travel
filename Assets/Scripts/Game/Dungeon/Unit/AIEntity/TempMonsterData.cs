@@ -1,9 +1,11 @@
 using Scripts.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
 
+[Serializable]
 [CreateAssetMenu(fileName = "TempMonsterData", menuName = "Scripts/ScriptableObject/TempMonster")]
 public class TempMonsterData : ScriptableObject
 {

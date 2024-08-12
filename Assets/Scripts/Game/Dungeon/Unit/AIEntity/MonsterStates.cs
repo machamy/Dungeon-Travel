@@ -1,10 +1,7 @@
 using Scripts.Game.Dungeon.Unit;
 using Scripts.Data;
 using Scripts.FSM;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 namespace GeneralMonsterStates
 {
@@ -24,11 +21,12 @@ namespace GeneralMonsterStates
                 {
                     entity.ChangeState(GMStates.Chase);
                 }
+                /*
                 // 적 속성 두개로 감소됨 - machamy
                 // else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Chase))
                 // {
                 //     entity.ChangeState(GMStates.Flee);
-                // }
+                // }*/
             }
 
             if (entity.MonsterProperty.HasFlag(EnemyProperty.Movement))
