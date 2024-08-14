@@ -1,4 +1,4 @@
-﻿using Scripts.Entity;
+using Scripts.Entity;
 using System;
 using System.Linq;
 using UnityEngine;
@@ -25,6 +25,10 @@ namespace Scripts.Data
         /// </summary>
         public bool isRaw { get; private set; }
         private float rawDamage;
+        /// <summary>
+        /// mp룰 계산하는 식인지 판별
+        /// </summary>
+        public bool isMp { get; private set; }
         
         public SkillCalculateElement(string raw)
         {
@@ -34,35 +38,55 @@ namespace Scripts.Data
                 isRaw = true;
                 rawDamage = (float) rawValue;
             }
-            isRaw = false;
-            if (raw == String.Empty || raw == "-")
+            else
             {
-                isNone = true;
-                return;
-            }
-            
-            string parsedString =  string.Concat(raw.Where(c => Char.IsDigit(c) ||
-                                                                      Char.IsWhiteSpace(c) ||
-                                                                      c == '*' ||
-                                                                      c == '+'));
-            string[] statStatementArr = parsedString.Split("*");
-            if (!Stat.TryParse(statStatementArr[0], out requiredStat))
-            {
-                Debug.LogWarning($"{statStatementArr[0]} 파싱 실패.");
-                requiredStat = Stat.HP;
-            }
+                isRaw = false;
+                if (raw == String.Empty || raw == "-")
+                {
+                    isNone = true;
+                    statWeight = 0f;
+                    return;
+                }
 
-            string[] nums = statStatementArr[1].Split("+");
-            if (!float.TryParse(nums[0], out statWeight))
-            {
-                statWeight = 1.0f;
+                string parsedString = string.Concat(raw.Where(c => Char.IsLetterOrDigit(c) ||
+                                                                          Char.IsWhiteSpace(c) ||
+                                                                          c == '*' || c== '.' ||
+                                                                          c == '+'));
+                string[] statStatementArr = parsedString.Split("*");
+                if (!Stat.TryParse(statStatementArr[0], out requiredStat))
+                {
+                    isMp = true;
+                    requiredStat = Stat.HP;
+                }
+
+                if (isMp)
+                {
+                    string[] nums = statStatementArr[0].Split("+");
+                    if (!float.TryParse(nums[0], out statWeight))
+                    {
+                        statWeight = 1.0f;
+                    }
+                    if (!float.TryParse(nums[1], out lvWeight))
+                    {
+                        statWeight = 0.0f;
+                    }
+                    this.raw = $"{statWeight:F3}(+{lvWeight:F3})";
+                }
+                else
+                {
+                    Debug.Log(requiredStat);
+                    string[] nums = statStatementArr[1].Split("+");
+                    if (!float.TryParse(nums[0], out statWeight))
+                    {
+                        statWeight = 1.0f;
+                    }
+                    if (!float.TryParse(nums[1], out lvWeight))
+                    {
+                        statWeight = 0.0f;
+                    }
+                    this.raw = $"{requiredStat}*{statWeight:F3}(+{lvWeight:F3})";
+                }
             }
-            if (!float.TryParse(nums[1], out lvWeight))
-            {
-                statWeight = 0.0f;
-            }
-            
-            this.raw = $"{requiredStat}*{statWeight:F3}(+{lvWeight:F3})";
         }
 
         public SkillCalculateElement(Stat stat, float statWeight, float lvWeight)
@@ -78,6 +102,11 @@ namespace Scripts.Data
             if (isRaw)
                 return rawDamage;
             return finalStat.Get(requiredStat) * statWeight + lvWeight * skillLv;
+        }
+
+        public float GetMpCost(SkillData skillData)
+        {
+            return statWeight + lvWeight * skillData.skillLevel;
         }
 
         public float GetRaw()

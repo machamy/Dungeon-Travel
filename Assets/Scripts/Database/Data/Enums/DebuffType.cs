@@ -22,14 +22,22 @@ namespace Scripts.Data
 
     public static class DebuffTypeHelper
     {
-        public static Dictionary<string,DebuffType> typeChange = new Dictionary<string,DebuffType>()
+        public static Dictionary<DebuffType, string> typeChange = new Dictionary<DebuffType, string>()
         {
-            {"출혈", DebuffType.Blood},
-            {"중독" , DebuffType.Poison },
-            {"실명" , DebuffType.Blind },   
-            {"기절" , DebuffType.Stun },
-            {"침묵" , DebuffType.Silence},
-            {"혼란" , DebuffType.Confuse},
+            { DebuffType.Blood,"출혈"},
+            {DebuffType.Poison , "중독" },
+            {DebuffType.Blind , "실명" },   
+            {DebuffType.Stun , "기절" },
+            {DebuffType.Silence , "침묵"},
+            {DebuffType.Confuse , "혼란"},
         };
+
+        public static DebuffType GetFromKorean(string kor)
+        {
+            if (kor == "빛")
+                kor = "광휘";
+            var result = typeChange.FirstOrDefault(e => (e.Value == kor)).Key;
+            return result;
+        }
     }
 }

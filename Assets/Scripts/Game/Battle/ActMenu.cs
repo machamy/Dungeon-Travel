@@ -87,7 +87,7 @@ public class ActMenu : MonoBehaviour
         for (int skillNum = 0; skillNum < 4; skillNum++)
         {
             skillname[skillNum].text = playerSkills[skillNum].skillName;
-            skillcost[skillNum].text = playerSkills[skillNum].mpCost.ToString() + "MP";
+            //skillcost[skillNum].text = playerSkills[skillNum].mpCost.GetMpCost(playerSkills[skillNum]) + "MP";
         }
     }
 
@@ -147,7 +147,7 @@ public class ActMenu : MonoBehaviour
     public void SkillSelect(int skillNumber)
     {
         useSkill = playerSkills[skillNumber];
-        if (turnPlayerUnit.enoughMP(useSkill.mpCost))
+        if (turnPlayerUnit.enoughMP(useSkill))
         {
             skillMenu.SetActive(false);
             isSkill = true;
@@ -211,7 +211,7 @@ public class ActMenu : MonoBehaviour
 
         if (isSkill)
         {
-            turnPlayerUnit.ConsumeMP(useSkill.mpCost);
+            turnPlayerUnit.ConsumeMP(useSkill);
             battleManager.SkillAttack(turnPlayerUnit, targetUnit, useSkill);
         }
         else

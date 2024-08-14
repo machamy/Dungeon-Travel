@@ -18,7 +18,7 @@ namespace Scripts.Data
         public string enemyName;
         
         public string weaponType;
-        public int rank;
+        public int rank = 0; // 적의 스킬 랭크는 0으로 맞추기 위해서
         public string rawType;
 
         public string skillName;
@@ -40,7 +40,7 @@ namespace Scripts.Data
         
         public float buffRatio;
         public float debuffRatio;
-        public float mpCost;
+        public SkillCalculateElement mpCost;
         public int skillWeight;
 
         public bool isPassive;
@@ -59,11 +59,12 @@ namespace Scripts.Data
         public DebuffType debuffType;
 
         public int pointCost = 1;
+        public int skillLevel = 0;
 
         public override string ToString()
         {
             return
-                $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(enemyName)}: {enemyName}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(infomation)}: {infomation}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(minPhysicsDamage)}: {minPhysicsDamage}, {nameof(maxPhysicsDamage)}: {maxPhysicsDamage}, {nameof(minPropertyDamage)}: {minPropertyDamage}, {nameof(maxPropertyDamage)}: {maxPropertyDamage}, {nameof(buffRatio)}: {buffRatio}, {nameof(mpCost)}: {mpCost}, {nameof(skillWeight)}: {skillWeight}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}, {nameof(debuffType)}: {debuffType}, {nameof(pointCost)}: {pointCost}, {nameof(physicsDamage)}: {physicsDamage}, {nameof(propertyDamage)}: {propertyDamage}";
+                $"{base.ToString()}, {nameof(classType)}: {classType}, {nameof(enemyName)}: {enemyName}, {nameof(weaponType)}: {weaponType}, {nameof(rank)}: {rank}, {nameof(rawType)}: {rawType}, {nameof(skillName)}: {skillName}, {nameof(infomation)}: {infomation}, {nameof(parent)}: {parent}, {nameof(isParent)}: {isParent}, {nameof(isChildUnlock)}: {isChildUnlock}, {nameof(minPhysicsDamage)}: {minPhysicsDamage}, {nameof(maxPhysicsDamage)}: {maxPhysicsDamage}, {nameof(minPropertyDamage)}: {minPropertyDamage}, {nameof(maxPropertyDamage)}: {maxPropertyDamage}, {nameof(buffRatio)}: {buffRatio}, {nameof(mpCost)}: {mpCost}, {nameof(skillWeight)}: {skillWeight}, {nameof(isPassive)}: {isPassive}, {nameof(isSelf)}: {isSelf}, {nameof(allyTargetType)}: {allyTargetType}, {nameof(enemyTargetType)}: {enemyTargetType}, {nameof(isBuff)}: {isBuff}, {nameof(isDebuff)}: {isDebuff}, {nameof(isHealing)}: {isHealing}, {nameof(isRanged)}: {isRanged}, {nameof(isMelee)}: {isMelee}, {nameof(attackType)}: {attackType}, {nameof(debuffType)}: {debuffType}, {nameof(pointCost)}: {pointCost}";
         }
     }
 }

@@ -16,7 +16,7 @@ public class EnemyStatData : ScriptableObject, IDBdata
     /// <summary>
     /// 기본 체력
     /// </summary>
-    public float hp;
+    public int hp;
     /// <summary>
     /// 기본 공격력
     /// </summary>

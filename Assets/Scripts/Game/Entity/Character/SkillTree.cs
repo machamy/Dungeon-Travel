@@ -1,4 +1,4 @@
-﻿using Scripts.Data;
+using Scripts.Data;
 using Scripts.Entity;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,7 +37,8 @@ namespace Scripts.Game
                 if (skill.Value)
                 {
                     // 모든 포인트를 돌려받는다.
-                    points += skill.Key.pointCost;
+                    points += skill.Key.pointCost * skill.Key.skillLevel;
+                    skill.Key.skillLevel = 0;
                 }
             }
             _skillLearnDictionary.Clear();
@@ -105,7 +106,8 @@ namespace Scripts.Game
                 return false;
             }
             _skillLearnDictionary[skill] = true;
-            points += skill.pointCost;
+            points += skill.pointCost * skill.skillLevel;
+            skill.skillLevel = 0;
             return true;
         }
 

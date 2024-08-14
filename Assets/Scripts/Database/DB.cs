@@ -128,7 +128,9 @@ public class DB
         foreach (var table in er.Read())
         {
             string[] header = Array.ConvertAll(table.Rows[0].ItemArray,
-                p => (p ?? String.Empty).ToString());
+                p => (p ?? String.Empty).ToString())
+                .Where(h => !string.IsNullOrEmpty(h)) // 빈 문자열 필터링
+                .ToArray();
             int colNum = -1; // 미사용
             // for (colNum = 0; colNum < header.Length; colNum++)
             //     if (header[colNum] == "EOF")
@@ -254,15 +256,15 @@ public class DB
         유형 = 2,
         이름 = 3,
 
-        최소_물리_데미지 = 4,
+        최소_물리_데미지 = 6,
 
-        최소_속성_데미지 = 6,
-        버프디버프비율 = 8,
-        MP소모 = 9,
+        최소_속성_데미지 = 8,
+        버프디버프비율 = 10,
+        MP소모 = 11,
   
-        LastIdx = 9,
+        LastIdx = 11,
         
-        debuff_start = 34
+        debuff_start = 36
     }
 
     /// <summary>
@@ -307,8 +309,8 @@ public class DB
                 .Split("(");
             skill.buffRatio = Convert.ToSingle(buff_debuf[0]);
             skill.debuffRatio = Convert.ToSingle(buff_debuf[1]);
-            
-            skill.mpCost = Convert.ToSingle(row[(int)SkillDataType.MP소모] == string.Empty || row[(int)SkillDataType.MP소모] == "-" ? "0" : row[(int)SkillDataType.MP소모]);
+
+            skill.mpCost = new SkillCalculateElement(row[(int)SkillDataType.MP소모]);
 
 
             /*
@@ -350,7 +352,7 @@ public class DB
             skill.isRanged = booleanArr[idx++];
 
             AttackType attackType = AttackType.None;
-            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length; idx++)
+            for (; (int)SkillDataType.LastIdx + 1 + idx < (int)SkillDataType.debuff_start; idx++)
             {
                 string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
                 if (rawHeader == String.Empty)
@@ -366,9 +368,26 @@ public class DB
                     Debug.Log($"[DB::ParseClassSkill] {header[(int)SkillDataType.LastIdx+ 1 +idx]}({(int)SkillDataType.LastIdx+ 1 +idx}) 유효하지 않음");
                 }
             }
-
             skill.attackType = attackType;
 
+            DebuffType debuffType = DebuffType.None;
+            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length - 1; idx++)
+            {
+                string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
+                if (rawHeader == String.Empty)
+                    continue;
+                DebuffType currentType = DebuffTypeHelper.GetFromKorean(rawHeader);
+                if (currentType != DebuffType.None)
+                {
+                    if (booleanArr[idx])
+                        debuffType |= currentType;
+                }
+                else
+                {
+                    Debug.Log($"[DB::ParseClassSkill] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
+                }
+            }
+            skill.debuffType = debuffType;
             Debug.Log($"Register Skill {skill}");
         }
 
@@ -390,6 +409,7 @@ public class DB
 
     private enum EnemyStatType
     {
+        INDEX,
         NAME,
         HP,
         ATK,
@@ -416,7 +436,7 @@ public class DB
             var row = Array.ConvertAll(sheet.Rows[i].ItemArray, p => ((p ?? "0").ToString()));
 
             enemyStat.name = row[(int)EnemyStatType.NAME];
-            enemyStat.hp = float.Parse(row[(int)EnemyStatType.HP]);
+            enemyStat.hp = int.Parse(row[(int)EnemyStatType.HP]);
             enemyStat.atk = float.Parse(row[(int)EnemyStatType.ATK]);
             enemyStat.def = float.Parse(row[(int)EnemyStatType.DEF]);
             enemyStat.mdef = float.Parse(row[(int)EnemyStatType.MDEF]);
@@ -490,6 +510,7 @@ public class DB
         비율 = 7,
         가중치 = 8,
         LastIdx = 8,
+        debuff_start = 33,
     }
     private Dictionary<string, List<SkillData>> ParseEnemySkillData(DataTable sheet, string[] header, int colNum)
     {
@@ -515,7 +536,7 @@ public class DB
             skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지 + 1]);
             
             
-            skill.skillWeight = Convert.ToInt32(row[(int)EnemySkillDataType.가중치] == string.Empty ? "0" : row[(int)EnemySkillDataType.가중치]);
+            skill.skillWeight = Convert.ToInt32(row[(int)EnemySkillDataType.가중치] == string.Empty || row[(int)EnemySkillDataType.가중치] == "-" ? "0" : row[(int)EnemySkillDataType.가중치]);
             string[] buff_debuf =
                 (row[(int)EnemySkillDataType.비율] == string.Empty ? "0(0)" : row[(int)EnemySkillDataType.비율])
                 .Replace("%","") // % 삭제
@@ -565,9 +586,9 @@ public class DB
             skill.isRanged = booleanArr[idx++];
 
             AttackType attackType = AttackType.None;
-            for (; (int)SkillDataType.LastIdx + 1 + idx < header.Length - 1; idx++)
+            for (; (int)EnemySkillDataType.LastIdx + 1 + idx < (int)EnemySkillDataType.debuff_start; idx++)
             {
-                string rawHeader = header[(int)SkillDataType.LastIdx + 1 + idx];
+                string rawHeader = header[(int)EnemySkillDataType.LastIdx + 1 + idx];
                 if (rawHeader == String.Empty)
                     continue;
                 AttackType currentType = AttackTypeHelper.GetFromKorean(rawHeader);
@@ -578,19 +599,27 @@ public class DB
                 }
                 else
                 {
-                    Debug.Log($"[DB::ParseEnemySkillData] {header[(int)SkillDataType.LastIdx + 1 + idx]}({(int)SkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
+                    Debug.Log($"[DB::ParseEnemySkillData] {header[(int)EnemySkillDataType.LastIdx + 1 + idx]}({(int)EnemySkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
                 }
             }
             skill.attackType = attackType;
 
             DebuffType debuffType = DebuffType.None;
-            string[] debuffArr = (row[header.Length - 1] == string.Empty ? "null" : row[header.Length - 1]).Split('/');
-            for (int j = 0; j < debuffArr.Length; j++)
+            for (; (int)EnemySkillDataType.LastIdx + 1 + idx < header.Length; idx++)
             {
-                if (DebuffTypeHelper.typeChange.TryGetValue(debuffArr[j], out DebuffType currentType))
-                    debuffType |= currentType;
-                else
+                string rawHeader = header[(int)EnemySkillDataType.LastIdx + 1 + idx];
+                if (rawHeader == String.Empty)
                     continue;
+                DebuffType currentType = DebuffTypeHelper.GetFromKorean(rawHeader);
+                if (currentType != DebuffType.None)
+                {
+                    if (booleanArr[idx])
+                        debuffType |= currentType;
+                }
+                else
+                {
+                    Debug.Log($"[DB::ParseClassSkill] {header[(int)EnemySkillDataType.LastIdx + 1 + idx]}({(int)EnemySkillDataType.LastIdx + 1 + idx}) 유효하지 않음");
+                }
             }
             skill.debuffType = debuffType;
 
