@@ -43,7 +43,8 @@ public class BattleManager : MonoBehaviour
     public SmallTurnState smallturn { get; set; }
 
     private Queue<int> turnQueue = new Queue<int>();
-    private int alivePlayer, aliveEnemy;
+    private int alivePlayer;
+    public int aliveEnemy;
 
     PartyManager partyManager;
     Character character;
@@ -142,8 +143,8 @@ public class BattleManager : MonoBehaviour
             if (boss)
             {
                 Boss bossPrefab = new Boss();
-                bossPrefab.NewBoss(floor, name, cloneEnemy);
-                enemyUnits[spawnCount].BossSetting(bossPrefab);
+                bossPrefab.NewEnemy(floor, name, cloneEnemy);
+                enemyUnits[spawnCount].EnemySetting(bossPrefab);
             }
             else
             {
@@ -276,7 +277,9 @@ public class BattleManager : MonoBehaviour
         float totalDamage = useSkill.physicsDamage; ;
 
         bool critical;
+        bool isAround = false;
 
+        if(isAround) { totalDamage = totalDamage * 0.8f; }
         if (useSkill.attackType == targetUnit.weakType)
         {
             critical = Random(attackUnit.stat.critical + 0.5);
@@ -301,6 +304,6 @@ public class BattleManager : MonoBehaviour
 
     public void EndSmallTurn() { smallturn = SmallTurnState.END; }
 
-    public void EnemyDead() { aliveEnemy--;  }
+    public void EnemyDead() { aliveEnemy--; spawnCount--; }
     public void PlayerDead() { alivePlayer--; }
 }

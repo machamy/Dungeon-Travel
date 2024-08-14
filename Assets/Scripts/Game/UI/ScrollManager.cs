@@ -15,7 +15,7 @@ public class ScrollManager : MonoBehaviour
 
     public int height = 80, amount = 6;
     public int posY = 0;
-    public int posN, posNInScreen = 0;
+    public int posN = 0, posNInScreen = 0;
 
     private GameObject selectedButton;
 

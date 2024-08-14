@@ -97,7 +97,6 @@ namespace Scripts.DebugConsole
             CreateCommand("search",new Command("cmds",str => Print(string.Join("\n", GetCommandsStartWith(str))), "해당 문자로 시작하는 모든 명령어 출력"));
 
             #endregion
-
             #region Party
 
             CreateCommand("party", new Command("member", (opt) =>
@@ -155,7 +154,6 @@ namespace Scripts.DebugConsole
                 , "status change mp [name] : 현재 mp를 변경한다."));
 
             #endregion
-            
             #region 세이브로드
             //저장
             CreateCommand(null, new Command("save", delegate(string s)
@@ -188,7 +186,6 @@ namespace Scripts.DebugConsole
             
 
             #endregion
-
             #region GameManager
             CreateCommand("fade",new Command("start", (time)=>
             {

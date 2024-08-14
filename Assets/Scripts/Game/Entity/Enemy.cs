@@ -6,27 +6,40 @@ using UnityEngine;
 
 namespace Scripts.Entity
 {
-    public class Enemy
+    public class Enemy : IEnemy
     {
-        public EnemyStatData enemyStatData;
+        public EnemyStatData EnemyStatData 
+        {   
+            get { return EnemyStatData; } 
+            set { EnemyStatData = value; } 
+        }
         private List<SkillData> skillDatas = new List<SkillData>();
-        private List<Action<SkillData, EnemyStatData>> skillLists = new List<Action<SkillData, EnemyStatData>>();
+        private List<Action<SkillData>> skillLists = new List<Action<SkillData>>();
+        public List<Action<SkillData>> SkillLists
+        {
+            get { return skillLists; }
+            set { skillLists = value; }
+        }
+        public int Index { get; set; } // 스킬의 인덱스
         public GameObject gameObject = null;
+        BuffManager buffManager;
         float currentHp;
         bool passiveTrigger = false;
-        Enemy_Skill skill = new Enemy_Skill();
+        Enemy_Skill skill;
         public void NewEnemy(int floor, string name, GameObject gameObject)
         {
             this.gameObject = gameObject;
-            enemyStatData = DB.GetEnemyData(floor, name);
+            skill = new Enemy_Skill(this);
+            EnemyStatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
-            skillLists = skill.GetSkillList(floor, name);
-            currentHp = enemyStatData.hp;
+            SkillLists = skill.GetSkillList(floor, name);
+            buffManager = gameObject.GetComponent<BuffManager>();
+            currentHp = EnemyStatData.hp;
+            Index = -1;
         }
 
         public void Attack()
         {
-            BuffManager buffManager = gameObject.GetComponent<BuffManager>();
             if (buffManager.debuffDic.ContainsKey(DebuffType.Stun)) // 기절이라면 공격 함수 실행 x
                 return;
             int[] weightArr = new int[5];
@@ -35,11 +48,14 @@ namespace Scripts.Entity
                 int i = 0;
                 weightArr[i++] = skilldata.skillWeight;
             }
-            int weight = Utility.WeightedRandom(weightArr);
-            if (buffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
-                weight = 0;
-
-            skillLists[weight].Invoke(skillDatas[weight],enemyStatData); // 함수 실행
+            if (Index == -1) // 미리 지정되있는 스킬이 없을때
+            {
+                Index = Utility.WeightedRandom(weightArr);
+                if (buffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
+                    Index = 0;
+            }
+            SkillLists[Index].Invoke(skillDatas[Index]);
+            Index = -1;
         }
     }
 }

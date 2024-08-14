@@ -1,44 +1,65 @@
-﻿using Scripts.Entity.Item;
+using Scripts.Entity.Item;
 using Scripts.Game;
+using System;
+using System.Collections.Generic;
 
 namespace Game.Entity.Character
 {
-    public enum EquipmentSlot
+    public enum EquipmentType
     {
-        Default = 0,
-        LeftHand = 1,
-        RightHand = 2,
-            
-            
-        Head = 5,
-        Chest = 6,
-        Leggings = 7,
-        Boots = 8,
-            
-        Neck = 11,
-        LeftWrists = 12,
-        RightWirsts = 13,
-            
-        Ring01 = 16,
-        Ring02 = 17,
-        Ring03 = 18,
-
+        Weapon = 0,
+        Helmet = 1,
+        Armor = 2,
+        Shoes = 3,
+        Gloves = 4,
+        Accessory1 = 5,
+        Accessory2 = 6,
 
         Size
     }
-    public class EquipmentInventory: Inventory
+    public class EquipmentInventory
     {
+        private BaseItemData[] EquipmentSlot;
+
         public static EquipmentInventory CreateInstance()
         {
             var instance = new EquipmentInventory();
-            instance.SetMaxSlot((int)EquipmentSlot.Size);
             
             return instance;
         }
 
+        private EquipmentInventory()
+        {
+            EquipmentSlot = new BaseItemData[(int)EquipmentType.Size];
+        }
 
-        public bool SetItem(EquipmentSlot slot, BaseItemData item) => base.SetItem((int)slot, item);
-        protected new bool SetItem(int slot, BaseItemData item) => base.SetItem(slot, item); // 사용 막음
-        public bool GetItem(EquipmentSlot slot) => base.GetItem((int)slot);
+
+        public BaseItemData SetItem(EquipmentType slot, BaseItemData item)
+        {
+            BaseItemData BeforeItem = EquipmentSlot[(int)slot];
+            EquipmentSlot[(int)slot] = item;
+
+            return BeforeItem;
+        }
+
+        public BaseItemData RemoveItem(EquipmentType slot)
+        {
+            return SetItem(slot, null);
+        }
+
+        public BaseItemData GetItem(EquipmentType slot)
+        {
+            return EquipmentSlot[(int)slot];
+        }
+
+        /// <summary>
+        /// 아이템 목록을 복사해 가져온다
+        /// </summary>
+        /// <returns>아이템 목록</returns>
+        public BaseItemData[] GetItems()
+        {
+            return EquipmentSlot;
+        }
+
     }
 }

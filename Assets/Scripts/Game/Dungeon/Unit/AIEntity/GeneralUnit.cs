@@ -46,14 +46,13 @@ namespace Scripts.Game.Dungeon.Unit
         private IState<GeneralUnit>[] states;
         private StateMachine<GeneralUnit> stateMachine;
        
-
         #endregion
 
         public override void Setup()
         {
             base.Setup();
-            
 
+            #region STATEMACHINE BUILDING
             states = new IState<GeneralUnit>[6];
             states[(int)GMStates.Idle] = new GeneralMonsterStates.Idle();
             states[(int)GMStates.Chase] = new GeneralMonsterStates.Chase();
@@ -64,8 +63,9 @@ namespace Scripts.Game.Dungeon.Unit
 
             stateMachine = new StateMachine<GeneralUnit>();
             stateMachine.Setup(this, states[(int)GMStates.Idle]);
+            #endregion
         }
-        
+
         public override void Updated()
         {
             stateMachine.Execute();
@@ -74,6 +74,7 @@ namespace Scripts.Game.Dungeon.Unit
         public void ChangeState(GMStates newState)
         {
             stateMachine.ChangeState(states[(int)newState]);
+            Debug.Log($"{newState}");
         }
 
         public void Patrol()
@@ -84,18 +85,24 @@ namespace Scripts.Game.Dungeon.Unit
                 float patrolAngle = UnityEngine.Random.Range(0, 360f);
                 Vector3 nextPatrolPoint = InitialPosition + new Vector3(patrolRadius * UnityEngine.Random.Range(0f, 1f) * Mathf.Cos(Mathf.Deg2Rad * patrolAngle), 0,
                                                                         patrolRadius * UnityEngine.Random.Range(0f, 1f) * Mathf.Sin(Mathf.Deg2Rad * patrolAngle));
+
+                Debug.DrawLine(InitialPosition, nextPatrolPoint, Color.red, 2f);
+
                 // 이동 가능한지 검사
-                if (NavMesh.SamplePosition(nextPatrolPoint, out NavMeshHit hit, 1.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(nextPatrolPoint, out NavMeshHit hit, 5.0f, NavMesh.AllAreas))
                 {
-                    Nav.SetDestination(nextPatrolPoint);
+                    Nav.SetDestination(hit.position);
                     checker.isPatroling = true;
+                    Debug.Log("정찰 되지롱.");
                 }
+                else { Debug.Log("정찰 못하고 있음"); }
             }
             else
             {
                 if (!Nav.pathPending && Nav.remainingDistance < 0.01f)
                 {
                     checker.isPatroling = false;
+                    Debug.Log("다 갔어요.");
                 }
             }
         }

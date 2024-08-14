@@ -13,9 +13,10 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public StatData stat;
+    public EnemyStatData enemyStat;
 
     public SkillData[] skills = new SkillData[4];
-    public bool isguard;
+    public bool isGuard;
     public int atk;
 
     public string unitName;
@@ -34,18 +35,19 @@ public class Unit : MonoBehaviour
     private HUDmanager HUD;
     private BattleManager battleManager;
 
-    private Enemy enemy;
-    private Boss boss;
+    IEnemy enemy;
     private Character character;
 
     #region 초기세팅
-    public void InitialSetting(BattleManager battleManager, HUDmanager hud, Character character = null)
+    public void InitialSetting(BattleManager battleManager, HUDmanager hud, Character character = null) // 플레이어 초기 세팅
     {
         this.battleManager = battleManager;
         spriteRenderer = GetComponent<SpriteRenderer>();
         isDead = false;
         if(character == null)
+        {
             isEnemy = true;
+        }
         else
         {
             isEnemy = false;
@@ -59,39 +61,52 @@ public class Unit : MonoBehaviour
         HUD = hud; HUD.SetupHUD(this);
     }
 
-    public void EnemySetting(Enemy enemy)
+    public void EnemySetting(IEnemy enemy) // 적 초기 세팅
     {
         isEnemy = true;
         this.enemy = enemy;
-        maxHP = enemy.enemyStatData.hp;
-        currentHP = enemy.enemyStatData.hp;
-        weakType = enemy.enemyStatData.weakType;
-        HUD.SetupHUD(this);
-    }
-
-    public void BossSetting(Boss boss)
-    {
-        isEnemy = true; isBoss = true;
-        this.boss = boss;
-        maxHP = boss.enemyStatData.hp;
-        currentHP = boss.enemyStatData.hp;
-        weakType = boss.enemyStatData.weakType;
+        enemyStat = enemy.EnemyStatData;
+        maxHP = enemyStat.hp;
+        currentHP = enemyStat.hp;
+        weakType = enemyStat.weakType;
         HUD.SetupHUD(this);
     }
     #endregion
 
     #region 배틀관련
-
-    public void Attack()
+    public void OnGuard()
     {
-        if(isDead) return;
-        if (isBoss) { boss.Attack(); }
-        else if(isEnemy) { enemy.Attack(); }
+        Debug.Log("가드");
+        isGuard = true;
+    }
+
+    public void Attack() // 적의 공격
+    {
+        enemy.Attack();
+    }
+
+    public void Attack(Unit targetUnit) // 플레이어의 공격
+    {
+        if (targetUnit.enemyStat == null)
+        {
+            Debug.LogError("잘못된 공격함수 사용");
+            return;
+        }
+        else
+        {
+            targetUnit.TakeDamage(5); // 임시
+        }
     }
 
     public void TakeDamage(float damage)  //유닛 체력 계산
     {
         if(isDead) return;
+        if (isGuard)
+        {
+            Debug.Log("방어");
+            isGuard = false;
+            return;
+;       }
 
         currentHP -= damage;
         if(currentHP <= 0)

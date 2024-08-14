@@ -30,7 +30,16 @@ namespace Scripts.Game.Dungeon.Unit
 
         public abstract void Updated();
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        static void OnRuntimeMethodLoad()
+        {
+            nextEntityID = 0;
+        }
 
+        private void OnDisable()
+        {
+            nextEntityID = 0;
+        }
     }
 
 }
