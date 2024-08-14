@@ -37,6 +37,7 @@ public class Unit : MonoBehaviour
 
     IEnemy enemy;
     private Character character;
+    public Action<SkillData> bossPassive;
 
     #region 초기세팅
     public void InitialSetting(BattleManager battleManager, HUDmanager hud, Character character = null) // 플레이어 초기 세팅
@@ -70,6 +71,8 @@ public class Unit : MonoBehaviour
         currentHP = enemyStat.hp;
         weakType = enemyStat.weakType;
         HUD.SetupHUD(this);
+        if(enemy.Passive != null)
+            bossPassive = enemy.Passive;
     }
     #endregion
 
@@ -82,7 +85,7 @@ public class Unit : MonoBehaviour
 
     public void Attack() // 적의 공격
     {
-        enemy.Attack();
+        enemy.Attack(bossPassive);
     }
 
     public void Attack(Unit targetUnit) // 플레이어의 공격
@@ -127,8 +130,9 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="necessaryMP"></param>
     /// <returns></returns>
-    public bool enoughMP(float necessaryMP)
+    public bool enoughMP(SkillData skill)
     {
+        float necessaryMP = skill.mpCost.GetMpCost(skill);
         if (currentMP < necessaryMP) return false;
         else return true;
     }
@@ -138,9 +142,9 @@ public class Unit : MonoBehaviour
     /// </summary>
     /// <param name="consume_amount"></param>
     /// <returns></returns>
-    public void ConsumeMP(float consume_amount)  //유닛 마나 계산
+    public void ConsumeMP(SkillData skill)  //유닛 마나 계산
     {
-        currentMP -= consume_amount;
+        currentMP -= skill.mpCost.GetMpCost(skill);
         HUD.UpdateHUD(currentHP, currentMP);
     }
 

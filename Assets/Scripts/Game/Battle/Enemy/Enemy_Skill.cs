@@ -11,9 +11,11 @@ using UnityEditor.PackageManager;
 public class Enemy_Skill
 {
     IEnemy enemy;
-    public Enemy_Skill(IEnemy enemy)
+    BattleManager battleManager;
+    public Enemy_Skill(IEnemy enemy, BattleManager battleManager)
     {
         this.enemy = enemy;
+        this.battleManager = battleManager;
     }
 
     public List<Action<SkillData>> GetSkillList(int floor, string enemyName)
@@ -97,45 +99,39 @@ public class Enemy_Skill
                         skillLists.Add(EnemyAttack);
                         break;
                     case "몰락한여왕":
-                        skillLists.Add(EnemyAttack);
-                        skillLists.Add(EnemyAttack);
+                        skillLists.Add(Reminiscence);
+                        skillLists.Add(Authority);
                         skillLists.Add(EnemyAttack);
                         skillLists.Add(EnemyAttack);
                         break;
+                }
+                break;
+            case 3:
+                switch (enemyName)
+                {
+                    
+                }
+                break;
+            case 4:
+                switch (enemyName)
+                {
+
+                }
+                break;
+            case 5:
+                switch (enemyName)
+                {
+
                 }
                 break;
         }
 
         return skillLists;
     }
-    public GameObject[] GetOpponent(TargetType enemyTargetType) // 공격대상을 받아오는 함수
-    {
-        GameObject[] go = new GameObject[5];
-        switch (enemyTargetType)
-        {
-            case TargetType.Single:
-                int AttackRange = Utility.WeightedRandom(20, 20, 20, 20, 20);
-                GameObject clone = GameObject.Find($"Player ({AttackRange})(Clone)");
-                go[0] = clone;
-                break;
-            case TargetType.Front:
-                break;
-            case TargetType.Back:
-                break;
-            case TargetType.Area:
-                for (int i = 0; i < 5; i++)
-                {
-                    GameObject _clone = GameObject.Find($"Player ({i})(Clone)");
-                    go[i] = _clone;
-                }
-                break;
-        }
-        return go;
-    }
 
     public void EnemyAttack(SkillData skillData) // 특별한 로직이 아닌 일반적인 공격
     {
-        GameObject[] Opponent = GetOpponent(skillData.enemyTargetType);
+        GameObject[] Opponent = battleManager.GetPlayerGO(skillData.enemyTargetType);
         for (int i = 0; i < Opponent.Length; i++)
         {
             if (Opponent[i] == null)
@@ -166,7 +162,7 @@ public class Enemy_Skill
     public void Cut_Stab(SkillData skillData)
     {
         AttackType[] attackType = Enum.GetValues(typeof(AttackType)) as AttackType[];
-        GameObject[] Opponent = GetOpponent(skillData.enemyTargetType);
+        GameObject[] Opponent = battleManager.GetPlayerGO(skillData.enemyTargetType);
         BuffManager buffManager = Opponent[0].GetComponent<BuffManager>();
         Unit unit = Opponent[0].GetComponent<Unit>();
         foreach(AttackType type in attackType) // 여기서 공격 2번하게 데미지 계산
@@ -180,12 +176,41 @@ public class Enemy_Skill
 
     public void Bandits(SkillData skillData)
     {
-        if(BattleManager.Instance.aliveEnemy < 3)
+        if(battleManager.aliveEnemy < 3)
         {
-            for(int i = BattleManager.Instance.aliveEnemy; i < 3; i++)
+            for(int i = battleManager.aliveEnemy; i < 3; i++)
             {
-                BattleManager.Instance.EnemySpawn(2, "도적선봉대");
+                battleManager.EnemySpawn(2, "도적선봉대");
             }
         }
+    }
+
+    public void Authority(SkillData skillData)
+    {
+        if(skillData.rank != 0)
+        {
+            GameObject[] enemyGO = battleManager.GetEnemyGO(skillData.enemyTargetType);
+            for (int i = 0; i < enemyGO.Length; i++)
+            {
+                BuffManager buffManager = enemyGO[i].GetComponent<BuffManager>();
+                if (skillData.attackType == AttackType.Slash)
+                    buffManager.DebuffAdd(DebuffType.Silence, 30f, 3, 0);
+            }
+        }
+        else
+        {
+            GameObject[] playerGO = battleManager.GetPlayerGO(skillData.enemyTargetType);
+            for (int i = 0; i < playerGO.Length; i++)
+            {
+                BuffManager buffManager = playerGO[i].GetComponent<BuffManager>();
+                if (skillData.attackType == AttackType.Slash)
+                    buffManager.DebuffAdd(DebuffType.Silence, 30f, 3, 0);
+            }
+        }
+    }
+
+    public void Reminiscence(SkillData skillData) // HUD를 어떻게 업데이트 할것인지 생각해야함
+    {
+        enemy.CurrentHP = enemy.EnemyStatData.hp / 2;
     }
 }

@@ -10,6 +10,7 @@ using Scripts.Entity;
 using Scripts.Data;
 using System;
 using TMPro;
+using Scripts;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEditor;
 using static BattleManager;
@@ -55,6 +56,7 @@ public class BattleManager : MonoBehaviour
 
     public GameObject[] playerStation;
     private GameObject[] playerGO = new GameObject[5];
+    private List<GameObject> enemyGOList = new List<GameObject>();
 
     public GameObject[] playerPrefab;
 
@@ -119,46 +121,39 @@ public class BattleManager : MonoBehaviour
     /// <param name="boss"> 만약 보스 객체라면 3번째 인자로 true </param>
     public void EnemySpawn(int floor, string name, bool boss = false) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
-        try
+        //게임오브젝트 생성 및 컴포넌트 추가
+        GameObject cloneEnemy = new GameObject($"{name}({spawnCount})");
+        SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
+        cloneEnemy.AddComponent<BuffManager>();
+        enemyUnits[spawnCount] = cloneEnemy.AddComponent<Unit>();
+
+        //게임 오브젝트 위치설정
+        cloneEnemy.transform.position = EnemySpawnerPoints[spawnCount].position;
+        cloneEnemy.transform.SetParent(EnemySpawnerPoints[spawnCount]);
+        cloneEnemy.transform.localScale = new Vector3(5, 5, 1);
+
+        //SpriteRenderer 설정
+        string sprite_name = Convert.ToString(floor) + "F_" + name;
+        image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
+        image.material = spriteOutline;
+
+        //Unit컴포넌트 초기설정
+        enemyUnits[spawnCount].InitialSetting(this, enemyHUD[spawnCount]);
+
+        if (boss)
         {
-            //게임오브젝트 생성 및 컴포넌트 추가
-            GameObject cloneEnemy = new GameObject($"{name}({spawnCount})");
-            SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
-            cloneEnemy.AddComponent<BuffManager>();
-            enemyUnits[spawnCount] = cloneEnemy.AddComponent<Unit>();
-
-            //게임 오브젝트 위치설정
-            cloneEnemy.transform.position = EnemySpawnerPoints[spawnCount].position;
-            cloneEnemy.transform.SetParent(EnemySpawnerPoints[spawnCount]);
-            cloneEnemy.transform.localScale = new Vector3(5, 5, 1);
-
-            //SpriteRenderer 설정
-            string sprite_name = Convert.ToString(floor) + "F_" + name;
-            image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
-            image.material = spriteOutline;
-
-            //Unit컴포넌트 초기설정
-            enemyUnits[spawnCount].InitialSetting(this, enemyHUD[spawnCount]);
-
-            if (boss)
-            {
-                Boss bossPrefab = new Boss();
-                bossPrefab.NewEnemy(floor, name, cloneEnemy);
-                enemyUnits[spawnCount].EnemySetting(bossPrefab);
-            }
-            else
-            {
-                Enemy enemyPrefab = new Enemy();
-                enemyPrefab.NewEnemy(floor, name, cloneEnemy);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
-                enemyUnits[spawnCount].EnemySetting(enemyPrefab);
-            }
-
-            spawnCount++;
+            Boss bossPrefab = new Boss();
+            bossPrefab.NewEnemy(floor, name, cloneEnemy, this);
+            enemyUnits[spawnCount].EnemySetting(bossPrefab);
         }
-        catch
+        else
         {
-            Debug.LogError($"BattlePrefabs/EnemySprites/Load문제 발생");
+            Enemy enemyPrefab = new Enemy();
+            enemyPrefab.NewEnemy(floor, name, cloneEnemy, this);    // 팩토리 패턴으로 에너미 베이스에 에너미 타입 생성
+            enemyUnits[spawnCount].EnemySetting(enemyPrefab);
         }
+        enemyGOList.Add(cloneEnemy);
+        spawnCount++;
     }
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
@@ -301,7 +296,63 @@ public class BattleManager : MonoBehaviour
         double randomValue = random.NextDouble();
         return randomValue < probability;
     }
-
+    /// <summary>
+    /// 공격 타입에 따라서 플레이어의 게임오브젝트를 받아오는 함수
+    /// </summary>
+    /// <param name="enemyTargetType"></param>
+    /// <returns></returns>
+    public GameObject[] GetPlayerGO(TargetType enemyTargetType)
+    {
+        GameObject[] go = new GameObject[5];
+        switch (enemyTargetType)
+        {
+            case TargetType.Single:
+                int AttackRange = Utility.WeightedRandom(20, 20, 20, 20, 20);
+                GameObject clone = playerGO[AttackRange];
+                go[0] = clone;
+                break;
+            case TargetType.Front:
+                break;
+            case TargetType.Back:
+                break;
+            case TargetType.Area:
+                for (int i = 0; i < 5; i++)
+                {
+                    GameObject _clone = playerGO[i];
+                    go[i] = _clone;
+                }
+                break;
+        }
+        return go;
+    }
+    /// <summary>
+    /// 공격 타입에 따라서 적의 게임오브젝트를 받아오는 함수
+    /// </summary>
+    /// <param name="enemyTargetType"></param>
+    /// <returns></returns>
+    public GameObject[] GetEnemyGO(TargetType enemyTargetType)
+    {
+        GameObject[] go = new GameObject[4];
+        switch (enemyTargetType)
+        {
+            case TargetType.Single:
+                int AttackRange = Utility.WeightedRandom(25, 25, 25, 25);
+                go[0] = enemyGOList[AttackRange];
+                break;
+            case TargetType.Front:
+                break;
+            case TargetType.Back:
+                break;
+            case TargetType.Area:
+                for (int i = 0; i < enemyGOList.Count; i++)
+                {
+                    GameObject _clone = enemyGOList[i];
+                    go[i] = _clone;
+                }
+                break;
+        }
+        return go;
+    }
     public void EndSmallTurn() { smallturn = SmallTurnState.END; }
 
     public void EnemyDead() { aliveEnemy--; spawnCount--; }
