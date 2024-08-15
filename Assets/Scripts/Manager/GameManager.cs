@@ -29,9 +29,6 @@ namespace Scripts.Manager
         [HideInInspector] public InputActionMap PlayerActionMap;
         [HideInInspector] public InputActionMap UIActionMap;
 
-
-        public int day = 22;
-        
         
         public static GameManager Instance
         {
@@ -54,9 +51,7 @@ namespace Scripts.Manager
 
         public void init()
         {
-            PartyManager = new PartyManager();
-
-            
+            DataManager dm = DataManager.Instance; //dataManager 생성
             CommandManager cm = CommandManager.Instance; // commandManager 생성
             DontDestroyOnLoad(gameObject);
             InputActionClass input = new InputActionClass();
@@ -66,7 +61,6 @@ namespace Scripts.Manager
             SceneManager.sceneUnloaded += SceneUnloaded;
             
             DB.Instance.UpdateDB();
-            PartyManager.RegisterTestParty();
         }
         
         /// <summary>
@@ -86,8 +80,6 @@ namespace Scripts.Manager
         {
             fadeImage = null;
         }
-
-        public PartyManager PartyManager;
 
         private void Awake()
         {

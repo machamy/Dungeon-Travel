@@ -2,8 +2,12 @@ using Scripts.Entity.Item;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Scripts.Game
+namespace Scripts.User
 {
+    /// <summary>
+    /// 플레이어 인벤토리 관리 클래스;
+    /// 캐릭터별 장비 인벤토리는 캐릭터 객체 안에 있다.
+    /// </summary>
     public class Inventory
     {
         private List<BaseItemData> itemList;
@@ -17,6 +21,7 @@ namespace Scripts.Game
         public static Inventory CreateInstance(int maxSlot)
         {
             Inventory inv = new Inventory();
+            inv.itemList = new List<BaseItemData>();
             inv.SetMaxSlot(maxSlot);
             
             return inv;

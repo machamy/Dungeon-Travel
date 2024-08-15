@@ -47,7 +47,6 @@ public class BattleManager : MonoBehaviour
     private int alivePlayer;
     public int aliveEnemy;
 
-    PartyManager partyManager;
     Character character;
 
     private int[] agi_rank;
@@ -78,8 +77,6 @@ public class BattleManager : MonoBehaviour
     private void Awake()
     {
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
-        partyManager = new PartyManager();
-        partyManager.RegisterTestParty(); // GameManager가 없어서 임시로 삽입
         spawnCount = 0;
         bState = BattleState.START;
         endcanvas.SetActive(false);
@@ -93,7 +90,7 @@ public class BattleManager : MonoBehaviour
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playerUnits[i] = playerGO[i].GetComponent<Unit>();
-            character = partyManager.Get(i);
+            character = DataManager.Instance.party.GetCharacter(i);
             playerUnits[i].InitialSetting(this, playerHUD[i],character);
         }
         alivePlayer = playerPrefab.Length;

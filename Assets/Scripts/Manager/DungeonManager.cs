@@ -1,4 +1,4 @@
-﻿using Scripts.Game.Dungeon;
+using Scripts.Game.Dungeon;
 using Scripts.Game.Dungeon.Unit;
 using Scripts.Manager;
 using System;
@@ -40,7 +40,7 @@ namespace Manager
         public void InitHUD(DungeonHUD dungeonHUD)
         {
             dungeonHUD.nameTMP.text = $"{floor}F {name}";
-            dungeonHUD.dayTMP.text = $"D-{GameManager.Instance.day}";
+            dungeonHUD.dayTMP.text = $"D-{DataManager.Instance.progress.day}";
         }
 
         public void InitPlayer(PlayerUnit player)

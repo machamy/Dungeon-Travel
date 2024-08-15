@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +69,7 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
-            var partyManager = GameManager.Instance.PartyManager;
+            var party = DataManager.Instance.party;
             
             #region 기초 명령어
 
@@ -103,18 +103,18 @@ namespace Scripts.DebugConsole
             {
                 if (opt == "detail")
                 {
-                    Print(string.Join(", ", partyManager.GetAll().Select(c => $"{c.Name}")));
+                    Print(string.Join(", ", party.GetCharacters().Select(c => $"{c.Name}")));
                 }
                 else
                 {
                     Print(string.Join("\n ",
-                        partyManager.GetAll().Select(c => $"[{c._class.className}]{c.Name} : {c.hp} {c.mp}")));
+                        party.GetCharacters().Select(c => $"[{c._class.className}]{c.Name} : {c.hp} {c.mp}")));
                 }
             }));
             
             CreateCommand("status change", new Command("hp", (name, value) =>
             {
-                Character character = partyManager.GetAll().Find(c => c.Name == name);
+                Character character = party.GetCharacters().Find(c => c.Name == name);
                 if (character == null)
                 {
                     Print($"{name}은 유효한 이름이 아닙니다");
@@ -135,7 +135,7 @@ namespace Scripts.DebugConsole
 
             CreateCommand("status change", new Command("mp", (name, value) =>
                 {
-                    Character character = partyManager.GetAll().Find(c => c.Name == name);
+                    Character character = party.GetCharacters().Find(c => c.Name == name);
                     if (character == null)
                     {
                         Print($"{name}은 유효한 이름이 아닙니다");
