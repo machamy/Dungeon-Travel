@@ -19,11 +19,12 @@ public class HUDmanager : MonoBehaviour
     /// <param name="unit"></param>
     public void SetupHUD(Unit unit)
     {
-        maxHP = unit.maxHP;
-        maxMP = unit.maxMP;
+        float[] status = unit.GetStatus();
+        maxHP = status[0];
+        maxMP = status[1];
 
-        HP = unit.currentHP;
-        MP = unit.currentMP;
+        HP = status[2];
+        MP = status[3];
 
         if (maxHP == 0) { HPslider.value = 0; }
         else { HPslider.value = HP / maxHP; }
@@ -37,6 +38,9 @@ public class HUDmanager : MonoBehaviour
         playerNameText.text = unit.unitName;
 
         this.gameObject.SetActive(true);
+
+        Image livepanel = GetComponent<Image>();
+        livepanel.color = new Color(1,1,1,0.4f);
     }
 
     public void Dead()

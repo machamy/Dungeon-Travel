@@ -6,10 +6,11 @@ using UnityEngine.EventSystems;
 using Scripts.Data;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using Unity.VisualScripting;
 
 public class ActMenu : MonoBehaviour
 {
-    public EventSystem eventSystem;
+    private EventSystem eventSystem;
     private BattleManager battleManager;
     public GameObject ActCanvas;
     public GameObject abxy, skillMenu, itemMenu, guardMenu;
@@ -17,7 +18,7 @@ public class ActMenu : MonoBehaviour
     public UnityEngine.UI.Button[] playerStation;
     public UnityEngine.UI.Button[] enemyStation;
 
-    public UnityEngine.UI.Button[] abxyButtons; // a,b,x,y 순서
+    public UnityEngine.UI.Button[] abxyButtons; // a(attack),b(guard),x(item),y(skill) 순서
     public UnityEngine.UI.Button[] skillButtons; // skill_1, skill_2, skill_3, skill_4, back 순서
     public UnityEngine.UI.Button[] itemButtons; // item_1, item_2, item_3, back 순서 
     public UnityEngine.UI.Button[] guardButtons; // o,x 순서
@@ -53,12 +54,14 @@ public class ActMenu : MonoBehaviour
         skillMenu.SetActive(false);
         itemMenu.SetActive(false);
         guardMenu.SetActive(false);
-        
     }
 
-    public void SetBM(BattleManager battleManager)
+    public void SetBase(BattleManager battleManager, EventSystem eventSystem, GameObject[] playerStation, GameObject[] enemyStation)
     {
         this.battleManager = battleManager;
+        this.eventSystem = eventSystem;
+        for(int i = 0; i < playerStation.Length; i++) this.playerStation[i] = playerStation[i].GetComponent<UnityEngine.UI.Button>();
+        for(int i = 0; i< enemyStation.Length;i++) this.enemyStation[i] = enemyStation[i].GetComponent<UnityEngine.UI.Button>();
     }
     public void SetUnits(Unit[] playerunits, Unit[] enemyunits)
     {
@@ -82,7 +85,6 @@ public class ActMenu : MonoBehaviour
     private void InitialSetting()
     {
         playername.text = turnPlayerUnit.unitName;
-
 
         for (int skillNum = 0; skillNum < 4; skillNum++)
         {
@@ -207,7 +209,8 @@ public class ActMenu : MonoBehaviour
 
     public void SetTarget(int targetNum)
     {
-        targetUnit = enemyUnits[targetNum];
+        if(targetNum < 6) targetUnit = playerUnits[targetNum];
+        else targetUnit = enemyUnits[targetNum - 6];
 
         if (isSkill)
         {

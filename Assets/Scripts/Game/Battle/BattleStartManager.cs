@@ -2,34 +2,13 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 public class BattleStartManager : MonoBehaviour
 {
+    private GameObject battlePrefab;
+    public GameObject battleStartManager;
     public bool isEncounter;
 
     private void Awake()
     {
-        DontDestroyOnLoad(this.gameObject);
-        Encounter();
-    }
-    
-    public void Encounter()
-    {
-        isEncounter = true;
-        SceneChange();
-    }
-
-    public void SymbolAttack()
-    {
-        isEncounter = false;
-        SceneChange();
-    }
-
-    public void SceneChange()
-    {
-        //SceneManager.LoadScene("BattleScene");
-
-        GameObject battlemanagerGO = GameObject.Find("BattleSystem");
-        BattleManager battlemanager = battlemanagerGO.GetComponent<BattleManager>();
-        battlemanager.isEncounter = isEncounter;
-
-        Destroy(this.gameObject);
+        battlePrefab = Resources.Load<GameObject>("BattlePrefabs/battlePrefab");
+        Instantiate(battlePrefab, new Vector3(0,0,0), Quaternion.identity);
     }
 }

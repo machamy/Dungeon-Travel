@@ -25,10 +25,10 @@ public class Unit : MonoBehaviour
 
     public int unitLevel;
 
-    public float maxHP;
-    public float maxMP;
-    public float currentHP;
-    public float currentMP;
+    private float maxHP;
+    private float maxMP;
+    private float currentHP;
+    private float currentMP;
 
     public bool isEnemy, isBoss;
     public bool isDead;
@@ -45,7 +45,7 @@ public class Unit : MonoBehaviour
         this.battleManager = battleManager;
         spriteRenderer = GetComponent<SpriteRenderer>();
         isDead = false;
-        if(character == null)
+        if (character == null)
         {
             isEnemy = true;
         }
@@ -59,7 +59,18 @@ public class Unit : MonoBehaviour
             currentHP = maxHP;
             currentMP = maxMP;
         }
-        HUD = hud; HUD.SetupHUD(this);
+        HUD = hud;
+        HUD.SetupHUD(this);
+    }
+
+    public float[] GetStatus()
+    {
+        float[] status = new float[4];
+        status[0] = maxHP;
+        status[1] = maxMP;
+        status[2] = currentHP;
+        status[3] = currentMP;
+        return status;
     }
 
     public void EnemySetting(IEnemy enemy) // 적 초기 세팅

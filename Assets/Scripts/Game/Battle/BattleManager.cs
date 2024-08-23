@@ -14,6 +14,8 @@ using Scripts;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 using UnityEditor;
 using static BattleManager;
+using UnityEngine.ProBuilder.MeshOperations;
+using UnityEngine.EventSystems;
 
 public class BattleManager : MonoBehaviour
 {
@@ -44,17 +46,26 @@ public class BattleManager : MonoBehaviour
     public SmallTurnState smallturn { get; set; }
 
     private Queue<int> turnQueue = new Queue<int>();
+    private int[] agi_rank;
+
     private int alivePlayer;
     public int aliveEnemy;
 
     Character character;
 
-    private int[] agi_rank;
+    private GameObject backGroundCanvas;
+    private GameObject actCanvas;
+    private GameObject unitCanvas;
+    private GameObject hudCanvas;
+    private GameObject endCanvas;
 
+    private GameObject[] playerStation = new GameObject[6];
+    public GameObject[] enemyStation = new GameObject[4];
+    private StationController[] stationController = new StationController[10];
+    private GameObject[] playerGO = new GameObject[6];
     public ActMenu actMenu;
+    public EventSystem eventSystem;
 
-    public GameObject[] playerStation;
-    private GameObject[] playerGO = new GameObject[5];
     private List<GameObject> enemyGOList = new List<GameObject>();
 
     public GameObject[] playerPrefab;
@@ -70,21 +81,73 @@ public class BattleManager : MonoBehaviour
 
     public int BigTurnCount;
     public TextMeshProUGUI BigTurn;
-    public GameObject endcanvas;
     public Material spriteOutline;
 
 
     private void Awake()
     {
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
-        spawnCount = 0;
-        bState = BattleState.START;
-        endcanvas.SetActive(false);
         SetupBattle();
+        StartCoroutine(BattleCoroutine());
     }
 
     private void SetupBattle()
     {
+        spawnCount = 0;
+
+        GameObject tempPrefab;
+
+        tempPrefab = Resources.Load<GameObject>("BattlePrefabs/ActCanvas");
+        actCanvas = Instantiate(tempPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        actCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        tempPrefab = Resources.Load<GameObject>("BattlePrefabs/UnitCanvas");
+        unitCanvas = Instantiate(tempPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        unitCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        tempPrefab = Resources.Load<GameObject>("BattlePrefabs/HUDCanvas");
+        hudCanvas = Instantiate(tempPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        hudCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        tempPrefab = Resources.Load<GameObject>("BattlePrefabs/EndCanvas");
+        endCanvas = Instantiate(tempPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        endCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        tempPrefab = Resources.Load<GameObject>("BattlePrefabs/BackgroundCanvas");
+        backGroundCanvas = Instantiate(tempPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+        backGroundCanvas.GetComponent<Canvas>().worldCamera = Camera.main;
+
+        actMenu = actCanvas.GetComponent<ActMenu>();
+
+        for (int i = 0; i < 10; i++) //Station
+        {
+            Transform childTransform = unitCanvas.transform.GetChild(i);
+            if (i < 6) playerStation[i] = childTransform.gameObject;
+            else
+            {
+                enemyStation[i-6] = childTransform.gameObject;
+                EnemySpawnerPoints[i - 6] = childTransform.gameObject.transform;
+            }
+            stationController[i] = childTransform.gameObject.GetComponent<StationController>();
+            stationController[i].GetActMenu(actMenu);
+        }
+
+        for (int i = 0; i < 10; i++) //HUD
+        {
+            if (i < 6)
+            {
+                Transform childTransform = hudCanvas.transform.GetChild(0).GetChild(i);
+                GameObject tempObject = childTransform.gameObject;
+                playerHUD[i] = tempObject.GetComponent<HUDmanager>();
+            }
+            else
+            {
+                Transform childTransform = hudCanvas.transform.GetChild(1).GetChild(i-6);
+                GameObject tempObject = childTransform.gameObject;
+                enemyHUD[i - 6] = tempObject.GetComponent<HUDmanager>();
+            }
+        }
+
         //플레이어 프리펩 불러오기
         for (int i = 0; i < playerPrefab.Length; i++)
         {
@@ -100,14 +163,15 @@ public class BattleManager : MonoBehaviour
         aliveEnemy = spawnCount;
 
         actMenu.SetUnits(playerUnits, enemyUnits);
-        actMenu.SetBM(this);
+        actMenu.SetBase(this, eventSystem, playerStation, enemyStation);
         PlayerTurnOrder();
-        StartCoroutine("BattleCoroutine");
 
+        for (int i = 0; i < stationController.Length; i++) stationController[i].SetUp();
 
         BigTurnCount = 1;
         smallturn = SmallTurnState.END;
         bState = BattleState.PLAYERTURN;
+        Debug.Log("SetUp 완료");
     }
 
     /// <summary>
@@ -231,7 +295,7 @@ public class BattleManager : MonoBehaviour
                     }
             }
 
-            BigTurn.text = "Turn   " + BigTurnCount.ToString();
+            //BigTurn.text = "Turn   " + BigTurnCount.ToString();
 
             if (alivePlayer == 0) { Lose(); }
             if (aliveEnemy == 0) { WIN(); }
@@ -245,9 +309,10 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void WIN()
     {
-        endcanvas.SetActive(true);
+        endCanvas.SetActive(true);
         Debug.Log("승리");
         StopCoroutine("BattleCoroutine");
+        EndBattle();
     }
 
     /// <summary>
@@ -255,9 +320,19 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Lose()
     {
-        endcanvas.SetActive(true);
+        endCanvas.SetActive(true);
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
+        EndBattle();
+    }
+
+    public void EndBattle()
+    {
+        Destroy(backGroundCanvas);
+        Destroy(actCanvas);
+        Destroy(unitCanvas);
+        Destroy(hudCanvas);
+        Destroy(endCanvas);
     }
 
     public void Attack(Unit attackUnit, Unit targetUnit)
