@@ -2,6 +2,7 @@ using Scripts.Game.Dungeon.Unit;
 using Scripts.Data;
 using Scripts.FSM;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GeneralMonsterStates
 {
@@ -29,6 +30,8 @@ namespace GeneralMonsterStates
                 // }*/
             }
 
+            //entity.Nav.SetDestination(entity.target.position);
+
             if (entity.MonsterProperty.HasFlag(EnemyProperty.Movement))
             {
                 entity.Patrol();
@@ -54,8 +57,8 @@ namespace GeneralMonsterStates
         {           
             if (!entity.checker.canChaseOrFlee) return;
 
-            //Debug.Log(Vector3.Distance(entity.transform.localPosition, entity.InitialPosition));
-            if (Vector3.Distance(entity.transform.localPosition, entity.InitialPosition) >= entity.AIData.moveRadius - 0.2f)
+            float enemyDistance = Vector3.Distance(entity.transform.localPosition, entity.InitialPosition);
+            if (enemyDistance >= entity.AIData.moveRadius - 0.2f)
             {
                 entity.checker.canChaseOrFlee= false;
                 entity.ChangeState(GMStates.Return);
@@ -63,16 +66,18 @@ namespace GeneralMonsterStates
             else if (Vector3.Distance(entity.target.localPosition, entity.InitialPosition) < entity.AIData.moveRadius)
             {
                 entity.checker.isChasingOrFleeing = true;
-                entity.Nav.SetDestination(entity.target.localPosition);
                 entity.Nav.speed = entity.AIData.chaseOrFleeSpeed;
-                Debug.Log("추격 중!");
+                entity.Nav.SetDestination(entity.target.localPosition);
+                //TODO : setdestination만으로 왜 제대로 동작 안하는지 밝혀야함...
+                //entity.Nav.Move((entity.Nav.destination - entity.transform.localPosition).normalized * Time.deltaTime * entity.Nav.speed);               
+                Debug.Log(entity.Nav.destination);
 
-                Debug.Log(Vector3.Distance(entity.target.localPosition, entity.transform.localPosition));
-                if (Vector3.Distance(entity.target.localPosition, entity.transform.localPosition) <= entity.AIData.attackRange)
-                {
-                    Debug.Log("전투 돌입!");
-                    entity.ChangeState(GMStates.Combat);
-                }
+                //Debug.Log(Vector3.Distance(entity.target.localPosition, entity.transform.localPosition));
+                //if (Vector3.Distance(entity.target.localPosition, entity.transform.localPosition) <= entity.AIData.attackRange)
+                //{
+                //    Debug.Log("전투 돌입!");
+                //    entity.ChangeState(GMStates.Combat);
+                //}
             }
             
         }
@@ -138,6 +143,7 @@ namespace GeneralMonsterStates
             {
                 entity.Nav.SetDestination(entity.InitialPosition);
                 entity.Nav.speed = entity.AIData.patrolOrReturnSpeed;
+                //entity.Nav.Move((entity.Nav.destination - entity.transform.localPosition).normalized * Time.deltaTime * entity.Nav.speed);
                 Debug.Log("돌아가야지~");
 
                 Debug.Log(Vector3.Distance(entity.transform.localPosition, entity.InitialPosition));
@@ -154,10 +160,10 @@ namespace GeneralMonsterStates
                     {
                         entity.ChangeState(GMStates.Chase);
                     }
-                    else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Hostile))
-                    {
-                        entity.ChangeState(GMStates.Flee);
-                    }
+                    /*//else if (entity.checker.canChaseOrFlee && !entity.MonsterProperty.HasFlag(EnemyProperty.Hostile))
+                    //{
+                    //    entity.ChangeState(GMStates.Flee);
+                    //}*/
                 }
             }
 
@@ -183,6 +189,8 @@ namespace GeneralMonsterStates
             //난입
             doRush = Random.Range(1, 4);
             //인카운터 방식(공격 / 피격)
+
+            SceneManager.LoadScene("BattleScene");
 
         }
 

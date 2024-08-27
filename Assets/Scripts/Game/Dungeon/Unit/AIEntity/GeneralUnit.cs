@@ -18,6 +18,7 @@ namespace Scripts.Game.Dungeon.Unit
         Dead
     }
 
+    [Serializable]
     public struct GM_StateCheck
     {
         public bool canChaseOrFlee;
@@ -89,7 +90,7 @@ namespace Scripts.Game.Dungeon.Unit
                 Debug.DrawLine(InitialPosition, nextPatrolPoint, Color.red, 2f);
 
                 // 이동 가능한지 검사
-                if (NavMesh.SamplePosition(nextPatrolPoint, out NavMeshHit hit, 5.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(nextPatrolPoint, out NavMeshHit hit, 2.0f, NavMesh.AllAreas))
                 {
                     Nav.SetDestination(hit.position);
                     checker.isPatroling = true;

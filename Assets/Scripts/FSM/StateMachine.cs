@@ -1,10 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Scripts.FSM
 {
-
     public class StateMachine<T> where T : class
     {
         private T ownerEntity;

@@ -69,7 +69,7 @@ namespace Scripts.Game.Dungeon.Unit
         }
 
         // Update is called once per frame
-        void Update()
+        void FixedUpdate()
         {
             if (IsGameStop == true) return;
 
