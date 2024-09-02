@@ -28,6 +28,10 @@ namespace Scripts.Entity
         
         public SkillTree SkillTree { get; private set; }
 
+        /// <summary>
+        /// 캐릭터 첫 생성시
+        /// 기본 스탯, 현재 HP, MP 등의 값을 할당
+        /// </summary>
         public Character(string name, int lv = 0)
         {
             this.name = name;
@@ -35,8 +39,6 @@ namespace Scripts.Entity
             if (lv == 0)
             {
                 this.lv = 1;
-                // if(!initialized)
-                //     init();
             }
             //Inventory = Inventory.CreateInstance(27);            => Moved to PartyManager
             EquipmentInventory = EquipmentInventory.CreateInstance();
@@ -95,17 +97,6 @@ namespace Scripts.Entity
         }
 
         private bool initialized = false;
-
-        // /// <summary>
-        // /// 캐릭터 첫 생성시
-        // /// 기본 스탯, 현재 HP, MP 등의 값을 할당
-        // /// </summary>
-        // public void init()
-        // {
-        //     // rawBaseStat = (Stat)_class.defaultStat.Clone();
-        //     // currentHP = UpdateMaxHP();
-        //     // currentMP = UpdateMaxMP();
-        // }
 
 
         /// <summary>

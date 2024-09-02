@@ -14,6 +14,18 @@ public class MainMenuUI : MonoBehaviour
     public GameObject partyCanvas;
     public GameObject configCanvas;
 
+    public GameObject characterPrefab;
+    public Transform characterParent;
+    private void Start()
+    {
+        for (int i = 0; i < 5; i++)
+        {
+            GameObject prefab = Instantiate(characterPrefab, characterParent);
+            prefab.GetComponent<CharacterStatUI_Big>().LoadUI(i);
+        }
+        
+    }
+
     private void OnEnable()
     {
         UIManager.Instance.SelectButton(itemButton);

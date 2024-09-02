@@ -40,7 +40,7 @@ namespace Manager
         public void InitHUD(DungeonHUD dungeonHUD)
         {
             dungeonHUD.nameTMP.text = $"{floor}F {name}";
-            dungeonHUD.dayTMP.text = $"D-{DataManager.Instance.progress.day}";
+            dungeonHUD.dayTMP.text = $"D-{GameManager.Instance.userData.progress.day}";
         }
 
         public void InitPlayer(PlayerUnit player)

@@ -153,7 +153,7 @@ public class BattleManager : MonoBehaviour
         {
             playerGO[i] = Instantiate(playerPrefab[i], playerStation[i].transform);
             playerUnits[i] = playerGO[i].GetComponent<Unit>();
-            character = DataManager.Instance.party.GetCharacter(i);
+            character = GameManager.Instance.userData.party.GetCharacter(i);
             playerUnits[i].InitialSetting(this, playerHUD[i],character);
         }
         alivePlayer = playerPrefab.Length;
