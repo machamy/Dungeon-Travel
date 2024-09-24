@@ -180,7 +180,7 @@ public class Enemy_Skill
         {
             for(int i = battleManager.aliveEnemy; i < 3; i++)
             {
-                battleManager.EnemySpawn(2, "도적선봉대");
+                battleManager.unitSpawn.SpawnEnemyUnit(2, "도적선봉대");
             }
         }
     }
@@ -189,7 +189,7 @@ public class Enemy_Skill
     {
         if(skillData.rank != 0)
         {
-            GameObject[] enemyGO = battleManager.GetEnemyGO(skillData.enemyTargetType);
+            GameObject[] enemyGO = battleManager.GetPlayerGO(skillData.enemyTargetType);
             for (int i = 0; i < enemyGO.Length; i++)
             {
                 BuffManager buffManager = enemyGO[i].GetComponent<BuffManager>();
@@ -208,6 +208,7 @@ public class Enemy_Skill
             }
         }
     }
+    
 
     public void Reminiscence(SkillData skillData) // HUD를 어떻게 업데이트 할것인지 생각해야함
     {

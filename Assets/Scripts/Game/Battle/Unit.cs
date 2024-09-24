@@ -25,15 +25,15 @@ public class Unit : MonoBehaviour
 
     public int unitLevel;
 
-    private float maxHP;
-    private float maxMP;
-    private float currentHP;
-    private float currentMP;
+    float maxHP;
+    float maxMP;
+    float currentHP;
+    float currentMP;
 
     public bool isEnemy, isBoss;
     public bool isDead;
-    private HUDmanager HUD;
-    private BattleManager battleManager;
+    HUDmanager HUD;
+    BattleManager battleManager;
 
     IEnemy enemy;
     private Character character;

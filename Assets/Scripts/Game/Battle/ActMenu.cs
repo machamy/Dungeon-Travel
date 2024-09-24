@@ -11,6 +11,7 @@ using Unity.VisualScripting;
 public class ActMenu : MonoBehaviour
 {
     private EventSystem eventSystem;
+    UnitSpawn unitSpawn;
     private BattleManager battleManager;
     public GameObject ActCanvas;
     public GameObject abxy, skillMenu, itemMenu, guardMenu;
@@ -56,12 +57,11 @@ public class ActMenu : MonoBehaviour
         guardMenu.SetActive(false);
     }
 
-    public void SetBase(BattleManager battleManager, EventSystem eventSystem, GameObject[] playerStation, GameObject[] enemyStation)
+    public void SetBase(BattleManager battleManager, EventSystem eventSystem, UnitSpawn unitSpawn)
     {
         this.battleManager = battleManager;
         this.eventSystem = eventSystem;
-        for(int i = 0; i < playerStation.Length; i++) this.playerStation[i] = playerStation[i].GetComponent<UnityEngine.UI.Button>();
-        for(int i = 0; i< enemyStation.Length;i++) this.enemyStation[i] = enemyStation[i].GetComponent<UnityEngine.UI.Button>();
+        this.unitSpawn = unitSpawn;
     }
     public void SetUnits(Unit[] playerunits, Unit[] enemyunits)
     {
