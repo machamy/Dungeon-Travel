@@ -68,16 +68,7 @@ namespace GeneralMonsterStates
                 entity.checker.isChasingOrFleeing = true;
                 entity.Nav.speed = entity.AIData.chaseOrFleeSpeed;
                 entity.Nav.SetDestination(entity.target.localPosition);
-                //TODO : setdestination만으로 왜 제대로 동작 안하는지 밝혀야함...
-                //entity.Nav.Move((entity.Nav.destination - entity.transform.localPosition).normalized * Time.deltaTime * entity.Nav.speed);               
                 Debug.Log(entity.Nav.destination);
-
-                //Debug.Log(Vector3.Distance(entity.target.localPosition, entity.transform.localPosition));
-                //if (Vector3.Distance(entity.target.localPosition, entity.transform.localPosition) <= entity.AIData.attackRange)
-                //{
-                //    Debug.Log("전투 돌입!");
-                //    entity.ChangeState(GMStates.Combat);
-                //}
             }
             
         }
@@ -143,17 +134,17 @@ namespace GeneralMonsterStates
             {
                 entity.Nav.SetDestination(entity.InitialPosition);
                 entity.Nav.speed = entity.AIData.patrolOrReturnSpeed;
-                //entity.Nav.Move((entity.Nav.destination - entity.transform.localPosition).normalized * Time.deltaTime * entity.Nav.speed);
                 Debug.Log("돌아가야지~");
 
                 Debug.Log(Vector3.Distance(entity.transform.localPosition, entity.InitialPosition));
-                if (Vector3.Distance(entity.transform.localPosition, entity.InitialPosition) <= 1f)
+                if (Vector3.Distance(entity.transform.localPosition, entity.InitialPosition) <= 0.5f)
                 {
                     entity.ChangeState(GMStates.Idle);
                 }
 
                 //Return 중에 플레이어가 다시 감지 범위 내에 들어왔을 경우
-                if (Vector3.Distance(entity.transform.position, entity.target.position) <= entity.AIData.detectRadius)
+                if (Vector3.Distance(entity.transform.position, entity.target.position) <= entity.AIData.detectRadius &&
+                    Vector3.Distance(entity.target.position, entity.InitialPosition) <= entity.AIData.moveRadius - 0.2f)
                 {
                     entity.checker.canChaseOrFlee = true;
                     if (entity.checker.canChaseOrFlee && entity.MonsterProperty.HasFlag(EnemyProperty.Hostile))
