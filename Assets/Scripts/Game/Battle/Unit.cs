@@ -33,21 +33,19 @@ public class Unit : MonoBehaviour
     public bool isEnemy, isBoss;
     public bool isDead;
     HUDmanager HUD;
-    BattleManager battleManager;
 
     IEnemy enemy;
     private Character character;
     public Action<SkillData> bossPassive;
 
     #region 초기세팅
-    public void InitialSetting(BattleManager battleManager, HUDmanager hud, Character character = null) // 플레이어 초기 세팅
+    public void InitialSetting( HUDmanager hud, Character character = null) // 플레이어 초기 세팅
     {
-        this.battleManager = battleManager;
         spriteRenderer = GetComponent<SpriteRenderer>();
         isDead = false;
         if (character == null)
         {
-            isEnemy = true;
+            isEnemy = false;
         }
         else
         {
@@ -96,10 +94,11 @@ public class Unit : MonoBehaviour
 
     public void Attack() // 적의 공격
     {
-        enemy.Attack(bossPassive);
+        //enemy.Attack(bossPassive);
+        
     }
 
-    public void Attack(Unit targetUnit) // 플레이어의 공격
+    public void Attack(Unit targetUnit, SkillData useSkill = null) // 플레이어의 공격
     {
         if (targetUnit.enemyStat == null)
         {
@@ -128,8 +127,6 @@ public class Unit : MonoBehaviour
             currentHP = 0;
             HUD.Dead();
             Debug.Log(unitName + " 사망");
-            if (isEnemy ) { battleManager.EnemyDead(); }
-            else { battleManager.PlayerDead(); }
             isDead = true;
         }
 

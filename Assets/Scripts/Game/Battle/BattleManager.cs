@@ -1,10 +1,10 @@
 using Scripts.Manager;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml;
 using System.Linq;
 using Unity.VisualScripting;
-using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Entity;
 using Scripts.Data;
@@ -16,6 +16,7 @@ using UnityEditor;
 using static BattleManager;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.Processors;
 
 public class BattleManager : MonoBehaviour
 {
@@ -40,16 +41,12 @@ public class BattleManager : MonoBehaviour
     }
     #endregion
 
-    public enum BattleState { START, PLAYERTURN, ENEMYTURN, SECONDTURN, END }  //전투상태 열거형
-    public enum SmallTurnState { START, PROCESSING, END } // 턴 상태 열거형
+    public enum BattleState { Starting, Battle, EndBigTurn, EndGame }  //전투상태 열거형
+    public enum SmallTurnState { Waiting, Processing } // 턴 상태 열거형
     public BattleState bState { get; set; }
-    public SmallTurnState smallturn { get; set; }
+    public SmallTurnState smallTurn { get; set; }
 
-    private Queue<int> turnQueue = new Queue<int>();
-    private int[] agi_rank;
-
-    private int alivePlayer;
-    public int aliveEnemy;
+    private Queue<Unit> turnQueue = new Queue<Unit>();
 
     Character character;
 
@@ -57,60 +54,53 @@ public class BattleManager : MonoBehaviour
     public BackGround backGround;
     public EndBattle endBattle;
 
-    private StationController[] stationController = new StationController[10];
     private GameObject[] playerGO = new GameObject[6];
 
     public ActMenu actMenu;
     public EventSystem eventSystem;
 
-    private List<GameObject> enemyGOList = new List<GameObject>();
-
-    public GameObject[] playerPrefab;
-
     public HUDmanager[] playerHUD;
     public HUDmanager[] enemyHUD;
 
-    public Transform[] EnemySpawnerPoints = new Transform[4]; // 적 스폰지점 위치 받아오는 변수
-    int spawnCount; // 스폰장소 지정 변수
-    private Unit[] playerUnits = new Unit[6], enemyUnits = new Unit[6];
-
-    public bool isEncounter;
+    private Unit[] playerUnits = new Unit[6];
+    private Unit[] enemyUnits = new Unit[6];
 
     public int BigTurnCount;
     public TextMeshProUGUI BigTurn;
-    public Material spriteOutline;
 
+    public int alivePlayer;
+    public int aliveEnemy;
+    bool encounter;
 
     private void Awake()
     {
+        encounter = false;
         DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
-        SetupBattle();
+        bState = BattleState.Starting;
         StartCoroutine(BattleCoroutine());
+        
     }
 
     private void SetupBattle()
     {
-        spawnCount = 0;
+        alivePlayer = 0;
+        aliveEnemy = 0;
+        BigTurnCount = 0;
 
-        int spawnPlayer = 0;
-        for (; spawnPlayer < 3; spawnPlayer++) unitSpawn.SpawnPlayerUnit();
-        playerUnits = unitSpawn.GetPlayerUnit();
+        for (int i = 0; i < 3; i++)
+        {
+            unitSpawn.SpawnPlayerUnit();
+            playerUnits = unitSpawn.GetPlayerUnit();
+            alivePlayer = unitSpawn.PlayerCount;
+        }
 
-
-        alivePlayer = spawnPlayer;
-
-        unitSpawn.SpawnEnemyUnit(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
+        unitSpawn.SpawnEnemyUnit(1, "토끼");
         unitSpawn.SpawnEnemyUnit(1, "슬라임");
         enemyUnits = unitSpawn.GetEnemyUnit();
-        aliveEnemy = spawnCount;
-
-        actMenu.SetUnits(playerUnits, enemyUnits);
+        aliveEnemy = unitSpawn.EnemyCount;
         actMenu.SetUp(this, eventSystem, unitSpawn);
-        PlayerTurnOrder();
 
-        BigTurnCount = 1;
-        smallturn = SmallTurnState.END;
-        bState = BattleState.PLAYERTURN;
+        Debug.Log("SetUp 완료");
     }
 
     public GameObject[] GetPlayerGO(TargetType playerTargetType)
@@ -120,11 +110,17 @@ public class BattleManager : MonoBehaviour
 
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        Dictionary<int, float> agi_ranking = new Dictionary<int, float>(); //플레이어끼리 순서 정함
+        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
 
-        for (int i = 0; i < alivePlayer; i++)
+        for (int i = 0; i < 6; i++)
         {
-            agi_ranking.Add(i, playerUnits[i].stat.agi);
+            if (playerUnits[i] != null)
+            {
+                if (playerUnits[i].isDead == false)
+                {
+                    agi_ranking.Add(playerUnits[i], playerUnits[i].stat.agi);
+                }
+            }        
         }
 
         var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
@@ -135,75 +131,150 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    public void EndHalfTurn()
+    void EnemyTurnOrder()
     {
-        if (bState == BattleState.PLAYERTURN) bState = BattleState.ENEMYTURN;
-        else if (bState == BattleState.ENEMYTURN)
+        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
+
+        for(int i = 0;i < 6; i++)
         {
-            bState = BattleState.PLAYERTURN;
-            BigTurnCount++;
+            if (enemyUnits[i] != null)
+            {
+                if (enemyUnits[i].isDead == false)
+                {
+                    agi_ranking.Add(enemyUnits[i], enemyUnits[i].stat.agi);
+                } 
+            }
+                
         }
-        smallturn = SmallTurnState.START;
+
+        var soredDict = agi_ranking.OrderByDescending(x => x.Value);
+
+        foreach(var kvp in agi_ranking)
+        {
+            turnQueue.Enqueue(kvp.Key);
+        }
+    }
+    void GeneralTurnOrder()
+    {
+        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
+
+        for (int i = 0; i < 6; i++)
+        {
+            if (playerUnits[i] != null)
+            {
+                if (playerUnits[i].isDead == false)
+                {
+                    agi_ranking.Add(playerUnits[i], playerUnits[i].stat.agi);
+                }  
+            }
+                
+            if (enemyUnits[i] != null)
+            {
+                if (enemyUnits[i].isDead == false)
+                {
+                    agi_ranking.Add(enemyUnits[i], enemyUnits[i].stat.agi);
+                }
+            }
+               
+        }
+
+        var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
+
+        foreach (var kvp in agi_ranking)
+        {
+            turnQueue.Enqueue(kvp.Key);
+        }
+    }
+    void FirstTurnMethod()
+    {
+        if (encounter)
+        {
+            // 0부터 100 사이의 무작위 값 생성
+            int randomValue = UnityEngine.Random.Range(0, 100); // Random.Range(int, int)
+
+            if (randomValue < 70) //70% 확률로 실행
+            {
+                EnemyTurnOrder();
+                PlayerTurnOrder();
+            }
+            else //30% 확률로 실행  
+            {
+                GeneralTurnOrder();
+            }
+        }
+        else
+        {
+            PlayerTurnOrder();
+            EnemyTurnOrder();
+        }
     }
 
-    public IEnumerator BattleCoroutine()
+    IEnumerator BattleCoroutine()
     {
         while (true)
         {
             switch (bState)
             {
-                case BattleState.START:
+                case BattleState.Starting:
                     {
-                        break;
-                    }
-                case BattleState.PLAYERTURN:
-                    {
-                        if (turnQueue.Count > 0)
-                        {
-                            Debug.Log(turnQueue.Peek().ToString() + " 차례");
-                            actMenu.TurnStart(turnQueue.Dequeue());
-                            smallturn = SmallTurnState.PROCESSING;
-                            yield return new WaitUntil(() => smallturn != SmallTurnState.PROCESSING);
-                        }
-                        else if (turnQueue.Count <= 0)
-                        {
-                            EndHalfTurn();
-                        }
+                        SetupBattle();
+                        FirstTurnMethod();
+
+                        smallTurn = SmallTurnState.Waiting;
+                        bState = BattleState.Battle; 
                         break;
                     }
 
-                case BattleState.ENEMYTURN:
+                case BattleState.Battle:
                     {
-                        for (int i = 0; i < spawnCount; i++)
-                        {
-                            if (enemyUnits[i] != null && !enemyUnits[i].IsDead())
-                            {
-                                enemyUnits[i].Attack();
-                            }
-                        }
-                        PlayerTurnOrder();
-                        EndHalfTurn();
+                        Debug.Log("배틀 시작 <"  + turnQueue.Count + ">");
+                        SmallTurnMethod();
                         break;
                     }
-
-                case BattleState.SECONDTURN:
+                case BattleState.EndBigTurn:
                     {
+                        Debug.Log("턴 종료");
+                        GeneralTurnOrder();
+                        BigTurnCount++;
                         break;
                     }
-                default:
+                case BattleState.EndGame:
                     {
                         break;
                     }
             }
 
-            //BigTurn.text = "Turn   " + BigTurnCount.ToString();
-
-            if (alivePlayer == 0) { Lose(); }
-            if (aliveEnemy == 0) { WIN(); }
-
             yield return new WaitForSeconds(0.5f);
         }
     }
+
+    void SmallTurnMethod()
+    {
+        if ( turnQueue.Count == 0 & smallTurn == SmallTurnState.Waiting) // 큐에 아무것도 들어있지 않을때 실행
+        {
+            bState = BattleState.EndBigTurn;
+        }
+
+        if (turnQueue.Count > 0)
+        {
+            if (turnQueue.Peek().isEnemy == false & smallTurn == SmallTurnState.Waiting)
+            {
+                smallTurn = SmallTurnState.Processing;
+                Debug.Log(turnQueue.Peek().ToString() + " 차례: " + turnQueue.Peek().isEnemy);
+                actMenu.TurnStart(turnQueue.Dequeue());
+            }
+
+            else if (turnQueue.Peek().isEnemy == true & smallTurn == SmallTurnState.Waiting)
+            {
+                smallTurn = SmallTurnState.Processing;
+                Debug.Log(turnQueue.Peek().ToString() + " 차례");
+                turnQueue.Dequeue().Attack();
+                EndSmallTurn();
+            }
+        }
+    }
+
+    public void EndSmallTurn() { smallTurn = SmallTurnState.Waiting; }
 
     /// <summary>
     /// 배틀 승리시 실행
@@ -235,42 +306,5 @@ public class BattleManager : MonoBehaviour
         endBattle.gameObject.SetActive(true);
     }
 
-    public void Attack(Unit attackUnit, Unit targetUnit)
-    {
-        targetUnit.TakeDamage(5);
-    }
-    public void SkillAttack(Unit attackUnit, Unit targetUnit, SkillData useSkill)
-    {
-        float totalDamage = useSkill.physicsDamage; ;
-
-        bool critical;
-        bool isAround = false;
-
-        if(isAround) { totalDamage = totalDamage * 0.8f; }
-        if (useSkill.attackType == targetUnit.weakType)
-        {
-            critical = Random(attackUnit.stat.critical + 0.5);
-            totalDamage *= 1.1f;
-        }
-        else
-        {
-            critical = Random(attackUnit.stat.critical + 0.5);
-        }
-
-        if (critical) { totalDamage *= 2.0f; }
-
-        targetUnit.TakeDamage(totalDamage);
-    }
-
-    private bool Random(double probability)
-    {
-        System.Random random = new System.Random();
-        double randomValue = random.NextDouble();
-        return randomValue < probability;
-    }
-
-    public void EndSmallTurn() { smallturn = SmallTurnState.END; }
-
-    public void EnemyDead() { aliveEnemy--; spawnCount--; }
-    public void PlayerDead() { alivePlayer--; }
+    
 }

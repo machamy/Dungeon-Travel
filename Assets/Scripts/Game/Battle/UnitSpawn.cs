@@ -1,3 +1,4 @@
+using Scripts.Data;
 using Scripts.Entity;
 using System;
 using System.Collections;
@@ -28,13 +29,13 @@ public class UnitSpawn : MonoBehaviour
 
     GameObject[] player = new GameObject[6];
 
-    int spawnPlayerCount;
-    int spawnEnemyCount;
+    public int PlayerCount;
+    public int EnemyCount;
 
-    private void Awake()
+    public void Awake()
     {
-        spawnPlayerCount = 0;
-        spawnEnemyCount = 0;
+        PlayerCount = 0;
+        EnemyCount = 0;
     }
 
     /// <summary>
@@ -43,12 +44,16 @@ public class UnitSpawn : MonoBehaviour
     [ContextMenu("Spawn Unit")]
     public void SpawnPlayerUnit()
     {
-        player[spawnPlayerCount] = Instantiate(playerPrefab, playerStation[spawnPlayerCount].transform);
-        playerUnit[spawnPlayerCount] = player[spawnPlayerCount].GetComponent<Unit>();
-        playerHUD[spawnPlayerCount].SetupHUD(playerUnit[spawnPlayerCount]);
-        playerUnit[spawnPlayerCount].stat = new Scripts.Data.StatData();
-        playerStationController[spawnPlayerCount].SetUp();
-        spawnPlayerCount++;
+        player[PlayerCount] = Instantiate(playerPrefab, playerStation[PlayerCount].transform);
+        playerUnit[PlayerCount] = player[PlayerCount].GetComponent<Unit>();
+        playerHUD[PlayerCount].SetupHUD(playerUnit[PlayerCount]);
+        playerUnit[PlayerCount].stat = ScriptableObject.CreateInstance<StatData>();
+        playerUnit[PlayerCount].stat.hp = 1;
+        playerUnit[PlayerCount].InitialSetting(playerHUD[PlayerCount]);
+        playerStationController[PlayerCount].SetUp();
+
+        battleManager.alivePlayer++;
+        PlayerCount++;
     }
 
     /// <summary>
@@ -60,13 +65,14 @@ public class UnitSpawn : MonoBehaviour
     public void SpawnEnemyUnit(int floor, string name, bool boss = false) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
         //게임오브젝트 생성 및 컴포넌트 추가
-        GameObject cloneEnemy = new GameObject($"{name}({spawnEnemyCount})");
+        GameObject cloneEnemy = new GameObject($"{name}({EnemyCount})");
         SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
         cloneEnemy.AddComponent<BuffManager>();
-        enemyUnit[spawnEnemyCount] = cloneEnemy.AddComponent<Unit>();
+        enemyUnit[EnemyCount] = cloneEnemy.AddComponent<Unit>();
+        enemyUnit[EnemyCount].stat = ScriptableObject.CreateInstance<StatData>();
 
         // 게임 오브젝트의 위치 설정 (RectTransform을 고려)
-        RectTransform enemyStationRect = enemyStation[spawnEnemyCount].GetComponent<RectTransform>();
+        RectTransform enemyStationRect = enemyStation[EnemyCount].GetComponent<RectTransform>();
         RectTransform cloneEnemyRect = cloneEnemy.AddComponent<RectTransform>();
 
         // RectTransform의 부모 설정 및 위치 설정
@@ -82,29 +88,29 @@ public class UnitSpawn : MonoBehaviour
         image.material = spriteOutline;
 
         // Unit 컴포넌트 초기 설정
-        enemyUnit[spawnEnemyCount].InitialSetting(battleManager, enemyHUD[spawnEnemyCount]);
-        
+        enemyUnit[EnemyCount].InitialSetting(enemyHUD[EnemyCount]);
         // 보스 여부에 따른 적 설정
         if (boss)
         {
             Boss bossPrefab = new Boss();
             bossPrefab.NewEnemy(floor, name, cloneEnemy, battleManager);
-            enemyUnit[spawnEnemyCount].EnemySetting(bossPrefab);
+            enemyUnit[EnemyCount].EnemySetting(bossPrefab);
         }
         else
         {
             Enemy enemyPrefab = new Enemy();
             enemyPrefab.NewEnemy(floor, name, cloneEnemy, battleManager); // 팩토리 패턴으로 적 생성
-            enemyUnit[spawnEnemyCount].EnemySetting(enemyPrefab);
+            enemyUnit[EnemyCount].EnemySetting(enemyPrefab);
+            
         }
 
-        enemyStationController[spawnEnemyCount].SetUp();
-        spawnEnemyCount++;
+        enemyStationController[EnemyCount].SetUp();
+        EnemyCount++;
     }
 
 
     public Unit[] GetPlayerUnit() { return playerUnit; }
     public Unit[] GetEnemyUnit() { return enemyUnit; }
-    public GameObject[] GetPlayerStation() { return playerStation; }
-    public GameObject[] GetEnemyStation() {  return enemyStation; }
+    public StationController[] GetPlayerStationController() { return playerStationController; }
+    public StationController[] GetEnemyStationController() {  return enemyStationController; }
 }

@@ -47,9 +47,7 @@ public class ActMenu : MonoBehaviour
     private SkillData useSkill;
     private Unit targetUnit;
 
-    private int turnPlayerNum;
-    private Unit turnPlayerUnit;
-    private bool isSkill;
+    public Unit turnPlayerUnit;
 
     private void Awake()
     {
@@ -64,26 +62,24 @@ public class ActMenu : MonoBehaviour
         this.battleManager = battleManager;
         this.eventSystem = eventSystem;
         this.unitSpawn = unitSpawn;
-    }
-    public void SetUnits(Unit[] playerunits, Unit[] enemyunits)
-    {
-        playerUnits = playerunits;
-        enemyUnits = enemyunits;
+        playerUnits = unitSpawn.GetPlayerUnit();
+        enemyUnits = unitSpawn.GetEnemyUnit();
+        playerStationController = unitSpawn.GetPlayerStationController();
+        enemyStationController = unitSpawn.GetEnemyStationController();
     }
 
     /// <summary>
     /// 현재 턴을 부여받는 플레이어를 받으면 턴을 실행
     /// </summary>
     /// <param name="player"></param>
-    public void TurnStart(int playerNum)
+    public void TurnStart(Unit turnUnit)
     {
-        turnPlayerNum = playerNum;
-        turnPlayerUnit = playerUnits[playerNum];
-        InitialSetting();
+        turnPlayerUnit = turnUnit;
+        SkillSetting();
         ChooseAct();
     }
 
-    private void InitialSetting()
+    private void SkillSetting()
     {
         playername.text = turnPlayerUnit.unitName;
 
@@ -92,7 +88,7 @@ public class ActMenu : MonoBehaviour
             if (turnPlayerUnit.skills[skillNum] != null)
             {
                 skillname[skillNum].text = turnPlayerUnit.skills[skillNum].skillName;
-                //skillcost[skillNum].text = playerSkills[skillNum].mpCost.GetMpCost(playerSkills[skillNum]) + "MP";
+                //skillcost[skillNum].text = turnPlayerUnit.skills[skillNum].mpCost.GetMpCost(turnPlayerUnit.skills[skillNum]).ToString() + "MP";
             }
             else
             {
@@ -107,16 +103,16 @@ public class ActMenu : MonoBehaviour
         skillMenu.SetActive(false);
         itemMenu.SetActive(false);
         guardMenu.SetActive(false);
-        isSkill = false;
         abxyButtons[0].Select();
     }
 
     public void Attack()
     {
         abxy.SetActive(false);
+        useSkill = null;
 
         int i = 0;
-        while(true)
+        while(i<6)
         {
             if (enemyStation[i].enabled == true) break;
             i++;
@@ -129,6 +125,7 @@ public class ActMenu : MonoBehaviour
         abxy.SetActive(false);
         skillMenu.SetActive(true);
         skillButtons[0].Select();
+        useSkill = null;
         ChangeSkill_Info(0);
     }
 
@@ -163,23 +160,52 @@ public class ActMenu : MonoBehaviour
 
     public void SkillSelect(int skillNumber)
     {
-        SkillData useSkill = turnPlayerUnit.skills[skillNumber];
-        if(useSkill.enemyTargetType == 0)
+        useSkill = turnPlayerUnit.skills[skillNumber];
+        if(useSkill.isBuff || useSkill.isHealing)
         {
-            
+            int i = 0;
+            while (i < 6)
+            {
+                if (playerStation[i].enabled == true) break;
+                i++;
+            }
+            playerStation[i].Select();
         }
-
+        else
+        {
+            int i = 0;
+            while (i < 6)
+            {
+                if (enemyStation[i].enabled == true) break;
+                i++;
+            }
+            enemyStation[i].Select();
+        }
+        skillMenu.SetActive(false);
     }
 
     public void SetTarget()
     {
-        int target = 0;
-        for(; target > 6; target++)
+        for(int i = 0; i < 6; i++)
         {
-            if (playerStationController[target].isTarget == true) break;
+            if (enemyStationController[i].isTarget == true)
+            {
+                Debug.Log(i + "->  타겟 ");
+                targetUnit = enemyUnits[i];
+            }
         }
 
+        if(useSkill == null)
+        {
+            turnPlayerUnit.Attack(targetUnit);
+        }
+        else
+        {
+            turnPlayerUnit.Attack(targetUnit, useSkill);
+        }
 
+        battleManager.EndSmallTurn();
+        abxyButtons[0].Select();
     }
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
