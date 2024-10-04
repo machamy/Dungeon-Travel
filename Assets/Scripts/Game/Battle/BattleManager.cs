@@ -53,17 +53,13 @@ public class BattleManager : MonoBehaviour
 
     Character character;
 
-    public GameObject backGroundCanvas;
-    public GameObject actCanvas;
-    
-    public GameObject hudCanvas;
-    public GameObject endCanvas;
-
-    public GameObject unitCanvas;
     public UnitSpawn unitSpawn;
+    public BackGround backGround;
+    public EndBattle endBattle;
 
     private StationController[] stationController = new StationController[10];
     private GameObject[] playerGO = new GameObject[6];
+
     public ActMenu actMenu;
     public EventSystem eventSystem;
 
@@ -96,14 +92,12 @@ public class BattleManager : MonoBehaviour
     {
         spawnCount = 0;
 
-        actMenu = actCanvas.GetComponent<ActMenu>();
-        unitSpawn = unitCanvas.GetComponent<UnitSpawn>();
-
-        for (int i = 0; i < 6; i++) unitSpawn.SpawnPlayerUnit();
+        int spawnPlayer = 0;
+        for (; spawnPlayer < 3; spawnPlayer++) unitSpawn.SpawnPlayerUnit();
         playerUnits = unitSpawn.GetPlayerUnit();
 
 
-        alivePlayer = playerPrefab.Length;
+        alivePlayer = spawnPlayer;
 
         unitSpawn.SpawnEnemyUnit(1, "토끼"); // 적 스폰은 나중에 데이터로 처리할수 있게 변경 예정
         unitSpawn.SpawnEnemyUnit(1, "슬라임");
@@ -111,13 +105,12 @@ public class BattleManager : MonoBehaviour
         aliveEnemy = spawnCount;
 
         actMenu.SetUnits(playerUnits, enemyUnits);
-        actMenu.SetBase(this, eventSystem, unitSpawn);
+        actMenu.SetUp(this, eventSystem, unitSpawn);
         PlayerTurnOrder();
 
         BigTurnCount = 1;
         smallturn = SmallTurnState.END;
         bState = BattleState.PLAYERTURN;
-        Debug.Log("SetUp 완료");
     }
 
     public GameObject[] GetPlayerGO(TargetType playerTargetType)
@@ -129,7 +122,7 @@ public class BattleManager : MonoBehaviour
     {
         Dictionary<int, float> agi_ranking = new Dictionary<int, float>(); //플레이어끼리 순서 정함
 
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < alivePlayer; i++)
         {
             agi_ranking.Add(i, playerUnits[i].stat.agi);
         }
@@ -217,7 +210,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void WIN()
     {
-        endCanvas.SetActive(true);
+        endBattle.gameObject.SetActive(true);
         Debug.Log("승리");
         StopCoroutine("BattleCoroutine");
         EndBattle();
@@ -228,7 +221,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Lose()
     {
-        endCanvas.SetActive(true);
+        endBattle.gameObject.SetActive(true);
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
         EndBattle();
@@ -236,10 +229,10 @@ public class BattleManager : MonoBehaviour
 
     public void EndBattle()
     {
-        backGroundCanvas.SetActive(false);
-        actCanvas.SetActive(false);
-        unitCanvas.SetActive(false);
-        endCanvas.SetActive(true);
+        backGround.gameObject.SetActive(false);
+        actMenu.gameObject.SetActive(false);
+        unitSpawn.gameObject.SetActive(false);
+        endBattle.gameObject.SetActive(true);
     }
 
     public void Attack(Unit attackUnit, Unit targetUnit)

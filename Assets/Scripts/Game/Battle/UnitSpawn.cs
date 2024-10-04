@@ -14,9 +14,14 @@ public class UnitSpawn : MonoBehaviour
 
     public GameObject[] playerStation = new GameObject[6];
     public GameObject[] enemyStation = new GameObject[6];
+    public StationController[] playerStationController = new StationController[6];
+    public StationController[] enemyStationController = new StationController[6];
+
 
     public HUDmanager[] playerHUD = new HUDmanager[6];
     public HUDmanager[] enemyHUD = new HUDmanager[6];
+
+
 
     Unit[] playerUnit = new Unit[6];
     Unit[] enemyUnit = new Unit[6];
@@ -40,7 +45,9 @@ public class UnitSpawn : MonoBehaviour
     {
         player[spawnPlayerCount] = Instantiate(playerPrefab, playerStation[spawnPlayerCount].transform);
         playerUnit[spawnPlayerCount] = player[spawnPlayerCount].GetComponent<Unit>();
+        playerHUD[spawnPlayerCount].SetupHUD(playerUnit[spawnPlayerCount]);
         playerUnit[spawnPlayerCount].stat = new Scripts.Data.StatData();
+        playerStationController[spawnPlayerCount].SetUp();
         spawnPlayerCount++;
     }
 
@@ -76,7 +83,7 @@ public class UnitSpawn : MonoBehaviour
 
         // Unit 컴포넌트 초기 설정
         enemyUnit[spawnEnemyCount].InitialSetting(battleManager, enemyHUD[spawnEnemyCount]);
-
+        
         // 보스 여부에 따른 적 설정
         if (boss)
         {
@@ -91,6 +98,7 @@ public class UnitSpawn : MonoBehaviour
             enemyUnit[spawnEnemyCount].EnemySetting(enemyPrefab);
         }
 
+        enemyStationController[spawnEnemyCount].SetUp();
         spawnEnemyCount++;
     }
 

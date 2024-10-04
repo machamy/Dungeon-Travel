@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,43 +8,56 @@ using UnityEngine.UI;
 
 public class StationController : MonoBehaviour
 {
-    private ActMenu actMenu;
+    Button button;
+
     public SpriteRenderer unitSprite;
     public Unit unit;
-    private bool isAlive;
     public int stationNumber;
+    public bool isTarget;
+
+    bool isActive;
+    
+
+    void Awake()
+    {
+        isActive = false;
+        isTarget = false;
+    }
 
     public void SetUp()
     {
-        if (transform.childCount > 0)
-        {
-            unitSprite = GetComponentInChildren<SpriteRenderer>();
-            unit = GetComponentInChildren<Unit>();
-            isAlive = true;
-        }
-        else isAlive = false;
+        button = gameObject.GetComponent<Button>();
+
+        unitSprite = GetComponentInChildren<SpriteRenderer>();
+        unit = GetComponentInChildren<Unit>();
+        ActiveButton(true);
+        isActive = true;
+
     }
 
-    public void GetActMenu(ActMenu actMenu)
+    void ActiveButton(bool active)
     {
-        this.actMenu = actMenu;
+        button.enabled = active;
     }
 
     public void Select()
     {
-        if (isAlive) unit.UpdateOutline(true);
+        unit.UpdateOutline(true);
     }
     public void NonSelect()
     {
-        if (isAlive) unit.UpdateOutline(false);
+        unit.UpdateOutline(false);
     }
 
-    public void onClick()
+    public void OnClick()
     {
-        if (isAlive)
-        {
-            if (stationNumber < 6) actMenu.SetTarget(stationNumber);
-            else actMenu.SetTarget(stationNumber);
-        }
+        isTarget = true;
+        NonSelect();
+    }
+
+    void Cancel()
+    {
+        NonSelect();
+        isTarget = false;
     }
 }

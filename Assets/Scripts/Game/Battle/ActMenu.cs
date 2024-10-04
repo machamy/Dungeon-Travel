@@ -24,6 +24,9 @@ public class ActMenu : MonoBehaviour
     public UnityEngine.UI.Button[] itemButtons; // item_1, item_2, item_3, back 순서 
     public UnityEngine.UI.Button[] guardButtons; // o,x 순서
 
+    public StationController[] playerStationController = new StationController[6];
+    public StationController[] enemyStationController = new StationController[6];
+
     public TextMeshProUGUI playername;
 
     public TextMeshProUGUI[] skillname;
@@ -41,7 +44,6 @@ public class ActMenu : MonoBehaviour
     private Unit[] playerUnits = new Unit[6];
     private Unit[] enemyUnits = new Unit[4];
 
-    private SkillData[] playerSkills;
     private SkillData useSkill;
     private Unit targetUnit;
 
@@ -57,7 +59,7 @@ public class ActMenu : MonoBehaviour
         guardMenu.SetActive(false);
     }
 
-    public void SetBase(BattleManager battleManager, EventSystem eventSystem, UnitSpawn unitSpawn)
+    public void SetUp(BattleManager battleManager, EventSystem eventSystem, UnitSpawn unitSpawn)
     {
         this.battleManager = battleManager;
         this.eventSystem = eventSystem;
@@ -77,7 +79,6 @@ public class ActMenu : MonoBehaviour
     {
         turnPlayerNum = playerNum;
         turnPlayerUnit = playerUnits[playerNum];
-        playerSkills = turnPlayerUnit.skills;
         InitialSetting();
         ChooseAct();
     }
@@ -88,8 +89,15 @@ public class ActMenu : MonoBehaviour
 
         for (int skillNum = 0; skillNum < 4; skillNum++)
         {
-            skillname[skillNum].text = playerSkills[skillNum].skillName;
-            //skillcost[skillNum].text = playerSkills[skillNum].mpCost.GetMpCost(playerSkills[skillNum]) + "MP";
+            if (turnPlayerUnit.skills[skillNum] != null)
+            {
+                skillname[skillNum].text = turnPlayerUnit.skills[skillNum].skillName;
+                //skillcost[skillNum].text = playerSkills[skillNum].mpCost.GetMpCost(playerSkills[skillNum]) + "MP";
+            }
+            else
+            {
+                skillname[skillNum].text = "empty";
+            }
         }
     }
 
@@ -106,7 +114,14 @@ public class ActMenu : MonoBehaviour
     public void Attack()
     {
         abxy.SetActive(false);
-        enemyStation[0].Select();
+
+        int i = 0;
+        while(true)
+        {
+            if (enemyStation[i].enabled == true) break;
+            i++;
+        }
+        enemyStation[i].Select();
     }
 
     public void Skill()
@@ -148,103 +163,23 @@ public class ActMenu : MonoBehaviour
 
     public void SkillSelect(int skillNumber)
     {
-        useSkill = playerSkills[skillNumber];
-        if (turnPlayerUnit.enoughMP(useSkill))
+        SkillData useSkill = turnPlayerUnit.skills[skillNumber];
+        if(useSkill.enemyTargetType == 0)
         {
-            skillMenu.SetActive(false);
-            isSkill = true;
-            switch (useSkill.enemyTargetType)
-            {
-                case TargetType.Single:
-                    {
-                        OnInteractable(new int[4] { 10, 11, 12, 13 }, useSkill.enemyTargetType);
-                        break;
-                    }
-                case TargetType.Front:
-                    {
-                        OnInteractable(new int[2] { 10, 11 }, useSkill.enemyTargetType);
-                        break;
-                    }
-                case TargetType.Back:
-                    {
-                        OnInteractable(new int[2] { 12, 13 }, useSkill.enemyTargetType);
-                        break;
-                    }
-                case TargetType.Area:
-                    {
-                        OnInteractable(new int[4] { 10, 11, 12, 13 }, useSkill.enemyTargetType);
-                        break;
-                    }
-                default:
-                    {
-                        Debug.Log("오류");
-                        break;
-                    }
-            }
 
-            switch (useSkill.allyTargetType)
-            {
-                case TargetType.Single:
-                    {
-                        OnInteractable(new int[6] { 0, 1, 2, 3, 4, 5 }, useSkill.enemyTargetType);
-                        break;
-                    }
-                case TargetType.Area:
-                    {
-                        OnInteractable(new int[6] { 0, 1, 2, 3, 4, 5 }, useSkill.enemyTargetType);
-                        break;
-                    }
-                default:
-                    {
-                        Debug.Log("오류");
-                        break;
-                    }
-            }
         }
-        else
-        {
-            Debug.Log("마나가 부족합니다");
-        }
+
     }
 
-    public void SetTarget(int targetNum)
+    public void SetTarget()
     {
-        if(targetNum < 6) targetUnit = playerUnits[targetNum];
-        else targetUnit = enemyUnits[targetNum - 6];
-
-        if (isSkill)
+        int target = 0;
+        for(; target > 6; target++)
         {
-            turnPlayerUnit.ConsumeMP(useSkill);
-            battleManager.SkillAttack(turnPlayerUnit, targetUnit, useSkill);
-        }
-        else
-        {
-            battleManager.Attack(turnPlayerUnit, targetUnit);
+            if (playerStationController[target].isTarget == true) break;
         }
 
-        battleManager.EndSmallTurn();
-        abxyButtons[0].Select();
-    }
 
-    public void OnInteractable(int[] targets, TargetType tType)
-    {
-        for (int i = 0; i < targets.Length; i++)
-        {
-            if(targets[i] < 10)
-            {
-                if (!playerUnits[targets[i]].isDead)
-                {
-                    playerStation[targets[i]].interactable = true;
-                }
-            }
-            else
-            {
-                if (!enemyUnits[targets[i]].isDead)
-                {
-                    enemyStation[targets[i] - 10].interactable = true;
-                }
-            }
-        }
     }
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
