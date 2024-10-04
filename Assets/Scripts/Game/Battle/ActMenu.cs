@@ -166,7 +166,7 @@ public class ActMenu : MonoBehaviour
         SkillData useSkill = turnPlayerUnit.skills[skillNumber];
         if(useSkill.enemyTargetType == 0)
         {
-
+            
         }
 
     }
@@ -184,8 +184,8 @@ public class ActMenu : MonoBehaviour
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
     {
-        skill_info.text = playerSkills[skillNumber].infomation;
-        skill_property.text = playerSkills[skillNumber].attackType.ToString();
+        skill_info.text = turnPlayerUnit.skills[skillNumber].infomation;
+        skill_property.text = turnPlayerUnit.skills[skillNumber].attackType.ToString();
     }
     public void ChangeItemInfo(int i)
     {
