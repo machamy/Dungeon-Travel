@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aaeb2567fde27849b79e2c1070f48af, type: 3}
+  m_Name: GoogleSheetSO
+  m_EditorClassIdentifier: 
+  Sheet1List:
+  - name: "\uC774\uAC83\uC740"
+    description: this is
+    id: 1
+    dmg: 1
+    arr_test: 030000000400000005000000
+  - name: "\uD14C\uC2A4\uD2B8"
+    description: test
+    id: 2
+    dmg: 2.4
+    arr_test: 210000002c00000037000000
+  - name: "\uC785\uB2C8\uB2E4"
+    description: desu
+    id: 3
+    dmg: 3.1
+    arr_test: 3f080000ae080000050d0000

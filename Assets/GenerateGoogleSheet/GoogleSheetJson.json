@@ -1,0 +1,44 @@
+{
+  "Sheet1": [
+    {
+      "name": "string",
+      "description": "string",
+      "id": "int",
+      "dmg": "float",
+      "arr_test": "int[]"
+    },
+    {
+      "name": "이것은",
+      "description": "this is",
+      "id": 1,
+      "dmg": 1,
+      "arr_test": [
+        3,
+        4,
+        5
+      ]
+    },
+    {
+      "name": "테스트",
+      "description": "test",
+      "id": 2,
+      "dmg": 2.4,
+      "arr_test": [
+        33,
+        44,
+        55
+      ]
+    },
+    {
+      "name": "입니다",
+      "description": "desu",
+      "id": 3,
+      "dmg": 3.1,
+      "arr_test": [
+        2111,
+        2222,
+        3333
+      ]
+    }
+  ]
+}
