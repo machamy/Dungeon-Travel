@@ -223,7 +223,7 @@ public class GoogleSheetManager : MonoBehaviour
                     foreach (var property in ((JObject)item).Properties())
                     {
                         FieldInfo fieldInfo = classType.GetField(property.Name);
-                        Debug.Log($"{fieldInfo.FieldType} {fieldInfo.Name} {property.Value}");
+                        // Debug.Log($"{fieldInfo.FieldType} {fieldInfo.Name} {property.Value}");
                         if(fieldInfo.FieldType.IsArray)
                         {
                             JArray arr = (JArray)property.Value;
