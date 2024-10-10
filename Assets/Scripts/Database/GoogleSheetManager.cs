@@ -227,10 +227,10 @@ public class GoogleSheetManager : MonoBehaviour
                         if(fieldInfo.FieldType.IsArray)
                         {
                             JArray arr = (JArray)property.Value;
-                            Array array = Array.CreateInstance(fieldInfo.FieldType.GetElementType(), arr.Count);
+                            Array array = Array.CreateInstance(fieldInfo.FieldType.GetElementType()!, arr.Count);
                             for (int i = 0; i < arr.Count; i++)
                             {
-                                object value = Convert.ChangeType(arr[i].ToString(), fieldInfo.FieldType.GetElementType());
+                                object value = Convert.ChangeType(arr[i].ToString(), fieldInfo.FieldType.GetElementType()!);
                                 array.SetValue(value, i);
                             }
                             fieldInfo.SetValue(classInst, array);
