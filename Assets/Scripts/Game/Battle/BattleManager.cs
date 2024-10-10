@@ -55,7 +55,7 @@ public class BattleManager : MonoBehaviour
 
     public UnitSpawn unitSpawn;
     public BackGround backGround;
-    public EndBattle endBattle;
+    public EndCanvas endCanvas;
 
     private GameObject[] playerGO = new GameObject[6];
 
@@ -284,7 +284,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Win()
     {
-        endBattle.gameObject.SetActive(true);
+        endCanvas.gameObject.SetActive(true);
         Debug.Log("승리");
         StopCoroutine("BattleCoroutine");
     }
@@ -294,7 +294,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     public void Lose()
     {
-        endBattle.gameObject.SetActive(true);
+        endCanvas.gameObject.SetActive(true);
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
     }
@@ -312,7 +312,7 @@ public class BattleManager : MonoBehaviour
         alivePlayer = 0;
         aliveEnemy = 0;
         backGround.gameObject.SetActive(false);
-        endBattle.gameObject.SetActive(false);
+        endCanvas.gameObject.SetActive(false);
         actMenu.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
