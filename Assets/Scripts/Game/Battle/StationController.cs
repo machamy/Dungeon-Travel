@@ -32,7 +32,6 @@ public class StationController : MonoBehaviour
         unit = GetComponentInChildren<Unit>();
         ActiveButton(true);
         isActive = true;
-
     }
 
     void ActiveButton(bool active)
@@ -51,13 +50,13 @@ public class StationController : MonoBehaviour
 
     public void OnClick()
     {
+        unit.UpdateOutline(false);
         isTarget = true;
-        NonSelect();
     }
 
     void Cancel()
     {
-        NonSelect();
+        unit.UpdateOutline(false);
         isTarget = false;
     }
 }

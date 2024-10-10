@@ -13,7 +13,6 @@ public class ActMenu : MonoBehaviour
     private EventSystem eventSystem;
     UnitSpawn unitSpawn;
     private BattleManager battleManager;
-    public GameObject ActCanvas;
     public GameObject abxy, skillMenu, itemMenu, guardMenu;
 
     public UnityEngine.UI.Button[] playerStation;
@@ -57,10 +56,9 @@ public class ActMenu : MonoBehaviour
         guardMenu.SetActive(false);
     }
 
-    public void SetUp(BattleManager battleManager, EventSystem eventSystem, UnitSpawn unitSpawn)
+    public void SetUp(BattleManager battleManager, UnitSpawn unitSpawn)
     {
         this.battleManager = battleManager;
-        this.eventSystem = eventSystem;
         this.unitSpawn = unitSpawn;
         playerUnits = unitSpawn.GetPlayerUnit();
         enemyUnits = unitSpawn.GetEnemyUnit();
@@ -126,7 +124,6 @@ public class ActMenu : MonoBehaviour
         skillMenu.SetActive(true);
         skillButtons[0].Select();
         useSkill = null;
-        ChangeSkill_Info(0);
     }
 
     public void Item()
@@ -191,6 +188,7 @@ public class ActMenu : MonoBehaviour
             if (enemyStationController[i].isTarget == true)
             {
                 Debug.Log(i + "->  타겟 ");
+                enemyStationController[i].isTarget = false;
                 targetUnit = enemyUnits[i];
             }
         }

@@ -17,6 +17,7 @@ using static BattleManager;
 using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
+using System.Security.Cryptography;
 
 public class BattleManager : MonoBehaviour
 {
@@ -40,6 +41,8 @@ public class BattleManager : MonoBehaviour
         }
     }
     #endregion
+    public static int alivePlayer { get; set; }
+    public static int aliveEnemy {  get; set; }
 
     public enum BattleState { Starting, Battle, EndBigTurn, EndGame }  //전투상태 열거형
     public enum SmallTurnState { Waiting, Processing } // 턴 상태 열거형
@@ -57,10 +60,6 @@ public class BattleManager : MonoBehaviour
     private GameObject[] playerGO = new GameObject[6];
 
     public ActMenu actMenu;
-    public EventSystem eventSystem;
-
-    public HUDmanager[] playerHUD;
-    public HUDmanager[] enemyHUD;
 
     private Unit[] playerUnits = new Unit[6];
     private Unit[] enemyUnits = new Unit[6];
@@ -68,14 +67,18 @@ public class BattleManager : MonoBehaviour
     public int BigTurnCount;
     public TextMeshProUGUI BigTurn;
 
-    public int alivePlayer;
-    public int aliveEnemy;
     bool encounter;
 
     private void Awake()
     {
+        DB.Instance.UpdateDB();
+    }
+
+    private void OnEnable()
+    {
         encounter = false;
-        DB.Instance.UpdateDB(); // DB 불러오는 함수인데 실행 오래걸리니 안쓰면 주석처리
+        actMenu.gameObject.SetActive(true);
+        backGround.gameObject.SetActive(true); 
         bState = BattleState.Starting;
         StartCoroutine(BattleCoroutine());
         
@@ -91,14 +94,12 @@ public class BattleManager : MonoBehaviour
         {
             unitSpawn.SpawnPlayerUnit();
             playerUnits = unitSpawn.GetPlayerUnit();
-            alivePlayer = unitSpawn.PlayerCount;
         }
 
         unitSpawn.SpawnEnemyUnit(1, "토끼");
         unitSpawn.SpawnEnemyUnit(1, "슬라임");
         enemyUnits = unitSpawn.GetEnemyUnit();
-        aliveEnemy = unitSpawn.EnemyCount;
-        actMenu.SetUp(this, eventSystem, unitSpawn);
+        actMenu.SetUp(this, unitSpawn);
 
         Debug.Log("SetUp 완료");
     }
@@ -107,7 +108,6 @@ public class BattleManager : MonoBehaviour
     {
         return playerGO;
     }
-
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
         Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
@@ -130,7 +130,6 @@ public class BattleManager : MonoBehaviour
             turnQueue.Enqueue(kvp.Key);
         }
     }
-
     void EnemyTurnOrder()
     {
         Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
@@ -227,7 +226,6 @@ public class BattleManager : MonoBehaviour
 
                 case BattleState.Battle:
                     {
-                        Debug.Log("배틀 시작 <"  + turnQueue.Count + ">");
                         SmallTurnMethod();
                         break;
                     }
@@ -235,6 +233,8 @@ public class BattleManager : MonoBehaviour
                     {
                         Debug.Log("턴 종료");
                         GeneralTurnOrder();
+                        bState = BattleState.Battle;
+                        smallTurn = SmallTurnState.Waiting;
                         BigTurnCount++;
                         break;
                     }
@@ -244,7 +244,10 @@ public class BattleManager : MonoBehaviour
                     }
             }
 
-            yield return new WaitForSeconds(0.5f);
+            if (alivePlayer == 0) Lose();
+            if (aliveEnemy == 0) Win();
+
+            yield return new WaitForSeconds(0.1f);
         }
     }
 
@@ -267,7 +270,7 @@ public class BattleManager : MonoBehaviour
             else if (turnQueue.Peek().isEnemy == true & smallTurn == SmallTurnState.Waiting)
             {
                 smallTurn = SmallTurnState.Processing;
-                Debug.Log(turnQueue.Peek().ToString() + " 차례");
+                Debug.Log(turnQueue.Peek().ToString() + " 차례" + turnQueue.Peek().isEnemy);
                 turnQueue.Dequeue().Attack();
                 EndSmallTurn();
             }
@@ -279,12 +282,11 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// 배틀 승리시 실행
     /// </summary>
-    public void WIN()
+    public void Win()
     {
         endBattle.gameObject.SetActive(true);
         Debug.Log("승리");
         StopCoroutine("BattleCoroutine");
-        EndBattle();
     }
 
     /// <summary>
@@ -295,16 +297,23 @@ public class BattleManager : MonoBehaviour
         endBattle.gameObject.SetActive(true);
         Debug.Log("패배");
         StopCoroutine("BattleCoroutine");
-        EndBattle();
     }
 
-    public void EndBattle()
+    public void Destroy()
     {
+        for(int i = 0; playerUnits[i] != null && i< playerUnits.Length; i++)
+        {
+            Destroy(playerUnits[i].gameObject);
+        }
+        for (int i = 0; enemyUnits[i] != null && i < enemyUnits.Length; i++)
+        {
+            Destroy(enemyUnits[i].gameObject);
+        }
+        alivePlayer = 0;
+        aliveEnemy = 0;
         backGround.gameObject.SetActive(false);
+        endBattle.gameObject.SetActive(false);
         actMenu.gameObject.SetActive(false);
-        unitSpawn.gameObject.SetActive(false);
-        endBattle.gameObject.SetActive(true);
+        gameObject.SetActive(false);
     }
-
-    
 }

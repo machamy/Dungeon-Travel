@@ -176,9 +176,9 @@ public class Enemy_Skill
 
     public void Bandits(SkillData skillData)
     {
-        if(battleManager.aliveEnemy < 3)
+        if(BattleManager.aliveEnemy < 3)
         {
-            for(int i = battleManager.aliveEnemy; i < 3; i++)
+            for(int i = BattleManager.aliveEnemy; i < 3; i++)
             {
                 battleManager.unitSpawn.SpawnEnemyUnit(2, "도적선봉대");
             }

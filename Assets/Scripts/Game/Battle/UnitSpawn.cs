@@ -29,13 +29,13 @@ public class UnitSpawn : MonoBehaviour
 
     GameObject[] player = new GameObject[6];
 
-    public int PlayerCount;
-    public int EnemyCount;
+    public int playerCount { get { return BattleManager.alivePlayer; } set { BattleManager.alivePlayer = value; } }
+    public int enemyCount { get { return BattleManager.aliveEnemy; } set { BattleManager.aliveEnemy = value; } }
 
     public void Awake()
     {
-        PlayerCount = 0;
-        EnemyCount = 0;
+        playerCount = 0;
+        enemyCount = 0;
     }
 
     /// <summary>
@@ -44,16 +44,15 @@ public class UnitSpawn : MonoBehaviour
     [ContextMenu("Spawn Unit")]
     public void SpawnPlayerUnit()
     {
-        player[PlayerCount] = Instantiate(playerPrefab, playerStation[PlayerCount].transform);
-        playerUnit[PlayerCount] = player[PlayerCount].GetComponent<Unit>();
-        playerHUD[PlayerCount].SetupHUD(playerUnit[PlayerCount]);
-        playerUnit[PlayerCount].stat = ScriptableObject.CreateInstance<StatData>();
-        playerUnit[PlayerCount].stat.hp = 1;
-        playerUnit[PlayerCount].InitialSetting(playerHUD[PlayerCount]);
-        playerStationController[PlayerCount].SetUp();
+        player[playerCount] = Instantiate(playerPrefab, playerStation[playerCount].transform);
+        playerUnit[playerCount] = player[playerCount].GetComponent<Unit>();
+        playerUnit[playerCount].stat = ScriptableObject.CreateInstance<StatData>();
+        playerUnit[playerCount].stat.hp = 1;
+        playerHUD[playerCount].SetupHUD(playerUnit[playerCount]);
+        playerUnit[playerCount].InitialSetting(playerHUD[playerCount]);
+        playerStationController[playerCount].SetUp();
 
-        battleManager.alivePlayer++;
-        PlayerCount++;
+        playerCount++;
     }
 
     /// <summary>
@@ -65,14 +64,14 @@ public class UnitSpawn : MonoBehaviour
     public void SpawnEnemyUnit(int floor, string name, bool boss = false) // 적 스폰하는 함수 프리펩으로 받아와서 생성
     {
         //게임오브젝트 생성 및 컴포넌트 추가
-        GameObject cloneEnemy = new GameObject($"{name}({EnemyCount})");
+        GameObject cloneEnemy = new GameObject($"{name}({enemyCount})");
         SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
         cloneEnemy.AddComponent<BuffManager>();
-        enemyUnit[EnemyCount] = cloneEnemy.AddComponent<Unit>();
-        enemyUnit[EnemyCount].stat = ScriptableObject.CreateInstance<StatData>();
+        enemyUnit[enemyCount] = cloneEnemy.AddComponent<Unit>();
+        enemyUnit[enemyCount].stat = ScriptableObject.CreateInstance<StatData>();
 
         // 게임 오브젝트의 위치 설정 (RectTransform을 고려)
-        RectTransform enemyStationRect = enemyStation[EnemyCount].GetComponent<RectTransform>();
+        RectTransform enemyStationRect = enemyStation[enemyCount].GetComponent<RectTransform>();
         RectTransform cloneEnemyRect = cloneEnemy.AddComponent<RectTransform>();
 
         // RectTransform의 부모 설정 및 위치 설정
@@ -88,24 +87,24 @@ public class UnitSpawn : MonoBehaviour
         image.material = spriteOutline;
 
         // Unit 컴포넌트 초기 설정
-        enemyUnit[EnemyCount].InitialSetting(enemyHUD[EnemyCount]);
+        enemyUnit[enemyCount].InitialSetting(enemyHUD[enemyCount]);
         // 보스 여부에 따른 적 설정
         if (boss)
         {
             Boss bossPrefab = new Boss();
             bossPrefab.NewEnemy(floor, name, cloneEnemy, battleManager);
-            enemyUnit[EnemyCount].EnemySetting(bossPrefab);
+            enemyUnit[enemyCount].EnemySetting(bossPrefab);
         }
         else
         {
             Enemy enemyPrefab = new Enemy();
             enemyPrefab.NewEnemy(floor, name, cloneEnemy, battleManager); // 팩토리 패턴으로 적 생성
-            enemyUnit[EnemyCount].EnemySetting(enemyPrefab);
+            enemyUnit[enemyCount].EnemySetting(enemyPrefab);
             
         }
 
-        enemyStationController[EnemyCount].SetUp();
-        EnemyCount++;
+        enemyStationController[enemyCount].SetUp();
+        enemyCount++;
     }
 
 

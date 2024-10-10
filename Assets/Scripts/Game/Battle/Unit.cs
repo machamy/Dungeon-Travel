@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
     public EnemyStatData enemyStat;
 
     public SkillData[] skills = new SkillData[4];
-    public bool isGuard;
+    public bool isGuard {  get; private set; }
     public int atk;
 
     public string unitName;
@@ -31,12 +31,17 @@ public class Unit : MonoBehaviour
     float currentMP;
 
     public bool isEnemy, isBoss;
-    public bool isDead;
+    public bool isDead { get; private set; }
     HUDmanager HUD;
 
     IEnemy enemy;
     private Character character;
     public Action<SkillData> bossPassive;
+
+    public void OnDestroy()
+    {
+        HUD.gameObject.SetActive(false);
+    }
 
     #region 초기세팅
     public void InitialSetting( HUDmanager hud, Character character = null) // 플레이어 초기 세팅
@@ -83,6 +88,7 @@ public class Unit : MonoBehaviour
         if(enemy.Passive != null)
             bossPassive = enemy.Passive;
     }
+
     #endregion
 
     #region 배틀관련
@@ -94,8 +100,7 @@ public class Unit : MonoBehaviour
 
     public void Attack() // 적의 공격
     {
-        //enemy.Attack(bossPassive);
-        
+        //enemy.Attack(bossPassive);  
     }
 
     public void Attack(Unit targetUnit, SkillData useSkill = null) // 플레이어의 공격
@@ -127,6 +132,8 @@ public class Unit : MonoBehaviour
             currentHP = 0;
             HUD.Dead();
             Debug.Log(unitName + " 사망");
+            if (isEnemy) BattleManager.aliveEnemy--;
+            else BattleManager.alivePlayer--;
             isDead = true;
         }
 
@@ -155,8 +162,6 @@ public class Unit : MonoBehaviour
         currentMP -= skill.mpCost.GetMpCost(skill);
         HUD.UpdateHUD(currentHP, currentMP);
     }
-
-    public bool IsDead() { return isDead; }
     #endregion
 
     #region 아웃라인관련
