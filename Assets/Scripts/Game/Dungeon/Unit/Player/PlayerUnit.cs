@@ -91,8 +91,18 @@ namespace Scripts.Game.Dungeon.Unit
                 // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
             // transform.position += moveVec * (speed * Time.deltaTime);
-            rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
 
+            //애니메이션 넣느라 잠시 이렇게 함
+            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
+            {
+                rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
+                animator.SetBool("IsMoving", true);
+            }
+            else
+            {
+                rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
+                animator.SetBool("IsMoving", false);
+            }
             rigid.velocity = Vector3.zero; //이거하면 계단에서 안내려옴
         }
         private RaycastHit slopeHit;
@@ -147,12 +157,14 @@ namespace Scripts.Game.Dungeon.Unit
 
         void OnAttack()
         {
-            if (_focusedInteractionUnit is null)
-                return;
-            if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Attack))
-                return;
-            Debug.Log($"[PlayerUnit::OnUse()] Execute to {_focusedInteractionUnit}");
-            _focusedInteractionUnit.OnAttacked(this, damage: 1.0f);
+            //if (_focusedInteractionUnit is null)
+            //    return;
+            //if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Attack))
+            //    return;
+            //Debug.Log($"[PlayerUnit::OnUse()] Execute to {_focusedInteractionUnit}");
+            //_focusedInteractionUnit.OnAttacked(this, damage: 1.0f);
+
+            animator.SetTrigger("AttackInput");
         }
 
         #endregion
