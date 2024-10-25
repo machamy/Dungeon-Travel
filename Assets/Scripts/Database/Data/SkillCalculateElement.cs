@@ -111,6 +111,8 @@ namespace Scripts.Data
 
         public float GetRaw()
         {
+            if(!isRaw)
+                Debug.LogError("[SkillCalculateElement::GetRaw()] this is not raw damage");
             return rawDamage;
         }
 
