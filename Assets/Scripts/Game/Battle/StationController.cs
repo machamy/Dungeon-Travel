@@ -10,33 +10,21 @@ public class StationController : MonoBehaviour
 {
     Button button;
 
-    public SpriteRenderer unitSprite;
     public Unit unit;
     public int stationNumber;
     public bool isTarget;
-
-    bool isActive;
     
 
     void Awake()
     {
-        isActive = false;
         isTarget = false;
     }
 
     public void SetUp()
     {
         button = gameObject.GetComponent<Button>();
-
-        unitSprite = GetComponentInChildren<SpriteRenderer>();
         unit = GetComponentInChildren<Unit>();
-        ActiveButton(true);
-        isActive = true;
-    }
-
-    void ActiveButton(bool active)
-    {
-        button.enabled = active;
+        button.enabled = true;
     }
 
     public void Select()
@@ -58,5 +46,10 @@ public class StationController : MonoBehaviour
     {
         unit.UpdateOutline(false);
         isTarget = false;
+    }
+
+    public void Dead()
+    {
+        button.enabled = false;
     }
 }

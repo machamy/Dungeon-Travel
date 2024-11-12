@@ -32,10 +32,12 @@ public class Unit : MonoBehaviour
 
     public bool isEnemy, isBoss;
     public bool isDead { get; private set; }
+
     HUDmanager HUD;
 
     IEnemy enemy;
     private Character character;
+    private StationController stationController;
     public Action<SkillData> bossPassive;
 
     public void OnDestroy()
@@ -44,7 +46,7 @@ public class Unit : MonoBehaviour
     }
 
     #region 초기세팅
-    public void InitialSetting( HUDmanager hud, Character character = null) // 플레이어 초기 세팅
+    public void InitialSetting( HUDmanager hud, StationController stationController, Character character = null) // 플레이어 초기 세팅
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         isDead = false;
@@ -69,16 +71,7 @@ public class Unit : MonoBehaviour
         }
         HUD = hud;
         HUD.SetupHUD(this);
-    }
-
-    public float[] GetStatus()
-    {
-        float[] status = new float[4];
-        status[0] = maxHP;
-        status[1] = maxMP;
-        status[2] = currentHP;
-        status[3] = currentMP;
-        return status;
+        this.stationController = stationController;
     }
 
     public void EnemySetting(IEnemy enemy) // 적 초기 세팅
@@ -105,6 +98,7 @@ public class Unit : MonoBehaviour
 
     public void Attack() // 적의 공격
     {
+        if(isDead) return;
         Debug.Log("attack");
         //enemy.Attack(bossPassive);  
     }
@@ -135,12 +129,7 @@ public class Unit : MonoBehaviour
         currentHP -= damage;
         if(currentHP <= 0)
         {
-            currentHP = 0;
-            HUD.Dead();
-            Debug.Log(unitName + " 사망");
-            if (isEnemy) BattleManager.aliveEnemy--;
-            else BattleManager.alivePlayer--;
-            isDead = true;
+            Dead();
         }
 
         HUD.UpdateHUD();
@@ -167,6 +156,18 @@ public class Unit : MonoBehaviour
     {
         currentMP -= skill.mpCost.GetMpCost(skill);
         HUD.UpdateHUD();
+    }
+
+    void Dead()
+    {
+        currentHP = 0;
+        HUD.Dead();
+        Debug.Log(unitName + " 사망");
+        if (isEnemy) BattleManager.aliveEnemy--;
+        else BattleManager.alivePlayer--;
+        isDead = true;
+        gameObject.SetActive(false);
+        stationController.Dead();
     }
     #endregion
 

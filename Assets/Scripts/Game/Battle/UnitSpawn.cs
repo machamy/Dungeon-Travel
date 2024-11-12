@@ -48,7 +48,7 @@ public class UnitSpawn : MonoBehaviour
         playerUnit[playerCount] = player[playerCount].GetComponent<Unit>();
         playerUnit[playerCount].stat = ScriptableObject.CreateInstance<StatData>();
         playerUnit[playerCount].stat.hp = 1;
-        playerUnit[playerCount].InitialSetting(playerHUD[playerCount]);
+        playerUnit[playerCount].InitialSetting(playerHUD[playerCount], playerStationController[playerCount]);
         playerHUD[playerCount].SetupHUD(playerUnit[playerCount]);
         playerStationController[playerCount].SetUp();
 
@@ -87,7 +87,7 @@ public class UnitSpawn : MonoBehaviour
         image.material = spriteOutline;
 
         // Unit 컴포넌트 초기 설정
-        enemyUnit[enemyCount].InitialSetting(enemyHUD[enemyCount]);
+        enemyUnit[enemyCount].InitialSetting(enemyHUD[enemyCount], enemyStationController[enemyCount]);
         // 보스 여부에 따른 적 설정
         if (boss)
         {
