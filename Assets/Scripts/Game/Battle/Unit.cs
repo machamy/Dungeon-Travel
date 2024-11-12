@@ -25,10 +25,10 @@ public class Unit : MonoBehaviour
 
     public int unitLevel;
 
-    float maxHP;
-    float maxMP;
-    float currentHP;
-    float currentMP;
+    public float maxHP { get; private set; }
+    public float maxMP { get; private set; }
+    public float currentHP { get; private set; }
+    public float currentMP { get; private set; }
 
     public bool isEnemy, isBoss;
     public bool isDead { get; private set; }
@@ -51,6 +51,11 @@ public class Unit : MonoBehaviour
         if (character == null)
         {
             isEnemy = false;
+
+            maxHP = stat.hp;
+            maxMP = stat.mp;
+            currentHP = maxHP;
+            currentMP = maxMP;
         }
         else
         {
@@ -100,6 +105,7 @@ public class Unit : MonoBehaviour
 
     public void Attack() // 적의 공격
     {
+        Debug.Log("attack");
         //enemy.Attack(bossPassive);  
     }
 
@@ -137,7 +143,7 @@ public class Unit : MonoBehaviour
             isDead = true;
         }
 
-        HUD.UpdateHUD(currentHP, currentMP);
+        HUD.UpdateHUD();
     }
 
     /// <summary>
@@ -160,7 +166,7 @@ public class Unit : MonoBehaviour
     public void ConsumeMP(SkillData skill)  //유닛 마나 계산
     {
         currentMP -= skill.mpCost.GetMpCost(skill);
-        HUD.UpdateHUD(currentHP, currentMP);
+        HUD.UpdateHUD();
     }
     #endregion
 

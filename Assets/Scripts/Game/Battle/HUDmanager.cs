@@ -13,18 +13,19 @@ public class HUDmanager : MonoBehaviour
     private float HP, MP;
     private float maxHP, maxMP;
 
+    private Unit unit;
     /// <summary>
     /// 유닛 소환될 때
     /// </summary>
     /// <param name="unit"></param>
     public void SetupHUD(Unit unit)
     {
-        float[] status = unit.GetStatus();
-        maxHP = status[0];
-        maxMP = status[1];
+        this.unit = unit;
+        maxHP = unit.maxHP;
+        maxMP = unit.maxMP;
 
-        HP = status[2];
-        MP = status[3];
+        HP = unit.currentHP;
+        MP = unit.currentMP;
 
         if (maxHP == 0) { HPslider.value = 0; }
         else { HPslider.value = HP / maxHP; }
@@ -46,7 +47,7 @@ public class HUDmanager : MonoBehaviour
     public void Dead()
     {
         HP = 0;
-        UpdateHUD(0, maxHP);
+        UpdateHUD();
 
         //HUD 색상 변경
         Image deadpanel = GetComponent<Image>();
@@ -58,15 +59,15 @@ public class HUDmanager : MonoBehaviour
     /// </summary>
     /// <param name="currentHP"></param>
     /// <param name="currentMP"></param>
-    public void UpdateHUD(float currentHP, float currentMP)
+    public void UpdateHUD()
     {
-        if (maxHP == 0) { HPslider.value = 0; }
-        else { HPslider.value = currentHP / maxHP; }
+        if (unit.maxHP == 0) { HPslider.value = 0; }
+        else { HPslider.value = unit.currentHP / maxHP; }
 
-        if (maxMP == 0) { MPslider.value = 0; }
-        else { MPslider.value = currentMP / maxMP; }
+        if (unit.maxMP == 0) { MPslider.value = 0; }
+        else { MPslider.value = unit.currentMP / unit.maxMP; }
 
-        HPtext.text = currentHP + "/" + maxHP;
-        MPtext.text = currentMP + "/" + maxMP;
+        HPtext.text = unit.currentHP + "/" + unit.maxHP;
+        MPtext.text = unit.currentMP + "/" + unit.maxMP;
     }
 }

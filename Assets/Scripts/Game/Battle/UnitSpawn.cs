@@ -48,8 +48,8 @@ public class UnitSpawn : MonoBehaviour
         playerUnit[playerCount] = player[playerCount].GetComponent<Unit>();
         playerUnit[playerCount].stat = ScriptableObject.CreateInstance<StatData>();
         playerUnit[playerCount].stat.hp = 1;
-        playerHUD[playerCount].SetupHUD(playerUnit[playerCount]);
         playerUnit[playerCount].InitialSetting(playerHUD[playerCount]);
+        playerHUD[playerCount].SetupHUD(playerUnit[playerCount]);
         playerStationController[playerCount].SetUp();
 
         playerCount++;
@@ -78,7 +78,7 @@ public class UnitSpawn : MonoBehaviour
         cloneEnemyRect.SetParent(enemyStationRect);
 
         // anchoredPosition을 사용하여 localPosition 대체
-        cloneEnemyRect.anchoredPosition = Vector2.zero;
+        cloneEnemyRect.localPosition = Vector2.zero;
         cloneEnemyRect.localScale = new Vector3(5, 5, 1); // 스케일은 Transform처럼 설정 가능
 
         // SpriteRenderer 설정

@@ -263,14 +263,14 @@ public class BattleManager : MonoBehaviour
             if (turnQueue.Peek().isEnemy == false & smallTurn == SmallTurnState.Waiting)
             {
                 smallTurn = SmallTurnState.Processing;
-                Debug.Log(turnQueue.Peek().ToString() + " 차례: " + turnQueue.Peek().isEnemy);
+                //Debug.Log(turnQueue.Peek().ToString() + " 차례: " + turnQueue.Peek().isEnemy);
                 actMenu.TurnStart(turnQueue.Dequeue());
             }
 
             else if (turnQueue.Peek().isEnemy == true & smallTurn == SmallTurnState.Waiting)
             {
                 smallTurn = SmallTurnState.Processing;
-                Debug.Log(turnQueue.Peek().ToString() + " 차례" + turnQueue.Peek().isEnemy);
+                //Debug.Log(turnQueue.Peek().ToString() + " 차례" + turnQueue.Peek().isEnemy);
                 turnQueue.Dequeue().Attack();
                 EndSmallTurn();
             }
