@@ -21,7 +21,7 @@ public class TownMapUI : MonoBehaviour
 
     //public TextMeshProUGUI topPanelText, buttonDescriptionText;
 
-    public Image dungeonCircle, guildCircle, shopCircle;
+    public GameObject[] placeSelectGroup = new GameObject[3]; //Dungeon, Guild, Shop
     private Color red = new(1, 0, 0, 0.5f), yellow = new(1, 1, 0, 0.5f);
 
     private void Awake()
@@ -42,7 +42,7 @@ public class TownMapUI : MonoBehaviour
     }
 
 
-    private void Menu()
+    public void Menu()
     {
         UIStack.Instance.PushUI(mainMenuCanvas);
     }
@@ -53,17 +53,17 @@ public class TownMapUI : MonoBehaviour
         switch (selectedButtonName)
         {
             case "Dungeon":
-                dungeonCircle.color = yellow;
-                guildCircle.color = red;
-                shopCircle.color = red; break;
+                placeSelectGroup[0].SetActive(true);
+                placeSelectGroup[1].SetActive(false);
+                placeSelectGroup[2].SetActive(false); break;
             case "Guild":
-                dungeonCircle.color = red;
-                guildCircle.color = yellow;
-                shopCircle.color = red; break;
+                placeSelectGroup[0].SetActive(false);
+                placeSelectGroup[1].SetActive(true);
+                placeSelectGroup[2].SetActive(false); break;
             case "Shop":
-                dungeonCircle.color = red;
-                guildCircle.color = red;
-                shopCircle.color = yellow; break;
+                placeSelectGroup[0].SetActive(false);
+                placeSelectGroup[1].SetActive(false);
+                placeSelectGroup[2].SetActive(true); break;
         }
 
     }

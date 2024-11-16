@@ -94,13 +94,13 @@ public class SkillUI : MonoBehaviour
 
             if (posN == 0) skillButton = buttonPrefab.transform.GetChild(1).gameObject;
 
-            if (posN == length - 1)
+            /*if (posN == length - 1)
             {
                 navigation.mode = Navigation.Mode.Explicit;
                 navigation.selectOnUp = buttonPrefab.transform.parent.
                     GetChild(length - 2).GetComponentInChildren<Button>();
                 button.navigation = navigation;
-            }
+            }*/
             posN++;
         }
     }

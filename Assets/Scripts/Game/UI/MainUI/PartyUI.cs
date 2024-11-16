@@ -42,7 +42,7 @@ public class PartyUI : MonoBehaviour
                 break;
             case UIDepth.Party:
                 UIManager.Instance.SelectButton(selectedCharacter);
-                selectedCharacter.GetComponent<Image>().color = lightblue;
+                selectedCharacter.GetComponent<Image>().color = Color.white;
                 depth--;
                 break;
         }
@@ -58,7 +58,8 @@ public class PartyUI : MonoBehaviour
 
     public void PartySelect(int num)
     {
-        partyName[num].text = selectedCharacter.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        //partyName[num].text = selectedCharacter.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        partyName[num].text = "test";
         Cancel();
     }
 }

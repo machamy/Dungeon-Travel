@@ -13,8 +13,9 @@ public class ScrollManager : MonoBehaviour
     public static ScrollManager Instance { get; private set; }
     private void Awake() => Instance = this; //temporary singleton
 
-    public int height = 80, amount = 6;
-    public int posY = 0;
+    public float height = 86.5f;
+    public int amount = 5;
+    public float posY = 0;
     public int posN = 0, posNInScreen = 0;
 
     private GameObject selectedButton;
@@ -35,7 +36,7 @@ public class ScrollManager : MonoBehaviour
 
         posN = selectedButton.transform.parent.parent.name == "Content" ?
             selectedButton.transform.parent.GetSiblingIndex() : posN;
-        posNInScreen = posN - posY / height;
+        posNInScreen = posN - (int)Mathf.Round(posY / height);
 
         if (posNInScreen == amount + 1)
         {
@@ -50,12 +51,13 @@ public class ScrollManager : MonoBehaviour
 
         if (posN == 0) posY = posNInScreen = 0;
 
-        transform.localPosition = new Vector3(316.5f, posY, 0);
+        float posX = transform.localPosition.x;
+        transform.localPosition = new Vector3(posX, posY, 0);
     }
 
     public void Reset()
     {
-        posN = posNInScreen = posY = 0;
+        posN = posNInScreen = 0; posY = 0;
     }
 
 }
