@@ -69,6 +69,9 @@ public class BattleManager : MonoBehaviour
 
     bool encounter;
 
+    public Action<SkillData> bossPassive;
+    public Dictionary<Unit, int> alivePlayers = new Dictionary<Unit, int>();
+
     private void Awake()
     {
         DB.Instance.UpdateDB();
@@ -95,6 +98,7 @@ public class BattleManager : MonoBehaviour
         {
             unitSpawn.SpawnPlayerUnit();
             playerUnits = unitSpawn.GetPlayerUnit();
+            //alivePlayers.Add(playerUnits[i], i);
         }
 
         unitSpawn.SpawnEnemyUnit(1, "토끼");
@@ -105,9 +109,30 @@ public class BattleManager : MonoBehaviour
         Debug.Log("SetUp 완료");
     }
 
-    public GameObject[] GetPlayerGO(TargetType playerTargetType)
+    public List<Unit> GetPlayerUnits(TargetType targetType)
     {
-        return playerGO;
+        List<Unit> goList = new List<Unit>();
+        switch (targetType)
+        {
+            case TargetType.Single:
+                int randomInt = Utility.WeightedRandom(new int[] { 33,33,34 });
+                if (playerUnits[randomInt] != null)
+                {
+                    goList.Add(playerUnits[randomInt]);
+                }
+                else
+                {
+                    Debug.LogError($"playerUnits[{randomInt}] is null");
+                }
+                break;
+            case TargetType.All:
+                break;
+            case TargetType.Front:
+                break;
+            case TargetType.Back:
+                break;
+        }
+        return goList;
     }
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
@@ -317,4 +342,19 @@ public class BattleManager : MonoBehaviour
         actMenu.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
+
+    //public Dictionary<Unit, int> GetAlivePlayer()
+    //{
+    //    for(int i = 0; i < playerUnits.Length;i++)
+    //    {
+    //        if (playerUnits[i] == null)
+    //            continue;
+    //        else
+    //        {
+    //            if (!playerUnits[i].isDead)
+    //                alivePlayers.Add(playerUnits[i], i);
+    //        }
+    //    }
+    //    return alivePlayers;
+    //}
 }

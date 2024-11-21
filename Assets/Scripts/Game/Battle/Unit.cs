@@ -101,8 +101,10 @@ public class Unit : MonoBehaviour
     public void Attack() // 적의 공격
     {
         if(isDead) return;
-        Debug.Log("attack");
         //enemy.Attack(bossPassive);  
+        Debug.Log("코드 뜯어 고치고 적 공격함수 연결하는게 좋을듯");
+        //TODO
+        // 살아있는 적만 타겟팅 하게 만들어야 함
     }
 
     public void Attack(Unit targetUnit, SkillData useSkill = null) // 플레이어의 공격

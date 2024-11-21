@@ -11,6 +11,7 @@ public interface IEnemy
     public List<Action<SkillData>> SkillLists { get; set; }
     public EnemyStatData EnemyStatData { get; set; }
     public int Index { get; set; }
+    public List<SkillData> SkillDatas { get; set; }
     public Action<SkillData> Passive { get; set; }
     public BuffManager BuffManager { get; set; }
     public int CurrentHP { get; set; }

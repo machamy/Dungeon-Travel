@@ -14,6 +14,11 @@ namespace Scripts.Entity
             set { EnemyStatData = value; }
         }
         private List<SkillData> skillDatas = new List<SkillData>();
+        public List<SkillData> SkillDatas
+        {
+            get { return skillDatas; }
+            set { skillDatas = value; }
+        }
         private List<Action<SkillData>> skillLists = new List<Action<SkillData>>();
         public List<Action<SkillData>> SkillLists
         {
@@ -21,15 +26,17 @@ namespace Scripts.Entity
             set { skillLists = value; }
         }
         public int Index {  get; set; } // 스킬의 인덱스
-        public Action<SkillData> Passive {  get; set; }
+        BattleManager battleManager;
         public GameObject gameObject = null;
         public int CurrentHP { get; set; }
         bool passiveTrigger = false;
         public BuffManager BuffManager { get; set; }
         Enemy_Skill skill;
+        public Action<SkillData> Passive { get; set; }
         public void NewEnemy(int floor, string name,GameObject gameObject, BattleManager battleManager)
         {
             this.gameObject = gameObject;
+            this.battleManager = battleManager;
             skill = new Enemy_Skill(this, battleManager);
             EnemyStatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
@@ -50,7 +57,7 @@ namespace Scripts.Entity
                 if (skilldata.skillWeight == 0) // 가중치가 0이면 보스의 체력에 따라 발동되는 패시브
                     passiveTrigger = true;
                 else if (skilldata.skillWeight == -1) // 가중치가 -1이면 전체적으로 적용되는 패시브
-                    Passive = skillLists[i];
+                    battleManager.bossPassive = skillLists[i];
                 else
                     weightArr[i++] = skilldata.skillWeight; // 가중치가 있다면 스킬
             }
@@ -65,9 +72,9 @@ namespace Scripts.Entity
                 {
                     Index = Utility.WeightedRandom(weightArr);
                     if (BuffManager.debuffDic.ContainsKey(DebuffType.Silence)) // 침묵이라면  skillLists[0]에 저장되어 있는 기본공격만 하도록
-                        Index = 0;
+                        Index = 1;
                 }
-                passive.Invoke(skillDatas[Index]);
+                passive?.Invoke(skillDatas[Index]);
                 SkillLists[Index].Invoke(skillDatas[Index]);
                 Index = -1;
             }

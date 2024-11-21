@@ -1,4 +1,4 @@
-﻿using Scripts.Data;
+using Scripts.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -39,9 +39,9 @@ namespace Database.Parser
                 // skill.physicsDamage = Convert.ToSingle(row[(int)EnemySkillDataType.물리데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.물리데미지]);
                 // skill.propertyDamage = Convert.ToSingle(row[(int)EnemySkillDataType.속성데미지] == string.Empty ? "0" : row[(int)EnemySkillDataType.속성데미지]);
                 skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소물리데미지]);
-                skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지 + 1]);
-                skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소물리데미지]);
-                skill.minPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지 + 1]);
+                skill.minPropertyDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지]);
+                skill.maxPhysicsDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소물리데미지 + 1]);
+                skill.maxPropertyDamage = new SkillCalculateElement(row[(int)EnemySkillDataType.최소속성데미지 + 1]);
                 
                 
                 skill.skillWeight = Convert.ToInt32(row[(int)EnemySkillDataType.가중치] == string.Empty || row[(int)EnemySkillDataType.가중치] == "-" ? "0" : row[(int)EnemySkillDataType.가중치]);

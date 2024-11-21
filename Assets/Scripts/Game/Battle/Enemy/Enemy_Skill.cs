@@ -12,6 +12,7 @@ public class Enemy_Skill
 {
     IEnemy enemy;
     BattleManager battleManager;
+    int passiveDuration;
     public Enemy_Skill(IEnemy enemy, BattleManager battleManager)
     {
         this.enemy = enemy;
@@ -131,15 +132,18 @@ public class Enemy_Skill
 
     public void EnemyAttack(SkillData skillData) // 특별한 로직이 아닌 일반적인 공격
     {
-        GameObject[] Opponent = battleManager.GetPlayerGO(skillData.enemyTargetType);
-        for (int i = 0; i < Opponent.Length; i++)
+        List<Unit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        //Debug.Log($"Opponent : {Opponent.Count}");
+        for (int i = 0; i < Opponent.Count; i++)
         {
             if (Opponent[i] == null)
+            {
+                Debug.Log(Opponent[i].name);
                 continue;
+            }
             BuffManager buffManager = Opponent[i].GetComponent<BuffManager>();
             Unit unit = Opponent[i].GetComponent<Unit>(); // 데미지 계산식 나오면 수정
             unit.TakeDamage(skillData.physicsDamage);
-            Debug.Log("공격완료");
             if (skillData.debuffType != DebuffType.None)
                 buffManager.DebuffAdd(skillData.debuffType, skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
         }
@@ -162,7 +166,7 @@ public class Enemy_Skill
     public void Cut_Stab(SkillData skillData)
     {
         AttackType[] attackType = Enum.GetValues(typeof(AttackType)) as AttackType[];
-        GameObject[] Opponent = battleManager.GetPlayerGO(skillData.enemyTargetType);
+        List<Unit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
         BuffManager buffManager = Opponent[0].GetComponent<BuffManager>();
         Unit unit = Opponent[0].GetComponent<Unit>();
         foreach(AttackType type in attackType) // 여기서 공격 2번하게 데미지 계산
@@ -189,8 +193,8 @@ public class Enemy_Skill
     {
         if(skillData.rank != 0)
         {
-            GameObject[] enemyGO = battleManager.GetPlayerGO(skillData.enemyTargetType);
-            for (int i = 0; i < enemyGO.Length; i++)
+            List<Unit> enemyGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+            for (int i = 0; i < enemyGO.Count; i++)
             {
                 BuffManager buffManager = enemyGO[i].GetComponent<BuffManager>();
                 if (skillData.attackType == AttackType.Slash)
@@ -199,8 +203,8 @@ public class Enemy_Skill
         }
         else
         {
-            GameObject[] playerGO = battleManager.GetPlayerGO(skillData.enemyTargetType);
-            for (int i = 0; i < playerGO.Length; i++)
+            List<Unit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+            for (int i = 0; i < playerGO.Count; i++)
             {
                 BuffManager buffManager = playerGO[i].GetComponent<BuffManager>();
                 if (skillData.attackType == AttackType.Slash)
@@ -213,5 +217,31 @@ public class Enemy_Skill
     public void Reminiscence(SkillData skillData) // HUD를 어떻게 업데이트 할것인지 생각해야함
     {
         enemy.CurrentHP = enemy.EnemyStatData.hp / 2;
+    }
+
+    public void RageOfWater(SkillData skillData)
+    {
+        enemy.SkillDatas[2].debuffRatio += 20f;
+        enemy.SkillDatas[3].debuffRatio += 20f;
+    }
+
+    public void Ghost(SkillData skillData)
+    {
+        List<Unit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        for (int i = 0; i < playerGO.Count; i++)
+        {
+            playerGO[i].GetComponent<Unit>().stat.accuracy -= 10f; // 수치는 미정
+        }
+    }
+
+    public void Reincarnation(SkillData skillData)
+    {
+        battleManager.bossPassive = ReincarnationActive;
+        int passiveDuration = battleManager.BigTurnCount;
+    }
+
+    public void ReincarnationActive(SkillData skillData)
+    {
+
     }
 }
