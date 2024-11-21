@@ -24,11 +24,12 @@ public class Unit : MonoBehaviour
     public AttackType weakType;
 
     public int unitLevel;
-
+    public TempPlayerData tempPlayerData { get; set; }
     public float maxHP { get; private set; }
     public float maxMP { get; private set; }
     public float currentHP { get; private set; }
     public float currentMP { get; private set; }
+    public float agi { get; private set; }
 
     public bool isEnemy, isBoss;
     public bool isDead { get; private set; }
@@ -50,20 +51,21 @@ public class Unit : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         isDead = false;
-        if (character == null)
+        if (isEnemy != false)
         {
             isEnemy = false;
 
-            maxHP = stat.hp;
-            maxMP = stat.mp;
-            currentHP = maxHP;
-            currentMP = maxMP;
+            //maxHP = stat.hp; maxMP = stat.mp;
+            //currentHP = maxHP; currentMP = maxMP;
+            maxHP = tempPlayerData.maxHP; maxMP = tempPlayerData.maxMP;
+            currentHP = tempPlayerData.currentHP; currentMP = tempPlayerData.currentMP;
         }
         else
         {
             isEnemy = false;
-            this.character = character;
-            stat = character.FinalStat;
+            //this.character = character;
+            //stat = character.FinalStat;
+            
             maxHP = stat.hp;
             maxMP = stat.mp;
             currentHP = maxHP;

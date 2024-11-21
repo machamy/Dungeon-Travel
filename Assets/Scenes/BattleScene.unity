@@ -313,6 +313,13 @@ MonoBehaviour:
   battleManager: {fileID: 5489701525075493704}
   playerPrefab: {fileID: 4860735066387929816, guid: ce7b41abe35c3c4409f18c4f7a8dee63, type: 3}
   spriteOutline: {fileID: 2100000, guid: f06ff8aaf0219204fb5054ea7ceb3d10, type: 2}
+  tempPlayerData:
+  - {fileID: 11400000, guid: 7f834e34beee2d343828b0dee246a7b7, type: 2}
+  - {fileID: 11400000, guid: c569f3826f6df9344bb402496aee63f1, type: 2}
+  - {fileID: 11400000, guid: d141b0d94f632c7499abefc22cffa4a8, type: 2}
+  - {fileID: 11400000, guid: 21a3befc9cbe57947a1f229c76629199, type: 2}
+  - {fileID: 11400000, guid: cf2d28852571d5a4aa90c947c772399a, type: 2}
+  - {fileID: 11400000, guid: be2111fe704719d48bfa16965e05c260, type: 2}
   playerStation:
   - {fileID: 8407084373330240676}
   - {fileID: 2589642315737492539}
@@ -3567,7 +3574,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 1
   isTarget: 0
@@ -6633,7 +6639,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 3
   isTarget: 0
@@ -8949,7 +8954,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 7
   isTarget: 0
@@ -9087,7 +9091,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 9
   isTarget: 0
@@ -10093,7 +10096,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 8
   isTarget: 0
@@ -10837,7 +10839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 5
   isTarget: 0
@@ -12742,7 +12743,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 2
   isTarget: 0
@@ -14314,7 +14314,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 9
   isTarget: 0
@@ -14330,7 +14329,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 6
   isTarget: 0
@@ -26761,7 +26759,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 0
   isTarget: 0
@@ -26794,7 +26791,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 9
   isTarget: 0
@@ -27274,7 +27270,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5901c2313e57274c8ab4e319877f56e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitSprite: {fileID: 0}
   unit: {fileID: 0}
   stationNumber: 4
   isTarget: 0

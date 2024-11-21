@@ -71,7 +71,8 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        DB.Instance.UpdateDB();
+        //DB.Instance.UpdateDB();
+        Application.targetFrameRate = 30; //30 프레임 고정, 작업 수월하게 하려고
     }
 
     private void OnEnable()

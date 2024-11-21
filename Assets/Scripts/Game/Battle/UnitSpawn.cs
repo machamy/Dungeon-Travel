@@ -1,3 +1,4 @@
+using Script.Global;
 using Scripts.Data;
 using Scripts.Entity;
 using System;
@@ -12,6 +13,8 @@ public class UnitSpawn : MonoBehaviour
     public BattleManager battleManager;
     public GameObject playerPrefab;
     public Material spriteOutline;
+
+    public TempPlayerData[] tempPlayerData = new TempPlayerData[6];
 
     public GameObject[] playerStation = new GameObject[6];
     public GameObject[] enemyStation = new GameObject[6];
@@ -44,15 +47,22 @@ public class UnitSpawn : MonoBehaviour
     [ContextMenu("Spawn Unit")]
     public void SpawnPlayerUnit()
     {
-        player[playerCount] = Instantiate(playerPrefab, playerStation[playerCount].transform);
-        playerUnit[playerCount] = player[playerCount].GetComponent<Unit>();
-        playerUnit[playerCount].stat = ScriptableObject.CreateInstance<StatData>();
-        playerUnit[playerCount].stat.hp = 1;
-        playerUnit[playerCount].InitialSetting(playerHUD[playerCount], playerStationController[playerCount]);
-        playerHUD[playerCount].SetupHUD(playerUnit[playerCount]);
-        playerStationController[playerCount].SetUp();
+        for(int i = 0; i< tempPlayerData.Length; i++)
+        {
+            if (tempPlayerData[i] != null && tempPlayerData[i].position != 6)
+            {
+                player[i] = Instantiate(playerPrefab, playerStation[tempPlayerData[i].position].transform);
+                playerUnit[i] = player[i].GetComponent<Unit>();
+                playerUnit[i].tempPlayerData = tempPlayerData[i];
+                //playerUnit[playerCount].stat = ScriptableObject.CreateInstance<StatData>();
+                //playerUnit[playerCount].stat.hp = 1;
+                playerUnit[i].InitialSetting(playerHUD[i], playerStationController[i]);
+                playerHUD[i].SetupHUD(playerUnit[i]);
+                playerStationController[i].SetUp();
 
-        playerCount++;
+                playerCount++;
+            }
+        }
     }
 
     /// <summary>
