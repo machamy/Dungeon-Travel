@@ -17,6 +17,7 @@ public class TempPlayerData : ScriptableObject
     [SerializeField] private int _atk;
     [SerializeField] private int _def;
     [SerializeField] private int _mdef;
+    [SerializeField] private int _agi;
     [SerializeField] private int _acc; // 적중률
     [SerializeField] private int _avo; // 회피율
     [SerializeField] private int _cri; // 크리티컬 확률
@@ -35,6 +36,7 @@ public class TempPlayerData : ScriptableObject
     public int atk => _atk;
     public int def => _def;
     public int mdef => _mdef;
+    public float agi => _agi;
     public int acc => _acc;
     public int avo => _avo;
     public int cri => _cri;

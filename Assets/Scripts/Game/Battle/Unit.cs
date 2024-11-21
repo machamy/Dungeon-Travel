@@ -47,11 +47,11 @@ public class Unit : MonoBehaviour
     }
 
     #region 초기세팅
-    public void InitialSetting( HUDmanager hud, StationController stationController, Character character = null) // 플레이어 초기 세팅
+    public void InitialSetting( HUDmanager hud, StationController stationController) // 플레이어 초기 세팅
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         isDead = false;
-        if (isEnemy != false)
+        if (isEnemy == false)
         {
             isEnemy = false;
 

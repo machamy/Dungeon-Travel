@@ -53,6 +53,7 @@ public class UnitSpawn : MonoBehaviour
             {
                 player[i] = Instantiate(playerPrefab, playerStation[tempPlayerData[i].position].transform);
                 playerUnit[i] = player[i].GetComponent<Unit>();
+                playerUnit[i].isEnemy = false;
                 playerUnit[i].tempPlayerData = tempPlayerData[i];
                 //playerUnit[playerCount].stat = ScriptableObject.CreateInstance<StatData>();
                 //playerUnit[playerCount].stat.hp = 1;
@@ -79,6 +80,7 @@ public class UnitSpawn : MonoBehaviour
         cloneEnemy.AddComponent<BuffManager>();
         enemyUnit[enemyCount] = cloneEnemy.AddComponent<Unit>();
         enemyUnit[enemyCount].stat = ScriptableObject.CreateInstance<StatData>();
+        enemyUnit[enemyCount].isEnemy = true;
 
         // 게임 오브젝트의 위치 설정 (RectTransform을 고려)
         RectTransform enemyStationRect = enemyStation[enemyCount].GetComponent<RectTransform>();

@@ -71,7 +71,7 @@ public class BattleManager : MonoBehaviour
 
     private void Awake()
     {
-        //DB.Instance.UpdateDB();
+        DB.Instance.UpdateDB();
         Application.targetFrameRate = 30; //30 프레임 고정, 작업 수월하게 하려고
     }
 
@@ -119,7 +119,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (playerUnits[i].isDead == false)
                 {
-                    agi_ranking.Add(playerUnits[i], playerUnits[i].stat.agi);
+                    agi_ranking.Add(playerUnits[i], playerUnits[i].tempPlayerData.agi);
                 }
             }        
         }
@@ -164,7 +164,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (playerUnits[i].isDead == false)
                 {
-                    agi_ranking.Add(playerUnits[i], playerUnits[i].stat.agi);
+                    agi_ranking.Add(playerUnits[i], playerUnits[i].tempPlayerData.agi);
                 }  
             }
                 
