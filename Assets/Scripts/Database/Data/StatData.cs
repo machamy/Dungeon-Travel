@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Script.Data;
 using Script.Global;
 using System.Diagnostics;
@@ -27,7 +27,7 @@ namespace Scripts.Data
     /// 스탯
     /// </summary>
     [Serializable]
-    public class StatData :ScriptableObject, IDBdata, ICloneable
+    public class StatData : ScriptableObject, IDBdata, ICloneable
     {
         //1차 스탯
         /// <summary>
