@@ -8,10 +8,10 @@ namespace Scripts.Entity
 {
     public class Boss : IEnemy
     {
-        public EnemyStatData EnemyStatData
+        public StatData StatData
         {
-            get { return EnemyStatData; }
-            set { EnemyStatData = value; }
+            get { return StatData; }
+            set { StatData = value; }
         }
         private List<SkillData> skillDatas = new List<SkillData>();
         public List<SkillData> SkillDatas
@@ -28,7 +28,7 @@ namespace Scripts.Entity
         public int Index {  get; set; } // 스킬의 인덱스
         BattleManager battleManager;
         public GameObject gameObject = null;
-        public int CurrentHP { get; set; }
+        public float CurrentHP { get; set; }
         bool passiveTrigger = false;
         public BuffManager BuffManager { get; set; }
         Enemy_Skill skill;
@@ -37,11 +37,11 @@ namespace Scripts.Entity
         {
             this.gameObject = gameObject;
             this.battleManager = battleManager;
-            skill = new Enemy_Skill(this, battleManager);
-            EnemyStatData = DB.GetEnemyData(floor, name);
+            //skill = new Enemy_Skill(this, battleManager);
+            StatData = DB.GetEnemyData(floor, name);
             skillDatas = DB.GetEnemySkillData(floor, name);
-            SkillLists = skill.GetSkillList(floor, name);
-            CurrentHP = EnemyStatData.hp;
+            //SkillLists = skill.GetSkillList(floor, name);
+            CurrentHP = StatData.hp;
             BuffManager = gameObject.GetComponent<BuffManager>();
             Index = -1;
         }
@@ -61,7 +61,7 @@ namespace Scripts.Entity
                 else
                     weightArr[i++] = skilldata.skillWeight; // 가중치가 있다면 스킬
             }
-            if (passiveTrigger == true && ((CurrentHP) / (EnemyStatData.hp) < 0.5)) // 체력 변수를 따로 두어서 패시브 트리거를 다르게 두어야함
+            if (passiveTrigger == true && ((CurrentHP) / (StatData.hp) < 0.5)) // 체력 변수를 따로 두어서 패시브 트리거를 다르게 두어야함
             {
                 SkillLists[0].Invoke(skillDatas[0]); // 패시브 발동
                 passiveTrigger = false;

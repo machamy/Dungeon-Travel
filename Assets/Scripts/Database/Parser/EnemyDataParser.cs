@@ -1,4 +1,4 @@
-﻿using Scripts.Data;
+using Scripts.Data;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Database.Parser
 {
-    public class EnemyDataParser : IDataParser<Dictionary<string, EnemyStatData>>
+    public class EnemyDataParser : IDataParser<Dictionary<string, StatData>>
     {
         private enum EnemyStatType
         {
@@ -28,13 +28,13 @@ namespace Database.Parser
             LUK,
         }
     
-        public Dictionary<string, EnemyStatData> Parse(DataTable sheet, string[] header, int colNum)
+        public Dictionary<string, StatData> Parse(DataTable sheet, string[] header, int colNum)
         {
-            Dictionary<string, EnemyStatData> result = new Dictionary<string, EnemyStatData>();
+            Dictionary<string, StatData> result = new Dictionary<string, StatData>();
 
             for (int i = 1; i < sheet.Rows.Count; i++)
             {
-                EnemyStatData enemyStat = ScriptableObject.CreateInstance<EnemyStatData>();
+                StatData enemyStat = ScriptableObject.CreateInstance<StatData>();
                 var row = Array.ConvertAll(sheet.Rows[i].ItemArray, p => ((p ?? "0").ToString()));
 
                 enemyStat.name = row[(int)EnemyStatType.NAME];
@@ -44,10 +44,10 @@ namespace Database.Parser
                 enemyStat.mdef = float.Parse(row[(int)EnemyStatType.MDEF]);
 
                 enemyStat.accuracy = float.Parse(row[(int)EnemyStatType.HIT]);
-                enemyStat.dodge = float.Parse(row[(int)EnemyStatType.AVOID]);
+                enemyStat.evase = float.Parse(row[(int)EnemyStatType.AVOID]);
                 enemyStat.critical = float.Parse(row[(int)EnemyStatType.CRIT]);
-                enemyStat.strcret = float.Parse(row[(int)EnemyStatType.STRCRET]);
-                enemyStat.magcret = float.Parse(row[(int)EnemyStatType.MAGCRET]);
+                enemyStat.strWeight = float.Parse(row[(int)EnemyStatType.STRCRET]);
+                enemyStat.magWeight = float.Parse(row[(int)EnemyStatType.MAGCRET]);
 
                 enemyStat.str = float.Parse(row[(int)EnemyStatType.STR]);
                 enemyStat.vit = float.Parse(row[(int)EnemyStatType.VIT]);

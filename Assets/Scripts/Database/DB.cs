@@ -34,7 +34,7 @@ public class DB
     private Dictionary<ClassType, StatData[]> classStatData = new();
     private Dictionary<ClassType, SkillData[]> classSkillData = new();
     private Dictionary<string, EquipmentData> Equipments = new();
-    private List<Dictionary<string, EnemyStatData>> enemyDataList = new();
+    private List<Dictionary<string, StatData>> enemyDataList = new();
     private List<Dictionary<string, List<SkillData>>> enemySkillList = new();
 
     private string fileName = "Dungeon_Travel_stats.xlsx";
@@ -74,9 +74,9 @@ public class DB
     /// <param name="floor"></param>
     /// <param name="name"></param>
     /// <returns></returns>
-    public static EnemyStatData GetEnemyData(int floor, string name)
+    public static StatData GetEnemyData(int floor, string name)
     {
-        EnemyStatData data;
+        StatData data;
         var floorData = Instance.enemyDataList[floor];
         if (floorData.TryGetValue(name, out data))
             return data;
@@ -102,7 +102,7 @@ public class DB
     /// </summary>
     /// <param name="floor"></param>
     /// <returns></returns>
-    public static Dictionary<string, EnemyStatData> GetEnemyAllData(int floor)
+    public static Dictionary<string, StatData> GetEnemyAllData(int floor)
     {
         return Instance.enemyDataList[floor];
     }
@@ -180,7 +180,7 @@ public class DB
                     {
                         int floor = int.Parse(sheetName[0].Replace("F", ""));
                         while (enemyDataList.Count <= floor)
-                            enemyDataList.Add(new Dictionary<string, EnemyStatData>());
+                            enemyDataList.Add(new Dictionary<string, StatData>());
                         enemyDataList[floor] = enemyDataParser.Parse(table, header, colNum);
                     }
                     break;

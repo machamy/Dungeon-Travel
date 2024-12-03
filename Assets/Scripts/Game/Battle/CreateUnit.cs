@@ -36,7 +36,7 @@ public class CreateUnit : MonoBehaviour
         playerUnit.Initialize(character);
     }
 
-    public void SpawnEnemyUnit(Character character)
+    public void SpawnEnemyUnit(int floor, string name)
     {
         // 유닛 프리팹 생성
         GameObject unitObject = Instantiate(unitPrefab, RandomPosition(), Quaternion.identity);
@@ -49,7 +49,7 @@ public class CreateUnit : MonoBehaviour
         }
 
         // 유닛 초기화
-        enemyUnit.Initialize(character);
+        enemyUnit.Initialize(floor, name);
     }
 
     private Vector3 RandomPosition()

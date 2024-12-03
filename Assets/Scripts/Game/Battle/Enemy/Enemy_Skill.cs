@@ -10,10 +10,10 @@ using UnityEditor.PackageManager;
 
 public class Enemy_Skill
 {
-    IEnemy enemy;
+    BattleEnemyUnit enemy;
     BattleManager battleManager;
     int passiveDuration;
-    public Enemy_Skill(IEnemy enemy, BattleManager battleManager)
+    public Enemy_Skill(BattleEnemyUnit enemy, BattleManager battleManager)
     {
         this.enemy = enemy;
         this.battleManager = battleManager;
@@ -151,16 +151,16 @@ public class Enemy_Skill
 
     public void Core_Active(SkillData skillData)
     {
-        enemy.Index = 3; // 다음 공격을 코어 레이저로 고정
-        enemy.EnemyStatData.atk++; // 수치는 모름
+        enemy.index = 3; // 다음 공격을 코어 레이저로 고정
+        enemy.statData.atk++; // 수치는 모름
     }
 
     public void Berserk(SkillData skillData)
     {
-        enemy.EnemyStatData.atk++;
-        enemy.EnemyStatData.agi++;
-        enemy.EnemyStatData.def--;
-        enemy.EnemyStatData.mdef--; // 수치는 모름
+        enemy.statData.atk++;
+        enemy.statData.agi++;
+        enemy.statData.def--;
+        enemy.statData.mdef--; // 수치는 모름
     }
 
     public void Cut_Stab(SkillData skillData)
@@ -216,13 +216,13 @@ public class Enemy_Skill
 
     public void Reminiscence(SkillData skillData) // HUD를 어떻게 업데이트 할것인지 생각해야함
     {
-        enemy.CurrentHP = enemy.EnemyStatData.hp / 2;
+        enemy.currentHP = enemy.statData.hp / 2;
     }
 
     public void RageOfWater(SkillData skillData)
     {
-        enemy.SkillDatas[2].debuffRatio += 20f;
-        enemy.SkillDatas[3].debuffRatio += 20f;
+        enemy.skillDatas[2].debuffRatio += 20f;
+        enemy.skillDatas[3].debuffRatio += 20f;
     }
 
     public void Ghost(SkillData skillData)

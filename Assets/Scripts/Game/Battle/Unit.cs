@@ -13,7 +13,7 @@ public class Unit : MonoBehaviour
 {
     public Class _class;
     public StatData stat;
-    public EnemyStatData enemyStat;
+    public StatData enemyStat;
 
     public SkillData[] skills = new SkillData[4];
     public bool isGuard {  get; private set; }
@@ -21,7 +21,7 @@ public class Unit : MonoBehaviour
 
     public string unitName;
     public string className;
-    public AttackType weakType;
+    //public AttackType weakType;
 
     public int unitLevel;
     public TempPlayerData tempPlayerData { get; set; }
@@ -80,10 +80,10 @@ public class Unit : MonoBehaviour
     {
         isEnemy = true;
         this.enemy = enemy;
-        enemyStat = enemy.EnemyStatData;
+        enemyStat = enemy.StatData;
         maxHP = enemyStat.hp;
         currentHP = enemyStat.hp;
-        weakType = enemyStat.weakType;
+        //weakType = enemyStat.weakType;
         HUD.SetupHUD(this);
         if(enemy.Passive != null)
             bossPassive = enemy.Passive;

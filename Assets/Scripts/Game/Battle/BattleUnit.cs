@@ -7,10 +7,10 @@ using UnityEngine;
 
 public abstract class BattleUnit : MonoBehaviour
 {
-    private StatData statData; // 복사된 스탯 데이터
-    private float currentHP;   // 현재 HP
-    private float currentMP;   // 현재 MP
-    private Character originalCharacter; // 원본 Character 데이터
+    public StatData statData; // 복사된 스탯 데이터
+    public float currentHP;   // 현재 HP
+    public float currentMP;   // 현재 MP
+    protected Character originalCharacter; // 원본 Character 데이터
 
     /// <summary>
     /// 유닛 초기화
@@ -29,6 +29,7 @@ public abstract class BattleUnit : MonoBehaviour
         Debug.Log($"Unit Initialized: {character.Name} - HP: {currentHP}, MP: {currentMP}, ATK: {statData.atk}");
     }
 
+    public virtual void Initialize(int floor, string name) { }
 
     /// <summary>
     /// 유닛 공격 처리

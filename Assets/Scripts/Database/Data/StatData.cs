@@ -101,10 +101,22 @@ namespace Scripts.Data
         public float luk;
         
         /// <summary>
-        /// StatUp
+        /// 플레이어 StatUp
         /// </summary>
         public float statUp;
 
+        /// <summary>
+        /// 적 행동 속성
+        /// </summary>
+        public EnemyProperty Property;
+        /// <summary>
+        /// 취약 방어 타입
+        /// </summary>
+        [FormerlySerializedAs("weakProperty")][FormerlySerializedAs("WeakType")] public AttackType weakType;
+        /// <summary>
+        /// 방어 타입
+        /// </summary>
+        [FormerlySerializedAs("resistProperty")][FormerlySerializedAs("ResistType")] public AttackType resistType;
 
         public float Get(Stat stat) => stat switch
         {
