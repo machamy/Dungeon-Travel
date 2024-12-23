@@ -268,6 +268,7 @@ GameObject:
   - component: {fileID: 331927212}
   - component: {fileID: 331927215}
   - component: {fileID: 331927213}
+  - component: {fileID: 331927216}
   m_Layer: 5
   m_Name: UnitPanel
   m_TagString: Untagged
@@ -370,6 +371,62 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 331927211}
   m_CullTransparentMesh: 1
+--- !u!114 &331927216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 331927211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65342ae14b370864888d1d1d0966da85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tempPlayerData: []
+  playerPrefab: {fileID: 8371962068123350127, guid: 69dc832a081a6474492f8edcb806265a, type: 3}
+  playerStation:
+  - {fileID: 8407084373330240676}
+  - {fileID: 2589642315737492539}
+  - {fileID: 8210032234774493777}
+  - {fileID: 8182729223132113174}
+  - {fileID: 8702235299161687279}
+  - {fileID: 4342189019956953872}
+  enemyStation:
+  - {fileID: 1600679001287062623}
+  - {fileID: 2324328611025381661}
+  - {fileID: 6143925815999620621}
+  - {fileID: 1179070033364394095}
+  - {fileID: 7541946403128819749}
+  - {fileID: 124566987856371095}
+  playerStationController:
+  - {fileID: 8673334982273331682}
+  - {fileID: 877557616541381336}
+  - {fileID: 4113738854065289219}
+  - {fileID: 1806053625342643873}
+  - {fileID: 8888007905976500492}
+  - {fileID: 3395311441962519964}
+  enemyStationController:
+  - {fileID: 4549535461177635262}
+  - {fileID: 2614028393522955139}
+  - {fileID: 3140979258730416853}
+  - {fileID: 4538978466423956310}
+  - {fileID: 8675710202446024501}
+  - {fileID: 2749404376262701282}
+  playerHUD:
+  - {fileID: 8989305569814391767}
+  - {fileID: 571016549438387854}
+  - {fileID: 5406383875260721266}
+  - {fileID: 7888487673000919939}
+  - {fileID: 2860666606775378006}
+  - {fileID: 123950317452269341}
+  enemyHUD:
+  - {fileID: 2162726822517547976}
+  - {fileID: 1091346692401375091}
+  - {fileID: 1941669079579866790}
+  - {fileID: 192118751029230665}
+  - {fileID: 5108976764259643495}
+  - {fileID: 7113080710743357454}
 --- !u!1 &555016244
 GameObject:
   m_ObjectHideFlags: 0
@@ -17110,6 +17167,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   unitSpawn: {fileID: 331927213}
+  createUnit: {fileID: 331927216}
   backGround: {fileID: 1284103000}
   endCanvas: {fileID: 8528443967881144742}
   actMenu: {fileID: 1730080831}

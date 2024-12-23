@@ -7,26 +7,38 @@ using UnityEngine;
 
 public abstract class BattleUnit : MonoBehaviour
 {
-    public StatData statData; // 복사된 스탯 데이터
+    public StatData statData;
+    public BattleStat stat; // 복사된 스탯 데이터
+    public string unitName;
+    public bool isDie;
     public float currentHP;   // 현재 HP
     public float currentMP;   // 현재 MP
     protected Character originalCharacter; // 원본 Character 데이터
+    public SkillData[] skill;
+    public bool isEnemy;
 
+    private SpriteRenderer spriteRenderer;
     /// <summary>
     /// 유닛 초기화
     /// </summary>
     /// <param name="character">Character 데이터</param>
-    public virtual void Initialize(Character character)
+    public virtual void Initialize(BattleStat stat)
     {
         // Character 데이터 복사
-        originalCharacter = character;
-        statData = (StatData)character.FinalStat.Clone();
+        // originalCharacter = character;
+        // statData = (StatData)character.FinalStat.Clone();
+
+        // 임시 데이터 복사
+        this.stat = stat;
 
         // 체력과 마나 초기화
-        currentHP = statData.hp;
-        currentMP = statData.mp;
+        currentHP = this.stat.currentHP;
+        currentMP = this.stat.currentMP;
 
-        Debug.Log($"Unit Initialized: {character.Name} - HP: {currentHP}, MP: {currentMP}, ATK: {statData.atk}");
+        //Debug.Log($"Unit Initialized: {character.Name} - HP: {currentHP}, MP: {currentMP}, ATK: {statData.atk}");
+
+        //아웃라인 관련
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     public virtual void Initialize(int floor, string name) { }
@@ -35,11 +47,15 @@ public abstract class BattleUnit : MonoBehaviour
     /// 유닛 공격 처리
     /// </summary>
     /// <param name="skillData">사용 스킬, 기본값 = 기본공격</param>
-    public virtual void Attack(SkillData skillData = null)
+    public virtual void Attack( BattleUnit target = null,SkillData skillData = null)
     {
 
     }
 
+    public virtual void Guard()
+    {
+
+    }
 
     /// <summary>
     /// 데미지를 받을 때 호출
@@ -92,4 +108,20 @@ public abstract class BattleUnit : MonoBehaviour
                   $"HP: {currentHP}, MP: {currentMP}\n" +
                   $"ATK: {statData.atk}, DEF: {statData.def}");
     }
+
+
+    #region 아웃라인관련
+    private Color color = Color.red;
+    private int outlineSize = 2;
+
+    public void UpdateOutline(bool outline)
+    {
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        spriteRenderer.GetPropertyBlock(mpb);
+        mpb.SetFloat("_Outline", outline ? 1f : 0);
+        mpb.SetColor("_OutlineColor", color);
+        mpb.SetFloat("_OutlineSize", outlineSize);
+        spriteRenderer.SetPropertyBlock(mpb);
+    }
+    #endregion
 }

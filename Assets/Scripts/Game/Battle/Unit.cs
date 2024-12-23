@@ -24,7 +24,7 @@ public class Unit : MonoBehaviour
     //public AttackType weakType;
 
     public int unitLevel;
-    public TempPlayerData tempPlayerData { get; set; }
+    public StatData tempPlayerData { get; set; }
     public float maxHP { get; private set; }
     public float maxMP { get; private set; }
     public float currentHP { get; private set; }
@@ -57,8 +57,8 @@ public class Unit : MonoBehaviour
 
             //maxHP = stat.hp; maxMP = stat.mp;
             //currentHP = maxHP; currentMP = maxMP;
-            maxHP = tempPlayerData.maxHP; maxMP = tempPlayerData.maxMP;
-            currentHP = tempPlayerData.currentHP; currentMP = tempPlayerData.currentMP;
+            maxHP = tempPlayerData.hp; maxMP = tempPlayerData.mp;
+            currentHP = tempPlayerData.hp; currentMP = tempPlayerData.mp;
         }
         else
         {
@@ -72,7 +72,6 @@ public class Unit : MonoBehaviour
             currentMP = maxMP;
         }
         HUD = hud;
-        HUD.SetupHUD(this);
         this.stationController = stationController;
     }
 
@@ -84,7 +83,6 @@ public class Unit : MonoBehaviour
         maxHP = enemyStat.hp;
         currentHP = enemyStat.hp;
         //weakType = enemyStat.weakType;
-        HUD.SetupHUD(this);
         if(enemy.Passive != null)
             bossPassive = enemy.Passive;
     }

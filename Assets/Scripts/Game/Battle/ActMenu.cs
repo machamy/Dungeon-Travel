@@ -11,7 +11,6 @@ using Unity.VisualScripting;
 public class ActMenu : MonoBehaviour
 {
     private EventSystem eventSystem;
-    UnitSpawn unitSpawn;
     private BattleManager battleManager;
     public GameObject abxy, skillMenu, itemMenu, guardMenu;
 
@@ -40,13 +39,13 @@ public class ActMenu : MonoBehaviour
     public TextMeshProUGUI item_property;
     public UnityEngine.UI.Button[] itembuttons;
 
-    private Unit[] playerUnits = new Unit[6];
-    private Unit[] enemyUnits = new Unit[4];
+    private BattlePlayerUnit[] playerUnits = new BattlePlayerUnit[6];
+    private BattleEnemyUnit[] enemyUnits = new BattleEnemyUnit[4];
 
     private SkillData useSkill;
-    private Unit targetUnit;
+    private BattleUnit targetUnit;
 
-    public Unit turnPlayerUnit;
+    public BattleUnit turnUnit;
 
     private void Awake()
     {
@@ -56,36 +55,33 @@ public class ActMenu : MonoBehaviour
         guardMenu.SetActive(false);
     }
 
-    public void SetUp(BattleManager battleManager, UnitSpawn unitSpawn)
+    public void Initailize(BattleManager battleManager, CreateUnit creatUnit)
     {
         this.battleManager = battleManager;
-        this.unitSpawn = unitSpawn;
-        playerUnits = unitSpawn.GetPlayerUnit();
-        enemyUnits = unitSpawn.GetEnemyUnit();
-        playerStationController = unitSpawn.GetPlayerStationController();
-        enemyStationController = unitSpawn.GetEnemyStationController();
+        playerUnits = creatUnit.GetPlayerUnit();
+        enemyUnits = creatUnit.GetEnemyUnit();
     }
 
     /// <summary>
     /// 현재 턴을 부여받는 플레이어를 받으면 턴을 실행
     /// </summary>
     /// <param name="player"></param>
-    public void TurnStart(Unit turnUnit)
+    public void TurnStart(BattleUnit turnUnit)
     {
-        turnPlayerUnit = turnUnit;
+        this.turnUnit = turnUnit;
         SkillSetting();
         ChooseAct();
     }
 
     private void SkillSetting()
     {
-        playername.text = turnPlayerUnit.unitName;
+        playername.text = turnUnit.unitName;
 
-        for (int skillNum = 0; skillNum < 4; skillNum++)
+        for (int skillNum = 0; skillNum < turnUnit.skill.Length; skillNum++)
         {
-            if (turnPlayerUnit.skills[skillNum] != null)
+            if (turnUnit.skill[skillNum] != null)
             {
-                skillname[skillNum].text = turnPlayerUnit.skills[skillNum].skillName;
+                skillname[skillNum].text = turnUnit.skill[skillNum].skillName;
                 //skillcost[skillNum].text = turnPlayerUnit.skills[skillNum].mpCost.GetMpCost(turnPlayerUnit.skills[skillNum]).ToString() + "MP";
             }
             else
@@ -143,7 +139,7 @@ public class ActMenu : MonoBehaviour
 
     public void OnGuard()
     {
-        turnPlayerUnit.OnGuard();
+        turnUnit.Guard();
     }
 
     public void Back()
@@ -157,7 +153,7 @@ public class ActMenu : MonoBehaviour
 
     public void SkillSelect(int skillNumber)
     {
-        useSkill = turnPlayerUnit.skills[skillNumber];
+        useSkill = turnUnit.skill[skillNumber];
         if(useSkill.isBuff || useSkill.isHealing)
         {
             int i = 0;
@@ -192,15 +188,7 @@ public class ActMenu : MonoBehaviour
                 targetUnit = enemyUnits[i];
             }
         }
-
-        if(useSkill == null)
-        {
-            turnPlayerUnit.Attack(targetUnit);
-        }
-        else
-        {
-            turnPlayerUnit.Attack(targetUnit, useSkill);
-        }
+        turnUnit.Attack(targetUnit, useSkill);
 
         battleManager.EndSmallTurn();
         abxyButtons[0].Select();
@@ -208,8 +196,8 @@ public class ActMenu : MonoBehaviour
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
     {
-        skill_info.text = turnPlayerUnit.skills[skillNumber].infomation;
-        skill_property.text = turnPlayerUnit.skills[skillNumber].attackType.ToString();
+        skill_info.text = turnUnit.skill[skillNumber].infomation;
+        skill_property.text = turnUnit.skill[skillNumber].attackType.ToString();
     }
     public void ChangeItemInfo(int i)
     {

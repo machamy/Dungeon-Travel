@@ -10,7 +10,7 @@ public class StationController : MonoBehaviour
 {
     Button button;
 
-    public Unit unit;
+    public BattleUnit unit;
     public int stationNumber;
     public bool isTarget;
     
@@ -23,7 +23,7 @@ public class StationController : MonoBehaviour
     public void SetUp()
     {
         button = gameObject.GetComponent<Button>();
-        unit = GetComponentInChildren<Unit>();
+        unit = GetComponentInChildren<BattleUnit>();
         button.enabled = true;
     }
 

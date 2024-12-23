@@ -1,13 +1,13 @@
+using Scripts.Entity;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Scripts.Data;
-using Scripts.Entity;
 
-[CreateAssetMenu(fileName = "NewPlayerData", menuName = "ScriptableObjects/TempPlayerData", order = 1)]
-public class TempPlayerData : ScriptableObject
+[CreateAssetMenu(fileName = "NewBattleStat", menuName = "CreateBattleStat")]
+public class BattleStat : ScriptableObject
 {
     [SerializeField] private ClassType _classType; // 직업 유형
+    [SerializeField] private string _unitName;
     [SerializeField] private int _level;
     [SerializeField] private int _exp;
     [SerializeField] private float _maxHP;
@@ -23,10 +23,13 @@ public class TempPlayerData : ScriptableObject
     [SerializeField] private int _cri; // 크리티컬 확률
     [SerializeField] private int _str_cor; // 근력 보정
     [SerializeField] private int _mag_cor; // 마법 보정
-    [SerializeField] private int _position; // 파티 내의 위치  6 이면 파티에 없음
+    [SerializeField] private int _position; // 파티 내의 위치  -1 이면 파티에 없음
+    [SerializeField] private bool _isDie;
+    [SerializeField] private BattleSkill[] _battleSkill;
 
-    // 값에 접근할 때 사용하는 메서드나 프로퍼티 (소문자)
+    // 값에 접근할 때 사용
     public ClassType classType => _classType;
+    public string unitName => _unitName;
     public int level => _level;
     public int exp => _exp;
     public float maxHP => _maxHP;
@@ -43,4 +46,11 @@ public class TempPlayerData : ScriptableObject
     public int str_cor => _str_cor;
     public int mag_cor => _mag_cor;
     public int position => _position;
+    public bool isDie => _isDie;
+    public BattleSkill[] battleSkill => _battleSkill;
+    public void SetStatus(float hp, float mp)
+    {
+        this._currentHP = hp;
+        this._currentMP = mp;
+    }
 }

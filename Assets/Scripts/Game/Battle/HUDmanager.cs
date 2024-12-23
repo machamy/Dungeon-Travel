@@ -1,7 +1,9 @@
+using Scripts.Data;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.VisualScripting;
+using static UnityEngine.UI.CanvasScaler;
 
 public class HUDmanager : MonoBehaviour
 {
@@ -13,25 +15,23 @@ public class HUDmanager : MonoBehaviour
     private float HP, MP;
     private float maxHP, maxMP;
 
-    private Unit unit;
-    /// <summary>
-    /// 유닛 소환될 때
-    /// </summary>
-    /// <param name="unit"></param>
-    public void SetupHUD(Unit unit)
+    private BattleUnit unit;
+    private BattleStat stat;
+
+    public void Initialize(BattleUnit unit)
     {
         this.unit = unit;
-        maxHP = unit.maxHP;
-        maxMP = unit.maxMP;
+        this.stat = unit.stat;
+        maxHP = stat.maxHP;
+        maxMP = stat.maxMP;
 
         HP = unit.currentHP;
         MP = unit.currentMP;
 
-        if (maxHP == 0) { HPslider.value = 0; }
-        else { HPslider.value = HP / maxHP; }
+        HPslider.value = HP / maxHP;
 
-        if (maxMP == 0) { MPslider.value = 0; }
-        else { MPslider.value = MP / maxMP; }
+        if (maxMP == 0) MPslider.value = 0;
+        else MPslider.value = MP / maxMP;
 
         HPtext.text = HP + "/" + maxHP;
         MPtext.text = MP + "/" + maxMP;
@@ -41,13 +41,15 @@ public class HUDmanager : MonoBehaviour
         this.gameObject.SetActive(true);
 
         Image livepanel = GetComponent<Image>();
-        livepanel.color = new Color(1,1,1,0.4f);
+        livepanel.color = new Color(1, 1, 1, 0.4f);
     }
+
 
     public void Dead()
     {
         HP = 0;
-        UpdateHUD();
+        HPslider.value = 0;
+        MPslider.value = 0;
 
         //HUD 색상 변경
         Image deadpanel = GetComponent<Image>();
@@ -61,13 +63,12 @@ public class HUDmanager : MonoBehaviour
     /// <param name="currentMP"></param>
     public void UpdateHUD()
     {
-        if (unit.maxHP == 0) { HPslider.value = 0; }
-        else { HPslider.value = unit.currentHP / maxHP; }
+        HPslider.value = unit.currentHP / maxHP;
 
-        if (unit.maxMP == 0) { MPslider.value = 0; }
-        else { MPslider.value = unit.currentMP / unit.maxMP; }
+        if (maxMP == 0) MPslider.value = 0;
+        else MPslider.value = unit.currentMP / maxMP;
 
-        HPtext.text = unit.currentHP + "/" + unit.maxHP;
-        MPtext.text = unit.currentMP + "/" + unit.maxMP;
+        HPtext.text = unit.currentHP + "/" + maxHP;
+        MPtext.text = unit.currentMP + "/" + maxMP;
     }
 }

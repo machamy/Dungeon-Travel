@@ -27,6 +27,7 @@ namespace Scripts.Data
     /// 스탯
     /// </summary>
     [Serializable]
+    [CreateAssetMenu(fileName = "NewStatData", menuName = "StatData")]
     public class StatData : ScriptableObject, IDBdata, ICloneable
     {
         //1차 스탯
@@ -104,6 +105,11 @@ namespace Scripts.Data
         /// 플레이어 StatUp
         /// </summary>
         public float statUp;
+
+        /// <summary>
+        /// 플레이어 위치
+        /// </summary>
+        public int position;
 
         /// <summary>
         /// 적 행동 속성

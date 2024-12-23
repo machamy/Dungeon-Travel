@@ -4,56 +4,95 @@ using UnityEngine;
 using Scripts.Data;
 using Scripts.Entity;
 using Scripts.User;
+using JetBrains.Annotations;
 
 public class CreateUnit : MonoBehaviour
 {
-    public GameObject unitPrefab; // 유닛 프리팹
+    [SerializeField]
+    BattleStat[] playerBattleStat;
+    public GameObject playerPrefab;
 
-    private void Start()
+    [SerializeField]
+    StatData[] enemyBattleStat;
+    public GameObject enemyPrefab;
+
+    [SerializeField]
+    GameObject[] playerStation = new GameObject[6];
+    [SerializeField]
+    GameObject[] enemyStation = new GameObject[6];
+    [SerializeField]
+    StationController[] playerStationController = new StationController[6];
+    [SerializeField]
+    StationController[] enemyStationController = new StationController[6];
+    [SerializeField]
+    HUDmanager[] playerHUD = new HUDmanager[6];
+    [SerializeField]
+    HUDmanager[] enemyHUD = new HUDmanager[6];
+
+    BattlePlayerUnit[] battlePlayerUnit;
+    BattleEnemyUnit[] battleEnemyUnit;
+    public int playerCount { get { return BattleManager.alivePlayer; } set { BattleManager.alivePlayer = value; } }
+    public int enemyCount { get { return BattleManager.aliveEnemy; } set { BattleManager.aliveEnemy = value; } }
+
+
+    void Awake()
     {
-        Party party = Party.CreateInstance();
+        // Resources 폴더에서 모든 CharacterStat ScriptableObject 로드
+        playerBattleStat = Resources.LoadAll<BattleStat>("PlayerStat"); // YourFolderName은 Resources 내부 폴더 경로
+        battlePlayerUnit = new BattlePlayerUnit[playerBattleStat.Length];
 
-        // 파티 멤버를 기반으로 유닛 생성
-        foreach (Character character in party.GetCharacters())
+        enemyBattleStat = new StatData[0];
+        battleEnemyUnit = new BattleEnemyUnit[enemyBattleStat.Length];
+
+        if (playerBattleStat.Length > 0)
         {
-            SpawnPlayerUnit(character);
+            Debug.Log($"{playerBattleStat.Length} CharacterStat(s) loaded successfully.");
+        }
+        else
+        {
+            Debug.LogWarning("No CharacterStat assets found in the specified folder.");
         }
     }
 
-    public void SpawnPlayerUnit(Character character)
+    public void InitialUnitSpawn()
     {
-        // 유닛 프리팹 생성
-        GameObject unitObject = Instantiate(unitPrefab, RandomPosition(), Quaternion.identity);
+        playerCount = 0;
+        enemyCount = 1;
 
-        // Unit 컴포넌트 가져오기
-        BattlePlayerUnit playerUnit = unitObject.GetComponent<BattlePlayerUnit>();
-        if (playerUnit == null)
+        for (int i = 0; i < playerBattleStat.Length; i++)
         {
-            playerUnit = unitObject.AddComponent<BattlePlayerUnit>();
+            PlayerUnitSpawn(i);
         }
-
-        // 유닛 초기화
-        playerUnit.Initialize(character);
+        for (int i = 0; i < enemyBattleStat.Length; i++)
+        {
+            EnemyUnitSpawn(1, "도적선봉대");
+        }
     }
 
-    public void SpawnEnemyUnit(int floor, string name)
+    public void PlayerUnitSpawn(int i)
     {
-        // 유닛 프리팹 생성
-        GameObject unitObject = Instantiate(unitPrefab, RandomPosition(), Quaternion.identity);
+        GameObject player;
+        if (playerBattleStat[i].position == -1) return;
 
-        // Unit 컴포넌트 가져오기
-        BattleEnemyUnit enemyUnit = unitObject.GetComponent<BattleEnemyUnit>();
-        if (enemyUnit == null)
-        {
-            enemyUnit = unitObject.AddComponent<BattleEnemyUnit>();
-        }
-
-        // 유닛 초기화
-        enemyUnit.Initialize(floor, name);
+        player = Instantiate(playerPrefab, playerStation[playerBattleStat[i].position].transform);
+        battlePlayerUnit[i] = player.GetComponent<BattlePlayerUnit>();
+        battlePlayerUnit[i].Initialize(playerBattleStat[i]);
+        playerStationController[i].SetUp();
+        playerHUD[i].Initialize(battlePlayerUnit[i]);
+        playerCount++;
     }
 
-    private Vector3 RandomPosition()
+    public void EnemyUnitSpawn(int floor, string name)
     {
-        return new Vector3(Random.Range(-10, 10), 0, Random.Range(-10, 10));
+        enemyCount++;
+    }
+
+    public BattlePlayerUnit[] GetPlayerUnit()
+    {
+        return battlePlayerUnit;
+    }
+    public BattleEnemyUnit[] GetEnemyUnit()
+    {
+        return battleEnemyUnit;
     }
 }

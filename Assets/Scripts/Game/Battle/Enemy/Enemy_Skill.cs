@@ -184,7 +184,7 @@ public class Enemy_Skill
         {
             for(int i = BattleManager.aliveEnemy; i < 3; i++)
             {
-                battleManager.unitSpawn.SpawnEnemyUnit(2, "도적선봉대");
+                battleManager.createUnit.EnemyUnitSpawn(2, "도적선봉대");
             }
         }
     }

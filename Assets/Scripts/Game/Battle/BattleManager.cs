@@ -49,11 +49,11 @@ public class BattleManager : MonoBehaviour
     public BattleState bState { get; set; }
     public SmallTurnState smallTurn { get; set; }
 
-    private Queue<Unit> turnQueue = new Queue<Unit>();
+    private Queue<BattleUnit> turnQueue = new Queue<BattleUnit>();
 
     Character character;
 
-    public UnitSpawn unitSpawn;
+    public CreateUnit createUnit;
     public BackGround backGround;
     public EndCanvas endCanvas;
 
@@ -61,8 +61,8 @@ public class BattleManager : MonoBehaviour
 
     public ActMenu actMenu;
 
-    private Unit[] playerUnits = new Unit[6];
-    private Unit[] enemyUnits = new Unit[6];
+    private BattlePlayerUnit[] battlePlayerUnit;
+    private BattleEnemyUnit[] battleEnemyUnit;
 
     public int BigTurnCount;
     public TextMeshProUGUI BigTurn;
@@ -71,6 +71,7 @@ public class BattleManager : MonoBehaviour
 
     public Action<SkillData> bossPassive;
     public Dictionary<Unit, int> alivePlayers = new Dictionary<Unit, int>();
+
 
     private void Awake()
     {
@@ -94,17 +95,10 @@ public class BattleManager : MonoBehaviour
         aliveEnemy = 0;
         BigTurnCount = 0;
 
-        for (int i = 0; i < 3; i++)
-        {
-            unitSpawn.SpawnPlayerUnit();
-            playerUnits = unitSpawn.GetPlayerUnit();
-            //alivePlayers.Add(playerUnits[i], i);
-        }
-
-        unitSpawn.SpawnEnemyUnit(1, "토끼");
-        unitSpawn.SpawnEnemyUnit(1, "슬라임");
-        enemyUnits = unitSpawn.GetEnemyUnit();
-        actMenu.SetUp(this, unitSpawn);
+        createUnit.InitialUnitSpawn();
+        battlePlayerUnit = createUnit.GetPlayerUnit();
+        battleEnemyUnit = createUnit.GetEnemyUnit();
+        actMenu.Initailize(this, createUnit);
 
         Debug.Log("SetUp 완료");
     }
@@ -116,9 +110,9 @@ public class BattleManager : MonoBehaviour
         {
             case TargetType.Single:
                 int randomInt = Utility.WeightedRandom(new int[] { 33,33,34 });
-                if (playerUnits[randomInt] != null)
+                if (battlePlayerUnit[randomInt] != null)
                 {
-                    goList.Add(playerUnits[randomInt]);
+                    //goList.Add(playerUnits[randomInt]);
                 }
                 else
                 {
@@ -136,15 +130,15 @@ public class BattleManager : MonoBehaviour
     }
     private void PlayerTurnOrder() //플레이어끼리만 비교해놓음
     {
-        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>(); //플레이어끼리 순서 정함
+        Dictionary<BattleUnit, float> agi_ranking = new Dictionary<BattleUnit, float>(); //플레이어끼리 순서 정함
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < battlePlayerUnit.Length; i++)
         {
-            if (playerUnits[i] != null)
+            if (battlePlayerUnit[i] != null)
             {
-                if (playerUnits[i].isDead == false)
+                if (battlePlayerUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(playerUnits[i], playerUnits[i].tempPlayerData.agi);
+                    agi_ranking.Add(battlePlayerUnit[i], battlePlayerUnit[i].stat.agi);
                 }
             }        
         }
@@ -158,15 +152,15 @@ public class BattleManager : MonoBehaviour
     }
     void EnemyTurnOrder()
     {
-        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
+        Dictionary<BattleUnit, float> agi_ranking = new Dictionary<BattleUnit, float>();
 
-        for(int i = 0;i < 6; i++)
+        for(int i = 0;i < battleEnemyUnit.Length; i++)
         {
-            if (enemyUnits[i] != null)
+            if (battleEnemyUnit[i] != null)
             {
-                if (enemyUnits[i].isDead == false)
+                if (battleEnemyUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(enemyUnits[i], enemyUnits[i].stat.agi);
+                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].stat.agi);
                 } 
             }
                 
@@ -181,26 +175,27 @@ public class BattleManager : MonoBehaviour
     }
     void GeneralTurnOrder()
     {
-        Dictionary<Unit, float> agi_ranking = new Dictionary<Unit, float>();
+        Dictionary<BattleUnit, float> agi_ranking = new Dictionary<BattleUnit, float>();
 
-        for (int i = 0; i < 6; i++)
+        for (int i = 0; i < battlePlayerUnit.Length; i++)
         {
-            if (playerUnits[i] != null)
+            if (battlePlayerUnit[i] != null)
             {
-                if (playerUnits[i].isDead == false)
+                if (battlePlayerUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(playerUnits[i], playerUnits[i].tempPlayerData.agi);
-                }  
-            }
-                
-            if (enemyUnits[i] != null)
-            {
-                if (enemyUnits[i].isDead == false)
-                {
-                    agi_ranking.Add(enemyUnits[i], enemyUnits[i].stat.agi);
+                    agi_ranking.Add(battlePlayerUnit[i], battlePlayerUnit[i].stat.agi);
                 }
             }
-               
+        }
+        for(int i = 0; i < battleEnemyUnit.Length; i++)
+        {
+            if (battleEnemyUnit[i] != null)
+            {
+                if (battleEnemyUnit[i].isDie == false)
+                {
+                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].stat.agi);
+                }
+            }
         }
 
         var sortedDict = agi_ranking.OrderByDescending(x => x.Value);
@@ -284,6 +279,7 @@ public class BattleManager : MonoBehaviour
             bState = BattleState.EndBigTurn;
         }
 
+        
         if (turnQueue.Count > 0)
         {
             if (turnQueue.Peek().isEnemy == false & smallTurn == SmallTurnState.Waiting)
@@ -301,6 +297,7 @@ public class BattleManager : MonoBehaviour
                 EndSmallTurn();
             }
         }
+        
     }
 
     public void EndSmallTurn() { smallTurn = SmallTurnState.Waiting; }
@@ -327,13 +324,13 @@ public class BattleManager : MonoBehaviour
 
     public void Destroy()
     {
-        for(int i = 0; playerUnits[i] != null && i< playerUnits.Length; i++)
+        for(int i = 0; battlePlayerUnit[i] != null && i< battlePlayerUnit.Length; i++)
         {
-            Destroy(playerUnits[i].gameObject);
+            Destroy(battlePlayerUnit[i].gameObject);
         }
-        for (int i = 0; enemyUnits[i] != null && i < enemyUnits.Length; i++)
+        for (int i = 0; battleEnemyUnit[i] != null && i < battleEnemyUnit.Length; i++)
         {
-            Destroy(enemyUnits[i].gameObject);
+            Destroy(battleEnemyUnit[i].gameObject);
         }
         alivePlayer = 0;
         aliveEnemy = 0;
