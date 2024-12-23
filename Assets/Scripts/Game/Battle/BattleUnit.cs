@@ -8,13 +8,11 @@ using UnityEngine;
 public abstract class BattleUnit : MonoBehaviour
 {
     public StatData statData;
-    public BattleStat stat; // 복사된 스탯 데이터
-    public string unitName;
+    public CharacterData data; // 복사된 스탯 데이터
     public bool isDie;
     public float currentHP;   // 현재 HP
     public float currentMP;   // 현재 MP
     protected Character originalCharacter; // 원본 Character 데이터
-    public SkillData[] skill;
     public bool isEnemy;
 
     private SpriteRenderer spriteRenderer;
@@ -22,18 +20,19 @@ public abstract class BattleUnit : MonoBehaviour
     /// 유닛 초기화
     /// </summary>
     /// <param name="character">Character 데이터</param>
-    public virtual void Initialize(BattleStat stat)
+    public virtual void Initialize(CharacterData data)
     {
         // Character 데이터 복사
         // originalCharacter = character;
         // statData = (StatData)character.FinalStat.Clone();
 
         // 임시 데이터 복사
-        this.stat = stat;
+        this.data = data;
 
         // 체력과 마나 초기화
-        currentHP = this.stat.currentHP;
-        currentMP = this.stat.currentMP;
+        isDie = data.isDie;
+        currentHP = this.data.currentHP;
+        currentMP = this.data.currentMP;
 
         //Debug.Log($"Unit Initialized: {character.Name} - HP: {currentHP}, MP: {currentMP}, ATK: {statData.atk}");
 
@@ -47,7 +46,7 @@ public abstract class BattleUnit : MonoBehaviour
     /// 유닛 공격 처리
     /// </summary>
     /// <param name="skillData">사용 스킬, 기본값 = 기본공격</param>
-    public virtual void Attack( BattleUnit target = null,SkillData skillData = null)
+    public virtual void Attack( BattleUnit target = null,BattleSkill skillData = null)
     {
 
     }

@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8b4ba7cf82b50e24bb7733d3ea8da3bb, type: 3}
-  m_Name: Wizard
+  m_Name: Cleric
   m_EditorClassIdentifier: 
-  _classType: 5
-  _unitName: Syndra
+  _classType: 4
+  _unitName: Braum
   _level: 1
   _exp: 0
-  _maxHP: 100
-  _maxMP: 250
-  _currentHP: 100
-  _currentMP: 250
-  _atk: 70
-  _def: 30
+  _maxHP: 200
+  _maxMP: 100
+  _currentHP: 200
+  _currentMP: 100
+  _atk: 20
+  _def: 80
   _mdef: 0
-  _agi: 15
+  _agi: 5
   _acc: 0
   _avo: 0
   _cri: 0
@@ -31,4 +31,8 @@ MonoBehaviour:
   _mag_cor: 0
   _position: 0
   _isDie: 0
-  _battleSkill: []
+  _skill:
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}

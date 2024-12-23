@@ -9,7 +9,7 @@ using JetBrains.Annotations;
 public class CreateUnit : MonoBehaviour
 {
     [SerializeField]
-    BattleStat[] playerBattleStat;
+    CharacterData[] playerData;
     public GameObject playerPrefab;
 
     [SerializeField]
@@ -38,15 +38,15 @@ public class CreateUnit : MonoBehaviour
     void Awake()
     {
         // Resources 폴더에서 모든 CharacterStat ScriptableObject 로드
-        playerBattleStat = Resources.LoadAll<BattleStat>("PlayerStat"); // YourFolderName은 Resources 내부 폴더 경로
-        battlePlayerUnit = new BattlePlayerUnit[playerBattleStat.Length];
+        playerData = Resources.LoadAll<CharacterData>("PlayerData"); // YourFolderName은 Resources 내부 폴더 경로
+        battlePlayerUnit = new BattlePlayerUnit[playerData.Length];
 
         enemyBattleStat = new StatData[0];
         battleEnemyUnit = new BattleEnemyUnit[enemyBattleStat.Length];
 
-        if (playerBattleStat.Length > 0)
+        if (playerData.Length > 0)
         {
-            Debug.Log($"{playerBattleStat.Length} CharacterStat(s) loaded successfully.");
+            Debug.Log($"{playerData.Length} CharacterStat(s) loaded successfully.");
         }
         else
         {
@@ -59,7 +59,7 @@ public class CreateUnit : MonoBehaviour
         playerCount = 0;
         enemyCount = 1;
 
-        for (int i = 0; i < playerBattleStat.Length; i++)
+        for (int i = 0; i < playerData.Length; i++)
         {
             PlayerUnitSpawn(i);
         }
@@ -72,11 +72,11 @@ public class CreateUnit : MonoBehaviour
     public void PlayerUnitSpawn(int i)
     {
         GameObject player;
-        if (playerBattleStat[i].position == -1) return;
+        if (playerData[i].position == -1) return;
 
-        player = Instantiate(playerPrefab, playerStation[playerBattleStat[i].position].transform);
+        player = Instantiate(playerPrefab, playerStation[playerData[i].position].transform);
         battlePlayerUnit[i] = player.GetComponent<BattlePlayerUnit>();
-        battlePlayerUnit[i].Initialize(playerBattleStat[i]);
+        battlePlayerUnit[i].Initialize(playerData[i]);
         playerStationController[i].SetUp();
         playerHUD[i].Initialize(battlePlayerUnit[i]);
         playerCount++;

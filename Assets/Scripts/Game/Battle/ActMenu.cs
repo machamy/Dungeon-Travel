@@ -25,24 +25,24 @@ public class ActMenu : MonoBehaviour
     public StationController[] playerStationController = new StationController[6];
     public StationController[] enemyStationController = new StationController[6];
 
-    public TextMeshProUGUI playername;
-
-    public TextMeshProUGUI[] skillname;
-    public TextMeshProUGUI[] skillcost;
-    public TextMeshProUGUI skill_info;
-    public TextMeshProUGUI skill_property;
+    public TextMeshProUGUI playerName;
+    public TextMeshProUGUI[] skillName;
+    public TextMeshProUGUI[] skillCost;
+    public TextMeshProUGUI skillInfo;
+    public TextMeshProUGUI skillProperty;
     public UnityEngine.UI.Button[] skillbuttons;
 
     public Items items;
-    public GameObject[] itemamountPanel;
-    public TextMeshProUGUI item_info;
-    public TextMeshProUGUI item_property;
+    public TextMeshProUGUI[] itemName;
+    public TextMeshProUGUI[] itemAmount;
+    public TextMeshProUGUI itemInfo;
+    public TextMeshProUGUI itemProperty;
     public UnityEngine.UI.Button[] itembuttons;
 
     private BattlePlayerUnit[] playerUnits = new BattlePlayerUnit[6];
     private BattleEnemyUnit[] enemyUnits = new BattleEnemyUnit[4];
 
-    private SkillData useSkill;
+    private BattleSkill useSkill;
     private BattleUnit targetUnit;
 
     public BattleUnit turnUnit;
@@ -75,18 +75,19 @@ public class ActMenu : MonoBehaviour
 
     private void SkillSetting()
     {
-        playername.text = turnUnit.unitName;
+        playerName.text = turnUnit.data.unitName;
 
-        for (int skillNum = 0; skillNum < turnUnit.skill.Length; skillNum++)
+        for (int skillNum = 0; skillNum < turnUnit.data.skill.Length; skillNum++)
         {
-            if (turnUnit.skill[skillNum] != null)
+            if (turnUnit.data.skill[skillNum] != null)
             {
-                skillname[skillNum].text = turnUnit.skill[skillNum].skillName;
-                //skillcost[skillNum].text = turnPlayerUnit.skills[skillNum].mpCost.GetMpCost(turnPlayerUnit.skills[skillNum]).ToString() + "MP";
+                skillName[skillNum].text = turnUnit.data.skill[skillNum].skillName;
+                skillCost[skillNum].text = turnUnit.data.skill[skillNum].cost.ToString() + " MP";
             }
             else
             {
-                skillname[skillNum].text = "empty";
+                skillName[skillNum].text = "empty";
+                skillCost[skillNum].text = "0 MP";
             }
         }
     }
@@ -153,8 +154,8 @@ public class ActMenu : MonoBehaviour
 
     public void SkillSelect(int skillNumber)
     {
-        useSkill = turnUnit.skill[skillNumber];
-        if(useSkill.isBuff || useSkill.isHealing)
+        useSkill = turnUnit.data.skill[skillNumber];
+        if(useSkill.isBuff || useSkill.isHeal)
         {
             int i = 0;
             while (i < 6)
@@ -196,13 +197,13 @@ public class ActMenu : MonoBehaviour
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
     {
-        skill_info.text = turnUnit.skill[skillNumber].infomation;
-        skill_property.text = turnUnit.skill[skillNumber].attackType.ToString();
+        skillInfo.text = turnUnit.data.skill[skillNumber].infomation;
+        skillProperty.text = turnUnit.data.skill[skillNumber].attackType.ToString();
     }
     public void ChangeItemInfo(int i)
     {
-        item_info.text = items.items[i].infomation;
-        item_property.text = items.items[i].type.ToString();
+        itemInfo.text = items.items[i].infomation;
+        itemProperty.text = items.items[i].type.ToString();
     }
 
     public void OnPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(true); }

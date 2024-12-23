@@ -16,12 +16,12 @@ public class HUDmanager : MonoBehaviour
     private float maxHP, maxMP;
 
     private BattleUnit unit;
-    private BattleStat stat;
+    private CharacterData stat;
 
     public void Initialize(BattleUnit unit)
     {
         this.unit = unit;
-        this.stat = unit.stat;
+        this.stat = unit.data;
         maxHP = stat.maxHP;
         maxMP = stat.maxMP;
 
@@ -36,7 +36,7 @@ public class HUDmanager : MonoBehaviour
         HPtext.text = HP + "/" + maxHP;
         MPtext.text = MP + "/" + maxMP;
 
-        playerNameText.text = unit.unitName;
+        playerNameText.text = unit.data.unitName;
 
         this.gameObject.SetActive(true);
 

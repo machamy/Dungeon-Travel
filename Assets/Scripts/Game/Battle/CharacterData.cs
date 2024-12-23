@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewBattleStat", menuName = "CreateBattleStat")]
-public class BattleStat : ScriptableObject
+public class CharacterData : ScriptableObject
 {
     [SerializeField] private ClassType _classType; // 직업 유형
     [SerializeField] private string _unitName;
@@ -25,7 +25,7 @@ public class BattleStat : ScriptableObject
     [SerializeField] private int _mag_cor; // 마법 보정
     [SerializeField] private int _position; // 파티 내의 위치  -1 이면 파티에 없음
     [SerializeField] private bool _isDie;
-    [SerializeField] private BattleSkill[] _battleSkill;
+    [SerializeField] private BattleSkill[] _skill = new BattleSkill[4];
 
     // 값에 접근할 때 사용
     public ClassType classType => _classType;
@@ -47,7 +47,7 @@ public class BattleStat : ScriptableObject
     public int mag_cor => _mag_cor;
     public int position => _position;
     public bool isDie => _isDie;
-    public BattleSkill[] battleSkill => _battleSkill;
+    public BattleSkill[] skill => _skill;
     public void SetStatus(float hp, float mp)
     {
         this._currentHP = hp;

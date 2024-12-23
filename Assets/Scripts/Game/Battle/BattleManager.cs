@@ -51,8 +51,6 @@ public class BattleManager : MonoBehaviour
 
     private Queue<BattleUnit> turnQueue = new Queue<BattleUnit>();
 
-    Character character;
-
     public CreateUnit createUnit;
     public BackGround backGround;
     public EndCanvas endCanvas;
@@ -138,7 +136,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (battlePlayerUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(battlePlayerUnit[i], battlePlayerUnit[i].stat.agi);
+                    agi_ranking.Add(battlePlayerUnit[i], battlePlayerUnit[i].data.agi);
                 }
             }        
         }
@@ -160,7 +158,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (battleEnemyUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].stat.agi);
+                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].data.agi);
                 } 
             }
                 
@@ -183,7 +181,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (battlePlayerUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(battlePlayerUnit[i], battlePlayerUnit[i].stat.agi);
+                    agi_ranking.Add(battlePlayerUnit[i], battlePlayerUnit[i].data.agi);
                 }
             }
         }
@@ -193,7 +191,7 @@ public class BattleManager : MonoBehaviour
             {
                 if (battleEnemyUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].stat.agi);
+                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].data.agi);
                 }
             }
         }

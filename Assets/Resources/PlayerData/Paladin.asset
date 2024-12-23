@@ -31,4 +31,8 @@ MonoBehaviour:
   _mag_cor: 0
   _position: 0
   _isDie: 0
-  _battleSkill: []
+  _skill:
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}
+  - {fileID: 11400000, guid: 6a023a0bf6f3bce45a958a1b214c0971, type: 2}

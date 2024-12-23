@@ -3,14 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BattleSkill : MonoBehaviour
+[CreateAssetMenu(fileName = "newBattleSkill", menuName = "CreateBattleSkill")]
+public class BattleSkill : ScriptableObject
 {
-    
-    public string Name;
-    public string Infomation;
-    public string Property;
-    public string Type;
+    public string skillName;
+    public string infomation;
+    public string property;
+    public string type;
     public float atk;
-    public int Cost;
+    public int cost;
     public bool isAttack;
+    public bool isBuff;
+    public bool isHeal;
+    public TargetType targetType;
+    public AttackType attackType;
 }

@@ -7,9 +7,9 @@ using UnityEngine;
 public class BattlePlayerUnit : BattleUnit
 {
     
-    public override void Initialize(BattleStat stat)
+    public override void Initialize(CharacterData data)
     {
-        base.Initialize(stat);
+        base.Initialize(data);
         isEnemy = false;
     }
 
