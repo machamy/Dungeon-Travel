@@ -5,6 +5,7 @@ using Scripts.Data;
 using Scripts.Entity;
 using Scripts.User;
 using JetBrains.Annotations;
+using System;
 
 public class CreateUnit : MonoBehaviour
 {
@@ -41,8 +42,7 @@ public class CreateUnit : MonoBehaviour
         playerData = Resources.LoadAll<CharacterData>("PlayerData"); // YourFolderName은 Resources 내부 폴더 경로
         battlePlayerUnit = new BattlePlayerUnit[playerData.Length];
 
-        enemyBattleStat = new StatData[0];
-        battleEnemyUnit = new BattleEnemyUnit[enemyBattleStat.Length];
+        battleEnemyUnit = new BattleEnemyUnit[2]; // 나중에 여기서 함수하나 만들어서 적 스폰 데이터 받아오기
 
         if (playerData.Length > 0)
         {
@@ -57,15 +57,15 @@ public class CreateUnit : MonoBehaviour
     public void InitialUnitSpawn()
     {
         playerCount = 0;
-        enemyCount = 1;
+        enemyCount = 0;
 
         for (int i = 0; i < playerData.Length; i++)
         {
             PlayerUnitSpawn(i);
         }
-        for (int i = 0; i < enemyBattleStat.Length; i++)
+        for (int i = 0; i < battleEnemyUnit.Length; i++)
         {
-            EnemyUnitSpawn(1, "도적선봉대");
+            EnemyUnitSpawn(1, "토끼");
         }
     }
 
@@ -84,6 +84,29 @@ public class CreateUnit : MonoBehaviour
 
     public void EnemyUnitSpawn(int floor, string name)
     {
+        // 객체 생성 후 초기화
+        GameObject cloneEnemy = new GameObject($"{name}({enemyCount})");
+        SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
+        cloneEnemy.AddComponent<BuffManager>();
+        battleEnemyUnit[enemyCount] = cloneEnemy.AddComponent<BattleEnemyUnit>();
+        battleEnemyUnit[enemyCount].isEnemy = true;
+        battleEnemyUnit[enemyCount].Initialize(floor, name);
+
+        // 트랜스폼 설정
+        RectTransform enemyStationRect = enemyStation[enemyCount].GetComponent<RectTransform>();
+        RectTransform cloneEnemyRect = cloneEnemy.AddComponent<RectTransform>();
+        cloneEnemyRect.SetParent(enemyStationRect);
+        cloneEnemyRect.localPosition = Vector2.zero;
+        cloneEnemyRect.localScale = new Vector3(5, 5, 1);
+
+        // 스프라이트 설정
+        string sprite_name = Convert.ToString(floor) + "F_" + name;
+        image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
+
+        // HUD 설정
+        enemyStationController[enemyCount].SetUp();
+        //enemyHUD[enemyCount].Initialize(battleEnemyUnit[enemyCount]); <- StatData와 Data 통일하고 다시 넣기
+
         enemyCount++;
     }
 

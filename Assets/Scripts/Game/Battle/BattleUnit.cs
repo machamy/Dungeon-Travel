@@ -15,7 +15,8 @@ public abstract class BattleUnit : MonoBehaviour
     protected Character originalCharacter; // 원본 Character 데이터
     public bool isEnemy;
 
-    private SpriteRenderer spriteRenderer;
+    protected SpriteRenderer spriteRenderer;
+    protected BuffManager buffManager;
     /// <summary>
     /// 유닛 초기화
     /// </summary>

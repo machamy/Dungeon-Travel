@@ -13,10 +13,10 @@ public class Enemy_Skill
     BattleEnemyUnit enemy;
     BattleManager battleManager;
     int passiveDuration;
-    public Enemy_Skill(BattleEnemyUnit enemy, BattleManager battleManager)
+    public Enemy_Skill(BattleEnemyUnit enemy)
     {
         this.enemy = enemy;
-        this.battleManager = battleManager;
+        battleManager = GameObject.Find("BattleSystem").GetComponent<BattleManager>();
     }
 
     public List<Action<SkillData>> GetSkillList(int floor, string enemyName)
@@ -107,24 +107,24 @@ public class Enemy_Skill
                         break;
                 }
                 break;
-            case 3:
-                switch (enemyName)
-                {
+            //case 3:
+            //    switch (enemyName)
+            //    {
                     
-                }
-                break;
-            case 4:
-                switch (enemyName)
-                {
+            //    }
+            //    break;
+            //case 4:
+            //    switch (enemyName)
+            //    {
 
-                }
-                break;
-            case 5:
-                switch (enemyName)
-                {
+            //    }
+            //    break;
+            //case 5:
+            //    switch (enemyName)
+            //    {
 
-                }
-                break;
+            //    }
+            //    break;
         }
 
         return skillLists;
