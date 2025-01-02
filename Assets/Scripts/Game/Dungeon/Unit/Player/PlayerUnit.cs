@@ -59,7 +59,7 @@ namespace Scripts.Game.Dungeon.Unit
         // Update is called once per frame
         void FixedUpdate()
         {
-            if(IsPaused)
+            if(IsPaused || animator.GetCurrentAnimatorStateInfo(0).IsName("Attack"))
             {
                 return;
             }
@@ -79,10 +79,13 @@ namespace Scripts.Game.Dungeon.Unit
             if (moveVec.magnitude > 0)
             {
                 // StateMachine.ChangeState(PlayerStates.Run);
+                
+                animator.SetBool("IsMoving", true);
             }
             else
             {
                 // StateMachine.ChangeState(PlayerStates.Idle);
+                animator.SetBool("IsMoving", false);
             }
             if (IsOnSlope())
             {
@@ -90,19 +93,9 @@ namespace Scripts.Game.Dungeon.Unit
                 moveVec = dir.normalized;
                 // Debug.Log($"{dir.x} , {dir.y} , {dir.z}");
             }
-            // transform.position += moveVec * (speed * Time.deltaTime);
+            //transform.position += moveVec * (speed * Time.deltaTime);
+            rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
 
-            //애니메이션 넣느라 잠시 이렇게 함
-            if (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D))
-            {
-                rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
-                animator.SetBool("IsMoving", true);
-            }
-            else
-            {
-                rigid.MovePosition(rigid.position + moveVec * (speed * Time.fixedDeltaTime));
-                animator.SetBool("IsMoving", false);
-            }
             rigid.velocity = Vector3.zero; //이거하면 계단에서 안내려옴
         }
         private RaycastHit slopeHit;
@@ -157,14 +150,13 @@ namespace Scripts.Game.Dungeon.Unit
 
         void OnAttack()
         {
-            //if (_focusedInteractionUnit is null)
-            //    return;
-            //if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Attack))
-            //    return;
-            //Debug.Log($"[PlayerUnit::OnUse()] Execute to {_focusedInteractionUnit}");
-            //_focusedInteractionUnit.OnAttacked(this, damage: 1.0f);
-
             animator.SetTrigger("AttackInput");
+            if (_focusedInteractionUnit is null)
+                return;
+            if (!_focusedInteractionUnit.type.HasFlag(InteractionType.Attack))
+                return;
+            Debug.Log($"[PlayerUnit::OnUse()] Execute to {_focusedInteractionUnit}");
+            _focusedInteractionUnit.OnAttacked(this, damage: 1.0f);
         }
 
         #endregion
@@ -334,5 +326,6 @@ namespace Scripts.Game.Dungeon.Unit
                 }
             }
         }
+
     }
 }

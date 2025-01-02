@@ -53,7 +53,7 @@ namespace GeneralMonsterStates
             entity.checker.isChasingOrFleeing = true;
         }
 
-        public  void Execute(GeneralUnit entity)
+        public void Execute(GeneralUnit entity)
         {           
             if (!entity.checker.canChaseOrFlee) return;
 
@@ -73,7 +73,7 @@ namespace GeneralMonsterStates
             
         }
 
-        public  void Exit(GeneralUnit entity)
+        public void Exit(GeneralUnit entity)
         {
             Debug.Log("몬스터 Chase 상태 탈출.");
         }
@@ -128,7 +128,7 @@ namespace GeneralMonsterStates
             Debug.Log("몬스터 Return 상태 진입.");
         }
 
-        public  void Execute(GeneralUnit entity)
+        public void Execute(GeneralUnit entity)
         {
             if (entity.checker.isChasingOrFleeing && !entity.checker.canChaseOrFlee)
             {
@@ -259,7 +259,7 @@ namespace EliteMonsterStates
 
         public void Execute(EliteUnit entity)
         {
-
+            
         }
 
         public void Exit(EliteUnit entity)

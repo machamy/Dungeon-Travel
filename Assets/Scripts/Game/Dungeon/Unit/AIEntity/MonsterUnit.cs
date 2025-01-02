@@ -167,11 +167,11 @@ namespace Scripts.Game.Dungeon.Unit
     {
         #region INITIALIZATION
 
-        //[SerializeField] string monsterName;
+        [SerializeField] string monsterName;
 
-        //EnemyStatData monsterData;
+        StatData monsterData;
 
-        [SerializeField] TempMonsterData tempMonsterData;
+        //[SerializeField] TempMonsterData tempMonsterData;
 
         EnemyProperty monsterProperty;
         public EnemyProperty MonsterProperty { get { return monsterProperty; } }
@@ -194,10 +194,10 @@ namespace Scripts.Game.Dungeon.Unit
             base.Setup();
             // TODO: 현재층 임시로 1로 설정해둠 - machamy
             // 임시로 데이터 만들어서 해야하는 상황이라, DB 연동부분 빼놓음 - leejhee
-            // monsterData = DB.GetEnemyData(1, monsterName);
-            gameObject.name = $"{ID}_{tempMonsterData.name}";
-            //monsterProperty = monsterData.Property;
-            monsterProperty = tempMonsterData.Property;
+            monsterData = DB.GetEnemyData(1, monsterName);
+            gameObject.name = $"{ID}_{monsterData.name}";
+            monsterProperty = monsterData.Property;
+            //monsterProperty = tempMonsterData.Property;
 
             nav = GetComponent<NavMeshAgent>();
             initialPosition = transform.localPosition;

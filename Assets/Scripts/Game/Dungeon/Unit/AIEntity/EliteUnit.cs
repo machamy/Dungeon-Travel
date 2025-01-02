@@ -42,7 +42,7 @@ namespace Scripts.Game.Dungeon.Unit
             base.Setup();
 
 
-            states = new IState<EliteUnit>[6];
+            states = new IState<EliteUnit>[3];
             states[(int)EMStates.Idle] = new EliteMonsterStates.Idle();
             states[(int)EMStates.Combat] = new EliteMonsterStates.Combat();
             states[(int)EMStates.Dead] = new EliteMonsterStates.Dead();
