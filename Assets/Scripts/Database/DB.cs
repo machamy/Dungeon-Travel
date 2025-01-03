@@ -23,14 +23,20 @@ public class DB
         get
         {
             if (instance != null)
+            {
+                if(!instance.isUpdated)
+                    instance.UpdateDB();
                 return instance;
+            }
             instance = new DB();
+            if(!instance.isUpdated)
+                instance.UpdateDB();
             return instance;
         }
     }
 
     public UnityEvent OnDBUpdateEvent = new UnityEvent();
-
+    public bool isUpdated = false;
     private Dictionary<ClassType, StatData[]> classStatData = new();
     private Dictionary<ClassType, SkillData[]> classSkillData = new();
     private Dictionary<string, EquipmentData> Equipments = new();
