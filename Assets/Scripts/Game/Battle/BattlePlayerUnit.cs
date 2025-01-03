@@ -20,7 +20,7 @@ public class BattlePlayerUnit : BattleUnit
 
     public override IEnumerator Attack(BattleUnit target = null, SkillData skillData = null)
     {
-        base.Attack(target, skillData);
+        //base.StartCoroutine(Attack(target, skillData));
         if (target == null) 
             yield return null;
 
