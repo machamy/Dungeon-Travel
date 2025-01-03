@@ -163,7 +163,7 @@ public class Unit : MonoBehaviour
     void Dead()
     {
         currentHP = 0;
-        HUD.Dead();
+        HUD.Die();
         Debug.Log(unitName + " 사망");
         if (isEnemy) BattleManager.aliveEnemy--;
         else BattleManager.alivePlayer--;

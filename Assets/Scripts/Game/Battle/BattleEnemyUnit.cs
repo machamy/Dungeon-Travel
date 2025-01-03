@@ -27,7 +27,7 @@ public class BattleEnemyUnit : BattleUnit
         buffManager = GetComponent<BuffManager>();
     }
 
-    public override void Attack(BattleUnit target = null, BattleSkill skillData = null)
+    public override void Attack(BattleUnit target = null, SkillData skillData = null)
     {
         StartCoroutine(AttackCoroutine());
     }

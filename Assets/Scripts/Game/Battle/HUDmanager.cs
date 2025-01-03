@@ -21,6 +21,7 @@ public class HUDmanager : MonoBehaviour
     public void Initialize(BattleUnit unit)
     {
         this.unit = unit;
+        unit.hudManager = this;
         stat = unit.statData;
         maxHP = stat.hp;
         maxMP = stat.mp;
@@ -45,7 +46,7 @@ public class HUDmanager : MonoBehaviour
     }
 
 
-    public void Dead()
+    public void Die()
     {
         HP = 0;
         HPslider.value = 0;

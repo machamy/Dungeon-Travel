@@ -188,7 +188,7 @@ public class ActMenu : MonoBehaviour
                 targetUnit = enemyUnits[i];
             }
         }
-        turnUnit.Attack(targetUnit, useSkill);
+        turnUnit.Attack(targetUnit);
 
         battleManager.EndSmallTurn();
         abxyButtons[0].Select();
