@@ -42,10 +42,11 @@ public class ActMenu : MonoBehaviour
     private BattlePlayerUnit[] playerUnits = new BattlePlayerUnit[6];
     private BattleEnemyUnit[] enemyUnits = new BattleEnemyUnit[4];
 
-    private BattleSkill useSkill;
-    private BattleUnit targetUnit;
+    private SkillData useSkill;
+    private BattleUnit[] targetUnit;
 
     public BattleUnit turnUnit;
+
 
     private void Awake()
     {
@@ -143,55 +144,106 @@ public class ActMenu : MonoBehaviour
         turnUnit.Guard();
     }
 
-    public void Back()
-    {
-        abxy.SetActive(true);
-        skillMenu.SetActive(false);
-        itemMenu.SetActive(false);
-        guardMenu.SetActive(false);
-        abxyButtons[0].Select();
-    }
-
     public void SkillSelect(int skillNumber)
     {
-        useSkill = turnUnit.data.skill[skillNumber];
-        if(useSkill.isBuff || useSkill.isHeal)
-        {
-            int i = 0;
-            while (i < 6)
-            {
-                if (playerStation[i].enabled == true) break;
-                i++;
-            }
-            playerStation[i].Select();
-        }
-        else
-        {
-            int i = 0;
-            while (i < 6)
-            {
-                if (enemyStation[i].enabled == true) break;
-                i++;
-            }
-            enemyStation[i].Select();
-        }
-        skillMenu.SetActive(false);
+        useSkill = turnUnit.skillData[skillNumber];
     }
+
+    StationController[] targetStation;
+    public int targetInt{ get; set; }
 
     public void SetTarget()
     {
-        for(int i = 0; i < 6; i++)
+        bool isEnemyTarget = false;
+        BattleUnit[] targetUnit;
+
+        for (int i = 0; i < 6; i++)
         {
-            if (enemyStationController[i].isTarget == true)
+            playerStationController[i].isTarget = false;
+            enemyStationController[i].isTarget = false;
+        }
+
+        //기본공격
+        if (useSkill == null)
+        {
+            isEnemyTarget = true;
+            enemyStationController[targetInt].Target();
+            targetUnit = new BattleEnemyUnit[1];
+            targetUnit[0] = enemyUnits[targetInt];
+            StartCoroutine(turnUnit.Attack(targetUnit));
+            battleManager.EndSmallTurn();
+            abxyButtons[0].Select();
+            return;
+        }
+
+        // 대상 스테이션 설정
+        targetStation = useSkill.isBuff ? playerStationController : enemyStationController;
+
+        switch (useSkill.targetType)
+        {
+            case TargetType.None: //대상 없음
+                {
+                    break;
+                }
+            case TargetType.Single: //싱글
+                {
+                    targetStation[targetInt].Target();
+                    break;
+                }
+            case TargetType.Front: //전열
+                {
+                    if(targetInt <=2)
+                    {
+                        targetStation[0].Target();
+                        targetStation[1].Target();
+                        targetStation[2].Target();
+                    }
+                    else
+                    {
+                        targetStation[3].Target();
+                        targetStation[4].Target();
+                        targetStation[5].Target();
+                    }
+                    break;
+                }
+            case TargetType.Back: //전후
+                {
+                    if (targetInt <= 2)
+                    {
+                        targetStation[targetInt].Target();
+                        targetStation[targetInt + 3].Target();
+                    }
+                    else
+                    {
+                        targetStation[targetInt].Target();
+                        targetStation[targetInt - 3].Target();
+                    }
+                    break;
+                }
+            case TargetType.Area: //광역
+                {
+                    for(int i = 0; i < 6; i++)
+                    {
+                        targetStation[i].Target();
+                    }
+                    break;
+                }
+        }
+        
+        if(isEnemyTarget) targetUnit = new BattleEnemyUnit[6];
+        else targetUnit = new BattlePlayerUnit[6];
+
+        // 타겟 유닛 설정
+        for (int i = 0; i < 6; i++)
+        {
+            if (targetStation[i].isTarget)
             {
-                enemyStationController[i].isTarget = false;
-                targetUnit = enemyUnits[i];
+                targetUnit[i] = isEnemyTarget ? enemyUnits[i] : playerUnits[i];
             }
         }
 
         StartCoroutine(turnUnit.Attack(targetUnit));
         battleManager.EndSmallTurn();
-        abxyButtons[0].Select();
     }
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌

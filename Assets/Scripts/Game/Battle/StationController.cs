@@ -12,6 +12,7 @@ public class StationController : MonoBehaviour
 
     public BattleUnit unit;
     public int stationNumber;
+    public bool isSelected;
     public bool isTarget;
     
 
@@ -29,11 +30,20 @@ public class StationController : MonoBehaviour
 
     public void Select()
     {
+        isSelected = true;
         unit.UpdateOutline(true);
     }
     public void NonSelect()
     {
+        isSelected = false;
         unit.UpdateOutline(false);
+    }
+
+    public void Target()
+    {
+        if (this.enabled == false) return;
+        isTarget = true;
+        unit.UpdateOutline(true);
     }
 
     public void OnClick()
