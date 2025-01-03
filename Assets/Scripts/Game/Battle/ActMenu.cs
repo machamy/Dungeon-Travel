@@ -7,6 +7,8 @@ using Scripts.Data;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using Unity.VisualScripting;
+using System;
+using System.Collections.Generic;
 
 public class ActMenu : MonoBehaviour
 {

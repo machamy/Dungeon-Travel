@@ -32,6 +32,9 @@ public class CreateUnit : MonoBehaviour
 
     BattlePlayerUnit[] battlePlayerUnit;
     BattleEnemyUnit[] battleEnemyUnit;
+
+    public DungeonToBattleDataSO dungeonToBattleData;
+
     public int playerCount { get { return BattleManager.alivePlayer; } set { BattleManager.alivePlayer = value; } }
     public int enemyCount { get { return BattleManager.aliveEnemy; } set { BattleManager.aliveEnemy = value; } }
 
@@ -82,7 +85,7 @@ public class CreateUnit : MonoBehaviour
         playerCount++;
     }
 
-    public void EnemyUnitSpawn(int floor, string name)
+    public void EnemyUnitSpawn(int floor, string name, int spawnPosition = 0)
     {
         // 객체 생성 후 초기화
         GameObject cloneEnemy = new GameObject($"{name}({enemyCount})");
