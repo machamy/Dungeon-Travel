@@ -89,4 +89,10 @@ public class BattleEnemyUnit : BattleUnit
 
         enemyRect.anchoredPosition = targetPosition; // 정확한 위치 설정
     }
+
+    public override void Die()
+    {
+        base.Die();
+        BattleManager.aliveEnemy--;
+    }
 }

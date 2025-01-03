@@ -13,11 +13,6 @@ public class BattlePlayerUnit : BattleUnit
         isEnemy = false;
     }
 
-    public override void Die()
-    {
-        base.Die();
-    }
-
     public override IEnumerator Attack(List<BattleUnit> target = null, SkillData skillData = null)
     {
         //base.StartCoroutine(Attack(target, skillData));
@@ -36,6 +31,10 @@ public class BattlePlayerUnit : BattleUnit
     {
 
     }
-
+    public override void Die()
+    {
+        base.Die();
+        BattleManager.alivePlayer--;
+    }
 
 }

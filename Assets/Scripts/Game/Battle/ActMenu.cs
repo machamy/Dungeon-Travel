@@ -154,7 +154,7 @@ public class ActMenu : MonoBehaviour
     }
 
     StationController[] targetStation;
-    List<BattleUnit> targetUnit = new List<BattleUnit>(0);
+    List<BattleUnit> targetUnit = new List<BattleUnit>();
     bool isEnemyTarget = false;
     public int targetInt{ get; set; }
 
@@ -181,7 +181,7 @@ public class ActMenu : MonoBehaviour
     public void SelectTarget(int targetInt)
     {
         this.targetInt = targetInt;
-
+        targetUnit = new List<BattleUnit>();
         for (int i = 0; i < 6; i++)
         {
             playerStationController[i].NonTarget();
