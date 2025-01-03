@@ -189,9 +189,10 @@ public class BattleManager : MonoBehaviour
         {
             if (battleEnemyUnit[i] != null)
             {
+                Debug.Log(battleEnemyUnit.Length);
                 if (battleEnemyUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].data.agi);
+                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].statData.agi);
                 }
             }
         }
@@ -205,6 +206,7 @@ public class BattleManager : MonoBehaviour
     }
     void FirstTurnMethod()
     {
+        //EnemyTurnOrder();
         if (encounter)
         {
             // 0부터 100 사이의 무작위 값 생성
@@ -245,7 +247,7 @@ public class BattleManager : MonoBehaviour
 
                 case BattleState.Battle:
                     {
-                        SmallTurnMethod();
+                        StartCoroutine(SmallTurnMethod());
                         break;
                     }
                 case BattleState.EndBigTurn:
@@ -270,14 +272,14 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void SmallTurnMethod()
+    IEnumerator SmallTurnMethod()
     {
         if ( turnQueue.Count == 0 & smallTurn == SmallTurnState.Waiting) // 큐에 아무것도 들어있지 않을때 실행
         {
             bState = BattleState.EndBigTurn;
+            yield return null;
         }
 
-        
         if (turnQueue.Count > 0)
         {
             if (turnQueue.Peek().isEnemy == false & smallTurn == SmallTurnState.Waiting)
@@ -285,17 +287,17 @@ public class BattleManager : MonoBehaviour
                 smallTurn = SmallTurnState.Processing;
                 //Debug.Log(turnQueue.Peek().ToString() + " 차례: " + turnQueue.Peek().isEnemy);
                 actMenu.TurnStart(turnQueue.Dequeue());
+                yield return null;
             }
 
             else if (turnQueue.Peek().isEnemy == true & smallTurn == SmallTurnState.Waiting)
             {
                 smallTurn = SmallTurnState.Processing;
                 //Debug.Log(turnQueue.Peek().ToString() + " 차례" + turnQueue.Peek().isEnemy);
-                turnQueue.Dequeue().Attack();
+                yield return StartCoroutine(turnQueue.Dequeue().Attack());
                 EndSmallTurn();
             }
         }
-        
     }
 
     public void EndSmallTurn() { smallTurn = SmallTurnState.Waiting; }
@@ -337,19 +339,4 @@ public class BattleManager : MonoBehaviour
         actMenu.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
-
-    //public Dictionary<Unit, int> GetAlivePlayer()
-    //{
-    //    for(int i = 0; i < playerUnits.Length;i++)
-    //    {
-    //        if (playerUnits[i] == null)
-    //            continue;
-    //        else
-    //        {
-    //            if (!playerUnits[i].isDead)
-    //                alivePlayers.Add(playerUnits[i], i);
-    //        }
-    //    }
-    //    return alivePlayers;
-    //}
 }

@@ -10,20 +10,23 @@ public class HUDmanager : MonoBehaviour
     public Slider HPslider, MPslider;
     public TMP_Text HPtext, MPtext;
 
-    public TMP_Text playerNameText;
+    public TMP_Text NameText;
 
     private float HP, MP;
     private float maxHP, maxMP;
 
     private BattleUnit unit;
-    private CharacterData stat;
+    private StatData stat;
 
     public void Initialize(BattleUnit unit)
     {
         this.unit = unit;
-        this.stat = unit.data;
-        maxHP = stat.maxHP;
-        maxMP = stat.maxMP;
+        unit.hudManager = this;
+        stat = unit.statData;
+        maxHP = stat.hp;
+        maxMP = stat.mp;
+
+        NameText.text = unit.Name;
 
         HP = unit.currentHP;
         MP = unit.currentMP;
@@ -36,8 +39,6 @@ public class HUDmanager : MonoBehaviour
         HPtext.text = HP + "/" + maxHP;
         MPtext.text = MP + "/" + maxMP;
 
-        playerNameText.text = unit.data.unitName;
-
         this.gameObject.SetActive(true);
 
         Image livepanel = GetComponent<Image>();
@@ -45,7 +46,7 @@ public class HUDmanager : MonoBehaviour
     }
 
 
-    public void Dead()
+    public void Die()
     {
         HP = 0;
         HPslider.value = 0;

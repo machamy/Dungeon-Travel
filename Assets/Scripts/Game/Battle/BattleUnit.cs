@@ -13,7 +13,17 @@ public abstract class BattleUnit : MonoBehaviour
     public float currentHP;   // 현재 HP
     public float currentMP;   // 현재 MP
     protected Character originalCharacter; // 원본 Character 데이터
+    public int position;
     public bool isEnemy;
+    public string Name;
+    public SkillData[] skillData = new SkillData[4];
+    public HUDmanager hudManager;
+
+    protected float moveDistance = 100f; // 이동할 거리
+    protected float shakeDuration = 3f; // 흔드는 시간
+    protected float smoothSpeed = 5f; // 부드럽게 이동하는 속도
+
+    private RectTransform rectTransform;
 
     protected SpriteRenderer spriteRenderer;
     protected BuffManager buffManager;
@@ -23,6 +33,30 @@ public abstract class BattleUnit : MonoBehaviour
     /// <param name="character">Character 데이터</param>
     public virtual void Initialize(CharacterData data)
     {
+        statData = new StatData();
+        statData.hp = data.maxHP;
+        statData.mp = data.maxMP;
+        statData.atk = data.atk;
+        statData.def = data.def;
+        statData.mdef = data.mdef;
+        statData.accuracy = data.acc;
+        statData.critical = data.cri;
+        statData.strWeight = data.strWeight;
+        statData.magWeight = data.magWeight;
+        statData.str = data.str;
+        statData.vit = data.vit;
+        statData.mag = data.mag;
+        statData.agi = data.agi;
+        statData.luk = data.luk;
+        statData.statUp = data.statUp;
+
+        Name = data.unitName;
+        position = data.position;
+
+        Debug.Log(statData);
+
+
+
         // Character 데이터 복사
         // originalCharacter = character;
         // statData = (StatData)character.FinalStat.Clone();
@@ -47,9 +81,9 @@ public abstract class BattleUnit : MonoBehaviour
     /// 유닛 공격 처리
     /// </summary>
     /// <param name="skillData">사용 스킬, 기본값 = 기본공격</param>
-    public virtual void Attack( BattleUnit target = null,BattleSkill skillData = null)
+    public virtual IEnumerator Attack( BattleUnit[] target = null, SkillData skillData = null)
     {
-
+        yield return null;
     }
 
     public virtual void Guard()
@@ -60,15 +94,17 @@ public abstract class BattleUnit : MonoBehaviour
     /// <summary>
     /// 데미지를 받을 때 호출
     /// </summary>
-    public void TakeDamage(float damage)
+    public void TakeDamage(BattleUnit attackUnit, SkillData skillData = null)
     {
+        float damage = attackUnit.statData.atk - statData.def;
         currentHP -= damage; // 복사된 데이터에서 HP 감소
-        Debug.Log($"Unit {originalCharacter.Name} took {damage} damage. Remaining HP: {currentHP}");
 
+        hudManager.UpdateHUD();
         if (currentHP <= 0)
         {
             currentHP = 0;
             Die();
+            hudManager.Die();
         }
     }
 
@@ -77,7 +113,7 @@ public abstract class BattleUnit : MonoBehaviour
     /// </summary>
     public virtual void Die()
     {
-        Debug.Log($"Unit {originalCharacter.Name} has died.");
+        
         // 필요 시 추가적인 처리
     }
 

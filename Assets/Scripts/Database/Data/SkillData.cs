@@ -46,6 +46,7 @@ namespace Scripts.Data
         public bool isPassive;
         public bool isSelf;
 
+        public TargetType targetType;
         public TargetType allyTargetType;
         public TargetType enemyTargetType;
 

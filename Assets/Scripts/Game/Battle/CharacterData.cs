@@ -14,15 +14,19 @@ public class CharacterData : ScriptableObject
     [SerializeField] private float _maxMP;
     [SerializeField] private float _currentHP;
     [SerializeField] private float _currentMP;
+    [SerializeField] private int _str;
+    [SerializeField] private int _mag;
+    [SerializeField] private int _luk;
     [SerializeField] private int _atk;
     [SerializeField] private int _def;
     [SerializeField] private int _mdef;
     [SerializeField] private int _agi;
     [SerializeField] private int _acc; // 적중률
-    [SerializeField] private int _avo; // 회피율
+    [SerializeField] private int _vit; // 회피율
     [SerializeField] private int _cri; // 크리티컬 확률
-    [SerializeField] private int _str_cor; // 근력 보정
-    [SerializeField] private int _mag_cor; // 마법 보정
+    [SerializeField] private int _strWeight;// 근력 보정
+    [SerializeField] private int _magWeight; // 마법 보정
+    [SerializeField] private int _statUp;
     [SerializeField] private int _position; // 파티 내의 위치  -1 이면 파티에 없음
     [SerializeField] private bool _isDie;
     [SerializeField] private BattleSkill[] _skill = new BattleSkill[4];
@@ -36,15 +40,19 @@ public class CharacterData : ScriptableObject
     public float maxMP => _maxMP;
     public float currentHP => _currentHP;
     public float currentMP => _currentMP;
-    public int atk => _atk;
-    public int def => _def;
-    public int mdef => _mdef;
+    public float str => _str;
+    public float mag => _mag;
+    public float luk => _luk;
+    public float atk => _atk;
+    public float def => _def;
+    public float mdef => _mdef;
     public float agi => _agi;
-    public int acc => _acc;
-    public int avo => _avo;
-    public int cri => _cri;
-    public int str_cor => _str_cor;
-    public int mag_cor => _mag_cor;
+    public float acc => _acc;
+    public float vit => _vit;
+    public float cri => _cri;
+    public float strWeight => _strWeight;
+    public float magWeight => _magWeight;
+    public int statUp => _statUp;
     public int position => _position;
     public bool isDie => _isDie;
     public BattleSkill[] skill => _skill;

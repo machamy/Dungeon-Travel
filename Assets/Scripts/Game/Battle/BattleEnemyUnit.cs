@@ -27,7 +27,32 @@ public class BattleEnemyUnit : BattleUnit
         buffManager = GetComponent<BuffManager>();
     }
 
-    public override void Attack(BattleUnit target = null, BattleSkill skillData = null)
+    public override IEnumerator Attack(BattleUnit[] target = null, SkillData skillData = null)
+    {
+        yield return StartCoroutine(AttackCoroutine());
+    }
+
+    private IEnumerator AttackCoroutine()
+    {
+        Debug.Log("StartCoroutine");
+        RectTransform enemyRect = GetComponent<RectTransform>();
+        Vector3 originalPosition = enemyRect.anchoredPosition;
+
+        // 앞으로 이동
+        Vector3 targetPosition = originalPosition + new Vector3(moveDistance-80, 0);
+        yield return MoveToPosition(targetPosition, shakeDuration - 2.0f);
+
+        AttackExcute();
+
+        // 뒤로 이동
+        targetPosition = originalPosition - new Vector3(moveDistance, 0);
+        yield return MoveToPosition(targetPosition, shakeDuration);
+
+        // 원래 위치로 복귀
+        yield return MoveToPosition(originalPosition, shakeDuration);
+    }
+
+    private void AttackExcute()
     {
         Debug.Log($"{statData.name} attack");
         if (buffManager.debuffDic.ContainsKey(DebuffType.Stun)) // 기절이라면 공격 함수 실행 x
@@ -47,5 +72,21 @@ public class BattleEnemyUnit : BattleUnit
         //Debug.Log($"index = {index}");
         skillLists[index].Invoke(skillDatas[index]);
         index = -1;
+    }
+
+    private IEnumerator MoveToPosition(Vector2 targetPosition, float shakeDuration)
+    {
+        RectTransform enemyRect = GetComponent<RectTransform>();
+        float elapsedTime = 0f;
+        Vector2 startPosition = enemyRect.anchoredPosition;
+
+        while (elapsedTime < shakeDuration / 2)
+        {
+            enemyRect.anchoredPosition = Vector2.Lerp(startPosition, targetPosition, (elapsedTime / (shakeDuration / 2)));
+            elapsedTime += Time.deltaTime * smoothSpeed;
+            yield return null;
+        }
+
+        enemyRect.anchoredPosition = targetPosition; // 정확한 위치 설정
     }
 }

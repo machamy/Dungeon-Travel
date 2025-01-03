@@ -957,19 +957,19 @@ MonoBehaviour:
   - {fileID: 649399464151658111}
   - {fileID: 4687967815848620878}
   playerStationController:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 8673334982273331682}
+  - {fileID: 877557616541381336}
+  - {fileID: 4113738854065289219}
+  - {fileID: 1806053625342643873}
+  - {fileID: 8888007905976500492}
+  - {fileID: 3395311441962519964}
   enemyStationController:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 4549535461177635262}
+  - {fileID: 2614028393522955139}
+  - {fileID: 3140979258730416853}
+  - {fileID: 4538978466423956310}
+  - {fileID: 8675710202446024501}
+  - {fileID: 2749404376262701282}
   playerName: {fileID: 7835853472389863545}
   skillName:
   - {fileID: 6838342648492762150}
@@ -1742,7 +1742,7 @@ MonoBehaviour:
   MPslider: {fileID: 7686377547294160497}
   HPtext: {fileID: 7779068603515841785}
   MPtext: {fileID: 9005798065510628755}
-  playerNameText: {fileID: 4585222325097067045}
+  NameText: {fileID: 4585222325097067045}
 --- !u!1 &124040565667665571
 GameObject:
   m_ObjectHideFlags: 0
@@ -2071,7 +2071,7 @@ MonoBehaviour:
   MPslider: {fileID: 6622469708917419771}
   HPtext: {fileID: 84454761082998718}
   MPtext: {fileID: 3969586596001229909}
-  playerNameText: {fileID: 2325173450658271707}
+  NameText: {fileID: 2325173450658271707}
 --- !u!114 &203363398669976304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3082,7 +3082,7 @@ MonoBehaviour:
   MPslider: {fileID: 1587354210109322191}
   HPtext: {fileID: 4240743348612710970}
   MPtext: {fileID: 5060005609684179324}
-  playerNameText: {fileID: 7390878833188295136}
+  NameText: {fileID: 7390878833188295136}
 --- !u!1 &575771354880493281
 GameObject:
   m_ObjectHideFlags: 0
@@ -3708,6 +3708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 1
+  isSelected: 0
   isTarget: 0
 --- !u!222 &881575134828795503
 CanvasRenderer:
@@ -4090,7 +4091,7 @@ MonoBehaviour:
   MPslider: {fileID: 7314797606089325927}
   HPtext: {fileID: 7734593557604898316}
   MPtext: {fileID: 7039325414813659608}
-  playerNameText: {fileID: 4520860794038723947}
+  NameText: {fileID: 4520860794038723947}
 --- !u!114 &1098275241579791722
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6384,6 +6385,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -6754,6 +6767,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 3
+  isSelected: 0
   isTarget: 0
 --- !u!222 &1811261258512126572
 CanvasRenderer:
@@ -7041,7 +7055,7 @@ MonoBehaviour:
   MPslider: {fileID: 8665323484476046637}
   HPtext: {fileID: 6808350223578525439}
   MPtext: {fileID: 7136212750869383196}
-  playerNameText: {fileID: 1609156458679951236}
+  NameText: {fileID: 1609156458679951236}
 --- !u!222 &1953276224824149714
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7854,7 +7868,7 @@ MonoBehaviour:
   MPslider: {fileID: 1150026448646247573}
   HPtext: {fileID: 8350475459268132597}
   MPtext: {fileID: 5859292163902307505}
-  playerNameText: {fileID: 338129057286465640}
+  NameText: {fileID: 338129057286465640}
 --- !u!1 &2166154350027350594
 GameObject:
   m_ObjectHideFlags: 0
@@ -8909,6 +8923,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 5
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -9069,6 +9095,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 7
+  isSelected: 0
   isTarget: 0
 --- !u!222 &2635742858867967275
 CanvasRenderer:
@@ -9206,6 +9233,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 9
+  isSelected: 0
   isTarget: 0
 --- !u!1 &2752788896610509564
 GameObject:
@@ -9478,7 +9506,7 @@ MonoBehaviour:
   MPslider: {fileID: 2612001129204402644}
   HPtext: {fileID: 6184241161963760882}
   MPtext: {fileID: 7178369209354659897}
-  playerNameText: {fileID: 8067770961143783602}
+  NameText: {fileID: 8067770961143783602}
 --- !u!1 &2866956366860723347
 GameObject:
   m_ObjectHideFlags: 0
@@ -10211,6 +10239,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 8
+  isSelected: 0
   isTarget: 0
 --- !u!222 &3149173520542679268
 CanvasRenderer:
@@ -10954,6 +10983,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 5
+  isSelected: 0
   isTarget: 0
 --- !u!222 &3407133277344420732
 CanvasRenderer:
@@ -11846,6 +11876,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -12000,6 +12042,18 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: StationController, Assembly-CSharp
           m_MethodName: Select
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -12858,6 +12912,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 2
+  isSelected: 0
   isTarget: 0
 --- !u!222 &4113901289721789630
 CanvasRenderer:
@@ -14429,6 +14484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 9
+  isSelected: 0
   isTarget: 0
 --- !u!114 &4549535461177635262
 MonoBehaviour:
@@ -14444,6 +14500,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 6
+  isSelected: 0
   isTarget: 0
 --- !u!114 &4549966499693922397
 MonoBehaviour:
@@ -14874,6 +14931,18 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: StationController, Assembly-CSharp
           m_MethodName: Select
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16000,6 +16069,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -16055,7 +16136,7 @@ MonoBehaviour:
   MPslider: {fileID: 2173539376434646395}
   HPtext: {fileID: 7299468090042241016}
   MPtext: {fileID: 821573292040719436}
-  playerNameText: {fileID: 3168891188936628168}
+  NameText: {fileID: 3168891188936628168}
 --- !u!114 &5115447015712368278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16299,6 +16380,18 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: StationController, Assembly-CSharp
           m_MethodName: Select
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -16985,7 +17078,7 @@ MonoBehaviour:
   MPslider: {fileID: 8635090047636873457}
   HPtext: {fileID: 6023818897601184626}
   MPtext: {fileID: 966715798000242728}
-  playerNameText: {fileID: 6714597122303506370}
+  NameText: {fileID: 6714597122303506370}
 --- !u!224 &5408127777695086990
 RectTransform:
   m_ObjectHideFlags: 0
@@ -18937,6 +19030,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -19158,6 +19263,18 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: StationController, Assembly-CSharp
           m_MethodName: Select
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 3
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -21136,6 +21253,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 4
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -21610,6 +21739,18 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 1
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
   - eventID: 10
     callback:
       m_PersistentCalls:
@@ -21642,7 +21783,7 @@ MonoBehaviour:
   MPslider: {fileID: 4549966499693922397}
   HPtext: {fileID: 1199660298653088596}
   MPtext: {fileID: 4127879522802926329}
-  playerNameText: {fileID: 6509927604007414417}
+  NameText: {fileID: 6509927604007414417}
 --- !u!222 &7116005212906975065
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21680,6 +21821,18 @@ MonoBehaviour:
           m_TargetAssemblyTypeName: StationController, Assembly-CSharp
           m_MethodName: Select
           m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 2
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+        - m_Target: {fileID: 1730080831}
+          m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
+          m_MethodName: set_targetInt
+          m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -24492,7 +24645,7 @@ MonoBehaviour:
   MPslider: {fileID: 866546487501170006}
   HPtext: {fileID: 7458489148838439016}
   MPtext: {fileID: 7712439503936571685}
-  playerNameText: {fileID: 4575390211190947269}
+  NameText: {fileID: 4575390211190947269}
 --- !u!224 &7904339036371212984
 RectTransform:
   m_ObjectHideFlags: 0
@@ -26858,6 +27011,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 0
+  isSelected: 0
   isTarget: 0
 --- !u!114 &8675244422503615725
 MonoBehaviour:
@@ -26890,6 +27044,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 9
+  isSelected: 0
   isTarget: 0
 --- !u!222 &8685543294126662523
 CanvasRenderer:
@@ -27369,6 +27524,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unit: {fileID: 0}
   stationNumber: 4
+  isSelected: 0
   isTarget: 0
 --- !u!114 &8888400658055548716
 MonoBehaviour:
@@ -27914,7 +28070,7 @@ MonoBehaviour:
   MPslider: {fileID: 81893569949673038}
   HPtext: {fileID: 5115447015712368278}
   MPtext: {fileID: 1170026828307738453}
-  playerNameText: {fileID: 1361948548453984438}
+  NameText: {fileID: 1361948548453984438}
 --- !u!224 &8995666633016135358
 RectTransform:
   m_ObjectHideFlags: 0
