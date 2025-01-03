@@ -247,7 +247,7 @@ public class BattleManager : MonoBehaviour
 
                 case BattleState.Battle:
                     {
-                        SmallTurnMethod();
+                        StartCoroutine(SmallTurnMethod());
                         break;
                     }
                 case BattleState.EndBigTurn:
@@ -272,11 +272,12 @@ public class BattleManager : MonoBehaviour
         }
     }
 
-    void SmallTurnMethod()
+    IEnumerator SmallTurnMethod()
     {
         if ( turnQueue.Count == 0 & smallTurn == SmallTurnState.Waiting) // 큐에 아무것도 들어있지 않을때 실행
         {
             bState = BattleState.EndBigTurn;
+            yield return null;
         }
 
         if (turnQueue.Count > 0)
@@ -286,13 +287,14 @@ public class BattleManager : MonoBehaviour
                 smallTurn = SmallTurnState.Processing;
                 //Debug.Log(turnQueue.Peek().ToString() + " 차례: " + turnQueue.Peek().isEnemy);
                 actMenu.TurnStart(turnQueue.Dequeue());
+                yield return null;
             }
 
             else if (turnQueue.Peek().isEnemy == true & smallTurn == SmallTurnState.Waiting)
             {
                 smallTurn = SmallTurnState.Processing;
                 //Debug.Log(turnQueue.Peek().ToString() + " 차례" + turnQueue.Peek().isEnemy);
-                turnQueue.Dequeue().Attack();
+                yield return StartCoroutine(turnQueue.Dequeue().Attack());
                 EndSmallTurn();
             }
         }
