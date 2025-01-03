@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System.Collections.Generic;
 using UnityEngine.EventSystems;
 using Scripts.Data;
 using UnityEngine.UIElements;
@@ -9,6 +10,8 @@ using UnityEngine.InputSystem;
 using Unity.VisualScripting;
 using System;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
+using System.Security.Cryptography;
 
 public class ActMenu : MonoBehaviour
 {
@@ -45,7 +48,6 @@ public class ActMenu : MonoBehaviour
     private BattleEnemyUnit[] enemyUnits = new BattleEnemyUnit[4];
 
     private SkillData useSkill;
-    private BattleUnit[] targetUnit;
 
     public BattleUnit turnUnit;
 
@@ -152,12 +154,33 @@ public class ActMenu : MonoBehaviour
     }
 
     StationController[] targetStation;
+    List<BattleUnit> targetUnit = new List<BattleUnit>(0);
+    bool isEnemyTarget = false;
     public int targetInt{ get; set; }
 
     public void SetTarget()
     {
-        bool isEnemyTarget = false;
-        BattleUnit[] targetUnit;
+        if (isEnemyTarget) targetStation = enemyStationController;
+        else targetStation = playerStationController;
+
+        // 타겟 유닛 설정
+        for (int i = 0; i < 6; i++)
+        {
+            if (targetStation[i].isTarget)
+            {
+                if (isEnemyTarget) targetUnit.Add(enemyUnits[i]);
+                else targetUnit.Add(playerUnits[i]);
+            }
+        }
+
+        Debug.Log(targetUnit);
+        StartCoroutine(turnUnit.Attack(targetUnit));
+        battleManager.EndSmallTurn();
+    }
+
+    public void SelectTarget(int targetInt)
+    {
+        this.targetInt = targetInt;
 
         for (int i = 0; i < 6; i++)
         {
@@ -165,88 +188,80 @@ public class ActMenu : MonoBehaviour
             enemyStationController[i].isTarget = false;
         }
 
-        //기본공격
-        if (useSkill == null)
+        if(useSkill == null) isEnemyTarget = true;
+        else
         {
-            isEnemyTarget = true;
-            enemyStationController[targetInt].Target();
-            targetUnit = new BattleEnemyUnit[1];
-            targetUnit[0] = enemyUnits[targetInt];
-            StartCoroutine(turnUnit.Attack(targetUnit));
-            battleManager.EndSmallTurn();
-            abxyButtons[0].Select();
-            return;
-        }
-
-        // 대상 스테이션 설정
-        targetStation = useSkill.isBuff ? playerStationController : enemyStationController;
-
-        switch (useSkill.targetType)
-        {
-            case TargetType.None: //대상 없음
-                {
-                    break;
-                }
-            case TargetType.Single: //싱글
-                {
-                    targetStation[targetInt].Target();
-                    break;
-                }
-            case TargetType.Front: //전열
-                {
-                    if(targetInt <=2)
-                    {
-                        targetStation[0].Target();
-                        targetStation[1].Target();
-                        targetStation[2].Target();
-                    }
-                    else
-                    {
-                        targetStation[3].Target();
-                        targetStation[4].Target();
-                        targetStation[5].Target();
-                    }
-                    break;
-                }
-            case TargetType.Back: //전후
-                {
-                    if (targetInt <= 2)
-                    {
-                        targetStation[targetInt].Target();
-                        targetStation[targetInt + 3].Target();
-                    }
-                    else
-                    {
-                        targetStation[targetInt].Target();
-                        targetStation[targetInt - 3].Target();
-                    }
-                    break;
-                }
-            case TargetType.Area: //광역
-                {
-                    for(int i = 0; i < 6; i++)
-                    {
-                        targetStation[i].Target();
-                    }
-                    break;
-                }
-        }
-        
-        if(isEnemyTarget) targetUnit = new BattleEnemyUnit[6];
-        else targetUnit = new BattlePlayerUnit[6];
-
-        // 타겟 유닛 설정
-        for (int i = 0; i < 6; i++)
-        {
-            if (targetStation[i].isTarget)
+            if (useSkill.isBuff)
             {
-                targetUnit[i] = isEnemyTarget ? enemyUnits[i] : playerUnits[i];
+                targetStation = playerStationController;
+                isEnemyTarget = false;
+            }
+            else
+            {
+                targetStation = enemyStationController;
+                isEnemyTarget = true;
             }
         }
 
-        StartCoroutine(turnUnit.Attack(targetUnit));
-        battleManager.EndSmallTurn();
+        //스킬공격
+        if (useSkill != null)
+        {
+
+            // 대상 스테이션 설정
+            switch (useSkill.targetType)
+            {
+                case TargetType.None: //대상 없음
+                    {
+                        break;
+                    }
+                case TargetType.Single: //싱글
+                    {
+                        targetStation[targetInt].Target();
+                        break;
+                    }
+                case TargetType.Front: //전열
+                    {
+                        if (targetInt <= 2)
+                        {
+                            targetStation[0].Target();
+                            targetStation[1].Target();
+                            targetStation[2].Target();
+                        }
+                        else
+                        {
+                            targetStation[3].Target();
+                            targetStation[4].Target();
+                            targetStation[5].Target();
+                        }
+                        break;
+                    }
+                case TargetType.Back: //전후
+                    {
+                        if (targetInt <= 2)
+                        {
+                            targetStation[targetInt].Target();
+                            targetStation[targetInt + 3].Target();
+                        }
+                        else
+                        {
+                            targetStation[targetInt].Target();
+                            targetStation[targetInt - 3].Target();
+                        }
+                        break;
+                    }
+                case TargetType.Area: //광역
+                    {
+                        for (int i = 0; i < 6; i++)
+                        {
+                            targetStation[i].Target();
+                        }
+                        break;
+                    }
+            }
+        }
+        else { enemyStationController[targetInt].Target(); }
     }
+
 
     public void ChangeSkill_Info(int skillNumber) //스킬 선택할때 스킬 설명 보여줌
     {

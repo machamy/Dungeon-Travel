@@ -21,5 +21,5 @@ MonoBehaviour:
   isAttack: 0
   isBuff: 0
   isHeal: 0
-  targetType: 0
+  targetType: 2
   attackType: 0
