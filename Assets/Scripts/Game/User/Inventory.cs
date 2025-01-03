@@ -2,7 +2,7 @@ using Scripts.Entity.Item;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
-namespace Scripts.User
+namespace Scripts.UserData
 {
     /// <summary>
     /// 플레이어 인벤토리 관리 클래스;

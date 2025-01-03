@@ -1,9 +1,8 @@
-using Scripts.User;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.User
+namespace Scripts.UserData
 {
     /// <summary>
     /// 진척도 관리 클래스;

@@ -6,7 +6,7 @@ using UnityEngine;
 using Scripts.Entity;
 using UnityEngine.UIElements;
 
-namespace Scripts.User
+namespace Scripts.UserData
 {
     /// <summary>
     /// 파티 관리 클래스;

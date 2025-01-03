@@ -15,7 +15,7 @@ public class CharacterStatUI_Small : MonoBehaviour
 
     public void LoadUI(int idx = 0)
     {
-        Character character = GameManager.Instance.userData.party.GetCharacter(idx);
+        Character character = UserDataManager.Instance.party.GetCharacter(idx);
         classImage.sprite = Resources.Load<Sprite>("UI/Class/" + character.Name);
 
         hpRect.sizeDelta = new Vector2(width * (character.hp / character.FinalStat.hp), hpRect.sizeDelta.y);

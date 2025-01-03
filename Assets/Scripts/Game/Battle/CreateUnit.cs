@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Scripts.Data;
 using Scripts.Entity;
-using Scripts.User;
 using JetBrains.Annotations;
 using System;
 

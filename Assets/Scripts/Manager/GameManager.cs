@@ -6,7 +6,6 @@ using Scripts.DebugConsole;
 using Scripts.Game.Dungeon;
 using Scripts.Game.Dungeon.Unit;
 using Scripts.Manager;
-using Scripts.User;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -29,9 +28,6 @@ namespace Scripts.Manager
 
         [HideInInspector] public InputActionMap PlayerActionMap;
         [HideInInspector] public InputActionMap UIActionMap;
-
-        public UserData userData; // 어디에 넣어야 할까?
-
 
         public static GameManager Instance
         {
@@ -56,7 +52,6 @@ namespace Scripts.Manager
         {
             DB.Instance.UpdateDB();
 
-            userData = new UserData(); // 어디에 넣어야 할까?
             CommandManager cm = CommandManager.Instance; // commandManager 생성
             DontDestroyOnLoad(gameObject);
             InputActionClass input = new InputActionClass();

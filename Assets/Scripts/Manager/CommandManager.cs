@@ -69,7 +69,7 @@ namespace Scripts.DebugConsole
 
         private void initCommands()
         {
-            var party = GameManager.Instance.userData.party;
+            var party = UserDataManager.Instance.party;
             
             #region 기초 명령어
 

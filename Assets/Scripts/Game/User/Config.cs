@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Scripts.User
+namespace Scripts.UserData
 {
     /// <summary>
     /// 설정 관리 클래스
