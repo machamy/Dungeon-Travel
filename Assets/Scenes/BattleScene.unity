@@ -455,6 +455,7 @@ MonoBehaviour:
   playerData: []
   playerPrefab: {fileID: 8371962068123350127, guid: 69dc832a081a6474492f8edcb806265a, type: 3}
   enemyBattleStat: []
+  outlineMaterial: {fileID: 2100000, guid: f06ff8aaf0219204fb5054ea7ceb3d10, type: 2}
   enemyPrefab: {fileID: 0}
   playerStation:
   - {fileID: 8407084373330240676}

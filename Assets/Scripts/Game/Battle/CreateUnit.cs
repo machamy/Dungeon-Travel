@@ -15,6 +15,7 @@ public class CreateUnit : MonoBehaviour
 
     [SerializeField]
     StatData[] enemyBattleStat;
+    public Material outlineMaterial;
     public GameObject enemyPrefab;
 
     [SerializeField]
@@ -77,7 +78,7 @@ public class CreateUnit : MonoBehaviour
         player = Instantiate(playerPrefab, playerStation[playerData[i].position].transform);
         battlePlayerUnit[i] = player.GetComponent<BattlePlayerUnit>();
         battlePlayerUnit[i].Initialize(playerData[i]);
-        playerStationController[i].SetUp();
+        playerStationController[i].SetUp(battlePlayerUnit[i]);
         playerHUD[i].Initialize(battlePlayerUnit[i]);
         playerCount++;
     }
@@ -87,6 +88,7 @@ public class CreateUnit : MonoBehaviour
         // 객체 생성 후 초기화
         GameObject cloneEnemy = new GameObject($"{name}({enemyCount})");
         SpriteRenderer image = cloneEnemy.AddComponent<SpriteRenderer>();
+        image.material = outlineMaterial;
         cloneEnemy.AddComponent<BuffManager>();
         battleEnemyUnit[enemyCount] = cloneEnemy.AddComponent<BattleEnemyUnit>();
         battleEnemyUnit[enemyCount].isEnemy = true;
@@ -104,7 +106,7 @@ public class CreateUnit : MonoBehaviour
         image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
 
         // HUD 설정
-        enemyStationController[enemyCount].SetUp();
+        enemyStationController[enemyCount].SetUp(battleEnemyUnit[enemyCount]);
         enemyHUD[enemyCount].Initialize(battleEnemyUnit[enemyCount]); //<- StatData와 Data 통일하고 다시 넣기
 
         enemyCount++;

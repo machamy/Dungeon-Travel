@@ -182,8 +182,9 @@ public class ActMenu : MonoBehaviour
 
         for (int i = 0; i < 6; i++)
         {
-            playerStationController[i].isTarget = false;
-            enemyStationController[i].isTarget = false;
+            playerStationController[i].NonTarget();
+            enemyStationController[i].NonTarget();
+            
         }
 
         if(useSkill == null) isEnemyTarget = true;
@@ -276,6 +277,4 @@ public class ActMenu : MonoBehaviour
     public void OffPlayerOutline(int outlineNumber) { if (playerUnits[outlineNumber] != null) playerUnits[outlineNumber].UpdateOutline(false); }
     public void OnEnemyOutline(int outlineNumber) { if(enemyUnits[outlineNumber] != null) enemyUnits[outlineNumber].UpdateOutline(true); }
     public void OffEnemyOutline(int outlineNumber) { if (enemyUnits[outlineNumber] != null) enemyUnits[outlineNumber].UpdateOutline(false); }
-
-    
 }

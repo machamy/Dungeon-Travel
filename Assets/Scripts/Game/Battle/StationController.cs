@@ -14,18 +14,19 @@ public class StationController : MonoBehaviour
     public int stationNumber;
     public bool isSelected;
     public bool isTarget;
-    
+    public bool noUnit;
 
     void Awake()
     {
         isTarget = false;
     }
 
-    public void SetUp()
+    public void SetUp(BattleUnit unit)
     {
         button = gameObject.GetComponent<Button>();
-        unit = GetComponentInChildren<BattleUnit>();
+        this.unit = unit;
         button.enabled = true;
+        noUnit = true;
     }
 
     public void Select()
@@ -41,9 +42,17 @@ public class StationController : MonoBehaviour
 
     public void Target()
     {
-        if (this.enabled == false) return;
+        if (unit == null) return;
         isTarget = true;
         unit.UpdateOutline(true);
+    }
+
+    public void NonTarget()
+    {
+        if (unit == null) return;
+        isTarget = false;
+
+        unit.UpdateOutline(false);
     }
 
     public void OnClick()

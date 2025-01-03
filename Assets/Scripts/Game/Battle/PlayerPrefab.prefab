@@ -53,7 +53,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: f06ff8aaf0219204fb5054ea7ceb3d10, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -98,6 +98,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   statData: {fileID: 0}
-  tempPlayerData: {fileID: 0}
+  data: {fileID: 0}
+  isDie: 0
   currentHP: 0
   currentMP: 0
+  position: 0
+  isEnemy: 0
+  Name: 
+  skillData:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  hudManager: {fileID: 0}
