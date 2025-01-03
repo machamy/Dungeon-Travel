@@ -27,9 +27,9 @@ public class BattleEnemyUnit : BattleUnit
         buffManager = GetComponent<BuffManager>();
     }
 
-    public override void Attack(BattleUnit target = null, SkillData skillData = null)
+    public override IEnumerator Attack(BattleUnit target = null, SkillData skillData = null)
     {
-        StartCoroutine(AttackCoroutine());
+        yield return StartCoroutine(AttackCoroutine());
     }
 
     private IEnumerator AttackCoroutine()

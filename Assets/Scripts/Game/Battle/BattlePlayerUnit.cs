@@ -18,13 +18,15 @@ public class BattlePlayerUnit : BattleUnit
         base.Die();
     }
 
-    public override void Attack(BattleUnit target = null, SkillData skillData = null)
+    public override IEnumerator Attack(BattleUnit target = null, SkillData skillData = null)
     {
         base.Attack(target, skillData);
-        if (target == null) return;
+        if (target == null) 
+            yield return null;
 
         if (skillData != null) target.TakeDamage(this, skillData);
         else target.TakeDamage(this);
+        yield return null;
 
     }
     public override void Guard()

@@ -81,9 +81,9 @@ public abstract class BattleUnit : MonoBehaviour
     /// 유닛 공격 처리
     /// </summary>
     /// <param name="skillData">사용 스킬, 기본값 = 기본공격</param>
-    public virtual void Attack( BattleUnit target = null,SkillData skillData = null)
+    public virtual IEnumerator Attack( BattleUnit target = null, SkillData skillData = null)
     {
-
+        yield return null;
     }
 
     public virtual void Guard()
