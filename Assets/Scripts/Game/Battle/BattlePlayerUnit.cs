@@ -18,13 +18,13 @@ public class BattlePlayerUnit : BattleUnit
         base.Die();
     }
 
-    public override IEnumerator Attack(BattleUnit[] target = null, SkillData skillData = null)
+    public override IEnumerator Attack(List<BattleUnit> target = null, SkillData skillData = null)
     {
         //base.StartCoroutine(Attack(target, skillData));
         if (target == null) 
             yield return null;
 
-        for(int i = 0; i < target.Length; i++)
+        for(int i = 0; i < target.Count; i++)
         {
             if (skillData != null) target[i].TakeDamage(this, skillData);
             else target[i].TakeDamage(this);

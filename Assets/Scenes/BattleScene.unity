@@ -6373,21 +6373,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3395311441962519964}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 5
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -6400,19 +6388,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3395311441962519964}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 5
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!224 &1684849899371802866
 RectTransform:
   m_ObjectHideFlags: 0
@@ -8911,21 +8887,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2749404376262701282}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -8938,19 +8902,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2749404376262701282}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!222 &2569683920141072434
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -11864,21 +11816,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4538978466423956310}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -11891,19 +11831,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4538978466423956310}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!222 &3809229222107343999
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12038,21 +11966,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4113738854065289219}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -12065,19 +11981,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4113738854065289219}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!1 &3850180258051516156
 GameObject:
   m_ObjectHideFlags: 0
@@ -14927,21 +14831,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 4549535461177635262}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -14954,19 +14846,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 4549535461177635262}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!224 &4659006002331363950
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16057,21 +15937,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8675710202446024501}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -16084,19 +15952,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8675710202446024501}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!224 &5085964075734201812
 RectTransform:
   m_ObjectHideFlags: 0
@@ -16376,21 +16232,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8673334982273331682}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -16403,19 +16247,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8673334982273331682}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!1 &5195987740001973858
 GameObject:
   m_ObjectHideFlags: 0
@@ -19018,21 +18850,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 2614028393522955139}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 1
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -19045,19 +18865,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 2614028393522955139}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 1
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!1 &6067373339199608193
 GameObject:
   m_ObjectHideFlags: 0
@@ -19259,21 +19067,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1806053625342643873}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -19286,19 +19082,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1806053625342643873}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 3
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!1 &6180631604595133487
 GameObject:
   m_ObjectHideFlags: 0
@@ -21241,21 +21025,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 8888007905976500492}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -21268,19 +21040,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 8888007905976500492}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 4
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!222 &6975330439798468117
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -21727,21 +21487,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 877557616541381336}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -21754,19 +21502,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 877557616541381336}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!114 &7113080710743357454
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -21817,21 +21553,9 @@ MonoBehaviour:
     callback:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 3140979258730416853}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: Select
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
         - m_Target: {fileID: 1730080831}
           m_TargetAssemblyTypeName: ActMenu, Assembly-CSharp
-          m_MethodName: set_targetInt
+          m_MethodName: SelectTarget
           m_Mode: 3
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -21844,19 +21568,7 @@ MonoBehaviour:
   - eventID: 10
     callback:
       m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 3140979258730416853}
-          m_TargetAssemblyTypeName: StationController, Assembly-CSharp
-          m_MethodName: NonSelect
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 2
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
+        m_Calls: []
 --- !u!114 &7118952918184063843
 MonoBehaviour:
   m_ObjectHideFlags: 0
