@@ -18,6 +18,12 @@ public abstract class BattleUnit : MonoBehaviour
     public string Name;
     public SkillData[] skillData = new SkillData[4];
 
+    protected float moveDistance = 100f; // 이동할 거리
+    protected float shakeDuration = 3f; // 흔드는 시간
+    protected float smoothSpeed = 5f; // 부드럽게 이동하는 속도
+
+    private RectTransform rectTransform;
+
     protected SpriteRenderer spriteRenderer;
     protected BuffManager buffManager;
     /// <summary>

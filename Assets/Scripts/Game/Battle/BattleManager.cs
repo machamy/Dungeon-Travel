@@ -206,6 +206,7 @@ public class BattleManager : MonoBehaviour
     }
     void FirstTurnMethod()
     {
+        //EnemyTurnOrder();
         if (encounter)
         {
             // 0부터 100 사이의 무작위 값 생성
@@ -278,7 +279,6 @@ public class BattleManager : MonoBehaviour
             bState = BattleState.EndBigTurn;
         }
 
-        
         if (turnQueue.Count > 0)
         {
             if (turnQueue.Peek().isEnemy == false & smallTurn == SmallTurnState.Waiting)
@@ -296,7 +296,6 @@ public class BattleManager : MonoBehaviour
                 EndSmallTurn();
             }
         }
-        
     }
 
     public void EndSmallTurn() { smallTurn = SmallTurnState.Waiting; }
@@ -338,19 +337,4 @@ public class BattleManager : MonoBehaviour
         actMenu.gameObject.SetActive(false);
         gameObject.SetActive(false);
     }
-
-    //public Dictionary<Unit, int> GetAlivePlayer()
-    //{
-    //    for(int i = 0; i < playerUnits.Length;i++)
-    //    {
-    //        if (playerUnits[i] == null)
-    //            continue;
-    //        else
-    //        {
-    //            if (!playerUnits[i].isDead)
-    //                alivePlayers.Add(playerUnits[i], i);
-    //        }
-    //    }
-    //    return alivePlayers;
-    //}
 }
