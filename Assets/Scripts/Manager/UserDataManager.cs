@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Scripts.UserData;
+using Scripts.Manager;
 
 namespace Scripts.Manager
 {
@@ -46,7 +47,12 @@ namespace Scripts.Manager
 
         public void init()
         {
-            DB.Instance.UpdateDB();
+            //DB.Instance.UpdateDB();
+
+            if (SaveLoadManager.Instance.CurrentSave != null){
+                LoadUserData(SaveLoadManager.Instance.CurrentSave.userData);
+                return;
+            }
 
             party = Party.CreateInstance();
             inventory = Inventory.CreateInstance(27);
@@ -54,6 +60,14 @@ namespace Scripts.Manager
             config = Config.CreateInstance();
 
             DontDestroyOnLoad(gameObject);
+        }
+
+        public void LoadUserData(UserDataManager userData)
+        {
+            party = userData.party;
+            inventory = userData.inventory;
+            progress = userData.progress;
+            config = userData.config;
         }
     }
 }

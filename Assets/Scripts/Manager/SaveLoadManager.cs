@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using Script.Global;
 using Scripts.Entity;
+using Scripts.Manager;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
@@ -25,8 +26,8 @@ namespace Scripts.Manager
 
         public SaveData CurrentSave
         {
-            get;
-            private set;
+            get => currentSave;
+            private set => currentSave = value;
         }
         public static SaveLoadManager Instance
         {
@@ -141,13 +142,8 @@ namespace Scripts.Manager
     public class SaveData
     {
         public string saveName;
-        //TODO: 배열로 안바꿔도 저장이 되어야하는데 안됨. 일단 임시로 배열로 변환토록 함.
-        public Character[] partyArr;
-        public List<Character> Party
-        {
-            get => partyArr.ToList();
-            set => partyArr = value.ToArray();
-        }
+        
+        public UserDataManager userData;
         
         public long startTime;
         public long saveTime;
@@ -168,13 +164,9 @@ namespace Scripts.Manager
             StringBuilder sb = new StringBuilder();
             sb.Append($"[SaveData] {saveName}\n").
                 Append("start time: ").Append(DateTime.FromBinary(startTime)).Append("\n")
-                .Append("save time: ").Append(DateTime.FromBinary(saveTime)).Append("\n")
-                .Append($"party({Party.Count}) : \n");
+                .Append("save time: ").Append(DateTime.FromBinary(saveTime)).Append("\n");
+                //userData ToString
             Debug.Log(sb);
-            // foreach (var chr in Party)
-            // {
-            //     sb.Append(chr.ToString()).Append("\n");
-            // }
             
             return sb.ToString();
         }
@@ -185,19 +177,12 @@ namespace Scripts.Manager
             sb.Append($"{saveName}\n").Append("start time: ")
                 .Append(DateTime.FromBinary(startTime)).Append("\n")
                 .Append("save time: ").Append(DateTime.FromBinary(saveTime)).Append("\n");
+                //userData ToString
             Debug.Log(sb);
-            // foreach (var chr in Party)
-            // {
-            //     sb.Append(chr.ToString()).Append("\n");
-            // }
-            
+
             return sb.ToString();
         }
     }
 
-    // public class CharacterData
-    // {
-    //     
-    // }
     
 }

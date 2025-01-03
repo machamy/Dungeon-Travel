@@ -18,11 +18,11 @@ public class MainMenuUI : MonoBehaviour
     public Transform characterParent;
     private void Start()
     {
-        for (int i = 0; i < 5; i++)
+        /*for (int i = 0; i < 5; i++)
         {
             GameObject prefab = Instantiate(characterPrefab, characterParent);
             prefab.GetComponent<CharacterStatUI_Big>().LoadUI(i);
-        }
+        }*/
         
     }
 
