@@ -107,11 +107,6 @@ namespace Scripts.Data
         public float statUp;
 
         /// <summary>
-        /// 플레이어 위치
-        /// </summary>
-        public int position;
-
-        /// <summary>
         /// 적 행동 속성
         /// </summary>
         public EnemyProperty Property;

@@ -189,9 +189,10 @@ public class BattleManager : MonoBehaviour
         {
             if (battleEnemyUnit[i] != null)
             {
+                Debug.Log(battleEnemyUnit.Length);
                 if (battleEnemyUnit[i].isDie == false)
                 {
-                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].data.agi);
+                    agi_ranking.Add(battleEnemyUnit[i], battleEnemyUnit[i].statData.agi);
                 }
             }
         }

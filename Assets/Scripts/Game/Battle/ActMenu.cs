@@ -184,7 +184,6 @@ public class ActMenu : MonoBehaviour
         {
             if (enemyStationController[i].isTarget == true)
             {
-                //Debug.Log(i + "->  타겟 ");
                 enemyStationController[i].isTarget = false;
                 targetUnit = enemyUnits[i];
             }

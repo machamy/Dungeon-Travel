@@ -13,7 +13,10 @@ public abstract class BattleUnit : MonoBehaviour
     public float currentHP;   // 현재 HP
     public float currentMP;   // 현재 MP
     protected Character originalCharacter; // 원본 Character 데이터
+    public int position;
     public bool isEnemy;
+    public string Name;
+    public SkillData[] skillData = new SkillData[4];
 
     protected SpriteRenderer spriteRenderer;
     protected BuffManager buffManager;
@@ -23,6 +26,30 @@ public abstract class BattleUnit : MonoBehaviour
     /// <param name="character">Character 데이터</param>
     public virtual void Initialize(CharacterData data)
     {
+        statData = new StatData();
+        statData.hp = data.maxHP;
+        statData.mp = data.maxMP;
+        statData.atk = data.atk;
+        statData.def = data.def;
+        statData.mdef = data.mdef;
+        statData.accuracy = data.acc;
+        statData.critical = data.cri;
+        statData.strWeight = data.strWeight;
+        statData.magWeight = data.magWeight;
+        statData.str = data.str;
+        statData.vit = data.vit;
+        statData.mag = data.mag;
+        statData.agi = data.agi;
+        statData.luk = data.luk;
+        statData.statUp = data.statUp;
+
+        Name = data.unitName;
+        position = data.position;
+
+        Debug.Log(statData);
+
+
+
         // Character 데이터 복사
         // originalCharacter = character;
         // statData = (StatData)character.FinalStat.Clone();

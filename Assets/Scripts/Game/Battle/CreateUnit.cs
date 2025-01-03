@@ -105,17 +105,11 @@ public class CreateUnit : MonoBehaviour
 
         // HUD 설정
         enemyStationController[enemyCount].SetUp();
-        //enemyHUD[enemyCount].Initialize(battleEnemyUnit[enemyCount]); <- StatData와 Data 통일하고 다시 넣기
+        enemyHUD[enemyCount].Initialize(battleEnemyUnit[enemyCount]);
 
         enemyCount++;
     }
 
-    public BattlePlayerUnit[] GetPlayerUnit()
-    {
-        return battlePlayerUnit;
-    }
-    public BattleEnemyUnit[] GetEnemyUnit()
-    {
-        return battleEnemyUnit;
-    }
+    public BattlePlayerUnit[] GetPlayerUnit() { return battlePlayerUnit; }
+    public BattleEnemyUnit[] GetEnemyUnit() {  return battleEnemyUnit; }
 }
