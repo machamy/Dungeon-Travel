@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311953, g: 0.38074014, b: 0.3587274, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311918, g: 0.3807398, b: 0.35872716, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -17154,6 +17154,8 @@ MonoBehaviour:
   actMenu: {fileID: 1730080831}
   BigTurnCount: 0
   BigTurn: {fileID: 0}
+  dungeonToBattleData: {fileID: 11400000, guid: e54490d7aaacad54ebc688ddd75fa9e0, type: 2}
+  battleToDungeonData: {fileID: 11400000, guid: 6d4d105cf7a58974d844b9b2226fd371, type: 2}
 --- !u!1 &5499353039201421400
 GameObject:
   m_ObjectHideFlags: 0

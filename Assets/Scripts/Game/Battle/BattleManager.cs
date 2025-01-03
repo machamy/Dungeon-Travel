@@ -18,6 +18,7 @@ using UnityEngine.ProBuilder.MeshOperations;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem.Processors;
 using System.Security.Cryptography;
+using static UnityEditor.Experimental.AssetDatabaseExperimental.AssetDatabaseCounters;
 
 public class BattleManager : MonoBehaviour
 {
@@ -65,11 +66,14 @@ public class BattleManager : MonoBehaviour
     public int BigTurnCount;
     public TextMeshProUGUI BigTurn;
 
-    bool encounter;
+    public bool encounter;
+    public bool isVictory; // 배틀에서 던전으로 넘길 데이터
 
     public Action<SkillData> bossPassive;
     public Dictionary<Unit, int> alivePlayers = new Dictionary<Unit, int>();
 
+    public Dictionary<string, int> DungeonToBattleDataList = new Dictionary<string, int>(); // 던전에서 배틀로 넘어올 때 데이터를 담아오는 리스트
+    public int floor;// 던전에서 배틀로 넘어올 때 데이터를 담아오는 변수
 
     private void Awake()
     {
@@ -101,9 +105,9 @@ public class BattleManager : MonoBehaviour
         Debug.Log("SetUp 완료");
     }
 
-    public List<Unit> GetPlayerUnits(TargetType targetType)
+    public List<BattleUnit> GetPlayerUnits(TargetType targetType)
     {
-        List<Unit> goList = new List<Unit>();
+        List<BattleUnit> goList = new List<BattleUnit>();
         switch (targetType)
         {
             case TargetType.Single:
@@ -338,5 +342,25 @@ public class BattleManager : MonoBehaviour
         endCanvas.gameObject.SetActive(false);
         actMenu.gameObject.SetActive(false);
         gameObject.SetActive(false);
+    }
+    /// <summary>
+    /// 던전에서 배틀로 데이터 넘겨주는 함수
+    /// </summary>
+    /// <param name="enemyDic">이름과 배치장소를 딕셔너리로 저장</param>
+    /// <param name="floor">현재 던전의 층</param>
+    /// <param name="isEncounter">인카운터 했는지</param>
+    public void DungeonToBattleSetData(Dictionary<string, int> enemyDic, int floor, bool isEncounter)
+    {
+        encounter = isEncounter;
+        DungeonToBattleDataList = enemyDic;
+        this.floor = floor;
+    }
+    /// <summary>
+    /// 배틀에서 던전으로 데이터 넘겨주는 함수
+    /// </summary>
+    /// <param name="isVictory"></param>
+    public void BattleToDungeonSetData(bool isVictory)
+    {
+        this.isVictory = isVictory;
     }
 }

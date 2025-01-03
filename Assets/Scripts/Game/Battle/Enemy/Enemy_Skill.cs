@@ -132,7 +132,7 @@ public class Enemy_Skill
 
     public void EnemyAttack(SkillData skillData) // 특별한 로직이 아닌 일반적인 공격
     {
-        List<Unit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        List<BattleUnit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
         //Debug.Log($"Opponent : {Opponent.Count}");
         for (int i = 0; i < Opponent.Count; i++)
         {
@@ -166,7 +166,7 @@ public class Enemy_Skill
     public void Cut_Stab(SkillData skillData)
     {
         AttackType[] attackType = Enum.GetValues(typeof(AttackType)) as AttackType[];
-        List<Unit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        List<BattleUnit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
         BuffManager buffManager = Opponent[0].GetComponent<BuffManager>();
         Unit unit = Opponent[0].GetComponent<Unit>();
         foreach(AttackType type in attackType) // 여기서 공격 2번하게 데미지 계산
@@ -193,7 +193,7 @@ public class Enemy_Skill
     {
         if(skillData.rank != 0)
         {
-            List<Unit> enemyGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+            List<BattleUnit> enemyGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
             for (int i = 0; i < enemyGO.Count; i++)
             {
                 BuffManager buffManager = enemyGO[i].GetComponent<BuffManager>();
@@ -203,7 +203,7 @@ public class Enemy_Skill
         }
         else
         {
-            List<Unit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+            List<BattleUnit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
             for (int i = 0; i < playerGO.Count; i++)
             {
                 BuffManager buffManager = playerGO[i].GetComponent<BuffManager>();
@@ -227,7 +227,7 @@ public class Enemy_Skill
 
     public void Ghost(SkillData skillData)
     {
-        List<Unit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        List<BattleUnit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
         for (int i = 0; i < playerGO.Count; i++)
         {
             playerGO[i].GetComponent<Unit>().stat.accuracy -= 10f; // 수치는 미정
