@@ -8,67 +8,58 @@ using UnityEngine.UI;
 
 public class StationController : MonoBehaviour
 {
-    Button button;
+    public Button button;
 
-    public BattleUnit unit;
+    public BattleUnit battleUnit;
     public int stationNumber;
     public bool isSelected;
     public bool isTarget;
-    public bool noUnit;
 
-    void Awake()
+    void OnEnable()
     {
         isTarget = false;
+        button = GetComponent<Button>();
+        button.enabled = false;
     }
 
-    public void SetUp(BattleUnit unit)
+    public void Initailize(BattleUnit battleUnit = null)
     {
-        button = gameObject.GetComponent<Button>();
-        this.unit = unit;
+        isTarget = false;
+        if (battleUnit != null) this.battleUnit = battleUnit;
+        button = GetComponent<Button>();
         button.enabled = true;
-        noUnit = true;
+
     }
 
     public void Select()
     {
         isSelected = true;
-        unit.UpdateOutline(true);
+        battleUnit.UpdateOutline(true);
     }
     public void NonSelect()
     {
         isSelected = false;
-        unit.UpdateOutline(false);
+        battleUnit.UpdateOutline(false);
     }
 
     public void Target()
     {
-        if (unit == null) return;
+        if (battleUnit == null) return;
         isTarget = true;
-        unit.UpdateOutline(true);
+        battleUnit.UpdateOutline(true);
     }
 
     public void NonTarget()
     {
-        if (unit == null) return;
+        if (battleUnit == null) return;
         isTarget = false;
 
-        unit.UpdateOutline(false);
+        battleUnit.UpdateOutline(false);
     }
 
     public void OnClick()
     {
-        unit.UpdateOutline(false);
+        battleUnit.UpdateOutline(false);
         isTarget = true;
-    }
-
-    void Cancel()
-    {
-        unit.UpdateOutline(false);
-        isTarget = false;
-    }
-
-    public void Dead()
-    {
-        button.enabled = false;
     }
 }

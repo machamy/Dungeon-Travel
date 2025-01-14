@@ -10,6 +10,7 @@ public abstract class BattleUnit : MonoBehaviour
     public StatData statData;
     public CharacterData data; // 복사된 스탯 데이터
     public bool isDie;
+    public bool isGuard;
     public float currentHP;   // 현재 HP
     public float currentMP;   // 현재 MP
     protected Character originalCharacter; // 원본 Character 데이터
@@ -17,7 +18,9 @@ public abstract class BattleUnit : MonoBehaviour
     public bool isEnemy;
     public string Name;
     public SkillData[] skillData = new SkillData[4];
+
     public HUDmanager hudManager;
+    public StationController stationController;
 
     protected float moveDistance = 100f; // 이동할 거리
     protected float shakeDuration = 3f; // 흔드는 시간
@@ -88,7 +91,7 @@ public abstract class BattleUnit : MonoBehaviour
 
     public virtual void Guard()
     {
-
+        isGuard = true;
     }
 
     /// <summary>
@@ -96,6 +99,13 @@ public abstract class BattleUnit : MonoBehaviour
     /// </summary>
     public void TakeDamage(BattleUnit attackUnit, SkillData skillData = null)
     {
+        if (isDie) return;
+        if (isGuard)
+        {
+            Debug.Log("방어");
+            isGuard = false;
+            return;
+        }
         float damage = attackUnit.statData.atk - statData.def;
         currentHP -= damage; // 복사된 데이터에서 HP 감소
 
@@ -113,8 +123,20 @@ public abstract class BattleUnit : MonoBehaviour
     /// </summary>
     public virtual void Die()
     {
-        
+        stationController.button.enabled = false;
+        spriteRenderer.enabled = false;
+        isDie = true;
         // 필요 시 추가적인 처리
+    }
+
+    /// <summary>
+    /// 유닛 파괴
+    /// </summary>
+    public virtual void Destroy()
+    {
+        stationController.enabled = false;
+        hudManager.Destroy();
+        Destroy(gameObject);
     }
 
     /// <summary>

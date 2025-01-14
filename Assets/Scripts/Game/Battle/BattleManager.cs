@@ -328,13 +328,15 @@ public class BattleManager : MonoBehaviour
 
     public void Destroy()
     {
-        for(int i = 0; battlePlayerUnit[i] != null && i< battlePlayerUnit.Length; i++)
+        for(int i = 0; i < battlePlayerUnit.Length; i++)
         {
-            Destroy(battlePlayerUnit[i].gameObject);
+            if (battlePlayerUnit[i] == null) break;
+            battlePlayerUnit[i].Destroy();
         }
-        for (int i = 0; battleEnemyUnit[i] != null && i < battleEnemyUnit.Length; i++)
+        for (int i = 0; i < battleEnemyUnit.Length; i++)
         {
-            Destroy(battleEnemyUnit[i].gameObject);
+            if (battleEnemyUnit[i] == null) break;
+            battleEnemyUnit[i].Destroy();
         }
         alivePlayer = 0;
         aliveEnemy = 0;

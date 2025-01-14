@@ -39,7 +39,7 @@ public class HUDmanager : MonoBehaviour
         HPtext.text = HP + "/" + maxHP;
         MPtext.text = MP + "/" + maxMP;
 
-        this.gameObject.SetActive(true);
+        gameObject.SetActive(true);
 
         Image livepanel = GetComponent<Image>();
         livepanel.color = new Color(1, 1, 1, 0.4f);
@@ -71,5 +71,10 @@ public class HUDmanager : MonoBehaviour
 
         HPtext.text = unit.currentHP + "/" + maxHP;
         MPtext.text = unit.currentMP + "/" + maxMP;
+    }
+
+    public void Destroy()
+    {
+        gameObject.SetActive(false);
     }
 }

@@ -169,7 +169,6 @@ public class Unit : MonoBehaviour
         else BattleManager.alivePlayer--;
         isDead = true;
         gameObject.SetActive(false);
-        stationController.Dead();
     }
     #endregion
 

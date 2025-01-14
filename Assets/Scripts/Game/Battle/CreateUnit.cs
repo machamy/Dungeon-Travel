@@ -80,7 +80,8 @@ public class CreateUnit : MonoBehaviour
         player = Instantiate(playerPrefab, playerStation[playerData[i].position].transform);
         battlePlayerUnit[i] = player.GetComponent<BattlePlayerUnit>();
         battlePlayerUnit[i].Initialize(playerData[i]);
-        playerStationController[i].SetUp(battlePlayerUnit[i]);
+        battlePlayerUnit[i].stationController = playerStationController[i];
+        playerStationController[i].Initailize(battlePlayerUnit[i]);
         playerHUD[i].Initialize(battlePlayerUnit[i]);
         playerCount++;
     }
@@ -108,7 +109,8 @@ public class CreateUnit : MonoBehaviour
         image.sprite = Resources.Load<Sprite>($"BattlePrefabs/EnemySprites/{sprite_name}");
 
         // HUD 설정
-        enemyStationController[enemyCount].SetUp(battleEnemyUnit[enemyCount]);
+        enemyStationController[enemyCount].Initailize(battleEnemyUnit[enemyCount]);
+        battleEnemyUnit[enemyCount].stationController = enemyStationController[enemyCount];
         enemyHUD[enemyCount].Initialize(battleEnemyUnit[enemyCount]); //<- StatData와 Data 통일하고 다시 넣기
 
         enemyCount++;

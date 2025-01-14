@@ -27,14 +27,10 @@ public class BattlePlayerUnit : BattleUnit
         }
 
     }
-    public override void Guard()
-    {
 
-    }
     public override void Die()
     {
         base.Die();
         BattleManager.alivePlayer--;
     }
-
 }

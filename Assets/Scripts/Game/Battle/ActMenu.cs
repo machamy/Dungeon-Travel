@@ -146,6 +146,7 @@ public class ActMenu : MonoBehaviour
     public void OnGuard()
     {
         turnUnit.Guard();
+        battleManager.EndSmallTurn();
     }
 
     public void SkillSelect(int skillNumber)
@@ -158,6 +159,9 @@ public class ActMenu : MonoBehaviour
     bool isEnemyTarget = false;
     public int targetInt{ get; set; }
 
+    /// <summary>
+    /// 타겟 선택 후 클릭 시 작동
+    /// </summary>
     public void SetTarget()
     {
         if (isEnemyTarget) targetStation = enemyStationController;
@@ -173,11 +177,14 @@ public class ActMenu : MonoBehaviour
             }
         }
 
-        Debug.Log(targetUnit);
         StartCoroutine(turnUnit.Attack(targetUnit));
         battleManager.EndSmallTurn();
     }
 
+    /// <summary>
+    /// event trigger으로 선택될 때 작동
+    /// </summary>
+    /// <param name="targetInt"></param>
     public void SelectTarget(int targetInt)
     {
         this.targetInt = targetInt;
@@ -186,7 +193,6 @@ public class ActMenu : MonoBehaviour
         {
             playerStationController[i].NonTarget();
             enemyStationController[i].NonTarget();
-            
         }
 
         if(useSkill == null) isEnemyTarget = true;
