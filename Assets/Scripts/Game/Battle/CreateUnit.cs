@@ -74,6 +74,7 @@ public class CreateUnit : MonoBehaviour
 
     public void PlayerUnitSpawn(int i)
     {
+        Debug.Log("PlayerUnitSpawn Start");
         GameObject player;
         if (playerData[i].position == -1) return;
 
@@ -118,4 +119,7 @@ public class CreateUnit : MonoBehaviour
 
     public BattlePlayerUnit[] GetPlayerUnit() { return battlePlayerUnit; }
     public BattleEnemyUnit[] GetEnemyUnit() {  return battleEnemyUnit; }
+    public StationController[] GetPlayerStationController() { return playerStationController; }
+    public StationController[] GetEnemyStationController() { return enemyStationController; }
+    
 }

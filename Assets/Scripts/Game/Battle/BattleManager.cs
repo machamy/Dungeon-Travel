@@ -75,6 +75,8 @@ public class BattleManager : MonoBehaviour
     public Dictionary<string, int> DungeonToBattleDataList = new Dictionary<string, int>(); // 던전에서 배틀로 넘어올 때 데이터를 담아오는 리스트
     public int floor;// 던전에서 배틀로 넘어올 때 데이터를 담아오는 변수
 
+    public DungeonToBattleDataSO dungeonToBattleDataSO;
+    public BattleToDungeonDataSO battleToDungeonDataSO;
     private void Awake()
     {
         DB.Instance.UpdateDB();
@@ -105,9 +107,9 @@ public class BattleManager : MonoBehaviour
         Debug.Log("SetUp 완료");
     }
 
-    public List<BattleUnit> GetPlayerUnits(TargetType targetType)
+    public List<BattlePlayerUnit> GetPlayerUnits(TargetType targetType)
     {
-        List<BattleUnit> goList = new List<BattleUnit>();
+        List<BattlePlayerUnit> goList = new List<BattlePlayerUnit>();
         switch (targetType)
         {
             case TargetType.Single:

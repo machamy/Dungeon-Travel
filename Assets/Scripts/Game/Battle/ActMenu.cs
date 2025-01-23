@@ -12,6 +12,8 @@ using System;
 using System.Collections.Generic;
 using UnityEditor.SearchService;
 using System.Security.Cryptography;
+using UnityEditor.Playables;
+using Scripts;
 
 public class ActMenu : MonoBehaviour
 {
@@ -27,8 +29,8 @@ public class ActMenu : MonoBehaviour
     public UnityEngine.UI.Button[] itemButtons; // item_1, item_2, item_3, back 순서 
     public UnityEngine.UI.Button[] guardButtons; // o,x 순서
 
-    public StationController[] playerStationController = new StationController[6];
-    public StationController[] enemyStationController = new StationController[6];
+    public StationController[] playerStationController;
+    public StationController[] enemyStationController;
 
     public TextMeshProUGUI playerName;
     public TextMeshProUGUI[] skillName;
@@ -65,6 +67,8 @@ public class ActMenu : MonoBehaviour
         this.battleManager = battleManager;
         playerUnits = creatUnit.GetPlayerUnit();
         enemyUnits = creatUnit.GetEnemyUnit();
+        playerStationController = creatUnit.GetPlayerStationController();
+        enemyStationController = creatUnit.GetEnemyStationController();
     }
 
     /// <summary>
@@ -267,6 +271,41 @@ public class ActMenu : MonoBehaviour
             }
         }
         else { enemyStationController[targetInt].Target(); }
+    }
+
+    public List<BattlePlayerUnit> GetPlayerUnit(TargetType targetType)
+    {
+        List<BattlePlayerUnit> battlePlayerUnit = new List<BattlePlayerUnit>();
+        switch (targetType)
+        {
+            case TargetType.Single:
+                //int range = Scripts.Utility.WeightedRandom(20, 20, 20, 20, 20); // 나중에 살아있는 친구들만 선택하게 수정
+                if(playerStationController[0].GetBattlePlayerUnit() != null) // 임시로 맨 앞에 있는 애만 공격하도록
+                    battlePlayerUnit.Add(playerStationController[0].GetBattlePlayerUnit());
+                break;
+            case TargetType.All:
+                for(int i = 0; i<6;i++)
+                {
+                    if (playerStationController[i].GetBattlePlayerUnit() != null)
+                        battlePlayerUnit.Add(playerStationController[i].GetBattlePlayerUnit());
+                }
+                break;
+            case TargetType.Front:
+                for(int i = 0; i<3;i++)
+                {
+                    if (playerStationController[i].GetBattlePlayerUnit() != null)
+                        battlePlayerUnit.Add(playerStationController[i].GetBattlePlayerUnit());
+                }
+                break;
+            case TargetType.Back:
+                for (int i = 3; i < 6; i++)
+                {
+                    if (playerStationController[i].GetBattlePlayerUnit() != null)
+                        battlePlayerUnit.Add(playerStationController[i].GetBattlePlayerUnit());
+                }
+                break;
+        }
+        return battlePlayerUnit;
     }
 
 

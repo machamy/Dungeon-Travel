@@ -97,7 +97,7 @@ public abstract class BattleUnit : MonoBehaviour
     /// <summary>
     /// 데미지를 받을 때 호출
     /// </summary>
-    public void TakeDamage(BattleUnit attackUnit, SkillData skillData = null)
+    public void TakeDamage(float takenDamage, SkillData skillData = null)
     {
         if (isDie) return;
         if (isGuard)
@@ -106,8 +106,17 @@ public abstract class BattleUnit : MonoBehaviour
             isGuard = false;
             return;
         }
-        float damage = attackUnit.statData.atk - statData.def;
-        currentHP -= damage; // 복사된 데이터에서 HP 감소
+
+        float damage = takenDamage - statData.def; // 계산식 없어서 임시로 식 만들어 놓음
+        if(damage > 0)
+        {
+            currentHP -= damage; // 복사된 데이터에서 HP 감소
+        }
+        else
+        {
+            damage = 0;
+            currentHP -= damage;
+        }
 
         hudManager.UpdateHUD();
         if (currentHP <= 0)

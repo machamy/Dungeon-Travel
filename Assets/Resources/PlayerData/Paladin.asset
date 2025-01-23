@@ -23,8 +23,8 @@ MonoBehaviour:
   _str: 0
   _mag: 0
   _luk: 0
-  _atk: 50
-  _def: 50
+  _atk: 10
+  _def: 0
   _mdef: 0
   _agi: 10
   _acc: 0

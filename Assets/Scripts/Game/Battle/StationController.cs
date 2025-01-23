@@ -26,6 +26,8 @@ public class StationController : MonoBehaviour
     {
         isTarget = false;
         if (battleUnit != null) this.battleUnit = battleUnit;
+        Debug.Log(this.battleUnit);
+        Debug.Log(battleUnit);
         button = GetComponent<Button>();
         button.enabled = true;
 
@@ -61,5 +63,13 @@ public class StationController : MonoBehaviour
     {
         battleUnit.UpdateOutline(false);
         isTarget = true;
+    }
+
+    public BattlePlayerUnit GetBattlePlayerUnit()
+    {
+        BattlePlayerUnit battlePlayerUnit = null;
+        if (battleUnit.gameObject.GetComponent<BattlePlayerUnit>() != null)
+            battlePlayerUnit = battleUnit.gameObject.GetComponent<BattlePlayerUnit>();
+        return battlePlayerUnit;
     }
 }

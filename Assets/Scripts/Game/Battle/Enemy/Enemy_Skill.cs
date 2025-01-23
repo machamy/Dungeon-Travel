@@ -11,12 +11,12 @@ using UnityEditor.PackageManager;
 public class Enemy_Skill
 {
     BattleEnemyUnit enemy;
-    BattleManager battleManager;
+    ActMenu actMenu;
     int passiveDuration;
     public Enemy_Skill(BattleEnemyUnit enemy)
     {
         this.enemy = enemy;
-        battleManager = GameObject.Find("BattleSystem").GetComponent<BattleManager>();
+        actMenu = GameObject.Find("BattleCanvas").GetComponentInChildren<ActMenu>();
     }
 
     public List<Action<SkillData>> GetSkillList(int floor, string enemyName)
@@ -132,7 +132,7 @@ public class Enemy_Skill
 
     public void EnemyAttack(SkillData skillData) // 특별한 로직이 아닌 일반적인 공격
     {
-        List<BattleUnit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        List<BattlePlayerUnit> Opponent = actMenu.GetPlayerUnit(skillData.enemyTargetType);
         //Debug.Log($"Opponent : {Opponent.Count}");
         for (int i = 0; i < Opponent.Count; i++)
         {
@@ -142,8 +142,9 @@ public class Enemy_Skill
                 continue;
             }
             BuffManager buffManager = Opponent[i].GetComponent<BuffManager>();
-            Unit unit = Opponent[i].GetComponent<Unit>(); // 데미지 계산식 나오면 수정
-            unit.TakeDamage(skillData.physicsDamage);
+            BattlePlayerUnit unit = Opponent[i].GetComponent<BattlePlayerUnit>(); // 데미지 계산식 나오면 수정
+            float temporaryDamage = Mathf.Round(UnityEngine.Random.Range(skillData.minPhysicsDamage.GetRaw(), skillData.maxPhysicsDamage.GetRaw()));
+            unit.TakeDamage(temporaryDamage);
             if (skillData.debuffType != DebuffType.None)
                 buffManager.DebuffAdd(skillData.debuffType, skillData.buffRatio, 2, 0); // 데미지는 아직 정해지지 않음
         }
@@ -166,7 +167,7 @@ public class Enemy_Skill
     public void Cut_Stab(SkillData skillData)
     {
         AttackType[] attackType = Enum.GetValues(typeof(AttackType)) as AttackType[];
-        List<BattleUnit> Opponent = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        List<BattlePlayerUnit> Opponent = actMenu.GetPlayerUnit(skillData.enemyTargetType);
         BuffManager buffManager = Opponent[0].GetComponent<BuffManager>();
         Unit unit = Opponent[0].GetComponent<Unit>();
         foreach(AttackType type in attackType) // 여기서 공격 2번하게 데미지 계산
@@ -180,20 +181,20 @@ public class Enemy_Skill
 
     public void Bandits(SkillData skillData)
     {
-        if(BattleManager.aliveEnemy < 3)
-        {
-            for(int i = BattleManager.aliveEnemy; i < 3; i++)
-            {
-                battleManager.createUnit.EnemyUnitSpawn(2, "도적선봉대");
-            }
-        }
+        //if(BattleManager.aliveEnemy < 3)
+        //{
+        //    for(int i = BattleManager.aliveEnemy; i < 3; i++)
+        //    {
+        //        actMenu.createUnit.EnemyUnitSpawn(2, "도적선봉대");
+        //    }
+        //}
     }
 
     public void Authority(SkillData skillData)
     {
         if(skillData.rank != 0)
         {
-            List<BattleUnit> enemyGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+            List<BattlePlayerUnit> enemyGO = actMenu.GetPlayerUnit(skillData.enemyTargetType);
             for (int i = 0; i < enemyGO.Count; i++)
             {
                 BuffManager buffManager = enemyGO[i].GetComponent<BuffManager>();
@@ -203,7 +204,7 @@ public class Enemy_Skill
         }
         else
         {
-            List<BattleUnit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+            List<BattlePlayerUnit> playerGO = actMenu.GetPlayerUnit(skillData.enemyTargetType);
             for (int i = 0; i < playerGO.Count; i++)
             {
                 BuffManager buffManager = playerGO[i].GetComponent<BuffManager>();
@@ -227,7 +228,7 @@ public class Enemy_Skill
 
     public void Ghost(SkillData skillData)
     {
-        List<BattleUnit> playerGO = battleManager.GetPlayerUnits(skillData.enemyTargetType);
+        List<BattlePlayerUnit> playerGO = actMenu.GetPlayerUnit(skillData.enemyTargetType);
         for (int i = 0; i < playerGO.Count; i++)
         {
             playerGO[i].GetComponent<Unit>().stat.accuracy -= 10f; // 수치는 미정
@@ -236,8 +237,7 @@ public class Enemy_Skill
 
     public void Reincarnation(SkillData skillData)
     {
-        battleManager.bossPassive = ReincarnationActive;
-        int passiveDuration = battleManager.BigTurnCount;
+        
     }
 
     public void ReincarnationActive(SkillData skillData)

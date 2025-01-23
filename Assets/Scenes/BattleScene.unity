@@ -499,6 +499,7 @@ MonoBehaviour:
   - {fileID: 192118751029230665}
   - {fileID: 5108976764259643495}
   - {fileID: 7113080710743357454}
+  dungeonToBattleData: {fileID: 0}
 --- !u!1 &555016244
 GameObject:
   m_ObjectHideFlags: 0
@@ -3711,6 +3712,7 @@ MonoBehaviour:
   stationNumber: 1
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &881575134828795503
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6746,6 +6748,7 @@ MonoBehaviour:
   stationNumber: 3
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &1811261258512126572
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9050,6 +9053,7 @@ MonoBehaviour:
   stationNumber: 7
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &2635742858867967275
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -9188,6 +9192,7 @@ MonoBehaviour:
   stationNumber: 9
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!1 &2752788896610509564
 GameObject:
   m_ObjectHideFlags: 0
@@ -10194,6 +10199,7 @@ MonoBehaviour:
   stationNumber: 8
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &3149173520542679268
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -10938,6 +10944,7 @@ MonoBehaviour:
   stationNumber: 5
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &3407133277344420732
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -12819,6 +12826,7 @@ MonoBehaviour:
   stationNumber: 2
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &4113901289721789630
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14391,6 +14399,7 @@ MonoBehaviour:
   stationNumber: 9
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!114 &4549535461177635262
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14407,6 +14416,7 @@ MonoBehaviour:
   stationNumber: 6
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!114 &4549966499693922397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17154,8 +17164,11 @@ MonoBehaviour:
   actMenu: {fileID: 1730080831}
   BigTurnCount: 0
   BigTurn: {fileID: 0}
-  dungeonToBattleData: {fileID: 11400000, guid: e54490d7aaacad54ebc688ddd75fa9e0, type: 2}
-  battleToDungeonData: {fileID: 11400000, guid: 6d4d105cf7a58974d844b9b2226fd371, type: 2}
+  encounter: 0
+  isVictory: 0
+  floor: 0
+  dungeonToBattleDataSO: {fileID: 11400000, guid: e54490d7aaacad54ebc688ddd75fa9e0, type: 2}
+  battleToDungeonDataSO: {fileID: 11400000, guid: 6d4d105cf7a58974d844b9b2226fd371, type: 2}
 --- !u!1 &5499353039201421400
 GameObject:
   m_ObjectHideFlags: 0
@@ -26728,6 +26741,7 @@ MonoBehaviour:
   stationNumber: 0
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!114 &8675244422503615725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26761,6 +26775,7 @@ MonoBehaviour:
   stationNumber: 9
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!222 &8685543294126662523
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -27241,6 +27256,7 @@ MonoBehaviour:
   stationNumber: 4
   isSelected: 0
   isTarget: 0
+  noUnit: 0
 --- !u!114 &8888400658055548716
 MonoBehaviour:
   m_ObjectHideFlags: 0
