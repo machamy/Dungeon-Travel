@@ -1,4 +1,4 @@
-﻿using Scripts.Data;
+using Scripts.Data;
 using System;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -43,5 +43,15 @@ namespace Scripts.Entity
         /// 현재 마나
         /// </summary>
         public float mp;
+
+        /// <summary>
+        /// 민첩 수치 (임시)
+        /// </summary>
+        public float agi;
+
+        /// <summary>
+        /// 아군이면 참, 적이면 거짓
+        /// </summary>
+        public bool isFriendly;
     }
 }

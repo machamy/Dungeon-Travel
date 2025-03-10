@@ -53,6 +53,8 @@ namespace Scripts.Entity
             rawBaseStat = statData;
             hp = rawBaseStat.hp;
             mp = rawBaseStat.mp;
+            agi = rawBaseStat.agi; //임시방편으로 추가해놓음
+            isFriendly = true;     //임시방편
 
             //SkillTree 변경
             SkillTree.SetClass(_class);
