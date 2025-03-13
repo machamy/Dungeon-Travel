@@ -50,8 +50,18 @@ namespace Scripts.Entity
         public float agi;
 
         /// <summary>
-        /// 아군이면 참, 적이면 거짓
+        /// 아군이면 참, 적이면 거짓 (임시)
         /// </summary>
         public bool isFriendly;
+
+        /// <summary>
+        /// 임시
+        /// </summary>
+        public bool isDead;
+
+        /// <summary>
+        /// 파티 내의 위치
+        /// </summary>
+        public int position;
     }
 }

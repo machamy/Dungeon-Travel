@@ -55,6 +55,7 @@ namespace Scripts.Entity
             mp = rawBaseStat.mp;
             agi = rawBaseStat.agi; //임시방편으로 추가해놓음
             isFriendly = true;     //임시방편
+            isDead = false;        //임시
 
             //SkillTree 변경
             SkillTree.SetClass(_class);

@@ -35,51 +35,57 @@ public class BattleSystemManager1 : MonoBehaviour
         //테스트 파티 추가
         characterManager.TestParty();
 
-        // 캔버스 초기화
-        backgroundManager.Initailize();
-        battleUIManager.gameObject.SetActive(true);
-        statusManager.gameObject.SetActive(true);
-        worldManager.gameObject.SetActive(true);
-
         //아군 소환
         friendlyCharacter = characterManager.SpawnFriendlyCharacter();
         //적 소환
         enemyCharacter = characterManager.SpawnEnemyCharacter();
 
-        //상태창 연결
+        // 매니저 초기화
+        characterManager.Initialize();
+        backgroundManager.Initailize();
         statusManager.Inistialize(friendlyCharacter, enemyCharacter);
+        battleUIManager.Initailize(friendlyCharacter,enemyCharacter);
 
         StartCoroutine(BattleCoroutine());
     }
 
     IEnumerator BattleCoroutine()
     {
+        backgroundManager.addTurn();
+
+        //첫번째 턴
         yield return FirstTurnOrder();
         while (turnOrder.Count > 0)
         {
+            Debug.Log(turnOrder.Peek().Name + " 턴 시작");
             if (turnOrder.Peek().isFriendly)
             {
                 yield return FriendlyTurn(turnOrder.Dequeue());
             }
             else
             {
-                yield return null;
+                yield return EnemyTurn(turnOrder.Dequeue());
             }
         }
+        backgroundManager.addTurn();
+
+        //2번째 턴부터
         while (true)
         {
             yield return GenericTurnOrder();
             while(turnOrder.Count > 0)
             {
+                Debug.Log(turnOrder.Peek().Name + " 턴 시작");
                 if (turnOrder.Peek().isFriendly)
                 {
                     yield return FriendlyTurn(turnOrder.Dequeue());
                 }
                 else
                 {
-                    yield return null;
+                    yield return EnemyTurn(turnOrder.Dequeue());
                 }
             }
+            backgroundManager.addTurn();
         }
     }
 
@@ -177,9 +183,21 @@ public class BattleSystemManager1 : MonoBehaviour
 
     IEnumerator FriendlyTurn(Character turnCharacter)
     {
-        Debug.Log("턴시작");
+        //캐릭터 가운데로 이동
         yield return characterManager.MoveCenter(turnCharacter);
-        
+
+        characterManager.OnOutline(turnCharacter);
+
+        //캐릭터 행동 선택
+        yield return battleUIManager.ActCoroutine();
+
+        characterManager.OffOutline(turnCharacter);
+        ///캐릭터 제자리로 이동
         yield return characterManager.MoveInplace(turnCharacter);
+    }
+
+    IEnumerator EnemyTurn(Character turnCharacter)
+    {
+        yield return null;
     }
 }

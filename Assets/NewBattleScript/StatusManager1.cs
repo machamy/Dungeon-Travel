@@ -15,6 +15,7 @@ public class StatusManager1 : MonoBehaviour
 
     public void Inistialize(List<Character> friendly, List<Character> enemy)
     {
+        gameObject.SetActive(true);
         friendlyCharacter = friendly;
         enemyCharacter = enemy;
 

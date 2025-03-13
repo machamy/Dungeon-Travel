@@ -1,17 +1,27 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 using Scripts.UserData;
 using Scripts.Entity;
 using Scripts.Data;
 
+
 public class CharacterManager1 : MonoBehaviour
 {
     public GameObject unitPrefab;
+    MaterialPropertyBlock mpb;
+
+    public Color outlineColor = Color.red;
+    public int outlineSize = 2;
 
     public List<Transform> friendlyStation;
     public List<Transform> enemyStation;
+
+    public List<Button> friendlyButton;
+    public List<Button> enemyButton;
+
     public Transform turnStation;
 
     List<Character> friendlyCharacter;
@@ -25,6 +35,15 @@ public class CharacterManager1 : MonoBehaviour
     /// </summary>
     public float duration;
 
+    public void Initialize()
+    {   
+        //아웃라인 초기화
+        mpb = new MaterialPropertyBlock();
+        unitPrefab.GetComponent<SpriteRenderer>().GetPropertyBlock(mpb);
+        mpb.SetColor("_OutlineColor", outlineColor);
+        mpb.SetFloat("_OutlineSize", outlineSize);
+    }
+
     /// <summary>
     /// Create Test Party and print Character's info
     /// </summary>
@@ -34,18 +53,14 @@ public class CharacterManager1 : MonoBehaviour
 
         friendlyCharacter = partyInstance.GetCharacters();  // 파티 리스트 가져오기
 
-        for (int i = 0; i < 6; i++)
-        {
-            friendlyCharacterObject.Add(null);
-            enemyCharacterObject.Add(null);
-        }
+        friendlyCharacterObject = new List<GameObject>();
+        enemyCharacterObject = new List<GameObject>();
 
         foreach (Character character in friendlyCharacter)
         {
             Debug.Log($"캐릭터 이름: {character.Name}, 클래스: {character._class.name}, 레벨: {character.LV}");
         }
     }
-
     public List<Character> SpawnFriendlyCharacter()
     {
         int position = 0;
@@ -53,13 +68,19 @@ public class CharacterManager1 : MonoBehaviour
         {
             if (character != null)
             {
-                friendlyCharacterObject[position] = Instantiate(unitPrefab, friendlyStation[position]);
+                friendlyCharacterObject.Add(Instantiate(unitPrefab, friendlyStation[position]));
+                character.position = position;
+
+                friendlyButton[position].interactable = true;
+            }
+            else
+            {
+                friendlyCharacterObject.Add(new GameObject());
             }
             position++;
         }
         return friendlyCharacter;
     }
-
     public List<Character> SpawnEnemyCharacter()
     {
         int position = 0;
@@ -94,7 +115,14 @@ public class CharacterManager1 : MonoBehaviour
         {
             if (character != null)
             {
-                enemyCharacterObject[position] = Instantiate(unitPrefab, enemyStation[position]);
+                enemyCharacterObject.Add(Instantiate(unitPrefab, enemyStation[position]));
+                character.position = position;
+
+                enemyButton[position].interactable = true;
+            }
+            else
+            {
+                enemyCharacterObject.Add(new GameObject());
             }
             position++;
         }
@@ -104,14 +132,7 @@ public class CharacterManager1 : MonoBehaviour
     public IEnumerator MoveCenter(Character character)
     {
         bool isFriendly = true;
-        int index = friendlyCharacter.IndexOf(character);
-        if (index == -1)
-        {
-            isFriendly = false;
-            index = enemyCharacter.IndexOf(character);
-        }
-
-        if (index == -1) yield break; // 캐릭터가 없으면 종료
+        int index = character.position;
 
         Transform targetTransform = isFriendly ? friendlyCharacterObject[index].transform : enemyCharacterObject[index].transform;
         Vector3 startPos = targetTransform.position;
@@ -132,14 +153,7 @@ public class CharacterManager1 : MonoBehaviour
     public IEnumerator MoveInplace(Character character)
     {
         bool isFriendly = true;
-        int index = friendlyCharacter.IndexOf(character);
-        if (index == -1)
-        {
-            isFriendly = false;
-            index = enemyCharacter.IndexOf(character);
-        }
-
-        if (index == -1) yield break; // 캐릭터가 없으면 종료
+        int index = character.position;
 
         Transform targetTransform = isFriendly ? friendlyCharacterObject[index].transform : enemyCharacterObject[index].transform;
         Vector3 startPos = turnStation.position;
@@ -158,5 +172,20 @@ public class CharacterManager1 : MonoBehaviour
         targetTransform.position = endPos; // 정확한 위치 보정
     }
 
-
+    public void OnOutline(Character character)
+    {
+        mpb.SetFloat("_Outline", 1f);
+        if (character.isFriendly)
+            friendlyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+        else
+            enemyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+    }
+    public void OffOutline(Character character)
+    {
+        mpb.SetFloat("_Outline", 0f);
+        if (character.isFriendly)
+            friendlyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+        else
+            enemyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+    }
 }

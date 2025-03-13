@@ -22,7 +22,7 @@ public class StatusUpdater : MonoBehaviour
         maxMp = character.rawBaseStat.mp;
         // characterImage
 
-        nameText.text = $"{character.Name}";
+        nameText.text = character.isFriendly ? $"{character.Name} / {character._class.name}" : $"{character.Name}";
 
         hpText.text = $"{character.hp}/{maxHp}";
         mpText.text = $"{character.mp}/{maxMp}";
