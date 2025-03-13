@@ -37,11 +37,14 @@ public class StatusUpdater : MonoBehaviour
 
     IEnumerator UpdateStatus()
     {
-        hpText.text = $"{character.hp}/{maxHp}";
-        mpText.text = $"{character.mp}/{maxMp}";
+        while (true)
+        {
+            hpText.text = $"{character.hp}/{maxHp}";
+            mpText.text = $"{character.mp}/{maxMp}";
 
-        hpSlider.value = character.hp / maxHp;
-        mpSlider.value = character.mp / maxMp;
-        yield return new WaitForSeconds(0.1f);
+            hpSlider.value = character.hp / maxHp;
+            mpSlider.value = character.mp / maxMp;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }

@@ -4,27 +4,31 @@ using UnityEngine;
 using UnityEngine.UI;
 using Scripts.Entity;
 using Scripts.Data;
+using TMPro;
 
 public class BattleUIManager1 : MonoBehaviour
 {
-    public enum ActEnum : int { Choose, Attack, Item, Skill, Guard, End}
+    public BattleSystemManager1 battleSystemManager;
+    public CharacterManager1 characterManager;
+    public enum ActEnum : int { Choose, Attack, Item, Skill, Guard}
 
     public ActEnum actEnum;
     public GameObject actPanel, skillPanel, itemPanel, guardPanel;
+    public Button attackButton, itemButton, skillButton, guardButton;
+    public Button previousButton;
 
     public List<Character> friendlyCharacter;
     public List<Character> enemyCharacter;
     public Character turnCharacter;
+    public Character targetCharacter;
 
-    bool isTargetEnemy;
-    public int targetPosition;
-    bool keep;
-    
+    bool keepGoing;
     public void Initailize(List<Character> friendlyCharacter, List<Character> enemyCharacter)
     {
         gameObject.SetActive(true);
         this.friendlyCharacter = friendlyCharacter;
         this.enemyCharacter = enemyCharacter;
+        previousButton = attackButton;
     }
 
     /// <summary>
@@ -38,56 +42,52 @@ public class BattleUIManager1 : MonoBehaviour
 
     public IEnumerator ActCoroutine()
     {
-        isTargetEnemy = false;
-        keep = true;
+        keepGoing = true;
         actEnum = ActEnum.Choose;
-        targetPosition = -1;
-
-        actPanel.SetActive(true);
-        skillPanel.SetActive(false);
-        itemPanel.SetActive(false);
-        guardPanel.SetActive(false);
-
-        while (keep)
+        targetCharacter = null;
+        previousButton.Select();
+        
+        while (keepGoing)
         {
             switch (actEnum)
             {
                 case ActEnum.Choose:
                     {
+                        actPanel.SetActive(true);
+                        yield return new WaitUntil(() => actEnum != ActEnum.Choose);
                         break;
                     }
 
                 case ActEnum.Attack:
                     {
-                        isTargetEnemy = true;
-                        yield return Target();
+                        previousButton = attackButton;
+                        actPanel.SetActive(false);
+                        yield return characterManager.Target(true);
+                        if (targetCharacter != null)
+                        {
+                            yield return battleSystemManager.Attack(turnCharacter, targetCharacter);
+                            keepGoing = false;
+                        }
+                        actEnum = ActEnum.Choose;
                         break;
                     }
 
                 case ActEnum.Item:
                     {
-                        
+                        previousButton = itemButton;
                         break;
                     }
                 case ActEnum.Skill:
                     {
+                        previousButton = skillButton;
                         break;
                     }
                 case ActEnum.Guard:
                     {
-                        break;
-                    }
-                case ActEnum.End:
-                    {
-                        keep = false;
-                        break;
-                    }
-                default:
-                    {
+                        previousButton = guardButton;
                         break;
                     }
             }
-
             yield return null;
         }
     }
@@ -105,54 +105,5 @@ public class BattleUIManager1 : MonoBehaviour
     IEnumerator Guard()
     {
         yield return null;
-    }
-
-    public Character target;
-    IEnumerator Target()
-    {
-        actPanel.SetActive(false);
-        targetPosition = 0; //나중에 삭제
-
-        // 적을 타겟으로하는 스킬
-        if (isTargetEnemy)
-        {
-            // 처음 select되어있는 캐릭터 정함
-            foreach (Character target in enemyCharacter)
-            {
-                if (target != null)
-                {
-                    if (target.isDead) continue; //죽어있으면 패스
-                    this.target = target;
-
-                    break;
-                }
-            }
-        }
-        // 아군을 타겟으로 하는 스킬
-        else
-        {
-            // 처음 select되어있는 캐릭터 정함
-            foreach (Character target in friendlyCharacter)
-            {
-                // 처음 select되어있는 캐릭터 정하기
-                if (target != null)
-                {
-                    if (target.isDead) continue; //죽어있으면 패스
-                    this.target = target;
-
-                    break;
-                }
-            }
-        }
-
-        bool cancel = false;
-        while (targetPosition == -1 || !cancel)
-        {
-            
-
-
-            yield return null;
-        }
-        actEnum = ActEnum.End;
     }
 }

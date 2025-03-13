@@ -5,6 +5,7 @@ using UnityEngine;
 
 using Scripts.UserData;
 using Scripts.Entity;
+using Scripts.Data;
 
 public class BattleSystemManager1 : MonoBehaviour
 {
@@ -186,18 +187,23 @@ public class BattleSystemManager1 : MonoBehaviour
         //캐릭터 가운데로 이동
         yield return characterManager.MoveCenter(turnCharacter);
 
-        characterManager.OnOutline(turnCharacter);
-
         //캐릭터 행동 선택
         yield return battleUIManager.ActCoroutine();
 
-        characterManager.OffOutline(turnCharacter);
         ///캐릭터 제자리로 이동
         yield return characterManager.MoveInplace(turnCharacter);
     }
 
     IEnumerator EnemyTurn(Character turnCharacter)
     {
+        yield return null;
+    }
+
+
+    public IEnumerator Attack(Character turnCharacter, Character targetCharacter, SkillData useSkill = null)
+    {
+        targetCharacter.hp -= 5f;
+
         yield return null;
     }
 }

@@ -6,10 +6,13 @@ using UnityEngine.UI;
 using Scripts.UserData;
 using Scripts.Entity;
 using Scripts.Data;
+using Unity.VisualScripting;
 
 
 public class CharacterManager1 : MonoBehaviour
 {
+    public BattleUIManager1 battleUIManager;
+
     public GameObject unitPrefab;
     MaterialPropertyBlock mpb;
 
@@ -36,7 +39,7 @@ public class CharacterManager1 : MonoBehaviour
     public float duration;
 
     public void Initialize()
-    {   
+    {
         //아웃라인 초기화
         mpb = new MaterialPropertyBlock();
         unitPrefab.GetComponent<SpriteRenderer>().GetPropertyBlock(mpb);
@@ -71,7 +74,7 @@ public class CharacterManager1 : MonoBehaviour
                 friendlyCharacterObject.Add(Instantiate(unitPrefab, friendlyStation[position]));
                 character.position = position;
 
-                friendlyButton[position].interactable = true;
+                friendlyButton[position].enabled = true;
             }
             else
             {
@@ -118,7 +121,7 @@ public class CharacterManager1 : MonoBehaviour
                 enemyCharacterObject.Add(Instantiate(unitPrefab, enemyStation[position]));
                 character.position = position;
 
-                enemyButton[position].interactable = true;
+                enemyButton[position].enabled = true;
             }
             else
             {
@@ -157,7 +160,7 @@ public class CharacterManager1 : MonoBehaviour
 
         Transform targetTransform = isFriendly ? friendlyCharacterObject[index].transform : enemyCharacterObject[index].transform;
         Vector3 startPos = turnStation.position;
-        Vector3 endPos = isFriendly? friendlyStation[index].position: enemyStation[index].position;
+        Vector3 endPos = isFriendly ? friendlyStation[index].position : enemyStation[index].position;
 
         float elapsedTime = 0f;
 
@@ -172,20 +175,81 @@ public class CharacterManager1 : MonoBehaviour
         targetTransform.position = endPos; // 정확한 위치 보정
     }
 
-    public void OnOutline(Character character)
+    /// <summary>
+    /// Inspector 창에서 연결
+    /// </summary>
+    /// <param name="position"></param>
+    public void OnOutline(int position)
     {
+        Character character = friendlyCharacter[position];
         mpb.SetFloat("_Outline", 1f);
+        Debug.Log(character.Name);
         if (character.isFriendly)
-            friendlyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+            friendlyCharacterObject[position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
         else
-            enemyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+            enemyCharacterObject[position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
     }
-    public void OffOutline(Character character)
+    /// <summary>
+    /// Inspector 창에서 연결
+    /// </summary>
+    /// <param name="position"></param>
+    public void OffOutline(int position)
     {
+        Character character = friendlyCharacter[position];
         mpb.SetFloat("_Outline", 0f);
         if (character.isFriendly)
             friendlyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
         else
             enemyCharacterObject[character.position].GetComponent<SpriteRenderer>().SetPropertyBlock(mpb);
+    }
+
+    int targetPosition;
+    public IEnumerator Target(bool isAttackSkill)
+    {
+        targetPosition = -1; //나중에 삭제
+
+        // 적을 타겟으로하는 스킬
+        if (isAttackSkill)
+        {
+            // 처음 select되어있는 캐릭터 정함
+            foreach (Character target in enemyCharacter)
+            {
+                if (target != null)
+                {
+                    if (target.isDead) continue; //죽어있으면 패스
+                    enemyButton[target.position].Select();
+
+                    break;
+                }
+            }
+        }
+        // 아군을 타겟으로 하는 스킬
+        else
+        {
+            // 처음 select되어있는 캐릭터 정함
+            foreach (Character target in friendlyCharacter)
+            {
+                // 처음 select되어있는 캐릭터 정하기
+                if (target != null)
+                {
+                    if (target.isDead) continue; //죽어있으면 패스
+                    friendlyButton[target.position].Select();
+                    break;
+                }
+            }
+        }
+
+        yield return new WaitUntil(() => targetPosition != -1);
+        battleUIManager.targetCharacter = isAttackSkill ? enemyCharacter[targetPosition] : friendlyCharacter[targetPosition];
+
+    }
+
+    /// <summary>
+    /// Inspector창에 버튼과 연결되어 있음
+    /// </summary>
+    /// <param name="targetPosition"></param>
+    public void Target(int targetPosition)
+    {
+        this.targetPosition = targetPosition;
     }
 }
