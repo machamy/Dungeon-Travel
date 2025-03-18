@@ -14,8 +14,10 @@ public class StatusUpdater : MonoBehaviour
 
     Character character;
     float maxHp, maxMp;
+
+    Coroutine updateCoroutine;
     public void Initialize(Character character)
-    {
+    {  
         this.character = character;
 
         maxHp = character.rawBaseStat.hp;
@@ -31,13 +33,13 @@ public class StatusUpdater : MonoBehaviour
         mpSlider.value = character.mp / maxMp;
 
         backPanel.SetActive(true);
-        StartCoroutine(UpdateStatus());
+        updateCoroutine = StartCoroutine(UpdateStatus());
     }
 
 
     IEnumerator UpdateStatus()
     {
-        while (true)
+        while (!character.isDead)
         {
             hpText.text = $"{character.hp}/{maxHp}";
             mpText.text = $"{character.mp}/{maxMp}";
@@ -46,5 +48,15 @@ public class StatusUpdater : MonoBehaviour
             mpSlider.value = character.mp / maxMp;
             yield return new WaitForSeconds(0.1f);
         }
+        Image panel = backPanel.GetComponent<Image>();
+        panel.color = new Color(0, 0, 0, 0.19f);
+    }
+
+    public void Destroy()
+    {
+        if(updateCoroutine != null) StopCoroutine(updateCoroutine);
+        character = null;
+        nameText.text = "Name/Class";
+        backPanel.SetActive(false);
     }
 }

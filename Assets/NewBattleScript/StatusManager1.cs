@@ -39,4 +39,11 @@ public class StatusManager1 : MonoBehaviour
             position++;
         }
     }
+
+    public IEnumerator DestroyAll()
+    {
+        foreach (StatusUpdater updater in friendlyStatusUpdater) updater.Destroy();
+        foreach (StatusUpdater updater in enemyStatusUpdater) updater.Destroy();
+        yield return null;
+    }
 }

@@ -21,6 +21,8 @@ public class BattleSystemManager1 : MonoBehaviour
     Queue<Character> turnOrder;
     public bool isSymbolAttacked;
 
+    Coroutine battleCoroutine;
+
     private void Awake()
     {
         DB.Instance.UpdateDB();
@@ -47,7 +49,7 @@ public class BattleSystemManager1 : MonoBehaviour
         statusManager.Inistialize(friendlyCharacter, enemyCharacter);
         battleUIManager.Initailize(friendlyCharacter,enemyCharacter);
 
-        StartCoroutine(BattleCoroutine());
+        battleCoroutine = StartCoroutine(BattleCoroutine());
     }
 
     IEnumerator BattleCoroutine()
@@ -67,6 +69,7 @@ public class BattleSystemManager1 : MonoBehaviour
             {
                 yield return EnemyTurn(turnOrder.Dequeue());
             }
+            yield return BattleCheck();
         }
         backgroundManager.addTurn();
 
@@ -85,11 +88,57 @@ public class BattleSystemManager1 : MonoBehaviour
                 {
                     yield return EnemyTurn(turnOrder.Dequeue());
                 }
+                yield return BattleCheck();
             }
             backgroundManager.addTurn();
         }
     }
 
+    /// <summary>
+    /// BattleCoroutine 중 승리 또는 패배 조건 달성 시 호출
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator BattleCheck()
+    {
+        int friendlyCount = 0;
+        foreach(Character character in friendlyCharacter)
+        {
+            if (character != null)
+            {
+                if (character.hp <= 0)
+                {
+                    character.isDead = true;
+                    friendlyCount--;
+                }
+                friendlyCount++;
+            }
+        }
+
+        int enemyCount = 0;
+        foreach(Character character in enemyCharacter)
+        {
+            if (character != null)
+            {
+                if (character.hp <= 0)
+                {
+                    character.isDead = true;
+                    enemyCount--;
+                }
+                enemyCount++;
+            }
+        }
+
+        if(enemyCount == 0)
+        {
+            yield return Win();
+        }
+        if(friendlyCount == 0)
+        {
+            yield return Lose();
+        }
+
+        yield return null;
+    }
     IEnumerator FirstTurnOrder()
     {
         turnOrder = new Queue<Character>();
@@ -199,11 +248,26 @@ public class BattleSystemManager1 : MonoBehaviour
         yield return null;
     }
 
-
     public IEnumerator Attack(Character turnCharacter, Character targetCharacter, SkillData useSkill = null)
     {
-        targetCharacter.hp -= 5f;
+        targetCharacter.hp -= 20f;
 
         yield return null;
+    }
+
+    IEnumerator Win()
+    {
+        Debug.Log("승리");
+
+        yield return statusManager.DestroyAll();
+        yield return characterManager.Destroy();
+        yield return backgroundManager.End();
+        if (battleCoroutine != null) StopCoroutine(battleCoroutine);
+    }
+
+    IEnumerator Lose()
+    {
+        yield return backgroundManager.End();
+        if (battleCoroutine != null) StopCoroutine(battleCoroutine);
     }
 }

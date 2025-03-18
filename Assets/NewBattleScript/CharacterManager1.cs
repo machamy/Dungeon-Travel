@@ -241,7 +241,6 @@ public class CharacterManager1 : MonoBehaviour
 
         yield return new WaitUntil(() => targetPosition != -1);
         battleUIManager.targetCharacter = isAttackSkill ? enemyCharacter[targetPosition] : friendlyCharacter[targetPosition];
-
     }
 
     /// <summary>
@@ -251,5 +250,16 @@ public class CharacterManager1 : MonoBehaviour
     public void Target(int targetPosition)
     {
         this.targetPosition = targetPosition;
+    }
+
+    public IEnumerator Destroy()
+    {
+        foreach (Button button in friendlyButton) button.enabled = false;
+        foreach (Button button in enemyButton) button.enabled = false;
+        foreach (GameObject gameObject in friendlyCharacterObject) Destroy(gameObject);
+        foreach (GameObject gameObject in enemyCharacterObject) Destroy(gameObject);
+        friendlyCharacterObject.Clear();
+        enemyCharacterObject.Clear();
+        yield return null;
     }
 }
