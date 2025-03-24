@@ -17,17 +17,17 @@ public class BattleUIManager1 : MonoBehaviour
     public Button attackButton, itemButton, skillButton, guardButton;
     public Button previousButton;
 
-    public List<Character> friendlyCharacter;
-    public List<Character> enemyCharacter;
-    public Character turnCharacter;
-    public Character targetCharacter;
+    public List<UnitHolder> friendlyUnit;
+    public List<UnitHolder> enemyUnit;
+    public UnitHolder turnUnit;
+    public UnitHolder targetUnit;
 
     bool keepGoing;
-    public void Initailize(List<Character> friendlyCharacter, List<Character> enemyCharacter)
+    public void Initailize(List<UnitHolder> friendlyUnit, List<UnitHolder> enemyUnit)
     {
         gameObject.SetActive(true);
-        this.friendlyCharacter = friendlyCharacter;
-        this.enemyCharacter = enemyCharacter;
+        this.friendlyUnit = friendlyUnit;
+        this.enemyUnit = enemyUnit;
         previousButton = attackButton;
     }
 
@@ -44,7 +44,7 @@ public class BattleUIManager1 : MonoBehaviour
     {
         keepGoing = true;
         actEnum = ActEnum.Choose;
-        targetCharacter = null;
+        targetUnit = null;
         previousButton.Select();
         
         while (keepGoing)
@@ -63,9 +63,9 @@ public class BattleUIManager1 : MonoBehaviour
                         previousButton = attackButton;
                         actPanel.SetActive(false);
                         yield return characterManager.Target(true);
-                        if (targetCharacter != null)
+                        if (targetUnit != null)
                         {
-                            yield return battleSystemManager.Attack(turnCharacter, targetCharacter);
+                            yield return battleSystemManager.Attack(turnUnit, targetUnit);
                             keepGoing = false;
                         }
                         actEnum = ActEnum.Choose;

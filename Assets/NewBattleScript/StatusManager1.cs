@@ -10,17 +10,17 @@ public class StatusManager1 : MonoBehaviour
     [SerializeField]
     List<StatusUpdater> enemyStatusUpdater;
 
-    List<Character> friendlyCharacter;
-    List<Character> enemyCharacter;
+    List<UnitHolder> friendlyCharacter;
+    List<UnitHolder> enemyCharacter;
 
-    public void Inistialize(List<Character> friendly, List<Character> enemy)
+    public void Inistialize(List<UnitHolder> friendly, List<UnitHolder> enemy)
     {
         gameObject.SetActive(true);
         friendlyCharacter = friendly;
         enemyCharacter = enemy;
 
         int position = 0;
-        foreach (Character c in friendlyCharacter)
+        foreach (UnitHolder c in friendlyCharacter)
         {
             if(c != null)
             {
@@ -30,7 +30,7 @@ public class StatusManager1 : MonoBehaviour
         }
 
         position = 0;
-        foreach (Character c in enemyCharacter)
+        foreach (UnitHolder c in enemyCharacter)
         {
             if(c != null)
             {

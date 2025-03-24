@@ -15,10 +15,10 @@ public class BattleSystemManager1 : MonoBehaviour
     public WorldManager1 worldManager;
     public CharacterManager1 characterManager;
 
-    public List<Character> friendlyCharacter;
-    public List<Character> enemyCharacter;
+    public List<UnitHolder> friendlyUnit;
+    public List<UnitHolder> enemyUnit;
 
-    Queue<Character> turnOrder;
+    Queue<UnitHolder> turnOrder;
     public bool isSymbolAttacked;
 
     Coroutine battleCoroutine;
@@ -34,20 +34,14 @@ public class BattleSystemManager1 : MonoBehaviour
     /// Initailize Battle Field
     /// </summary>
     void Initailize()
-    {
-        //테스트 파티 추가
-        characterManager.TestParty();
-
-        //아군 소환
-        friendlyCharacter = characterManager.SpawnFriendlyCharacter();
-        //적 소환
-        enemyCharacter = characterManager.SpawnEnemyCharacter();
-
+    {   
+        friendlyUnit = new List<UnitHolder>();
+        enemyUnit = new List<UnitHolder>();
         // 매니저 초기화
-        characterManager.Initialize();
+        characterManager.Initialize(friendlyUnit, enemyUnit);
         backgroundManager.Initailize();
-        statusManager.Inistialize(friendlyCharacter, enemyCharacter);
-        battleUIManager.Initailize(friendlyCharacter,enemyCharacter);
+        statusManager.Inistialize(friendlyUnit, enemyUnit);
+        battleUIManager.Initailize(friendlyUnit, enemyUnit);
 
         battleCoroutine = StartCoroutine(BattleCoroutine());
     }
@@ -60,7 +54,7 @@ public class BattleSystemManager1 : MonoBehaviour
         yield return FirstTurnOrder();
         while (turnOrder.Count > 0)
         {
-            Debug.Log(turnOrder.Peek().Name + " 턴 시작");
+            Debug.Log(turnOrder.Peek().name + " 턴 시작");
             if (turnOrder.Peek().isFriendly)
             {
                 yield return FriendlyTurn(turnOrder.Dequeue());
@@ -79,7 +73,7 @@ public class BattleSystemManager1 : MonoBehaviour
             yield return GenericTurnOrder();
             while(turnOrder.Count > 0)
             {
-                Debug.Log(turnOrder.Peek().Name + " 턴 시작");
+                Debug.Log(turnOrder.Peek().name + " 턴 시작");
                 if (turnOrder.Peek().isFriendly)
                 {
                     yield return FriendlyTurn(turnOrder.Dequeue());
@@ -101,13 +95,13 @@ public class BattleSystemManager1 : MonoBehaviour
     IEnumerator BattleCheck()
     {
         int friendlyCount = 0;
-        foreach(Character character in friendlyCharacter)
+        foreach(UnitHolder unit in friendlyUnit)
         {
-            if (character != null)
+            if (unit != null)
             {
-                if (character.hp <= 0)
+                if (unit.hp <= 0)
                 {
-                    character.isDead = true;
+                    unit.isDead = true;
                     friendlyCount--;
                 }
                 friendlyCount++;
@@ -115,13 +109,13 @@ public class BattleSystemManager1 : MonoBehaviour
         }
 
         int enemyCount = 0;
-        foreach(Character character in enemyCharacter)
+        foreach(UnitHolder unit in enemyUnit)
         {
-            if (character != null)
+            if (unit != null)
             {
-                if (character.hp <= 0)
+                if (unit.hp <= 0)
                 {
-                    character.isDead = true;
+                    unit.isDead = true;
                     enemyCount--;
                 }
                 enemyCount++;
@@ -141,89 +135,89 @@ public class BattleSystemManager1 : MonoBehaviour
     }
     IEnumerator FirstTurnOrder()
     {
-        turnOrder = new Queue<Character>();
-        List<Character> friendlyTurnOrder = new List<Character>();
-        List<Character> enemyTurnOrder = new List<Character>();
+        turnOrder = new Queue<UnitHolder>();
+        List<UnitHolder> friendlyTurnOrder = new List<UnitHolder>();
+        List<UnitHolder> enemyTurnOrder = new List<UnitHolder>();
 
-        foreach (Character character in friendlyCharacter)
+        foreach (UnitHolder unit in friendlyUnit)
         {
-            if (character != null)
+            if (unit != null)
             {
-                friendlyTurnOrder.Add(character);
+                friendlyTurnOrder.Add(unit);
             }
         }
         // 민첩성(FinalStat.agi) 기준 내림차순 정렬 (큰 값이 먼저 오도록)
-        friendlyTurnOrder.Sort((a, b) => b.FinalStat.agi.CompareTo(a.FinalStat.agi));
+        friendlyTurnOrder.Sort((a, b) => b.agi.CompareTo(a.agi));
 
-        foreach (Character character in enemyCharacter)
+        foreach (UnitHolder unit in enemyUnit)
         {
-            if (character != null)
+            if (unit != null)
             {
-                enemyTurnOrder.Add(character);
+                enemyTurnOrder.Add(unit);
             }
         }
         // 민첩성(FinalStat.agi) 기준 내림차순 정렬 (큰 값이 먼저 오도록)
-        enemyTurnOrder.Sort((a, b) => b.FinalStat.agi.CompareTo(a.agi));
+        enemyTurnOrder.Sort((a, b) => b.agi.CompareTo(a.agi));
 
         if (isSymbolAttacked) //100% 확률로 아군 턴
         {
-            foreach (Character character in friendlyTurnOrder)
+            foreach (UnitHolder unit in friendlyTurnOrder)
             {
-                turnOrder.Enqueue(character);
+                turnOrder.Enqueue(unit);
             }
-            foreach (Character character in enemyTurnOrder)
+            foreach (UnitHolder unit in enemyTurnOrder)
             {
-                turnOrder.Enqueue(character);
+                turnOrder.Enqueue(unit);
             }
         }
         else
         {
             if (Random.value < 0.3f) // 30% 확률로 일반적인 턴
             {
-                List<Character> genericTurnOrder = new List<Character>();
+                List<UnitHolder> genericTurnOrder = new List<UnitHolder>();
                 genericTurnOrder.AddRange(friendlyTurnOrder);
                 genericTurnOrder.AddRange(enemyTurnOrder);
                 // 민첩성(FinalStat.agi) 기준 내림차순 정렬 (큰 값이 먼저 오도록)
-                genericTurnOrder.Sort((a, b) => b.FinalStat.agi.CompareTo(a.FinalStat.agi));
+                genericTurnOrder.Sort((a, b) => b.agi.CompareTo(a.agi));
 
-                foreach (Character character in genericTurnOrder)
+                foreach (UnitHolder unit in genericTurnOrder)
                 {
-                    turnOrder.Enqueue(character);
+                    turnOrder.Enqueue(unit);
                 }
             }
             else //70% 확률로 적 턴 먼저
             {
-                foreach (Character character in enemyTurnOrder)
+                foreach (UnitHolder unit in enemyTurnOrder)
                 {
-                    turnOrder.Enqueue(character);
+                    turnOrder.Enqueue(unit);
                 }
-                foreach (Character character in friendlyTurnOrder)
+                foreach (UnitHolder unit in friendlyTurnOrder)
                 {
-                    turnOrder.Enqueue(character);
+                    turnOrder.Enqueue(unit);
                 }
             }
         }
 
         // 정렬된 리스트 확인용 출력 (디버깅용)
-        foreach (var character in turnOrder)
+        foreach (var unit in turnOrder)
         {
-            Debug.Log($"{character.Name} - AGI: {character.FinalStat.agi}");
+            Debug.Log($"{unit.name} - AGI: {unit.agi}");
         }
-
+        
         yield return null;
     }
 
     IEnumerator GenericTurnOrder()
     {
-        turnOrder = new Queue<Character>();
-        List<Character> genericTurnOrder = new List<Character>();
-        genericTurnOrder.AddRange(friendlyCharacter);
-        genericTurnOrder.AddRange(enemyCharacter);
+        turnOrder = new Queue<UnitHolder>();
+        List<UnitHolder> genericTurnOrder = new List<UnitHolder>();
+        genericTurnOrder.AddRange(friendlyUnit);
+        genericTurnOrder.AddRange(enemyUnit);
 
         // 민첩성(FinalStat.agi) 기준 내림차순 정렬 (큰 값이 먼저 오도록)
-        genericTurnOrder.Sort((a, b) => b.FinalStat.agi.CompareTo(a.FinalStat.agi));
+        genericTurnOrder.Sort((a, b) => b.agi.CompareTo(a.agi));
 
-        foreach (Character character in genericTurnOrder)
+        foreach (UnitHolder character in genericTurnOrder)
         {
             turnOrder.Enqueue(character);
         }
@@ -231,7 +225,7 @@ public class BattleSystemManager1 : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator FriendlyTurn(Character turnCharacter)
+    IEnumerator FriendlyTurn(UnitHolder turnCharacter)
     {
         //캐릭터 가운데로 이동
         yield return characterManager.MoveCenter(turnCharacter);
@@ -243,12 +237,12 @@ public class BattleSystemManager1 : MonoBehaviour
         yield return characterManager.MoveInplace(turnCharacter);
     }
 
-    IEnumerator EnemyTurn(Character turnCharacter)
+    IEnumerator EnemyTurn(UnitHolder turnCharacter)
     {
         yield return null;
     }
 
-    public IEnumerator Attack(Character turnCharacter, Character targetCharacter, SkillData useSkill = null)
+    public IEnumerator Attack(UnitHolder turnCharacter, UnitHolder targetCharacter, SkillData useSkill = null)
     {
         targetCharacter.hp -= 20f;
 

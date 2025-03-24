@@ -12,7 +12,7 @@ namespace Scripts.Entity
         [SerializeField]
         protected int lv;
         [SerializeField]
-        protected string name;
+        public string name;
 
         public String Name => name;
 

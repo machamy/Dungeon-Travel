@@ -12,25 +12,25 @@ public class StatusUpdater : MonoBehaviour
     public TextMeshProUGUI nameText, hpText, mpText;
     public Slider hpSlider, mpSlider;
 
-    Character character;
+    UnitHolder unit;
     float maxHp, maxMp;
 
     Coroutine updateCoroutine;
-    public void Initialize(Character character)
+    public void Initialize(UnitHolder unit)
     {  
-        this.character = character;
+        this.unit = unit;
 
-        maxHp = character.rawBaseStat.hp;
-        maxMp = character.rawBaseStat.mp;
+        maxHp = unit.character.rawBaseStat.hp;
+        maxMp = unit.character.rawBaseStat.mp;
         // characterImage
 
-        nameText.text = character.isFriendly ? $"{character.Name} / {character._class.name}" : $"{character.Name}";
+        nameText.text = unit.isFriendly ? $"{unit.name} / {unit.character._class.name}" : $"{unit.name}";
 
-        hpText.text = $"{character.hp}/{maxHp}";
-        mpText.text = $"{character.mp}/{maxMp}";
+        hpText.text = $"{unit.hp}/{maxHp}";
+        mpText.text = $"{unit.mp}/{maxMp}";
 
-        hpSlider.value = character.hp / maxHp;
-        mpSlider.value = character.mp / maxMp;
+        hpSlider.value = unit.hp / maxHp;
+        mpSlider.value = unit.mp / maxMp;
 
         backPanel.SetActive(true);
         updateCoroutine = StartCoroutine(UpdateStatus());
@@ -39,23 +39,23 @@ public class StatusUpdater : MonoBehaviour
 
     IEnumerator UpdateStatus()
     {
-        while (!character.isDead)
+        while (true)
         {
-            hpText.text = $"{character.hp}/{maxHp}";
-            mpText.text = $"{character.mp}/{maxMp}";
+            hpText.text = $"{unit.hp}/{maxHp}";
+            mpText.text = $"{unit.mp}/{maxMp}";
 
-            hpSlider.value = character.hp / maxHp;
-            mpSlider.value = character.mp / maxMp;
+            hpSlider.value = unit.hp / maxHp;
+            mpSlider.value = unit.mp / maxMp;
+
             yield return new WaitForSeconds(0.1f);
         }
-        Image panel = backPanel.GetComponent<Image>();
-        panel.color = new Color(0, 0, 0, 0.19f);
+        
     }
 
     public void Destroy()
     {
         if(updateCoroutine != null) StopCoroutine(updateCoroutine);
-        character = null;
+        unit = null;
         nameText.text = "Name/Class";
         backPanel.SetActive(false);
     }
