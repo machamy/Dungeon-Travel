@@ -14,7 +14,6 @@ public class CharacterManager1 : MonoBehaviour
     public BattleUIManager1 battleUIManager;
 
     public GameObject unitPrefab;
-    MaterialPropertyBlock mpb;
 
     public Color outlineColor = Color.red;
     public int outlineSize = 2;
@@ -29,6 +28,8 @@ public class CharacterManager1 : MonoBehaviour
 
     List<UnitHolder> friendlyUnit;
     List<UnitHolder> enemyUnit;
+
+    public List<SkillData> skillList;
 
     public GameObject indicater;
     /// <summary>
@@ -53,21 +54,35 @@ public class CharacterManager1 : MonoBehaviour
         Party partyInstance = Party.CreateInstance();  // Party 생성
         List<Character> partyCharacter = partyInstance.GetCharacters();// 파티 리스트 가져오기
 
+        ClassType classType = ClassType.Ranger;
+        SkillData[] skillArr = DB.GetSkillDataArr(classType);
+        Debug.Log(skillArr.Length);
+        for(int i = 0; i < skillArr.Length; i++)
+        {
+            if (skillArr[i] == null) continue;
+            Debug.Log(skillArr[i].ToString());
+        }
+
         int index = 0;
         foreach(Character character in partyCharacter)
         {
             if(character != null)
             {
                 friendlyUnit.Add(new UnitHolder());
-                friendlyUnit[index++].SetCharacter(character);
+                friendlyUnit[index].skillData.Add(skillList[0]);
+                friendlyUnit[index].skillData.Add(skillList[1]);
+                friendlyUnit[index].skillData.Add(skillList[2]);
+                friendlyUnit[index].skillData.Add(skillList[3]);
+                friendlyUnit[index].SetCharacter(character);
             }
+            index++;
         }
-        /*
+        
         foreach (UnitHolder character in friendlyUnit)
         {
-            Debug.Log($"캐릭터 이름: {character.name}, 클래스: {character.character._class.name}, 레벨: {character.character.LV}");
+            Debug.Log($"캐릭터 이름: {character.name}, 클래스: {character.className}, 레벨: {character.lv}");
+            int i = 0;
         }
-        */
     }
     public List<UnitHolder> SpawnFriendlyCharacter()
     {
@@ -239,6 +254,8 @@ public class CharacterManager1 : MonoBehaviour
     {
         foreach (Button button in friendlyButton) button.enabled = false;
         foreach (Button button in enemyButton) button.enabled = false;
+        foreach (UnitHolder unit in friendlyUnit) Destroy(unit.gameObject);
+        foreach (UnitHolder unit in enemyUnit) Destroy(unit.gameObject);
         yield return null;
     }
 }

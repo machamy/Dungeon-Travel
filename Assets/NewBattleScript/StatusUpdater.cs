@@ -20,11 +20,11 @@ public class StatusUpdater : MonoBehaviour
     {  
         this.unit = unit;
 
-        maxHp = unit.character.rawBaseStat.hp;
-        maxMp = unit.character.rawBaseStat.mp;
+        maxHp = unit.rawHp;
+        maxMp = unit.rawMp;
         // characterImage
 
-        nameText.text = unit.isFriendly ? $"{unit.name} / {unit.character._class.name}" : $"{unit.name}";
+        nameText.text = unit.isFriendly ? $"{unit.name} / {unit.className}" : $"{unit.name}";
 
         hpText.text = $"{unit.hp}/{maxHp}";
         mpText.text = $"{unit.mp}/{maxMp}";

@@ -225,26 +225,27 @@ public class BattleSystemManager1 : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator FriendlyTurn(UnitHolder turnCharacter)
+    IEnumerator FriendlyTurn(UnitHolder turnUnit)
     {
+        battleUIManager.turnUnit = turnUnit;
         //캐릭터 가운데로 이동
-        yield return characterManager.MoveCenter(turnCharacter);
-
+        yield return characterManager.MoveCenter(turnUnit);
+        
         //캐릭터 행동 선택
         yield return battleUIManager.ActCoroutine();
 
         ///캐릭터 제자리로 이동
-        yield return characterManager.MoveInplace(turnCharacter);
+        yield return characterManager.MoveInplace(turnUnit);
     }
 
-    IEnumerator EnemyTurn(UnitHolder turnCharacter)
+    IEnumerator EnemyTurn(UnitHolder turnUnit)
     {
         yield return null;
     }
 
-    public IEnumerator Attack(UnitHolder turnCharacter, UnitHolder targetCharacter, SkillData useSkill = null)
+    public IEnumerator Attack(UnitHolder turnUnit, UnitHolder targetUnit, SkillData useSkill = null)
     {
-        targetCharacter.hp -= 20f;
+        targetUnit.hp -= 20f;
 
         yield return null;
     }

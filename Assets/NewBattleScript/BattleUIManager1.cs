@@ -14,13 +14,20 @@ public class BattleUIManager1 : MonoBehaviour
 
     public ActEnum actEnum;
     public GameObject actPanel, skillPanel, itemPanel, guardPanel;
-    public Button attackButton, itemButton, skillButton, guardButton;
+    public Button attack, item, skill, guard;
     public Button previousButton;
+    public TextMeshProUGUI nameText;
+    public List<Transform> skillTransform;
+    public List<Button> skillButton;
+    public List<TextMeshProUGUI> skillNameText;
+    public List<TextMeshProUGUI> skillCostText;
+    public GameObject skillIndicater;
 
     public List<UnitHolder> friendlyUnit;
     public List<UnitHolder> enemyUnit;
     public UnitHolder turnUnit;
     public UnitHolder targetUnit;
+    public SkillData useSkill;
 
     bool keepGoing;
     public void Initailize(List<UnitHolder> friendlyUnit, List<UnitHolder> enemyUnit)
@@ -28,7 +35,7 @@ public class BattleUIManager1 : MonoBehaviour
         gameObject.SetActive(true);
         this.friendlyUnit = friendlyUnit;
         this.enemyUnit = enemyUnit;
-        previousButton = attackButton;
+        previousButton = attack;
     }
 
     /// <summary>
@@ -60,7 +67,7 @@ public class BattleUIManager1 : MonoBehaviour
 
                 case ActEnum.Attack:
                     {
-                        previousButton = attackButton;
+                        previousButton = attack;
                         actPanel.SetActive(false);
                         yield return characterManager.Target(true);
                         if (targetUnit != null)
@@ -74,17 +81,24 @@ public class BattleUIManager1 : MonoBehaviour
 
                 case ActEnum.Item:
                     {
-                        previousButton = itemButton;
+                        previousButton = item;
                         break;
                     }
                 case ActEnum.Skill:
                     {
-                        previousButton = skillButton;
+                        previousButton = skill;
+                        yield return SkillSelect();
+                        if(skillIndex != -1)
+                        {
+                            yield return battleSystemManager.Attack(turnUnit, targetUnit, useSkill);
+                            keepGoing = false;
+                        }
+                        actEnum = ActEnum.Choose;
                         break;
                     }
                 case ActEnum.Guard:
                     {
-                        previousButton = guardButton;
+                        previousButton = guard;
                         break;
                     }
             }
@@ -97,9 +111,34 @@ public class BattleUIManager1 : MonoBehaviour
         yield return null;
     }
 
-    IEnumerator Skill()
+    int skillIndex = -1;
+    IEnumerator SkillSelect()
     {
-        yield return null;
+        int index = 0;
+        foreach(SkillData skill in turnUnit.skillData)
+        {
+            if (skill != null)
+            {
+                skillNameText[index].text = skill.name;
+                skillCostText[index].text = skill.pointCost.ToString();
+            }
+            index++;
+        }
+        index = 0;
+        foreach (SkillData skill in turnUnit.skillData)
+        {
+            if (skill != null)
+            {
+                skillIndicater.transform.position = skillTransform[index].position - new Vector3(3,0,0);
+                skillButton[index].Select();
+                break;
+            }
+            index++;
+        }
+
+
+        skillPanel.SetActive(true);
+        yield return new WaitUntil(() => skillIndex != -1);
     }
 
     IEnumerator Guard()
