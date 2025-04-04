@@ -30,13 +30,18 @@ public class BattleUIManager1 : MonoBehaviour
     public SkillData useSkill;
 
     bool keepGoing;
+
+    int skillIndex;
+
     public void Initailize(List<UnitHolder> friendlyUnit, List<UnitHolder> enemyUnit)
     {
         gameObject.SetActive(true);
         this.friendlyUnit = friendlyUnit;
         this.enemyUnit = enemyUnit;
         previousButton = attack;
+        turnUnit = null;
     }
+
 
     /// <summary>
     /// 유니티 인스펙터창 button에서 호출
@@ -47,11 +52,21 @@ public class BattleUIManager1 : MonoBehaviour
         this.actEnum = (ActEnum)actEnum;
     }
 
+    public void SetSkillIndex(int index)
+    {
+        skillIndex = index;
+        
+    }
+
+    public void MoveSkillIndicater(int index)
+    {
+        skillIndicater.transform.position = skillTransform[index].position - new Vector3(15, 0, 0);
+    }
+
     public IEnumerator ActCoroutine()
     {
         keepGoing = true;
         actEnum = ActEnum.Choose;
-        targetUnit = null;
         previousButton.Select();
         
         while (keepGoing)
@@ -61,6 +76,8 @@ public class BattleUIManager1 : MonoBehaviour
                 case ActEnum.Choose:
                     {
                         actPanel.SetActive(true);
+                        skillIndex = -2;
+                        targetUnit = null;
                         yield return new WaitUntil(() => actEnum != ActEnum.Choose);
                         break;
                     }
@@ -87,7 +104,19 @@ public class BattleUIManager1 : MonoBehaviour
                 case ActEnum.Skill:
                     {
                         previousButton = skill;
+                        actPanel.SetActive(false);
+                        skillPanel.SetActive(true);
                         yield return SkillSelect();
+                        skillPanel.SetActive(false);
+                        if (useSkill.isBuff)
+                        {
+                            yield return characterManager.Target(false);
+                        }
+                        else
+                        {
+                            yield return characterManager.Target(true);
+                        }
+                        
                         if(skillIndex != -1)
                         {
                             yield return battleSystemManager.Attack(turnUnit, targetUnit, useSkill);
@@ -111,7 +140,7 @@ public class BattleUIManager1 : MonoBehaviour
         yield return null;
     }
 
-    int skillIndex = -1;
+    
     IEnumerator SkillSelect()
     {
         int index = 0;
@@ -129,7 +158,7 @@ public class BattleUIManager1 : MonoBehaviour
         {
             if (skill != null)
             {
-                skillIndicater.transform.position = skillTransform[index].position - new Vector3(3,0,0);
+                MoveSkillIndicater(index);
                 skillButton[index].Select();
                 break;
             }
@@ -138,7 +167,8 @@ public class BattleUIManager1 : MonoBehaviour
 
 
         skillPanel.SetActive(true);
-        yield return new WaitUntil(() => skillIndex != -1);
+        yield return new WaitUntil(() => skillIndex != -2);
+        if (skillIndex != -1) useSkill = turnUnit.skillData[skillIndex];
     }
 
     IEnumerator Guard()

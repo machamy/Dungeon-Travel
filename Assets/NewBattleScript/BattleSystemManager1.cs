@@ -34,7 +34,7 @@ public class BattleSystemManager1 : MonoBehaviour
     /// Initailize Battle Field
     /// </summary>
     void Initailize()
-    {   
+    {
         friendlyUnit = new List<UnitHolder>();
         enemyUnit = new List<UnitHolder>();
         // 매니저 초기화
@@ -71,7 +71,7 @@ public class BattleSystemManager1 : MonoBehaviour
         while (true)
         {
             yield return GenericTurnOrder();
-            while(turnOrder.Count > 0)
+            while (turnOrder.Count > 0)
             {
                 Debug.Log(turnOrder.Peek().name + " 턴 시작");
                 if (turnOrder.Peek().isFriendly)
@@ -95,13 +95,16 @@ public class BattleSystemManager1 : MonoBehaviour
     IEnumerator BattleCheck()
     {
         int friendlyCount = 0;
-        foreach(UnitHolder unit in friendlyUnit)
+        foreach (UnitHolder unit in friendlyUnit)
         {
             if (unit != null)
             {
+                if (unit.isDead) continue; //이미 죽어있으면 넘어감
                 if (unit.hp <= 0)
                 {
                     unit.isDead = true;
+                    characterManager.UnitDie(unit);
+                    Debug.Log($"{unit.name} 사망");
                     friendlyCount--;
                 }
                 friendlyCount++;
@@ -109,24 +112,27 @@ public class BattleSystemManager1 : MonoBehaviour
         }
 
         int enemyCount = 0;
-        foreach(UnitHolder unit in enemyUnit)
+        foreach (UnitHolder unit in enemyUnit)
         {
             if (unit != null)
             {
-                if (unit.hp <= 0)
+                if (unit.isDead) continue; //이미 죽어있으면 넘어감
+                if (unit.hp <= 0f)
                 {
                     unit.isDead = true;
+                    characterManager.UnitDie(unit);
+                    Debug.Log($"{unit.name} 사망");
                     enemyCount--;
                 }
                 enemyCount++;
             }
         }
 
-        if(enemyCount == 0)
+        if (enemyCount == 0)
         {
             yield return Win();
         }
-        if(friendlyCount == 0)
+        else if (friendlyCount == 0)
         {
             yield return Lose();
         }
@@ -203,7 +209,7 @@ public class BattleSystemManager1 : MonoBehaviour
         {
             Debug.Log($"{unit.name} - AGI: {unit.agi}");
         }
-        
+
         yield return null;
     }
 
@@ -230,7 +236,7 @@ public class BattleSystemManager1 : MonoBehaviour
         battleUIManager.turnUnit = turnUnit;
         //캐릭터 가운데로 이동
         yield return characterManager.MoveCenter(turnUnit);
-        
+
         //캐릭터 행동 선택
         yield return battleUIManager.ActCoroutine();
 
@@ -245,11 +251,34 @@ public class BattleSystemManager1 : MonoBehaviour
 
     public IEnumerator Attack(UnitHolder turnUnit, UnitHolder targetUnit, SkillData useSkill = null)
     {
-        targetUnit.hp -= 20f;
+        if (useSkill != null)
+        {
+            switch (useSkill.targetType)
+            {
+                case TargetType.Front:
+                    {
+                        break;
+                    }
+                case TargetType.Back:
+                    {
+                        break;
+                    }
+                case TargetType.All:
+                    {
+                        break;
+                    }
+                case TargetType.Single:
+                default:
+                    {
+                        targetUnit.hp -= 20f;
+                        break;
+                    }
 
-        yield return null;
+            }
+
+            yield return null;
+        }
     }
-
     IEnumerator Win()
     {
         Debug.Log("승리");

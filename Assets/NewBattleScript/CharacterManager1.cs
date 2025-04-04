@@ -147,6 +147,22 @@ public class CharacterManager1 : MonoBehaviour
         return enemyUnit;
     }
 
+    public void UnitDie(UnitHolder unit)
+    {
+        int index = friendlyUnit.IndexOf(unit);
+        if (index == -1)
+        {
+            index = enemyUnit.IndexOf(unit);
+            enemyButton[index].enabled = false;
+            Destroy(unit.gameObject);
+        }
+        else
+        {
+            friendlyButton[index].enabled = false;
+            Destroy(unit.gameObject);
+        }
+        unit.isDead = true;
+    }
     public IEnumerator MoveCenter(UnitHolder character)
     {
         bool isFriendly = true;
